@@ -206,6 +206,63 @@ export function newGameReal(rows: DataRow[], lgId: string, clubName: string, src
   let cid = 0;
   const byName: Record<string, string> = {};
   const moves: [number, string, string, string][] = [];
+  // dựng một cầu thủ từ dòng dữ liệu; owner = null là cầu thủ tự do (leagueId 0, không CLB)
+  const addRow = (r: DataRow, owner: string | null, toN: string, es: boolean): void => {
+    const ps = String(r[4])
+      .split(",")
+      .map((x) => x.trim())
+      .filter(Boolean);
+    const lines = [...new Set(ps.map((x) => POSLINE[x] || "MF"))] as Line[];
+    if (!lines.length) lines.push("MF");
+    const pid = "p" + S.nid++;
+    const age = r[9] || ri(20, 29);
+    const p: Player = {
+      id: pid,
+      n: r[2],
+      ln: r[3] || r[2],
+      nat: NATCODE[r[12]] || "XX",
+      natN: NAT_VI[r[12]] || r[12],
+      pos: lines[0],
+      pos2: lines.slice(1),
+      posD: ps.join(", "),
+      age,
+      ovr: r[5],
+      pot: Math.max(r[5], r[6] + (r[9] ? 0 : age <= 22 ? ri(3, 10) : 0)),
+      prof: r[9] <= 21 && r[6] - r[5] >= 10 ? "prodigy" : pickA(["early", "late", "steady", "steady", "durable", "fragile"] as const),
+      form: ri(45, 60),
+      mor: ri(55, 75),
+      fit: 100,
+      inj: 0,
+      club: owner,
+      c: null,
+      apps: 0,
+      goals: 0,
+      st: [],
+      tot: { apps: 0, goals: 0 },
+      joined: -999,
+      pbias: rnd(-1, 1),
+      hist: [],
+      val: 0,
+    };
+    if (r[14]) {
+      p.hist.push({ y: year, from: r[14], to: toN, fee: null });
+      if (owner) moves.push([r[5], p.n, r[14], toN]);
+    }
+    p.c = {
+      wage: Math.max(1, Math.round((r[8] || 0) / 1000)) || 0,
+      exp: owner ? Math.max(year + 1, r[10] || year + 2) : year,
+      rc: es && r[11] ? r10(r[11] / 1000) : 0,
+      role: "Xoay tua",
+    };
+    S.P[pid] = p;
+    if (owner) C(owner).ids.push(pid);
+    else S.free.push(pid);
+    const fv = valueOf({ ...p, vk: 0 }),
+      real = (r[7] || 0) / 1000;
+    p.vk = real > 0 ? clamp(real / Math.max(1, fv), 0.25, 4) : 1;
+    p.val = valueOf(p);
+    if (!r[8]) p.c.wage = wageBase(p);
+  };
   packClubs(rows).forEach((pc) => {
     const L = REAL_LG[pc.lid],
       id = "c" + cid++,
@@ -224,61 +281,7 @@ export function newGameReal(rows: DataRow[], lgId: string, clubName: string, src
     };
     S.clubs[id] = c;
     byName[pc.n] = id;
-    pc.rows.forEach((r) => {
-      const ps = String(r[4])
-        .split(",")
-        .map((x) => x.trim())
-        .filter(Boolean);
-      const lines = [...new Set(ps.map((x) => POSLINE[x] || "MF"))] as Line[];
-      if (!lines.length) lines.push("MF");
-      const pid = "p" + S.nid++;
-      const age = r[9] || ri(20, 29);
-      const p: Player = {
-        id: pid,
-        n: r[2],
-        ln: r[3] || r[2],
-        nat: NATCODE[r[12]] || "XX",
-        natN: NAT_VI[r[12]] || r[12],
-        pos: lines[0],
-        pos2: lines.slice(1),
-        posD: ps.join(", "),
-        age,
-        ovr: r[5],
-        pot: Math.max(r[5], r[6] + (r[9] ? 0 : age <= 22 ? ri(3, 10) : 0)),
-        prof: r[9] <= 21 && r[6] - r[5] >= 10 ? "prodigy" : pickA(["early", "late", "steady", "steady", "durable", "fragile"] as const),
-        form: ri(45, 60),
-        mor: ri(55, 75),
-        fit: 100,
-        inj: 0,
-        club: id,
-        c: null,
-        apps: 0,
-        goals: 0,
-        st: [],
-        tot: { apps: 0, goals: 0 },
-        joined: -999,
-        pbias: rnd(-1, 1),
-        hist: [],
-        val: 0,
-      };
-      if (r[14]) {
-        p.hist.push({ y: year, from: r[14], to: pc.n, fee: null });
-        moves.push([r[5], p.n, r[14], pc.n]);
-      }
-      p.c = {
-        wage: Math.max(1, Math.round((r[8] || 0) / 1000)) || 0,
-        exp: Math.max(year + 1, r[10] || year + 2),
-        rc: L.id === "ES" && r[11] ? r10(r[11] / 1000) : 0,
-        role: "Xoay tua",
-      };
-      S.P[pid] = p;
-      c.ids.push(pid);
-      const fv = valueOf({ ...p, vk: 0 }),
-        real = (r[7] || 0) / 1000;
-      p.vk = real > 0 ? clamp(real / Math.max(1, fv), 0.25, 4) : 1;
-      p.val = valueOf(p);
-      if (!r[8]) p.c.wage = wageBase(p);
-    });
+    pc.rows.forEach((r) => addRow(r, id, pc.n, L.id === "ES"));
     // bổ sung cầu thủ trẻ nếu đội hình trong dữ liệu quá mỏng
     const need: [Line, number][] = [
       ["GK", 2],
@@ -316,7 +319,9 @@ export function newGameReal(rows: DataRow[], lgId: string, clubName: string, src
       .sort((x, y) => Math.abs(x.str - c.str) - Math.abs(y.str - c.str));
     c.rival = same[0]?.id ?? null;
   });
-  for (let i = 0; i < 50; i++) {
+  // cầu thủ hết hợp đồng (leagueId 0): tự do, CLB nào cũng có thể ký
+  rows.filter((r) => !r[0] && !r[1]).forEach((r) => addRow(r, null, "", false));
+  for (let i = S.free.length; i < 50; i++) {
     const p = makeP(
       pickA(["EN", "ES", "DE", "IT", "FR", "BR", "AR", "PT", "NL", "SN"]),
       pickA<Line>(["GK", "DF", "DF", "MF", "MF", "FW"]),

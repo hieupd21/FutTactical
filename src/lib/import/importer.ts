@@ -262,7 +262,7 @@ function importFifplay(header: string[], data: string[][], fileName: string, bas
     const b = base[m];
     const ovr = y.rating,
       o26 = b[5] || ovr,
-      age = (b[9] || 25) + 1;
+      age = b[9] || 25;
     const same = norm(b[1]) === norm(clubName);
     const val = b[7] * Math.exp((ovr - o26) / 6) * (age >= 31 ? 0.85 : 1);
     const wage = b[8] * (same ? 1 : 1.15);
@@ -302,7 +302,7 @@ function importFifplay(header: string[], data: string[][], fileName: string, bas
   return finish(rows, { format: "fifplay", fileName, total: ys.length, matched, estimated, skipped: skips.list(), warnings });
 }
 
-/** base: dữ liệu gốc để ghép (gói FC 26). Chỉ cần với định dạng FIFPlay. */
+/** base: dữ liệu gốc để ghép (gói dựng sẵn, đã là tuổi của mùa hiện tại). Chỉ cần với định dạng FIFPlay. */
 export async function importCSV(text: string, fileName: string, loadBase: () => Promise<DataRow[]>): Promise<ImportResult> {
   const { header, rows } = parseCSV(text);
   const fmt = detectFormat(header);

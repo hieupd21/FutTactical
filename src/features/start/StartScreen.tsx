@@ -24,7 +24,7 @@ export function StartScreen() {
 
   useEffect(() => {
     setErr(null);
-    if (src === "fc27" || src === "fc26") {
+    if (src === "fc27") {
       setRows(null);
       loadPack(src)
         .then(setRows)
@@ -53,7 +53,7 @@ export function StartScreen() {
     setBusy(true);
     setErr(null);
     try {
-      setImp(await importCSV(await f.text(), f.name, () => loadPack("fc26")));
+      setImp(await importCSV(await f.text(), f.name, () => loadPack("fc27")));
     } catch (e) {
       setImp(null);
       setErr((e as Error).message);
@@ -82,18 +82,17 @@ export function StartScreen() {
           onChange={setSrc}
           items={[
             ["fc27", PACKS.fc27.label],
-            ["fc26", PACKS.fc26.label],
             ["import", "Nhập file CSV"],
             ["fict", "Thế giới hư cấu"],
           ]}
         />
-        {(src === "fc27" || src === "fc26") && <p className="hint">{PACKS[src].note}</p>}
+        {src === "fc27" && <p className="hint">{PACKS[src].note}</p>}
         {src === "import" && (
           <>
             <p className="hint">
               Hỗ trợ 2 định dạng, tự nhận diện theo tiêu đề cột: <b>sofifa</b> (các bộ FC 24/25/26 trên Kaggle, GitHub: league_id,
               club_name, short_name, overall, value_eur, wage_eur, age…) và <b>FIFPlay</b> (bộ FC 27: first_name, last_name, nation_name,
-              club_name, position, rating). File FIFPlay thiếu tuổi, lương, hợp đồng nên được ghép với dữ liệu FC 26.
+              club_name, position, rating). File FIFPlay thiếu tuổi, lương, hợp đồng nên được ghép với dữ liệu trong gói dựng sẵn.
             </p>
             <FileButton
               className="btn ghost"

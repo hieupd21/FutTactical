@@ -31,6 +31,7 @@ Luôn trả lời người dùng bằng tiếng Việt. Toàn bộ chữ trong g
 ## Dữ liệu
 
 - `public/data/fc27.json`, `fc26.json`: mảng dòng `[league_id, club, short, long, positions, ovr, pot, value_eur, wage_eur, age, contract_year, release_clause_eur, nationality, fifa_version, prevClub?]` (kiểu `DataRow`).
+- Dòng có `league_id = 0` và CLB rỗng là cầu thủ tự do (hết hợp đồng): vào `S.free`, người chơi và CLB AI đều ký được (`aiFreeAgentsTick` trong transfers.ts).
 - Giải mô phỏng: 13 EPL, 53 LaLiga, 19 Bundesliga, 31 Serie A, 16 Ligue 1. Giải nguồn (không đá): 14 Championship, 308 Bồ Đào Nha, 10 Hà Lan, 999 đội mới xuống hạng.
 - fc27.json = FC 27 (FIFPlay, 11/10/2026: CLB + chỉ số) ghép FC 26 (sofifa: tuổi+1, tiềm năng, lương, hợp đồng, giá). Script: `scripts/merge_fc27.py`.
 - Nhập CSV trong game: `src/lib/import/` tự nhận định dạng sofifa hoặc FIFPlay, có báo cáo nhập.

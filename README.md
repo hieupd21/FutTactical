@@ -23,7 +23,7 @@ Dự án dùng React 18, TypeScript (strict), Vite 5, React Router 6 (HashRouter
 Thư mục được chia theo tính năng, theo hướng dẫn của tài liệu React ("Build a React app from scratch") và bulletproof-react.
 
 ```
-public/data/            Gói dữ liệu cầu thủ (fc27.json, fc26.json), tải bằng fetch khi chọn
+public/data/            Gói dữ liệu cầu thủ (fc27.json, gồm cả giải nguồn bổ sung từ FC 26), tải bằng fetch khi chọn
 scripts/                Script Python ghép dữ liệu FC 27 + FC 26
 src/
   app/                  Ghép ứng dụng: App (router, khung), SheetHost (bảng trượt)
