@@ -52,8 +52,13 @@ export function toggleLoanList(pid: string): boolean {
   return !!p.loanList;
 }
 export function reallocate(dir: "toWage" | "toFee"): void {
-  if (dir === "toWage") { me().budget -= BUDGET_STEP; S.wageCap += WAGE_STEP; }
-  else { me().budget += BUDGET_STEP; S.wageCap -= WAGE_STEP; }
+  if (dir === "toWage") {
+    me().budget -= BUDGET_STEP;
+    S.wageCap += WAGE_STEP;
+  } else {
+    me().budget += BUDGET_STEP;
+    S.wageCap -= WAGE_STEP;
+  }
 }
 export function hireScout(): string {
   me().budget -= scoutCost();
@@ -91,11 +96,23 @@ export function readAll(): void {
 export const isClosed = (n: Negotiation): boolean => n.stage === "done" || n.stage === "failed";
 /** Thương vụ đang chờ bạn ra quyết định */
 export const needsAct = (n: Negotiation): boolean =>
-  !isClosed(n) && !n.waiting && n.stage !== "enquiry" && n.stage !== "dof" && (!!n.buy || n.type === "renew" || (!!n.sell && n.stage === "offer"));
+  !isClosed(n) &&
+  !n.waiting &&
+  n.stage !== "enquiry" &&
+  n.stage !== "dof" &&
+  (!!n.buy || n.type === "renew" || (!!n.sell && n.stage === "offer"));
 
 export function stageTxt(n: Negotiation): string {
-  if (n.sell && n.stage === "offer") return n.type === "loanout" ? `${C(n.buyer!).n} muốn mượn · ${n.pct}% lương` : `${C(n.buyer!).n} trả ${fmtM(n.fee || 0)}`;
-  if (n.type === "renew") return n.stage === "final" ? "Đồng ý gia hạn, chờ bạn ký" : n.stage === "done" ? "Hoàn tất" : n.stage === "failed" ? "Đổ vỡ" : "Đàm phán gia hạn";
+  if (n.sell && n.stage === "offer")
+    return n.type === "loanout" ? `${C(n.buyer!).n} muốn mượn · ${n.pct}% lương` : `${C(n.buyer!).n} trả ${fmtM(n.fee || 0)}`;
+  if (n.type === "renew")
+    return n.stage === "final"
+      ? "Đồng ý gia hạn, chờ bạn ký"
+      : n.stage === "done"
+        ? "Hoàn tất"
+        : n.stage === "failed"
+          ? "Đổ vỡ"
+          : "Đàm phán gia hạn";
   const m: Record<string, string> = {
     enquiry: "Đang chờ phản hồi thăm dò",
     dof: "Giám đốc thể thao đang đàm phán",

@@ -10,7 +10,8 @@ const base: DataRow[] = [
 
 describe("importCSV", () => {
   it("đọc định dạng sofifa", async () => {
-    const csv = "league_id,club_name,short_name,long_name,player_positions,overall,potential,value_eur,wage_eur,age,club_contract_valid_until_year,release_clause_eur,nationality_name,fifa_version\n" +
+    const csv =
+      "league_id,club_name,short_name,long_name,player_positions,overall,potential,value_eur,wage_eur,age,club_contract_valid_until_year,release_clause_eur,nationality_name,fifa_version\n" +
       '13,Arsenal,B. Saka,Bukayo Saka,"RW, RM",87,91,140000000,195000,24,2029,0,England,26\n' +
       "999999,Somewhere,X,X Y,ST,60,60,0,0,20,2027,0,Spain,26\n";
     const r = await importCSV(csv, "a.csv", async () => base);
@@ -20,7 +21,8 @@ describe("importCSV", () => {
   });
 
   it("ghép định dạng FIFPlay với dữ liệu gốc", async () => {
-    const csv = "first_name,last_name,nation_name,club_name,common_name,position,rating\n" +
+    const csv =
+      "first_name,last_name,nation_name,club_name,common_name,position,rating\n" +
       "Bukayo,Saka,England,Arsenal,,RW,88\n" + // ở lại
       "Cole,Palmer,England,Man Utd,,CAM,88\n" + // chuyển CLB
       "New,Guy,Spain,Arsenal,,CB,70\n" + // tân binh

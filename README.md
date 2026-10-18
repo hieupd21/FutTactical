@@ -5,11 +5,13 @@ Game quản lý bóng đá kiểu Career Mode của FC: giả lập trận đấ
 ## Chạy dự án
 
 ```bash
-npm install
-npm run dev        # http://localhost:5173
-npm test           # kiểm thử engine và bộ nhập CSV (Vitest)
-npm run build      # kiểm tra kiểu (tsc -b) rồi build ra dist/
-npm run preview    # chạy thử bản build
+pnpm install
+pnpm dev        # http://localhost:5173
+pnpm test           # kiểm thử engine và bộ nhập CSV (Vitest)
+pnpm build      # kiểm tra kiểu (tsc -b) rồi build ra dist/
+pnpm preview    # chạy thử bản build
+pnpm lint       # ESLint (lint:fix để tự sửa)
+pnpm format     # Prettier (format:check để chỉ kiểm tra)
 ```
 
 ## Công nghệ
@@ -53,10 +55,10 @@ src/
 
 Bộ nhập tự nhận diện định dạng theo tiêu đề cột:
 
-| Định dạng | Nguồn | Cột bắt buộc | Xử lý |
-|---|---|---|---|
-| sofifa | Bộ FC 24/25/26 trên Kaggle, GitHub | league_id, club_name, short_name, long_name, player_positions, overall, potential, value_eur, wage_eur, age, club_contract_valid_until_year, release_clause_eur, nationality_name, fifa_version | Dùng trực tiếp |
-| FIFPlay | Bộ FC 27 | first_name, last_name, nation_name, club_name, position, rating | Ghép với FC 26 theo tên và quốc tịch để lấy tuổi, tiềm năng, lương, hợp đồng. Tân binh không có trong FC 26 được ước lượng. |
+| Định dạng | Nguồn                              | Cột bắt buộc                                                                                                                                                                                    | Xử lý                                                                                                                       |
+| --------- | ---------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| sofifa    | Bộ FC 24/25/26 trên Kaggle, GitHub | league_id, club_name, short_name, long_name, player_positions, overall, potential, value_eur, wage_eur, age, club_contract_valid_until_year, release_clause_eur, nationality_name, fifa_version | Dùng trực tiếp                                                                                                              |
+| FIFPlay   | Bộ FC 27                           | first_name, last_name, nation_name, club_name, position, rating                                                                                                                                 | Ghép với FC 26 theo tên và quốc tịch để lấy tuổi, tiềm năng, lương, hợp đồng. Tân binh không có trong FC 26 được ước lượng. |
 
 Trước khi chọn CLB, game hiện báo cáo nhập gồm: số cầu thủ nhận theo từng giải, số dòng bỏ qua kèm lý do, và các cảnh báo.
 

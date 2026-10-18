@@ -47,15 +47,40 @@ export function makeP(nat: string, pos: Line, ovr: number, age: number, club: st
   const prof = age <= 21 && Math.random() < 0.15 ? "prodigy" : pickA(COMMON_PROFILES);
   const room = age <= 20 ? ri(6, 18) : age <= 23 ? ri(3, 11) : age <= 26 ? ri(0, 5) : 0;
   const p: Player = {
-    id, n: genName(nat), nat, pos, pos2: [], age, ovr, pot: Math.min(92, ovr + room), prof,
-    form: ri(40, 60), mor: ri(55, 75), fit: 100, inj: 0, club, c: null, apps: 0, goals: 0, st: [],
-    tot: { apps: 0, goals: 0 }, joined: -999, pbias: rnd(-1, 1), hist: [], val: 0,
+    id,
+    n: genName(nat),
+    nat,
+    pos,
+    pos2: [],
+    age,
+    ovr,
+    pot: Math.min(92, ovr + room),
+    prof,
+    form: ri(40, 60),
+    mor: ri(55, 75),
+    fit: 100,
+    inj: 0,
+    club,
+    c: null,
+    apps: 0,
+    goals: 0,
+    st: [],
+    tot: { apps: 0, goals: 0 },
+    joined: -999,
+    pbias: rnd(-1, 1),
+    hist: [],
+    val: 0,
   };
   if (pos === "MF" && Math.random() < 0.35) p.pos2.push(pickA<Line>(["FW", "DF"]));
   if (pos === "DF" && Math.random() < 0.2) p.pos2.push("MF");
   if (pos === "FW" && Math.random() < 0.25) p.pos2.push("MF");
   p.val = valueOf(p);
-  p.c = { wage: Math.round(wageBase(p) * rnd(0.85, 1.1)), exp: S.year + ri(1, 4), rc: Math.random() < 0.25 ? r10(p.val * rnd(1.8, 3)) : 0, role: "Xoay tua" };
+  p.c = {
+    wage: Math.round(wageBase(p) * rnd(0.85, 1.1)),
+    exp: S.year + ri(1, 4),
+    rc: Math.random() < 0.25 ? r10(p.val * rnd(1.8, 3)) : 0,
+    role: "Xoay tua",
+  };
   S.P[id] = p;
   return p;
 }

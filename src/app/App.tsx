@@ -24,7 +24,11 @@ export function App() {
       <div className="wrap">
         <Header />
         <main className="col" style={{ gap: 14 }}>
-          {status === "loading" && <section className="panel"><p className="hint">Đang tải sự nghiệp…</p></section>}
+          {status === "loading" && (
+            <section className="panel">
+              <p className="hint">Đang tải sự nghiệp…</p>
+            </section>
+          )}
           {status === "none" && <StartScreen />}
           {status === "ready" && (
             <Routes>
@@ -38,7 +42,12 @@ export function App() {
           )}
         </main>
       </div>
-      {status === "ready" && <><BottomNav /><SheetHost /></>}
+      {status === "ready" && (
+        <>
+          <BottomNav />
+          <SheetHost />
+        </>
+      )}
       <Toast />
     </HashRouter>
   );

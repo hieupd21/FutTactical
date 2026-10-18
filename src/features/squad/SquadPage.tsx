@@ -14,7 +14,9 @@ const ORDER = "GKDFMFFW";
 export function SquadPage() {
   useGameVersion();
   const { swapIn, setSwapIn, openPlayer } = useUi();
-  const xi = myXI(), sp = slotPos(S.form), st = clubStr(S.me);
+  const xi = myXI(),
+    sp = slotPos(S.form),
+    st = clubStr(S.me);
   const all = clubPlayers(S.me);
   const bench = all.filter((p) => !xi.includes(p.id)).sort((a, b) => ORDER.indexOf(a.pos) - ORDER.indexOf(b.pos) || dyn(b) - dyn(a));
   const loanedOut = Object.values(S.P).filter((p) => p.homeClub === S.me);
@@ -37,8 +39,19 @@ export function SquadPage() {
     return (
       <div key={i} style={{ display: "contents" }}>
         {head}
-        {p && <PlayerRow p={p} cls={swapIn ? "target" : ""} onClick={() => onSlot(i, p)}
-          right={<><FitBar fit={p.fit} /><span>{p.lastR ? "Điểm " + p.lastR : moraleLbl(p.mor)}</span></>} />}
+        {p && (
+          <PlayerRow
+            p={p}
+            cls={swapIn ? "target" : ""}
+            onClick={() => onSlot(i, p)}
+            right={
+              <>
+                <FitBar fit={p.fit} />
+                <span>{p.lastR ? "Điểm " + p.lastR : moraleLbl(p.mor)}</span>
+              </>
+            }
+          />
+        )}
       </div>
     );
   });
@@ -47,34 +60,71 @@ export function SquadPage() {
     <>
       {swapIn && (
         <div className="swapbar">
-          <span>Chọn vị trí trong đội hình cho <b>{sn(P(swapIn).n)}</b></span>
-          <button className="btn sm" onClick={() => setSwapIn(null)}>Hủy</button>
+          <span>
+            Chọn vị trí trong đội hình cho <b>{sn(P(swapIn).n)}</b>
+          </span>
+          <button className="btn sm" onClick={() => setSwapIn(null)}>
+            Hủy
+          </button>
         </div>
       )}
       <div className="grid2">
         <section className="panel">
           <div className="row between">
             <h2>Đội hình ra sân</h2>
-            <div className="row"><span className="chip">Công <b>{Math.round(st.att)}</b></span><span className="chip">Thủ <b>{Math.round(st.def)}</b></span></div>
+            <div className="row">
+              <span className="chip">
+                Công <b>{Math.round(st.att)}</b>
+              </span>
+              <span className="chip">
+                Thủ <b>{Math.round(st.def)}</b>
+              </span>
+            </div>
           </div>
           <div className="row">
-            <label className="lbl" style={{ flex: 1 }}>Sơ đồ
+            <label className="lbl" style={{ flex: 1 }}>
+              Sơ đồ
               <select value={S.form} onChange={(e) => commit(() => setFormation(e.target.value as Formation))}>
-                {Object.keys(FORMS).map((f) => <option key={f}>{f}</option>)}
+                {Object.keys(FORMS).map((f) => (
+                  <option key={f}>{f}</option>
+                ))}
               </select>
             </label>
-            <button className="btn ghost sm" style={{ alignSelf: "flex-end" }} onClick={() => { commit(autoXI); toast("Đã xếp đội hình mạnh nhất."); }}>Tự xếp mạnh nhất</button>
+            <button
+              className="btn ghost sm"
+              style={{ alignSelf: "flex-end" }}
+              onClick={() => {
+                commit(autoXI);
+                toast("Đã xếp đội hình mạnh nhất.");
+              }}
+            >
+              Tự xếp mạnh nhất
+            </button>
           </div>
-          <p className="hint">Số lớn là chỉ số động (theo phong độ, tinh thần, thể lực); số nhỏ là chênh lệch so với chỉ số gốc. Cầu thủ chấn thương được thay tự động.</p>
+          <p className="hint">
+            Số lớn là chỉ số động (theo phong độ, tinh thần, thể lực); số nhỏ là chênh lệch so với chỉ số gốc. Cầu thủ chấn thương được thay
+            tự động.
+          </p>
           <div className="plist">{slots}</div>
         </section>
         <section className="panel">
-          <div className="row between"><h2>Dự bị & đội trẻ</h2><span className="chip">{all.length} cầu thủ</span></div>
-          <div className="plist">{bench.map((p) => <PlayerRow key={p.id} p={p} onClick={() => onBench(p)} />)}</div>
+          <div className="row between">
+            <h2>Dự bị & đội trẻ</h2>
+            <span className="chip">{all.length} cầu thủ</span>
+          </div>
+          <div className="plist">
+            {bench.map((p) => (
+              <PlayerRow key={p.id} p={p} onClick={() => onBench(p)} />
+            ))}
+          </div>
           {loanedOut.length > 0 && (
             <>
               <h3>Đang cho mượn</h3>
-              <div className="plist">{loanedOut.map((p) => <PlayerRow key={p.id} p={p} onClick={() => openPlayer(p.id)} right={<span>{C(p.club!).n}</span>} />)}</div>
+              <div className="plist">
+                {loanedOut.map((p) => (
+                  <PlayerRow key={p.id} p={p} onClick={() => openPlayer(p.id)} right={<span>{C(p.club!).n}</span>} />
+                ))}
+              </div>
             </>
           )}
         </section>

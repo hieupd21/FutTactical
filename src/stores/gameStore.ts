@@ -20,7 +20,9 @@ interface GameStore {
 let saveTimer: ReturnType<typeof setTimeout> | undefined;
 function scheduleSave(): void {
   clearTimeout(saveTimer);
-  saveTimer = setTimeout(() => { if (S) void saveGame(S); }, 250);
+  saveTimer = setTimeout(() => {
+    if (S) void saveGame(S);
+  }, 250);
 }
 
 export const useGame = create<GameStore>((set, get) => ({
@@ -58,4 +60,4 @@ export const useGame = create<GameStore>((set, get) => ({
 
 /** Đăng ký vẽ lại khi trạng thái game thay đổi. Trả về phiên bản hiện tại. */
 export const useGameVersion = (): number => useGame((s) => s.v);
-export const commit = <T,>(fn?: () => T): T | undefined => useGame.getState().commit(fn);
+export const commit = <T>(fn?: () => T): T | undefined => useGame.getState().commit(fn);

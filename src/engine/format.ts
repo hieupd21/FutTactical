@@ -4,7 +4,10 @@ export function fmtM(k: number): string {
   const a = Math.abs(k);
   const s = k < 0 ? "−" : "";
   if (a >= 1000) {
-    const v = (a / 1000).toFixed(a >= 100000 ? 0 : a >= 10000 ? 1 : 2).replace(/\.?0+$/, "").replace(".", ",");
+    const v = (a / 1000)
+      .toFixed(a >= 100000 ? 0 : a >= 10000 ? 1 : 2)
+      .replace(/\.?0+$/, "")
+      .replace(".", ",");
     return `${s}${v} tr €`;
   }
   return `${s}${a}k €`;

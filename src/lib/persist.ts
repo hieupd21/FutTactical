@@ -23,11 +23,23 @@ export async function saveGame(s: GameState): Promise<void> {
     await set("career", s, store);
     await set("at", Date.now(), store);
   } catch {
-    try { localStorage.setItem(LS_KEY, JSON.stringify(s)); } catch { /* hết chỗ lưu */ }
+    try {
+      localStorage.setItem(LS_KEY, JSON.stringify(s));
+    } catch {
+      /* hết chỗ lưu */
+    }
   }
 }
 
 export async function clearGame(): Promise<void> {
-  try { await del("career", store); } catch { /* bỏ qua */ }
-  try { localStorage.removeItem(LS_KEY); } catch { /* bỏ qua */ }
+  try {
+    await del("career", store);
+  } catch {
+    /* bỏ qua */
+  }
+  try {
+    localStorage.removeItem(LS_KEY);
+  } catch {
+    /* bỏ qua */
+  }
 }
