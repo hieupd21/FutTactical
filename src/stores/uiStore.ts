@@ -4,8 +4,20 @@ import type { MatchSim } from "@/engine/types";
 
 export type SheetState = { type: "player"; id: string } | { type: "nego"; id: string } | { type: "match" } | null;
 export type MarketSub = "search" | "short" | "nego" | "mine" | "news";
-export interface Filters { pos: string; lg: string; age: number; max: number; exp: boolean; sort: "ovr" | "val" | "age" | "pot" }
-export interface LiveMatch { m: MatchSim; min: number; done: boolean; lines: Record<number, string> }
+export interface Filters {
+  pos: string;
+  lg: string;
+  age: number;
+  max: number;
+  exp: boolean;
+  sort: "ovr" | "val" | "age" | "pot";
+}
+export interface LiveMatch {
+  m: MatchSim;
+  min: number;
+  done: boolean;
+  lines: Record<number, string>;
+}
 type FormVal = number | string;
 
 interface UiState {

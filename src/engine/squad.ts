@@ -26,7 +26,10 @@ export function bestXI(cid: string, form: Formation): (string | null)[] {
     pool.forEach((p) => {
       if (used.has(p.id)) return;
       const v = dyn(p) * fitAt(p, pos) + (p.fit - 80) / 20;
-      if (v > bv) { bv = v; b = p; }
+      if (v > bv) {
+        bv = v;
+        b = p;
+      }
     });
     if (b) used.add((b as Player).id);
     return b ? (b as Player).id : null;
@@ -79,20 +82,50 @@ export function squadRank(p: Player, cid: string, form?: Formation): { rank: num
   const mates = clubPlayers(cid).filter((x) => x.id !== p.id && (x.pos === p.pos || x.pos2.includes(p.pos)));
   const rank = 1 + mates.filter((x) => x.ovr > p.ovr).length;
   const top = clubPlayers(cid).filter((x) => x.id !== p.id && x.ovr > p.ovr).length < 2;
-  const role: Role = top && rank <= slots ? "Ngôi sao" : rank <= slots ? "Đá chính" : rank <= slots + 1 ? "Xoay tua" : p.age <= 20 ? "Triển vọng" : "Dự bị";
+  const role: Role =
+    top && rank <= slots ? "Ngôi sao" : rank <= slots ? "Đá chính" : rank <= slots + 1 ? "Xoay tua" : p.age <= 20 ? "Triển vọng" : "Dự bị";
   return { rank, slots, role };
 }
 
 export function table(lg: string): TableRow[] {
   const T: Record<string, TableRow> = {};
-  Object.values(S.clubs).filter((c) => c.lg === lg).forEach((c) => (T[c.id] = { id: c.id, p: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, pts: 0, form: [] }));
-  (S.res[lg] || []).forEach((rs) => rs && rs.forEach((r) => {
-    const H = T[r.h], A = T[r.a];
-    H.p++; A.p++; H.gf += r.hg; H.ga += r.ag; A.gf += r.ag; A.ga += r.hg;
-    if (r.hg > r.ag) { H.w++; A.l++; H.pts += 3; H.form.push("W"); A.form.push("L"); }
-    else if (r.hg < r.ag) { A.w++; H.l++; A.pts += 3; A.form.push("W"); H.form.push("L"); }
-    else { H.d++; A.d++; H.pts++; A.pts++; H.form.push("D"); A.form.push("D"); }
-  }));
+  Object.values(S.clubs)
+    .filter((c) => c.lg === lg)
+    .forEach((c) => (T[c.id] = { id: c.id, p: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, pts: 0, form: [] }));
+  (S.res[lg] || []).forEach(
+    (rs) =>
+      rs &&
+      rs.forEach((r) => {
+        const H = T[r.h],
+          A = T[r.a];
+        H.p++;
+        A.p++;
+        H.gf += r.hg;
+        H.ga += r.ag;
+        A.gf += r.ag;
+        A.ga += r.hg;
+        if (r.hg > r.ag) {
+          H.w++;
+          A.l++;
+          H.pts += 3;
+          H.form.push("W");
+          A.form.push("L");
+        } else if (r.hg < r.ag) {
+          A.w++;
+          H.l++;
+          A.pts += 3;
+          A.form.push("W");
+          H.form.push("L");
+        } else {
+          H.d++;
+          A.d++;
+          H.pts++;
+          A.pts++;
+          H.form.push("D");
+          A.form.push("D");
+        }
+      }),
+  );
   return Object.values(T).sort((a, b) => b.pts - a.pts || b.gf - b.ga - (a.gf - a.ga) || b.gf - a.gf);
 }
 export const myPos = (): number => table(C(S.me).lg).findIndex((t) => t.id === S.me) + 1;

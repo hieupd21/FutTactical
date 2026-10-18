@@ -6,7 +6,9 @@ export function ImportReportView({ r, onClear }: { r: ImportReport; onClear: () 
     <div className="report">
       <div className="row between">
         <b>{r.fileName}</b>
-        <button className="linkb" onClick={onClear}>Chọn file khác</button>
+        <button className="linkb" onClick={onClear}>
+          Chọn file khác
+        </button>
       </div>
       <p className="hint" style={{ color: "var(--ink)" }}>
         Định dạng <b>{r.format === "sofifa" ? "sofifa" : "FIFPlay"}</b>
@@ -15,15 +17,31 @@ export function ImportReportView({ r, onClear }: { r: ImportReport; onClear: () 
         {r.format === "fifplay" ? ` (${r.matched} ghép được với FC 26, ${r.estimated} ước lượng)` : ""}.
       </p>
       <ul>
-        {Object.entries(r.byLeague).sort((a, b) => b[1] - a[1]).map(([lg, n]) => <li key={lg}>{lg}: {n}</li>)}
+        {Object.entries(r.byLeague)
+          .sort((a, b) => b[1] - a[1])
+          .map(([lg, n]) => (
+            <li key={lg}>
+              {lg}: {n}
+            </li>
+          ))}
       </ul>
       {r.skipped.length > 0 && (
         <>
           <h3>Bỏ qua</h3>
-          <ul>{r.skipped.map((s) => <li key={s.reason}>{s.reason}: {s.count.toLocaleString("vi-VN")}</li>)}</ul>
+          <ul>
+            {r.skipped.map((s) => (
+              <li key={s.reason}>
+                {s.reason}: {s.count.toLocaleString("vi-VN")}
+              </li>
+            ))}
+          </ul>
         </>
       )}
-      {r.warnings.map((w) => <p key={w} className="hint" style={{ color: "var(--gold)" }}>{w}</p>)}
+      {r.warnings.map((w) => (
+        <p key={w} className="hint" style={{ color: "var(--gold)" }}>
+          {w}
+        </p>
+      ))}
     </div>
   );
 }
