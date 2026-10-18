@@ -49,6 +49,19 @@ describe("engine", () => {
     }
   });
 
+  it("cầu thủ hết hợp đồng trong dữ liệu là cầu thủ tự do và CLB AI ký được", () => {
+    newGameReal(pack("fc27.json"), "EN", "Arsenal", "FC 27");
+    const free = S.free.map((id) => S.P[id]);
+    expect(free.length).toBeGreaterThan(100);
+    expect(free.every((p) => p.club == null)).toBe(true);
+    expect(free.some((p) => p.n === "Carvajal")).toBe(true);
+    const before = S.free.length;
+    for (let i = 0; i < 30; i++) advance("day");
+    expect(S.free.length).toBeLessThan(before);
+    const signed = Object.values(S.P).find((p) => p.club && p.club !== S.me && p.hist.some((h) => h.from === "Tự do"));
+    expect(signed?.c?.exp).toBeGreaterThan(S.year);
+  });
+
   it("thương vụ mua qua điều khoản đàm phán hoàn tất được", () => {
     newGameReal(pack("fc27.json"), "EN", "Arsenal", "FC 27");
     me().budget = 500000;

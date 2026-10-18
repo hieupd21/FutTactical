@@ -5,7 +5,7 @@ import { fmtM, fmtW } from "./format";
 import { valueOf, wageBase, yearsLeft } from "./players";
 import { clubPlayers, myXI, squadRank } from "./squad";
 import { C, inbox, isDeadline, LG, me, myLg, news, P, S, tick, windowNow } from "./state";
-import type { ClubOffer, ContractOffer, Line, NegoType, Negotiation, Player, Role } from "./types";
+import type { Club, ClubOffer, ContractOffer, Line, NegoType, Negotiation, Player, Role } from "./types";
 import { clamp, pickA, r10, ri, rnd } from "./util";
 
 export type Res = { err?: string; n?: Negotiation };
@@ -619,27 +619,66 @@ function processDof(n: Negotiation): void {
 }
 
 // ---------- AI mua bán với nhau ----------
+/** Vị trí yếu nhất của CLB: tuyến có điểm trung bình các cầu thủ hàng đầu thấp nhất. */
+function weakestLine(buyer: Club): { pos: Line; v: number } {
+  return (["GK", "DF", "MF", "FW"] as Line[])
+    .map((pos) => {
+      const k = pos === "GK" ? 1 : 3;
+      return {
+        pos,
+        v:
+          clubPlayers(buyer.id)
+            .filter((p) => p.pos === pos)
+            .sort((a, b) => b.ovr - a.ovr)
+            .slice(0, k)
+            .reduce((s, p) => s + p.ovr, 0) / k,
+      };
+    })
+    .sort((a, b) => a.v - b.v)[0];
+}
+
+/** CLB AI ký cầu thủ tự do (không phí, quanh năm): cầu thủ chỉ đồng ý nếu CLB đủ tầm và họ giúp đội mạnh lên. */
+function aiFreeAgentsTick(hours: number): void {
+  if (!S.free.length) return;
+  const tries = Math.max(1, Math.round((hours / 24) * 4));
+  const others = Object.values(S.clubs).filter((c) => c.id !== S.me);
+  for (let t = 0; t < tries; t++) {
+    const buyer = pickA(others);
+    if (buyer.ids.length >= 27 || Math.random() > 0.3) continue;
+    const need = weakestLine(buyer);
+    const pool = S.free
+      .map(P)
+      .filter(
+        (p) =>
+          p &&
+          p.pos === need.pos &&
+          p.ovr >= need.v + 1 &&
+          p.ovr <= buyer.str + 7 &&
+          !activeNegoFor(p.id) &&
+          !S.pending.some((x) => x.pid === p.id),
+      );
+    const p = buyer.phil === "young" ? pool.sort((a, b) => a.age - b.age)[0] : pickA(pool);
+    if (!p) continue;
+    const wage = Math.round(Math.max(p.c?.wage ?? 0, wageBase(p)));
+    if (buyer.budget < wage * 20) continue;
+    buyer.budget -= wage * 10;
+    moveP(p, buyer.id);
+    p.c = { wage, exp: S.year + ri(1, 3), rc: 0, role: "Xoay tua" };
+    p.hist.push({ y: S.year, from: "Tự do", to: buyer.n, fee: 0 });
+    S.aiDone++;
+    if (buyer.lg === myLg() || p.ovr >= 75) news(`${p.n} gia nhập ${buyer.n} theo dạng tự do.`, "transfer");
+  }
+}
+
 export function aiTransfersTick(hours: number): void {
+  aiFreeAgentsTick(hours);
   if (!windowNow()) return;
   const tries = Math.max(1, Math.round((((isDeadline() ? 3 : 1) * hours) / 24) * 5));
   const others = Object.values(S.clubs).filter((c) => c.id !== S.me);
   for (let t = 0; t < tries; t++) {
     const buyer = pickA(others);
     if (Math.random() > 0.35) continue;
-    const need = (["GK", "DF", "MF", "FW"] as Line[])
-      .map((pos) => {
-        const k = pos === "GK" ? 1 : 3;
-        return {
-          pos,
-          v:
-            clubPlayers(buyer.id)
-              .filter((p) => p.pos === pos)
-              .sort((a, b) => b.ovr - a.ovr)
-              .slice(0, k)
-              .reduce((s, p) => s + p.ovr, 0) / k,
-        };
-      })
-      .sort((a, b) => a.v - b.v)[0];
+    const need = weakestLine(buyer);
     const pool = Object.values(S.P).filter(
       (p) =>
         p.club != null &&

@@ -5,7 +5,7 @@ import { importCSV } from "./importer";
 
 const base: DataRow[] = [
   [13, "Arsenal", "B. Saka", "Bukayo Saka", "RW, RM", 87, 91, 140000000, 195000, 24, 2029, 0, "England", 26, ""],
-  [13, "Chelsea", "C. Palmer", "Cole Palmer", "CAM, RW", 87, 90, 130000000, 180000, 23, 2033, 0, "England", 26, ""],
+  [13, "Chelsea", "C. Palmer", "Cole Palmer", "CAM, RW", 87, 90, 130000000, 180000, 24, 2033, 0, "England", 26, ""],
 ];
 
 describe("importCSV", () => {
@@ -43,7 +43,7 @@ describe("importCSV", () => {
 
   const real = process.env.FC27_CSV;
   it.skipIf(!real || !existsSync(real))("file FC 27 thật cho kết quả giống gói dựng sẵn", async () => {
-    const pack = JSON.parse(readFileSync("public/data/fc26.json", "utf8")) as DataRow[];
+    const pack = JSON.parse(readFileSync("public/data/fc27.json", "utf8")) as DataRow[];
     const r = await importCSV(readFileSync(real!, "utf8"), "fc27.csv", async () => pack);
     console.log(JSON.stringify(r.report, null, 1));
     expect(r.rows.length).toBeGreaterThan(3000);
