@@ -21,6 +21,9 @@ export interface TransferRecord {
   fee: number | null;
 }
 
+/** Lý do cầu thủ không hài lòng */
+export type MoodCause = "playtime" | "tactics" | "morale";
+
 export interface Player {
   id: string;
   n: string; // tên hiển thị
@@ -60,6 +63,11 @@ export interface Player {
   listed?: boolean;
   loanList?: boolean;
   wantOut?: boolean;
+  // tâm lý và yêu cầu của cầu thủ
+  demand?: { kind: "start" | "leave"; d: number; cause: MoodCause } | null; // yêu cầu đang chờ người chơi trả lời
+  promise?: { kind: "start"; left: number; missed: number; allow: number } | null; // cam kết cho đá chính
+  demandCool?: number; // ngày (S.d) trước đó không đòi nữa
+  interest?: { d: number; cause: MoodCause | "free" } | null; // cầu thủ CLB khác đã "thả thính" CLB của bạn
   ovrAtSign?: number;
   cool?: number;
   reserved?: boolean;
@@ -157,6 +165,9 @@ export interface ContractOffer {
 export type NegoStage = "enquiry" | "dof" | "club" | "contract" | "final" | "offer" | "done" | "failed";
 export type NegoType = "transfer" | "loan" | "free" | "pre" | "renew" | "loanout";
 
+/** Giọng điệu người chơi chọn khi gửi đề nghị: điềm đạm (trung tính), chân thành (an toàn), cứng rắn (đánh cược) */
+export type Tone = "calm" | "warm" | "bluff";
+
 export interface Negotiation {
   id: string;
   pid: string;
@@ -181,6 +192,7 @@ export interface Negotiation {
   cAsk?: ContractOffer;
   cOffer?: ContractOffer;
   rcUsed?: boolean;
+  tone?: Tone;
   pushed?: boolean;
   willChecked?: boolean;
   twist?: { club: string } | null;
@@ -202,12 +214,31 @@ export interface InboxMessage {
   read: boolean;
   nid?: string;
   pid?: string;
+  cid?: string;
   act?: string;
 }
 
+/** Hạng đấu thấp bổ sung từ public/data/lower_leagues.json (CLB hư cấu, cầu thủ sinh ngẫu nhiên) */
+export interface LowerLeagueData {
+  id: string;
+  n: string;
+  nat: string;
+  lvl: number;
+  clubs: [string, number][];
+}
+
+/** Lời mời dẫn dắt CLB khác, gửi sau khi tổng kết mùa */
+export interface JobOffer {
+  cid: string;
+  y: number;
+}
+
+/** Loại tin: chung, CLB, chuyển nhượng xong, đàm phán, thả thính, nổi loạn, trận đấu */
+export type NewsKind = "gen" | "club" | "transfer" | "deal" | "flirt" | "rebel" | "match";
+
 export interface NewsItem {
   t: string;
-  k: "gen" | "club" | "transfer";
+  k: NewsKind;
   d: number;
   y: number;
 }
@@ -275,6 +306,9 @@ export interface GameState {
   aiDone: number;
   seasonLog: { y: number; pos: number | null }[];
   wageCap: number;
+  rep?: number; // uy tín HLV 0–100; thiếu = lưu cũ, coi như 100
+  offers?: JobOffer[];
+  job?: string | null; // CLB đã nhận lời, chuyển sang khi mùa mới bắt đầu
   stopFlag?: boolean;
   review?: SeasonReview | null;
 }

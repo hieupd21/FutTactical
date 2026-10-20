@@ -1,5 +1,6 @@
 // Các biểu mẫu trong bảng đàm phán. Giá trị lưu trong uiStore.form với khóa n.id + tên trường.
-import { ROLES } from "@/engine/constants";
+import { ROLES, TONES } from "@/engine/constants";
+import { suggestReplies, type Reply } from "@/engine/dialogue";
 import { myWages } from "@/engine/board";
 import { fmtM, fmtW } from "@/engine/format";
 import { ovrR } from "@/engine/players";
@@ -12,14 +13,17 @@ import {
   resolveTwist,
   respondSell,
   submitClubOffer,
+  roleIdx,
   submitContract,
   triggerRC,
 } from "@/engine/transfers";
 import type { ClubOffer, ContractOffer, Negotiation, Player, Role } from "@/engine/types";
 import { r10 } from "@/engine/util";
-import { OptsField, RangeField, Sum } from "@/components/ui";
+import { OptsField, RangeField, Sum, TermBadge, type TermState } from "@/components/ui";
 import { commit } from "@/stores/gameStore";
 import { toast, useUi } from "@/stores/uiStore";
+import { Button } from "@/components/shadcn/button";
+import { SelectField } from "@/components/ui";
 
 type Vals = Record<string, number | string>;
 /** Đọc giá trị biểu mẫu kèm mặc định */
@@ -29,6 +33,35 @@ function useVals(n: Negotiation, defs: Vals) {
   Object.keys(defs).forEach((k) => (out[k] = form[n.id + k] ?? defs[k]));
   return out;
 }
+/** Gợi ý ba câu trả lời để gửi kèm đề nghị; mỗi câu mang một giọng điệu khác nhau về rủi ro/lợi ích */
+function ReplyField({ n, stage }: { n: Negotiation; stage: "club" | "contract" | "sell" }) {
+  const key = n.id + "reply";
+  const idx = (useUi((s) => s.form[key]) as number | undefined) ?? 0;
+  const setForm = useUi((s) => s.setForm);
+  const replies = suggestReplies(n, stage);
+  return (
+    <div className="fld">
+      <div className="top">
+        <span>Bạn đáp lại</span>
+      </div>
+      <div className="replies" role="radiogroup" aria-label="Câu trả lời gợi ý">
+        {replies.map((r, i) => (
+          <button key={r.tone} role="radio" aria-checked={idx === i} data-tone={r.tone} className="reply" onClick={() => setForm(key, i)}>
+            <b>{TONES[r.tone].label}</b>
+            <span>{r.text}</span>
+          </button>
+        ))}
+      </div>
+      <p className="hint">{TONES[replies[idx]?.tone ?? "calm"].hint}</p>
+    </div>
+  );
+}
+const replyOf = (n: Negotiation, stage: "club" | "contract" | "sell"): Reply => {
+  const idx = (useUi.getState().form[n.id + "reply"] as number | undefined) ?? 0;
+  const list = suggestReplies(n, stage);
+  return list[idx] ?? list[0];
+};
+
 /** Chạy hành động engine, hiện lỗi trong bảng nếu có */
 function act(fn: () => { err?: string } | void, ok?: string) {
   const r = commit(fn);
@@ -61,7 +94,7 @@ export function ClubForm({ n, p }: { n: Negotiation; p: Player }) {
       swap: (v.swap as string) || null,
       timing: v.timing as "now" | "next",
     };
-    act(() => submitClubOffer(n, o), "Đã gửi đề nghị.");
+    act(() => submitClubOffer(n, o, replyOf(n, "club")), "Đã gửi đề nghị.");
   };
   return (
     <>
@@ -146,17 +179,12 @@ export function ClubForm({ n, p }: { n: Negotiation; p: Player }) {
             : [["next", "Kỳ chuyển nhượng sau"]]
         }
       />
-      <label className="lbl">
-        Trao đổi cầu thủ
-        <select value={v.swap as string} onChange={(e) => setForm(k("swap"), e.target.value)}>
-          <option value="">Không trao đổi</option>
-          {mine.map((x) => (
-            <option key={x.id} value={x.id}>
-              {x.n} ({x.pos}, {ovrR(x)}, {fmtM(x.val)})
-            </option>
-          ))}
-        </select>
-      </label>
+      <SelectField
+        label="Trao đổi cầu thủ"
+        value={v.swap as string}
+        onChange={(x) => setForm(k("swap"), x)}
+        options={[["", "Không trao đổi"], ...mine.map((x): [string, string] => [x.id, `${x.n} (${x.pos}, ${ovrR(x)}, ${fmtM(x.val)})`])]}
+      />
       <Sum
         rows={[
           ["Trả ngay", fmtM(now)],
@@ -164,13 +192,14 @@ export function ClubForm({ n, p }: { n: Negotiation; p: Player }) {
           ...(inst > 1 ? [["Các mùa sau", `${inst - 1} × ${fmtM(fee / inst)}`] as [string, string]] : []),
         ]}
       />
-      <button className="btn hot block" onClick={send}>
+      <ReplyField n={n} stage="club" />
+      <Button variant="hot" className="w-full" onClick={send}>
         Gửi đề nghị
-      </button>
+      </Button>
       {p.c?.rc ? (
-        <button className="btn ghost block" onClick={() => act(() => triggerRC(n))}>
+        <Button variant="ghost" className="w-full" onClick={() => act(() => triggerRC(n))}>
           Kích hoạt điều khoản giải phóng · {fmtM(p.c.rc)}
-        </button>
+        </Button>
       ) : null}
     </>
   );
@@ -189,9 +218,9 @@ export function LoanForm({ n, p }: { n: Negotiation; p: Player }) {
           ["Quỹ lương còn sau đó", fmtW(S.wageCap - myWages() - (wage * pct) / 100)],
         ]}
       />
-      <button className="btn hot block" onClick={() => act(() => submitClubOffer(n, { fee: 0, inst: 1, pct }), "Đã gửi đề nghị.")}>
+      <Button variant="hot" className="w-full" onClick={() => act(() => submitClubOffer(n, { fee: 0, inst: 1, pct }), "Đã gửi đề nghị.")}>
         Gửi đề nghị mượn
-      </button>
+      </Button>
     </>
   );
 }
@@ -202,6 +231,14 @@ export function ContractForm({ n, p }: { n: Negotiation; p: Player }) {
   const v = useVals(n, defs);
   const k = (s: string) => n.id + s;
   const extra = (v.wage as number) - (n.type === "renew" ? p.c!.wage : 0);
+  // Cùng ngưỡng với engine: lương/lót tay đạt khi ≥ mức đòi, vai trò đạt khi không thấp hơn, thời hạn đạt khi lệch ≤ 1 năm
+  const st: Record<"wage" | "years" | "signon" | "role", TermState> = {
+    wage: (v.wage as number) >= a.wage ? "ok" : (v.wage as number) >= a.wage * 0.9 ? "near" : "no",
+    years: Math.abs((v.years as number) - a.years) <= 1 ? "ok" : "no",
+    signon: (v.signon as number) >= a.signon ? "ok" : (v.signon as number) >= a.signon * 0.7 ? "near" : "no",
+    role: roleIdx(v.role as Role) <= roleIdx(a.role) ? "ok" : roleIdx(v.role as Role) - roleIdx(a.role) === 1 ? "near" : "no",
+  };
+  const okCount = Object.values(st).filter((x) => x === "ok").length;
   const send = () => {
     const o: ContractOffer = {
       wage: v.wage as number,
@@ -210,18 +247,41 @@ export function ContractForm({ n, p }: { n: Negotiation; p: Player }) {
       role: v.role as Role,
       rc: v.rc as number,
     };
-    act(() => submitContract(n, o), "Đã gửi cho người đại diện.");
+    act(() => submitContract(n, o, replyOf(n, "contract")), "Đã gửi cho người đại diện.");
   };
   return (
     <>
       <Sum
         rows={[
-          ["Người đại diện đòi", fmtW(a.wage)],
-          ["Thời hạn mong muốn", `${a.years} năm`],
-          ["Phí lót tay", fmtM(a.signon)],
-          ["Vai trò kỳ vọng", a.role],
+          [
+            <>
+              Lương đòi <TermBadge state={st.wage} />
+            </>,
+            fmtW(a.wage),
+          ],
+          [
+            <>
+              Thời hạn mong muốn <TermBadge state={st.years} />
+            </>,
+            `${a.years} năm`,
+          ],
+          [
+            <>
+              Phí lót tay <TermBadge state={st.signon} />
+            </>,
+            fmtM(a.signon),
+          ],
+          [
+            <>
+              Vai trò kỳ vọng <TermBadge state={st.role} />
+            </>,
+            a.role,
+          ],
         ]}
       />
+      <div className="term-sum" data-state={okCount === 4 ? "ok" : okCount >= 2 ? "near" : "no"} role="status">
+        {okCount === 4 ? "Đủ 4/4 điều kiện, đề nghị này rất có thể được chấp nhận" : `Đã đạt ${okCount}/4 điều kiện`}
+      </div>
       <RangeField
         k={k("wage")}
         label="Lương"
@@ -230,11 +290,13 @@ export function ContractForm({ n, p }: { n: Negotiation; p: Player }) {
         step={1}
         fmt="w"
         def={defs.wage as number}
+        status={st.wage}
       />
       <OptsField
         k={k("years")}
         label="Thời hạn"
         def={a.years}
+        status={st.years}
         list={[
           [1, "1 năm"],
           [2, "2"],
@@ -243,8 +305,17 @@ export function ContractForm({ n, p }: { n: Negotiation; p: Player }) {
           [5, "5"],
         ]}
       />
-      <RangeField k={k("signon")} label="Phí lót tay" min={0} max={r10(a.signon * 2.2)} step={10} fmt="m" def={defs.signon as number} />
-      <OptsField<string> k={k("role")} label="Vai trò trong đội" def={a.role} list={ROLES.map((r) => [r, r])} />
+      <RangeField
+        k={k("signon")}
+        label="Phí lót tay"
+        min={0}
+        max={r10(a.signon * 2.2)}
+        step={10}
+        fmt="m"
+        def={defs.signon as number}
+        status={st.signon}
+      />
+      <OptsField<string> k={k("role")} label="Vai trò trong đội" def={a.role} status={st.role} list={ROLES.map((r) => [r, r])} />
       <OptsField
         k={k("rc")}
         label="Điều khoản giải phóng"
@@ -265,9 +336,10 @@ export function ContractForm({ n, p }: { n: Negotiation; p: Player }) {
         Hứa vai trò cao hơn kỳ vọng giúp dễ thuyết phục, nhưng nếu không cho đá đủ, tinh thần cầu thủ sẽ sụt. Có điều khoản giải phóng thì
         cầu thủ dễ chịu hơn một chút.
       </p>
-      <button className="btn hot block" onClick={send}>
+      <ReplyField n={n} stage="contract" />
+      <Button variant="hot" className="w-full" onClick={send}>
         Gửi đề nghị hợp đồng
-      </button>
+      </Button>
     </>
   );
 }
@@ -279,12 +351,12 @@ export function FinalForm({ n, p }: { n: Negotiation; p: Player }) {
         <div className="say bad">
           {C(n.twist.club).n} cũng muốn {p.n}. Bạn phản ứng thế nào?
         </div>
-        <button className="btn hot block" onClick={() => act(() => resolveTwist(n, true))}>
+        <Button variant="hot" className="w-full" onClick={() => act(() => resolveTwist(n, true))}>
           Tăng 10% để giữ thương vụ
-        </button>
-        <button className="btn ghost block" onClick={() => act(() => resolveTwist(n, false))}>
+        </Button>
+        <Button variant="ghost" className="w-full" onClick={() => act(() => resolveTwist(n, false))}>
           Giữ nguyên, chấp nhận rủi ro (50%)
-        </button>
+        </Button>
       </>
     );
   }
@@ -299,9 +371,9 @@ export function FinalForm({ n, p }: { n: Negotiation; p: Player }) {
             ["Vai trò", co.role],
           ]}
         />
-        <button className="btn hot block" onClick={() => act(() => completeRenew(n), "Đã gia hạn hợp đồng.")}>
+        <Button variant="hot" className="w-full" onClick={() => act(() => completeRenew(n), "Đã gia hạn hợp đồng.")}>
           Ký gia hạn
-        </button>
+        </Button>
       </>
     );
   }
@@ -322,14 +394,14 @@ export function FinalForm({ n, p }: { n: Negotiation; p: Player }) {
   return (
     <>
       <Sum rows={rows} />
-      <button className="btn hot block" onClick={() => act(() => completeBuy(n), "Thương vụ hoàn tất!")}>
+      <Button variant="hot" className="w-full" onClick={() => act(() => completeBuy(n), "Thương vụ hoàn tất!")}>
         Hoàn tất thương vụ
-      </button>
+      </Button>
       {n.type === "transfer" && !n.pushed && !n.rcUsed && o.fee ? (
         <>
-          <button className="btn ghost block" onClick={() => act(() => finalPush(n))}>
+          <Button variant="ghost" className="w-full" onClick={() => act(() => finalPush(n))}>
             Ép giá lần cuối (−8%)
-          </button>
+          </Button>
           <p className="hint">50% họ giảm giá, 35% giữ nguyên, 15% họ phật ý rút lui.</p>
         </>
       ) : null}
@@ -340,7 +412,7 @@ export function FinalForm({ n, p }: { n: Negotiation; p: Player }) {
 export function SellForm({ n, p }: { n: Negotiation; p: Player }) {
   const fee = n.fee || 0;
   const cnt = useVals(n, { cnt: r10(fee * 1.2) }).cnt as number;
-  const sell = (a: "accept" | "reject" | "counter") => act(() => respondSell(n, a, cnt));
+  const sell = (a: "accept" | "reject" | "counter") => act(() => respondSell(n, a, cnt, a === "counter" ? replyOf(n, "sell") : undefined));
   if (n.type === "loanout") {
     return (
       <>
@@ -351,12 +423,12 @@ export function SellForm({ n, p }: { n: Negotiation; p: Player }) {
             ["Thời hạn", "Đến 30/6"],
           ]}
         />
-        <button className="btn hot block" onClick={() => sell("accept")}>
+        <Button variant="hot" className="w-full" onClick={() => sell("accept")}>
           Đồng ý cho mượn
-        </button>
-        <button className="btn ghost block" onClick={() => sell("reject")}>
+        </Button>
+        <Button variant="ghost" className="w-full" onClick={() => sell("reject")}>
           Từ chối
-        </button>
+        </Button>
       </>
     );
   }
@@ -370,16 +442,17 @@ export function SellForm({ n, p }: { n: Negotiation; p: Player }) {
           ["Mua về với giá", p.joinedFee != null ? fmtM(p.joinedFee) : "Đào tạo / có sẵn"],
         ]}
       />
-      <button className="btn hot block" onClick={() => sell("accept")}>
+      <Button variant="hot" className="w-full" onClick={() => sell("accept")}>
         Chấp nhận {fmtM(fee)}
-      </button>
+      </Button>
       <RangeField k={n.id + "cnt"} label="Phản giá" min={fee} max={r10(fee * 2)} step={10} fmt="m" def={r10(fee * 1.2)} />
-      <button className="btn ghost block" onClick={() => sell("counter")}>
+      <ReplyField n={n} stage="sell" />
+      <Button variant="ghost" className="w-full" onClick={() => sell("counter")}>
         Gửi phản giá
-      </button>
-      <button className="btn ghost block" onClick={() => sell("reject")}>
+      </Button>
+      <Button variant="ghost" className="w-full" onClick={() => sell("reject")}>
         Từ chối
-      </button>
+      </Button>
     </>
   );
 }

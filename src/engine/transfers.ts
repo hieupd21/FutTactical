@@ -1,14 +1,31 @@
 // Toàn bộ logic chuyển nhượng: mua, mượn, tự do, ký trước, gia hạn, bán, Giám đốc thể thao, AI ↔ AI.
 import { WIN_WINTER } from "./constants";
+import type { Reply } from "./dialogue";
 import { myWages } from "./board";
 import { fmtM, fmtW } from "./format";
 import { valueOf, wageBase, yearsLeft } from "./players";
 import { clubPlayers, myXI, squadRank } from "./squad";
 import { C, inbox, isDeadline, LG, me, myLg, news, P, S, tick, windowNow } from "./state";
-import type { Club, ClubOffer, ContractOffer, Line, NegoType, Negotiation, Player, Role } from "./types";
+import type { Club, ClubOffer, ContractOffer, Line, NegoType, Negotiation, Player, Role, Tone } from "./types";
 import { clamp, pickA, r10, ri, rnd } from "./util";
 
 export type Res = { err?: string; n?: Negotiation };
+
+/** Kết quả giọng điệu: cộng vào điểm/tỉ lệ, nhân mức tăng căng thẳng, cộng thêm căng thẳng và một câu phản ứng */
+function toneEffect(tone: Tone | undefined): { bonus: number; tenseMul: number; tenseAdd: number; line: string } {
+  if (tone === "warm") return { bonus: -0.02, tenseMul: 0.5, tenseAdd: 0, line: "Thái độ chân thành của bạn làm bầu không khí dịu lại." };
+  if (tone === "bluff") {
+    if (Math.random() < 0.45)
+      return { bonus: 0.07, tenseMul: 1, tenseAdd: 0, line: "Lời nói cứng của bạn có tác dụng: họ chùn lại một nhịp." };
+    return { bonus: -0.02, tenseMul: 1, tenseAdd: 15, line: "Họ không tin vào lời dọa của bạn. Căn phòng như lạnh đi." };
+  }
+  return { bonus: 0, tenseMul: 1, tenseAdd: 0, line: "" };
+}
+/** Áp mức tăng căng thẳng của lượt này theo giọng điệu và ghép câu phản ứng vào đầu tin nhắn */
+function applyToneTension(n: Negotiation, t0: number, fx: ReturnType<typeof toneEffect>): void {
+  n.tension = Math.round(t0 + (n.tension - t0) * fx.tenseMul + fx.tenseAdd);
+  if (fx.line) n.msg = `${fx.line} ${n.msg}`;
+}
 
 const leagueLvl = (cid: string | null): number => (cid == null ? 1.5 : LG(C(cid).lg).lvl);
 const presOf = (cid: string | null): number => (cid == null ? 1 : C(cid).pres);
@@ -20,6 +37,7 @@ export function willingness(p: Player): number {
   if (p.club == null) w += 25;
   if (p.mor < 40) w += 18;
   if (yearsLeft(p) <= 1) w += 10;
+  if (p.interest && S.d - p.interest.d >= 0 && S.d - p.interest.d < 60) w += 10;
   if (p.nat === LG(myLg()).nat && p.club != null && C(p.club).lg !== myLg()) w += 10;
   if (p.club != null && C(p.club).rival === S.me) w -= 25;
   return clamp(Math.round(w), 0, 100);
@@ -53,7 +71,7 @@ export function feeEstimate(p: Player): [number, number] {
   return [r10(a * (1 - e)), r10(a * (1 + e))];
 }
 export const expectedRoleAtMe = (p: Player): Role => squadRank(p, S.me).role;
-const roleIdx = (r: Role): number => ["Ngôi sao", "Đá chính", "Xoay tua", "Triển vọng", "Dự bị"].indexOf(r);
+export const roleIdx = (r: Role): number => ["Ngôi sao", "Đá chính", "Xoay tua", "Triển vọng", "Dự bị"].indexOf(r);
 
 export function contractAsk(p: Player, type: NegoType): ContractOffer {
   const base = wageBase(p);
@@ -88,6 +106,7 @@ export function failN(n: Negotiation, why: string, coolDays = 15): void {
   const p = P(n.pid);
   if (p) p.cool = tick() + coolDays * 24;
   if (n.buy || n.sell) inbox({ t: "Thương vụ đổ vỡ", b: why, nid: n.id, pid: n.pid });
+  if (p && (n.buy || n.sell)) news(`Đàm phán đổ vỡ: ${p.n} sẽ không đến/rời ${me().n} lần này.`, "deal");
 }
 
 // ---------- mua: thăm dò ----------
@@ -130,46 +149,46 @@ export function enquire(pid: string, type: NegoType = "transfer"): Res {
     readyAt: tick() + respWait(),
     msg: "Đã gửi thư thăm dò. Chờ phản hồi.",
   });
-  nlog(n, "me", type === "loan" ? "Hỏi mượn cầu thủ" : "Gửi thư thăm dò");
+  nlog(n, "me", type === "loan" ? "Bạn nhấc máy, hỏi thăm khả năng mượn cầu thủ." : "Một lá thư thăm dò được gửi đi trong im lặng...");
   return { n };
 }
 function processEnquiry(n: Negotiation): void {
   const p = P(n.pid);
   if (!p || p.club !== n.seller || p.club == null) {
-    failN(n, "Cầu thủ không còn thuộc CLB này.");
+    failN(n, "Cánh cửa đã khép lại: cầu thủ này không còn thuộc CLB đó nữa.");
     return;
   }
   const sr = squadRank(p, p.club),
     c = C(p.club);
   if (n.type === "loan") {
     if (sr.role === "Ngôi sao" || (sr.role === "Đá chính" && Math.random() < 0.75)) {
-      failN(n, `${c.n}: "Cậu ấy nằm trong kế hoạch đội một, chúng tôi không cho mượn."`);
+      failN(n, `${c.n} đáp gọn qua điện thoại: "Cậu ấy nằm trong kế hoạch đội một. Chúng tôi không cho mượn." Đường dây cúp máy.`);
       return;
     }
     n.minPct = clamp(40 + (sr.role === "Đá chính" ? 30 : 0) + ri(0, 25), 30, 100);
     n.stage = "club";
-    n.msg = `${c.n} đồng ý cho mượn đến hết mùa. Họ muốn bạn trả một phần lương cầu thủ.`;
+    n.msg = `Sau một hồi cân nhắc, ${c.n} gật đầu: cho mượn đến hết mùa. Điều kiện đi kèm: bạn phải gánh một phần lương của cậu ấy.`;
     nlog(n, "them", n.msg);
     return;
   }
   if (absDay() - (p.joinedAbs || -9999) < 120) {
-    failN(n, `${c.n}: "Cậu ấy vừa mới gia nhập, chúng tôi không bán."`);
+    failN(n, `${c.n} lắc đầu: "Cậu ấy vừa mới đến, mực chưa khô trên bản hợp đồng. Chúng tôi không bán."`);
     return;
   }
   if (c.rival === S.me && Math.random() < 0.5) {
-    failN(n, `${c.n} từ chối thẳng: họ không làm ăn với kình địch.`, 30);
+    failN(n, `Chủ tịch ${c.n} nhìn thấy tên CLB bạn trên lá thư và gạt phắt đi: họ không bao giờ làm ăn với kình địch.`, 30);
     return;
   }
   if (sr.role === "Ngôi sao" && c.pres >= me().pres && Math.random() < 0.55 && !p.c!.rc) {
-    failN(n, `${c.n}: "${p.n} là trụ cột, không phải để bán."`, 20);
+    failN(n, `${c.n} đáp lạnh lùng: "${p.n} là trụ cột của chúng tôi. Cậu ấy không phải để bán."`, 20);
     return;
   }
   n.ask = r10(p.val * askFactor(p) * rnd(0.95, 1.08));
   n.stage = "club";
   const hint = feeEstimate(p);
   n.msg =
-    `${c.n} sẵn sàng lắng nghe. Theo tuyển trạch viên, họ định giá khoảng ${fmtM(hint[0])}–${fmtM(hint[1])}.` +
-    (p.c!.rc ? ` Cầu thủ có điều khoản giải phóng ${fmtM(p.c!.rc)}.` : "");
+    `Cánh cửa phòng họp hé mở: ${c.n} sẵn sàng lắng nghe. Tuyển trạch viên của bạn thì thầm rằng họ định giá cậu ấy khoảng ${fmtM(hint[0])}–${fmtM(hint[1])}.` +
+    (p.c!.rc ? ` Nhưng có một lá bài trong tay bạn: điều khoản giải phóng ${fmtM(p.c!.rc)} nằm trong hợp đồng của cậu ấy.` : "");
   nlog(n, "them", n.msg);
 }
 
@@ -188,7 +207,7 @@ export function offerValue(n: Negotiation, o: ClubOffer): number {
 }
 export const canAffordNow = (o: ClubOffer): boolean => (o.inst > 1 ? o.fee / o.inst : o.fee) <= me().budget;
 
-export function submitClubOffer(n: Negotiation, o: ClubOffer): Res {
+export function submitClubOffer(n: Negotiation, o: ClubOffer, reply?: Reply): Res {
   if (n.type === "loan") {
     n.offer = o;
     n.waiting = true;
@@ -198,6 +217,8 @@ export function submitClubOffer(n: Negotiation, o: ClubOffer): Res {
   }
   if (!canAffordNow(o)) return { err: "Vượt ngân sách chuyển nhượng hiện có." };
   n.offer = o;
+  n.tone = reply?.tone;
+  if (reply) nlog(n, "me", reply.text);
   n.waiting = true;
   n.readyAt = tick() + respWait();
   n.round++;
@@ -228,41 +249,45 @@ function processClubOffer(n: Negotiation): void {
   if (n.type === "loan") {
     if ((o.pct || 0) >= (n.minPct || 0)) {
       n.stage = "final";
-      n.msg = `${c.n} đồng ý. ${p.n} sẵn sàng sang đá cho mượn.`;
+      n.msg = `${c.n} bắt tay đồng ý. ${p.n} đã sẵn sàng khoác áo bạn trong phần còn lại của mùa giải.`;
     } else {
       n.tension += 25 + ((n.minPct || 0) - (o.pct || 0));
-      n.msg = `${c.n}: "Chúng tôi cần ít nhất ${n.minPct}% lương được chi trả."`;
-      if (n.tension >= 100) return failN(n, `${c.n} hết kiên nhẫn và rút lui.`);
+      n.msg = `${c.n} gõ nhẹ xuống bàn: "Ít nhất ${n.minPct}% lương phải do các anh chi trả. Dưới mức đó, đừng phí lời."`;
+      if (n.tension >= 100) return failN(n, `Ghế của phía ${c.n} đã bị đẩy ra sau. Họ hết kiên nhẫn và rời bàn đàm phán.`);
     }
     nlog(n, "them", n.msg);
     return;
   }
   const ask = n.ask || 1;
+  const fx = toneEffect(n.tone),
+    t0 = n.tension;
+  n.tone = undefined;
   const v = offerValue(n, o),
-    r = v / ask;
+    r = v / ask + fx.bonus;
   if (r >= 1) {
     n.stage = "contract";
     n.cAsk = contractAsk(p, "transfer");
-    n.msg = `${c.n} chấp nhận đề nghị! Giờ là đàm phán hợp đồng cá nhân với ${p.n}.`;
+    n.msg = `${c.n} đồng ý với đề nghị của bạn! Bóng giờ nằm ở phía ${p.n}: đến lúc ngồi xuống với người đại diện của cậu ấy.`;
     n.tension = Math.max(0, n.tension - 20);
   } else if (r >= 0.85) {
     n.tension += 12 + (1 - r) * 80;
     n.ask = Math.max(r10(ask - (ask - v) * 0.35), r10(v * 1.02));
     n.counter = n.ask;
-    n.msg = `${c.n} đưa ra đề nghị ngược: ${fmtM(n.ask)} (quy đổi theo cách họ tính).`;
+    n.msg = `${c.n} nghiêng người về phía trước, đẩy tờ giấy ngược lại: ${fmtM(n.ask)}. Họ đã nhích một bước, bây giờ đến lượt bạn.`;
   } else {
     n.tension += 22 + (1 - r) * 90;
     n.counter = ask;
-    n.msg = `${c.n}: "Đề nghị này còn cách quá xa." Họ vẫn đòi khoảng ${fmtM(ask)}.`;
+    n.msg = `${c.n} liếc qua con số rồi đặt tờ giấy xuống: "Còn cách quá xa." Họ vẫn đòi khoảng ${fmtM(ask)}.`;
   }
+  applyToneTension(n, t0, fx);
   if (n.round >= 5 && n.stage === "club") n.tension += 15;
   n.tension = Math.round(Math.min(100, n.tension));
-  if (n.tension >= 100) return failN(n, `${c.n} cắt đứt đàm phán. Thanh căng thẳng đã chạm đỉnh.`);
+  if (n.tension >= 100) return failN(n, `Bầu không khí đặc quánh lại. ${c.n} cắt đứt đàm phán và đứng dậy rời phòng.`);
   nlog(n, "them", n.msg);
 }
 
 // ---------- hợp đồng cá nhân ----------
-export function submitContract(n: Negotiation, o: ContractOffer): Res {
+export function submitContract(n: Negotiation, o: ContractOffer, reply?: Reply): Res {
   const p = P(n.pid);
   const swapP = n.offer?.swap ? P(n.offer.swap) : null;
   const extraW = o.wage - (n.type === "renew" ? p.c!.wage : 0) - (swapP ? swapP.c!.wage : 0);
@@ -272,6 +297,8 @@ export function submitContract(n: Negotiation, o: ContractOffer): Res {
   if (o.signon * (n.type === "renew" ? 1 : 1.5) + feeNow > me().budget)
     return { err: "Không đủ ngân sách cho phí chuyển nhượng, lót tay và phí người đại diện." };
   n.cOffer = o;
+  n.tone = reply?.tone;
+  if (reply) nlog(n, "me", reply.text);
   n.waiting = true;
   n.readyAt = tick() + respWait();
   n.round++;
@@ -290,10 +317,15 @@ function processContract(n: Negotiation): void {
   if (n.type !== "renew" && !n.willChecked) {
     n.willChecked = true;
     const w = willingness(p);
-    if (w < 20 && o.wage < a.wage * 1.5) return failN(n, `${p.n}: "Tôi không muốn chuyển đến ${me().n} lúc này."`);
+    if (w < 20 && o.wage < a.wage * 1.5)
+      return failN(n, `Người đại diện của ${p.n} trả lời thẳng: "Cậu ấy không muốn chuyển đến ${me().n} lúc này." Cuộc gặp kết thúc ở đó.`);
     if (w < 40) n.tension += 20;
   }
-  if (n.type === "renew" && p.mor < 25 && Math.random() < 0.7) return failN(n, `${p.n} từ chối gia hạn. Cậu ấy muốn tìm thử thách mới.`);
+  if (n.type === "renew" && p.mor < 25 && Math.random() < 0.7)
+    return failN(n, `${p.n} nhìn bản hợp đồng rồi nhẹ nhàng đặt bút xuống. Cậu ấy muốn tìm một thử thách mới.`);
+  const fx = toneEffect(n.tone),
+    t0 = n.tension;
+  n.tone = undefined;
   let sc =
     0.62 * Math.min(1.3, o.wage / a.wage) +
     0.2 * Math.min(1.3, (o.signon + 1) / (a.signon + 1)) +
@@ -303,27 +335,38 @@ function processContract(n: Negotiation): void {
   else if (gap === 1) sc *= 0.95;
   else if (gap < 0) sc *= 1.03;
   if (o.rc) sc += 0.03;
+  sc += fx.bonus;
   if (sc >= 1) {
     n.stage = "final";
-    n.msg = `${p.n} đồng ý các điều khoản cá nhân.`;
+    n.msg = `Người đại diện gập tập hồ sơ lại và mỉm cười. ${p.n} đồng ý các điều khoản cá nhân!`;
     if (n.type !== "renew" && n.type !== "free" && n.type !== "pre" && Math.random() < 0.18) {
       const pool = Object.values(S.clubs).filter((c) => c.id !== S.me && c.id !== n.seller && c.pres >= me().pres - 1);
       if (pool.length) {
         const rv = pickA(pool);
         n.twist = { club: rv.id };
-        n.msg += ` Nhưng phút chót, ${rv.n} cũng nhảy vào hỏi mua!`;
+        n.msg += ` Nhưng ngay khi bút sắp chạm giấy, điện thoại rung lên: ${rv.n} cũng vừa nhảy vào cuộc đua!`;
       }
+    }
+  } else if (o.wage >= a.wage && gap <= 0) {
+    // Đã đạt lương và vai trò: chỉ còn vướng lót tay, họ có thể nhượng bộ hoặc giữ nguyên, không đòi thêm lương.
+    n.tension += 8 + (1 - sc) * 40;
+    if (Math.random() < 0.5) {
+      a.signon = Math.max(r10(a.signon * 0.9), o.signon);
+      n.msg = `Người đại diện gật gù: "Lương và vai trò thì ổn rồi." Ông ta nhìn xuống con số lót tay, rồi hạ nó xuống ${fmtM(a.signon)}.`;
+    } else {
+      n.msg = `Người đại diện khoanh tay: "Lương và vai trò ổn, nhưng lót tay ${fmtM(a.signon)} là mức sàn. Tôi sẽ không xuống thêm."`;
     }
   } else if (sc >= 0.85) {
     n.tension += 12 + (1 - sc) * 70;
-    a.wage = Math.max(Math.round(a.wage * 0.97), Math.round(o.wage * 1.02));
-    n.msg = `Người đại diện: "Chúng tôi cần lương khoảng ${fmtW(a.wage)} và vai trò ${a.role}."`;
+    a.wage = Math.min(a.wage, Math.max(Math.round(a.wage * 0.97), Math.round(o.wage * 1.02)));
+    n.msg = `Người đại diện chầm chậm xoay cây bút: "Chúng tôi cần lương khoảng ${fmtW(a.wage)} và vai trò ${a.role}. Gần rồi đấy."`;
   } else {
     n.tension += 22 + (1 - sc) * 80;
-    n.msg = `Người đại diện cười nhạt. Họ vẫn đòi ${fmtW(a.wage)}, ${a.years} năm, lót tay ${fmtM(a.signon)}.`;
+    n.msg = `Người đại diện cười nhạt, đẩy bản đề nghị trở lại. Họ vẫn đòi ${fmtW(a.wage)}, ${a.years} năm, lót tay ${fmtM(a.signon)}.`;
   }
+  applyToneTension(n, t0, fx);
   n.tension = Math.round(Math.min(100, n.tension));
-  if (n.tension >= 100) return failN(n, `Người đại diện của ${p.n} rời bàn đàm phán.`);
+  if (n.tension >= 100) return failN(n, `Người đại diện của ${p.n} đóng cặp, đứng dậy và rời bàn đàm phán mà không ngoảnh lại.`);
   nlog(n, "them", n.msg);
 }
 
@@ -334,11 +377,11 @@ export function finalPush(n: Negotiation): void {
   if (r < 0.5) {
     n.offer!.fee = r10(n.offer!.fee * 0.92);
     n.pushed = true;
-    n.msg = `${c.n} miễn cưỡng giảm 8%: phí còn ${fmtM(n.offer!.fee)}.`;
+    n.msg = `Phòng họp im lặng vài giây. Rồi ${c.n} miễn cưỡng gật đầu: giảm 8%, phí còn ${fmtM(n.offer!.fee)}.`;
   } else if (r < 0.85) {
     n.pushed = true;
-    n.msg = `${c.n} giữ nguyên giá. Không mất gì, nhưng cũng không được gì.`;
-  } else return failN(n, `${c.n} phật ý vì bị ép giá phút chót và rút khỏi thương vụ.`);
+    n.msg = `${c.n} không nhúc nhích: giá vẫn y nguyên. Bạn không mất gì, nhưng cũng chẳng được gì.`;
+  } else return failN(n, `Cú ép giá phút chót đã đi quá xa. ${c.n} đập tập hồ sơ xuống bàn và rút khỏi thương vụ.`);
   nlog(n, "them", n.msg);
 }
 export function resolveTwist(n: Negotiation, raise: boolean): void {
@@ -347,12 +390,12 @@ export function resolveTwist(n: Negotiation, raise: boolean): void {
   if (raise) {
     if (n.type === "loan") o.pct = Math.min(100, (o.pct || 0) + 10);
     else o.fee = r10(o.fee * 1.1);
-    if (n.type !== "loan" && !canAffordNow(o)) return failN(n, `Không đủ ngân sách để trả thêm. ${P(n.pid).n} chọn ${rv.n}.`);
+    if (n.type !== "loan" && !canAffordNow(o)) return failN(n, `Ngân sách của bạn không đủ để đáp trả. ${P(n.pid).n} quay sang ${rv.n}.`);
     n.twist = null;
-    n.msg = `Bạn tăng 10%. ${C(n.seller!).n} chọn bạn thay vì ${rv.n}.`;
+    n.msg = `Bạn nâng giá thêm 10%. ${C(n.seller!).n} cân nhắc trong giây lát rồi chọn bạn thay vì ${rv.n}.`;
   } else if (Math.random() < 0.5) {
     n.twist = null;
-    n.msg = `${P(n.pid).n} vẫn chọn ${me().n}. Một ván cược thành công!`;
+    n.msg = `Bạn giữ nguyên đề nghị và nín thở chờ đợi... ${P(n.pid).n} vẫn chọn ${me().n}. Ván cược đã thắng!`;
   } else {
     const p = P(n.pid);
     moveP(p, rv.id);
@@ -360,7 +403,7 @@ export function resolveTwist(n: Negotiation, raise: boolean): void {
     C(n.seller!).budget += o.fee;
     p.c = { ...p.c!, exp: S.year + 3 };
     news(`${p.n} gia nhập ${rv.n} sau khi ${me().n} chậm chân.`, "transfer");
-    return failN(n, `${p.n} đã chọn ${rv.n}.`);
+    return failN(n, `Điện thoại không còn đổ chuông. ${p.n} đã chọn ${rv.n}.`);
   }
   nlog(n, "them", n.msg);
 }
@@ -379,6 +422,9 @@ export function moveP(p: Player, to: string | null): void {
   p.listed = false;
   p.loanList = false;
   p.wantOut = false;
+  p.demand = null;
+  p.promise = null;
+  p.interest = null;
   p.ovrAtSign = p.ovr;
   if (S.xi.includes(p.id)) S.xi = S.xi.map((x) => (x === p.id ? null : x));
   p.val = valueOf(p);
@@ -431,7 +477,7 @@ export function completeBuy(n: Negotiation): void {
     );
   }
   n.stage = "done";
-  n.msg = "Thương vụ hoàn tất!";
+  n.msg = "Mực đã khô trên bản hợp đồng. Thương vụ hoàn tất!";
   nlog(n, "them", n.msg);
   if (S.xi.filter(Boolean).length < 11) myXI();
 }
@@ -458,8 +504,8 @@ export function completeRenew(n: Negotiation): void {
   p.ovrAtSign = p.ovr;
   p.mor = clamp(p.mor + 10, 0, 100);
   n.stage = "done";
-  n.msg = "Gia hạn thành công.";
-  news(`${p.n} gia hạn hợp đồng với ${me().n} đến 30/6/${p.c.exp}.`, "club");
+  n.msg = "Chữ ký đã được đặt xuống: hợp đồng mới có hiệu lực.";
+  news(`${p.n} gia hạn hợp đồng với ${me().n} đến 30/6/${p.c.exp}.`, "deal");
 }
 
 // ---------- bán: AI hỏi mua cầu thủ của bạn ----------
@@ -517,7 +563,7 @@ export function aiBidsTick(hours: number): void {
 
 export const MIN_SQUAD = 18;
 
-export function respondSell(n: Negotiation, action: "accept" | "reject" | "counter", counter = 0): Res {
+export function respondSell(n: Negotiation, action: "accept" | "reject" | "counter", counter = 0, reply?: Reply): Res {
   const p = P(n.pid),
     b = C(n.buyer!);
   if (action === "reject") {
@@ -541,21 +587,27 @@ export function respondSell(n: Negotiation, action: "accept" | "reject" | "count
   const max = n.max || 0;
   if (action === "counter") {
     nlog(n, "me", `Phản giá ${fmtM(counter)}`);
-    if (counter <= max) {
+    if (reply) nlog(n, "me", reply.text);
+    const fx = toneEffect(reply?.tone),
+      t0 = n.tension;
+    if (counter <= max * (1 + fx.bonus)) {
+      if (fx.line) nlog(n, "them", fx.line);
       n.fee = counter;
       action = "accept";
     } else if (counter <= max * 1.15) {
       n.tension += 25;
       n.fee = max;
-      n.msg = `${b.n} nâng lên ${fmtM(max)}. Đây là mức cuối của họ.`;
+      n.msg = `${b.n} cân nhắc, rồi nâng lên ${fmtM(max)}. "Đây là mức cuối cùng," họ nói.`;
+      applyToneTension(n, t0, fx);
       nlog(n, "them", n.msg);
-      if (n.tension >= 100) failN(n, `${b.n} rút lui.`);
+      if (n.tension >= 100) failN(n, `${b.n} đóng hồ sơ và rút lui.`);
       return {};
     } else {
       n.tension += 40;
-      n.msg = `${b.n} cho rằng mức giá quá cao.`;
+      n.msg = `${b.n} nhíu mày nhìn con số bạn phản giá: quá cao với họ.`;
+      applyToneTension(n, t0, fx);
       nlog(n, "them", n.msg);
-      if (n.tension >= 100) failN(n, `${b.n} rút lui.`);
+      if (n.tension >= 100) failN(n, `${b.n} đóng hồ sơ và rút lui.`);
       return {};
     }
   }
@@ -585,7 +637,7 @@ export function respondSell(n: Negotiation, action: "accept" | "reject" | "count
   p.addon = null;
   news(`${p.n} rời ${me().n} để gia nhập ${b.n} với giá ${fmtM(fee)}.`, "transfer");
   n.stage = "done";
-  n.msg = `Đã bán cho ${b.n} với giá ${fmtM(fee)}.`;
+  n.msg = `Thỏa thuận hoàn tất: ${p.n} sẽ khoác áo ${b.n} với giá ${fmtM(fee)}.`;
   nlog(n, "them", n.msg);
   return {};
 }
@@ -598,7 +650,7 @@ export function delegate(pid: string, maxFee: number): Res {
   n.dof = { max: maxFee };
   n.readyAt = tick() + (isDeadline() ? 2 : 48);
   n.stage = "dof";
-  n.msg = `Giám đốc thể thao đang đàm phán, trần ${fmtM(maxFee)}.`;
+  n.msg = `Giám đốc thể thao nhận hồ sơ và bước vào phòng họp, với trần ngân sách ${fmtM(maxFee)}.`;
   nlog(n, "me", n.msg);
   return r;
 }
@@ -666,7 +718,7 @@ function aiFreeAgentsTick(hours: number): void {
     p.c = { wage, exp: S.year + ri(1, 3), rc: 0, role: "Xoay tua" };
     p.hist.push({ y: S.year, from: "Tự do", to: buyer.n, fee: 0 });
     S.aiDone++;
-    if (buyer.lg === myLg() || p.ovr >= 75) news(`${p.n} gia nhập ${buyer.n} theo dạng tự do.`, "transfer");
+    if (buyer.lg === myLg() || p.ovr >= 75) news(`${p.n} đặt bút ký hợp đồng tự do với ${buyer.n}.`, "deal");
   }
 }
 
@@ -699,7 +751,11 @@ export function aiTransfersTick(hours: number): void {
     const p = pool.length ? (buyer.phil === "young" ? pool[0] : pickA(pool)) : null;
     if (!p) continue;
     const fee = r10(p.val * askFactor(p) * rnd(0.9, 1.05));
-    if (fee > buyer.budget) continue;
+    if (fee > buyer.budget) {
+      if (buyer.lg === myLg() && p.ovr >= 72 && Math.random() < 0.25)
+        news(`${buyer.n} theo đuổi ${p.n} (${C(p.club!).n}) nhưng ngân sách không đủ cho mức giá ${fmtM(fee)}.`, "deal");
+      continue;
+    }
     const from = C(p.club!);
     buyer.budget -= fee;
     from.budget += fee;
@@ -709,7 +765,7 @@ export function aiTransfersTick(hours: number): void {
     p.hist.push({ y: S.year, from: from.n, to: buyer.n, fee });
     S.aiDone++;
     if (buyer.lg === myLg() || from.lg === myLg() || fee > 30000)
-      news(`${p.n} chuyển từ ${from.n} sang ${buyer.n} (${fmtM(fee)}).`, "transfer");
+      news(`Sau vài vòng đàm phán, ${from.n} đồng ý bán ${p.n} cho ${buyer.n} với giá ${fmtM(fee)}.`, "deal");
   }
 }
 
@@ -722,7 +778,7 @@ export function processNegos(): void {
       const st = n.stage;
       n.readyAt = null;
       if (n.buy && n.seller != null && st !== "enquiry" && st !== "dof" && P(n.pid) && P(n.pid).club !== n.seller) {
-        failN(n, `${P(n.pid).n} đã chuyển sang CLB khác trước khi thương vụ hoàn tất.`);
+        failN(n, `Chậm một bước: ${P(n.pid).n} đã đặt bút ký cho CLB khác trước khi thương vụ hoàn tất.`);
         return;
       }
       if (st === "enquiry") processEnquiry(n);
@@ -738,7 +794,7 @@ export function processNegos(): void {
   S.negos.forEach((n) => {
     if (n.sell && n.stage === "offer" && t - n.created > 72) {
       n.stage = "failed";
-      n.msg = "Đề nghị đã hết hạn.";
+      n.msg = "Thời gian đã hết. Đề nghị trôi vào quên lãng.";
     }
   });
   S.negos = S.negos

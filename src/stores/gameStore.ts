@@ -3,7 +3,7 @@
 import { create } from "zustand";
 import { S, setState } from "@/engine/state";
 import type { DataRow } from "@/engine/types";
-import { newGame, newGameReal } from "@/engine/world";
+import { newGame, newGameReal, type RealStart } from "@/engine/world";
 import { clearGame, loadGame, saveGame } from "@/lib/persist";
 
 type Status = "loading" | "none" | "ready";
@@ -12,7 +12,7 @@ interface GameStore {
   v: number;
   boot: () => Promise<void>;
   commit: <T>(fn?: () => T) => T | undefined;
-  startReal: (rows: DataRow[], lgId: string, club: string, src: string) => void;
+  startReal: (rows: DataRow[], lgId: string, club: string, src: string, opts?: RealStart) => void;
   startFict: (lgId: string, clubIdx: number) => void;
   reset: () => Promise<void>;
 }
@@ -40,8 +40,8 @@ export const useGame = create<GameStore>((set, get) => ({
     scheduleSave();
     return r;
   },
-  startReal: (rows, lgId, club, src) => {
-    newGameReal(rows, lgId, club, src);
+  startReal: (rows, lgId, club, src, opts) => {
+    newGameReal(rows, lgId, club, src, opts);
     set({ status: "ready", v: get().v + 1 });
     scheduleSave();
   },

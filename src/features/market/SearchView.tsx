@@ -8,6 +8,8 @@ import type { Player } from "@/engine/types";
 import { PlayerRow } from "@/components/PlayerRow";
 import { useGameVersion } from "@/stores/gameStore";
 import { useUi, type Filters } from "@/stores/uiStore";
+import { Card } from "@/components/shadcn/card";
+import { SelectField } from "@/components/ui";
 
 const SHOW = 60;
 
@@ -36,67 +38,55 @@ export function SearchView() {
   }, [f, v]);
 
   return (
-    <section className="panel">
+    <Card className="panel min-w-0 gap-0 rounded-xl p-4 shadow-none">
       <div className="filters">
-        <label className="lbl">
-          Vị trí
-          <select value={f.pos} onChange={(e) => setFlt({ pos: e.target.value })}>
-            <option value="">Tất cả</option>
-            {(["GK", "DF", "MF", "FW"] as const).map((x) => (
-              <option key={x} value={x}>
-                {POSN[x]}
-              </option>
-            ))}
-          </select>
-        </label>
-        <label className="lbl">
-          Giải
-          <select value={f.lg} onChange={(e) => setFlt({ lg: e.target.value })}>
-            <option value="">Tất cả</option>
-            {LEAGUES.map((l) => (
-              <option key={l.id} value={l.id}>
-                {lgName(l.id)}
-              </option>
-            ))}
-            <option value="free">Cầu thủ tự do</option>
-          </select>
-        </label>
-        <label className="lbl">
-          Tuổi tối đa
-          <select value={f.age} onChange={(e) => setFlt({ age: +e.target.value })}>
-            {[40, 30, 26, 23, 21].map((a) => (
-              <option key={a} value={a}>
-                {a === 40 ? "Không giới hạn" : "≤ " + a}
-              </option>
-            ))}
-          </select>
-        </label>
-        <label className="lbl">
-          Giá trị tối đa
-          <select value={f.max} onChange={(e) => setFlt({ max: +e.target.value })}>
-            {[0, 500, 1000, 2000, 5000, 10000, 30000].map((a) => (
-              <option key={a} value={a}>
-                {a ? "≤ " + fmtM(a) : "Không giới hạn"}
-              </option>
-            ))}
-          </select>
-        </label>
-        <label className="lbl">
-          Sắp xếp
-          <select value={f.sort} onChange={(e) => setFlt({ sort: e.target.value as Filters["sort"] })}>
-            <option value="ovr">Chỉ số</option>
-            <option value="pot">Tiềm năng ước tính</option>
-            <option value="val">Giá rẻ nhất</option>
-            <option value="age">Trẻ nhất</option>
-          </select>
-        </label>
-        <label className="lbl">
-          Hợp đồng
-          <select value={String(f.exp)} onChange={(e) => setFlt({ exp: e.target.value === "true" })}>
-            <option value="false">Tất cả</option>
-            <option value="true">Hết hạn 30/6</option>
-          </select>
-        </label>
+        <SelectField
+          label="Vị trí"
+          value={f.pos}
+          onChange={(v) => setFlt({ pos: v })}
+          options={[["", "Tất cả"], ...(["GK", "DF", "MF", "FW"] as const).map((x): [string, string] => [x, POSN[x]])]}
+        />
+        <SelectField
+          label="Giải"
+          value={f.lg}
+          onChange={(v) => setFlt({ lg: v })}
+          options={[["", "Tất cả"], ...LEAGUES.map((l): [string, string] => [String(l.id), lgName(l.id)]), ["free", "Cầu thủ tự do"]]}
+        />
+        <SelectField
+          label="Tuổi tối đa"
+          value={String(f.age)}
+          onChange={(v) => setFlt({ age: +v })}
+          options={[40, 30, 26, 23, 21].map((a): [string, string] => [String(a), a === 40 ? "Không giới hạn" : "≤ " + a])}
+        />
+        <SelectField
+          label="Giá trị tối đa"
+          value={String(f.max)}
+          onChange={(v) => setFlt({ max: +v })}
+          options={[0, 500, 1000, 2000, 5000, 10000, 30000].map((a): [string, string] => [
+            String(a),
+            a ? "≤ " + fmtM(a) : "Không giới hạn",
+          ])}
+        />
+        <SelectField
+          label="Sắp xếp"
+          value={f.sort}
+          onChange={(v) => setFlt({ sort: v as Filters["sort"] })}
+          options={[
+            ["ovr", "Chỉ số"],
+            ["pot", "Tiềm năng ước tính"],
+            ["val", "Giá rẻ nhất"],
+            ["age", "Trẻ nhất"],
+          ]}
+        />
+        <SelectField
+          label="Hợp đồng"
+          value={String(f.exp)}
+          onChange={(v) => setFlt({ exp: v === "true" })}
+          options={[
+            ["false", "Tất cả"],
+            ["true", "Hết hạn 30/6"],
+          ]}
+        />
       </div>
       <p className="hint">
         {list.length} cầu thủ · hiện {Math.min(SHOW, list.length)} người đầu.
@@ -108,6 +98,6 @@ export function SearchView() {
           <p className="hint">Không có cầu thủ phù hợp.</p>
         )}
       </div>
-    </section>
+    </Card>
   );
 }

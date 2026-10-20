@@ -9,6 +9,9 @@ import { ClubBadge } from "./ClubBadge";
 import { playerImgKey, shrinkImage, useImages } from "@/lib/images";
 import { commit } from "@/stores/gameStore";
 import { toast } from "@/stores/uiStore";
+import { Button } from "@/components/shadcn/button";
+import { Badge } from "@/components/shadcn/badge";
+import { Input } from "@/components/shadcn/input";
 
 /** Phần đầu bảng trượt: ảnh, chỉ số, tên (sửa được), CLB. Dùng cho hồ sơ cầu thủ và đàm phán. */
 export function PlayerHead({ p, extra, onClose }: { p: Player; extra?: ReactNode; onClose?: () => void }) {
@@ -49,7 +52,7 @@ export function PlayerHead({ p, extra, onClose }: { p: Player; extra?: ReactNode
         <div style={{ minWidth: 0 }}>
           {edit ? (
             <div className="row">
-              <input
+              <Input
                 type="text"
                 value={name}
                 maxLength={32}
@@ -58,15 +61,15 @@ export function PlayerHead({ p, extra, onClose }: { p: Player; extra?: ReactNode
                 onChange={(e) => setName(e.target.value)}
                 aria-label="Tên cầu thủ"
               />
-              <button
-                className="btn sm"
+              <Button
+                size="sm"
                 onClick={() => {
                   commit(() => renamePlayer(p.id, name));
                   setEdit(false);
                 }}
               >
                 Lưu
-              </button>
+              </Button>
             </div>
           ) : (
             <div className="sh-name">
@@ -83,11 +86,13 @@ export function PlayerHead({ p, extra, onClose }: { p: Player; extra?: ReactNode
             </div>
           )}
           <div className="row" style={{ gap: 6, marginTop: 4 }}>
-            <span className={`pos ${p.pos}`}>{POSN[p.pos]}</span>
+            <Badge variant="pos" className={`pos ${p.pos}`}>
+              {POSN[p.pos]}
+            </Badge>
             {p.pos2.map((x) => (
-              <span key={x} className={`pos ${x}`} style={{ opacity: 0.6 }}>
+              <Badge key={x} variant="pos" className={`pos alt text-foreground ${x}`}>
                 {x}
-              </span>
+              </Badge>
             ))}
             <span className="hint">
               {p.age} tuổi · {natName(p)} · gốc {ovrR(p)}
@@ -105,9 +110,13 @@ export function PlayerHead({ p, extra, onClose }: { p: Player; extra?: ReactNode
               <span className="hint">Cầu thủ tự do</span>
             )}
             {custom && (
-              <button className="linkb" onClick={() => void put(key, null)}>
+              <Button
+                variant="link"
+                className="linkb relative h-auto min-h-0 after:absolute after:-inset-x-2 after:-inset-y-3 after:content-[''] border-0 px-1 py-0.5 text-xs font-semibold tracking-normal text-muted-foreground normal-case"
+                onClick={() => void put(key, null)}
+              >
                 Xóa ảnh
-              </button>
+              </Button>
             )}
           </div>
           {p.ln && p.ln !== p.n ? (
@@ -121,9 +130,15 @@ export function PlayerHead({ p, extra, onClose }: { p: Player; extra?: ReactNode
           {extra}
         </div>
         {onClose && (
-          <button className="x" onClick={onClose} aria-label="Đóng">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="x size-11 rounded-full border border-border text-xl"
+            onClick={onClose}
+            aria-label="Đóng"
+          >
             ×
-          </button>
+          </Button>
         )}
       </div>
     </>

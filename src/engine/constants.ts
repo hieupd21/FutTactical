@@ -1,4 +1,4 @@
-import type { Formation, League, Line, Philosophy, ProfileKey, Role } from "./types";
+import type { Formation, League, Line, Philosophy, ProfileKey, Role, Tone } from "./types";
 
 // ---------- tên hư cấu theo quốc tịch ----------
 export const NAMES: Record<string, [string[], string[]]> = {
@@ -351,6 +351,7 @@ export const AI_FORMS: Formation[] = ["4-4-2", "4-3-3", "4-2-3-1", "3-5-2"];
 // ---------- lịch mùa giải (ngày tính từ 1/7) ----------
 export const MATCH0 = 45; // vòng 1 ngày 15/8
 export const MATCH_GAP = 7; // mỗi tuần một vòng
+export const MAX_WEEKLY = 42; // giải nhiều vòng hơn thế dồn lịch (xem roundDay)
 export const WIN_SUMMER: [number, number] = [0, 61]; // 1/7–31/8
 export const WIN_WINTER: [number, number] = [184, 214]; // 1/1–31/1
 export const REVIEW_DAY = 335;
@@ -367,8 +368,16 @@ export const REAL_LG: Record<number, Omit<League, "fr" | "imp" | "clubs">> = {
   14: { id: "EN2", n: "Championship", nat: "EN", lvl: 2.4, sim: false },
   308: { id: "PT", n: "Liga Portugal", nat: "PT", lvl: 2.7, sim: false },
   10: { id: "NL", n: "Eredivisie", nat: "NL", lvl: 2.6, sim: false },
+  17: { id: "FR2", n: "Ligue 2", nat: "FR", lvl: 2.2 },
+  20: { id: "DE2", n: "2. Bundesliga", nat: "DE", lvl: 2.4 },
+  32: { id: "IT2", n: "Serie B", nat: "IT", lvl: 2.3 },
+  54: { id: "ES2", n: "LaLiga 2", nat: "ES", lvl: 2.3 },
+  60: { id: "EN3", n: "League One", nat: "EN", lvl: 1.8 },
+  61: { id: "EN4", n: "League Two", nat: "EN", lvl: 1.3 },
   999: { id: "OT", n: "Đội mới xuống hạng", nat: "EN", lvl: 2.6, sim: false },
 };
+/** Giải chỉ dựng khi gói dữ liệu có CLB của giải đó (hạng 2 các nước, League One/Two); thiếu thì dùng hạng đấu hư cấu thay thế */
+export const OPTIONAL_LG = [17, 20, 32, 54, 60, 61];
 export const NATCODE: Record<string, string> = {
   England: "EN",
   Spain: "ES",
@@ -472,4 +481,17 @@ export const POSLINE: Record<string, Line> = {
   CF: "FW",
   LW: "FW",
   RW: "FW",
+};
+
+/** Giọng điệu của các câu trả lời gợi ý: nhãn và mô tả hiệu ứng */
+export const TONES: Record<Tone, { label: string; hint: string }> = {
+  calm: { label: "Điềm đạm", hint: "Trung tính: không thêm lợi thế hay rủi ro." },
+  warm: {
+    label: "Chân thành",
+    hint: "Lời lẽ mềm mỏng làm dịu bầu không khí: căng thẳng tăng chậm hơn một nửa, nhưng sức ép lên đối phương giảm nhẹ.",
+  },
+  bluff: {
+    label: "Cứng rắn",
+    hint: "Đánh cược: 45% họ chùn bước và đề nghị của bạn có sức nặng hơn rõ rệt; 55% họ không tin và căng thẳng tăng thêm.",
+  },
 };

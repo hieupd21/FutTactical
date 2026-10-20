@@ -6,8 +6,8 @@ Game quản lý bóng đá kiểu Career Mode của FC: giả lập trận đấ
 
 ```bash
 pnpm install
-pnpm dev        # http://localhost:5173
-pnpm test           # kiểm thử engine và bộ nhập CSV (Vitest)
+pnpm dev        # http://localhost:2222
+pnpm test           # kiểm thử engine (Vitest)
 pnpm build      # kiểm tra kiểu (tsc -b) rồi build ra dist/
 pnpm preview    # chạy thử bản build
 pnpm lint       # ESLint (lint:fix để tự sửa)
@@ -16,7 +16,7 @@ pnpm format     # Prettier (format:check để chỉ kiểm tra)
 
 ## Công nghệ
 
-Dự án dùng React 18, TypeScript (strict), Vite 5, React Router 6 (HashRouter), Zustand 5, idb-keyval (IndexedDB) và Vitest.
+Dự án dùng React 19, TypeScript (strict), Vite 5, Tailwind CSS 4, shadcn/ui (Radix), lucide-react, Framer Motion, Zustand 5, idb-keyval (IndexedDB) và Vitest.
 
 ## Cấu trúc thư mục
 
@@ -26,7 +26,7 @@ Thư mục được chia theo tính năng, theo hướng dẫn của tài liệu
 public/data/            Gói dữ liệu cầu thủ (fc27.json, gồm cả giải nguồn bổ sung từ FC 26), tải bằng fetch khi chọn
 scripts/                Script Python ghép dữ liệu FC 27 + FC 26
 src/
-  app/                  Ghép ứng dụng: App (router, khung), SheetHost (bảng trượt)
+  app/                  Ghép ứng dụng: App (khung, chuyển tab), AnimatedTabs, SheetHost (bảng trượt)
   engine/               Logic game thuần TypeScript, không phụ thuộc React
     types.ts            Kiểu dữ liệu: Player, Club, Negotiation, GameState…
     constants.ts        Lịch mùa giải, sơ đồ, kiểu phát triển, giải đấu
@@ -44,23 +44,20 @@ src/
     start/  home/  squad/  market/  league/  club/  player/  negotiation/  match/
   components/           Thành phần dùng chung: ClubBadge, Avatar, PlayerRow, Sheet, ui
   stores/               gameStore (cầu nối engine ↔ React, lưu game), uiStore, matchFlow
-  lib/                  persist (IndexedDB), data (tải gói), images, clubVisual, import/
+  lib/                  persist (IndexedDB), data (tải gói), images, clubVisual
   utils/                Định dạng ngày, màu
+  styles/tailwind.css   Tailwind v4 (theme + utilities) và ánh xạ màu shadcn; nạp global.css vào layer legacy
   styles/global.css
 ```
 
 **Luồng dữ liệu.** Engine sửa trực tiếp trạng thái `S`. Mọi thao tác từ UI đi qua `commit(fn)` trong `gameStore`. Hàm này chạy `fn`, tăng số phiên bản để các component đăng ký bằng `useGameVersion()` vẽ lại, rồi lưu vào IndexedDB sau 250 ms.
 
-## Nhập dữ liệu CSV
+## Dữ liệu cầu thủ
 
-Bộ nhập tự nhận diện định dạng theo tiêu đề cột:
+Game không nhập CSV trong ứng dụng. Dữ liệu là các file JSON dựng sẵn trong `public/data/`, cùng định dạng `DataRow` (xem `CLAUDE.md`):
 
-| Định dạng | Nguồn                              | Cột bắt buộc                                                                                                                                                                                    | Xử lý                                                                                                                       |
-| --------- | ---------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
-| sofifa    | Bộ FC 24/25/26 trên Kaggle, GitHub | league_id, club_name, short_name, long_name, player_positions, overall, potential, value_eur, wage_eur, age, club_contract_valid_until_year, release_clause_eur, nationality_name, fifa_version | Dùng trực tiếp                                                                                                              |
-| FIFPlay   | Bộ FC 27                           | first_name, last_name, nation_name, club_name, position, rating                                                                                                                                 | Ghép với FC 26 theo tên và quốc tịch để lấy tuổi, tiềm năng, lương, hợp đồng. Tân binh không có trong FC 26 được ước lượng. |
-
-Trước khi chọn CLB, game hiện báo cáo nhập gồm: số cầu thủ nhận theo từng giải, số dòng bỏ qua kèm lý do, và các cảnh báo.
+- `fc27.json`: các giải mô phỏng, giải nguồn và cầu thủ tự do.
+- `lower_england.json`, `lower_germany.json`, `lower_france.json`, `lower_spain.json`, `lower_italy.json`: hạng dưới của từng nước. File nào chưa có thì bỏ qua; nếu `fc27.json` đã chứa sẵn các giải này (mã 17, 20, 32, 54, 60, 61) thì không cần các file này.
 
 ## Hình ảnh
 

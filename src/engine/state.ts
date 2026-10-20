@@ -1,5 +1,5 @@
 // Trạng thái game đang chạy. Engine thao tác trực tiếp trên S (mutable) — tầng React đăng ký lắng nghe qua store.
-import { DEADLINE_HOURS, FICT_LEAGUES, MATCH0, MATCH_GAP, WIN_SUMMER, WIN_WINTER } from "./constants";
+import { DEADLINE_HOURS, FICT_LEAGUES, MATCH0, MATCH_GAP, MAX_WEEKLY, WIN_SUMMER, WIN_WINTER } from "./constants";
 import type { Club, GameState, InboxMessage, League, Negotiation, NewsItem, Player, TransferWindow } from "./types";
 
 export let S: GameState = null as unknown as GameState;
@@ -39,16 +39,26 @@ export const isDeadline = (d: number = S.d): boolean => d === WIN_SUMMER[1] || d
 export const deadlineOver = (): boolean => S.h >= 9 + DEADLINE_HOURS;
 /** Thời điểm tuyệt đối trong mùa, tính bằng giờ */
 export const tick = (): number => S.d * 24 + S.h;
+/** Ngày đá của vòng r trong giải có `total` vòng. Mỗi tuần một vòng; giải quá dài (trên MAX_WEEKLY vòng) dồn lịch để vẫn kết thúc trước ngày tổng kết */
+export function roundDay(r: number, total: number): number {
+  if (total <= MAX_WEEKLY) return MATCH0 + r * MATCH_GAP;
+  return MATCH0 + Math.floor((r * (MAX_WEEKLY - 1) * MATCH_GAP) / (total - 1));
+}
 export function roundOn(d: number, lg: string): number {
   if (!S.fx[lg]) return -1;
-  const r = (d - MATCH0) / MATCH_GAP;
-  return Number.isInteger(r) && r >= 0 && r < S.fx[lg].length ? r : -1;
+  const total = S.fx[lg].length;
+  if (total <= MAX_WEEKLY) {
+    const r = (d - MATCH0) / MATCH_GAP;
+    return Number.isInteger(r) && r >= 0 && r < total ? r : -1;
+  }
+  const r = Math.round(((d - MATCH0) * (total - 1)) / ((MAX_WEEKLY - 1) * MATCH_GAP));
+  return r >= 0 && r < total && roundDay(r, total) === d ? r : -1;
 }
 
 // ---------- tin tức & hộp thư ----------
 export function news(t: string, k: NewsItem["k"] = "gen"): void {
   S.news.unshift({ t, k, d: S.d, y: S.year });
-  S.news = S.news.slice(0, 80);
+  S.news = S.news.slice(0, 400);
 }
 export function inbox(m: Omit<InboxMessage, "id" | "d" | "h" | "y" | "read">): InboxMessage {
   const full: InboxMessage = { ...m, id: "m" + S.nnid++, d: S.d, h: S.h, y: S.year, read: false };

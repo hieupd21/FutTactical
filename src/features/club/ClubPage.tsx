@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { BUDGET_STEP, hireScout, reallocate, scoutCost, WAGE_STEP } from "@/engine/actions";
 import { myWages, objStatus } from "@/engine/board";
+import { myRep, repLabel } from "@/engine/career";
 import { fmtM, fmtW } from "@/engine/format";
 import { me, S } from "@/engine/state";
 import { ClubBadge } from "@/components/ClubBadge";
@@ -9,14 +10,16 @@ import { bulkImages, clubImgKey, shrinkImage, useImages } from "@/lib/images";
 import { commit, useGame, useGameVersion } from "@/stores/gameStore";
 import { toast } from "@/stores/uiStore";
 import { shortD, stars } from "@/utils/display";
+import { Button } from "@/components/shadcn/button";
+import { Card } from "@/components/shadcn/card";
 
 function Board() {
-  const confC = S.conf >= 60 ? "var(--win)" : S.conf >= 35 ? "var(--gold)" : "var(--loss)";
+  const confC = S.conf >= 60 ? "var(--win)" : S.conf >= 35 ? "var(--gold-ink)" : "var(--loss)";
   const w = myWages(),
     liab = S.liab.filter((l) => l.amt > 0),
     recv = S.liab.filter((l) => l.amt < 0);
   return (
-    <section className="panel">
+    <Card className="panel min-w-0 gap-0 rounded-xl p-4 shadow-none">
       <h2>Ban lãnh đạo</h2>
       <div>
         <div className="row between">
@@ -25,6 +28,12 @@ function Board() {
         </div>
         <div className="conf">
           <i style={{ width: `${S.conf}%`, background: confC }} />
+        </div>
+        <div className="row between">
+          <span>Uy tín HLV</span>
+          <b className="mono">
+            {Math.round(myRep())}/100 · {repLabel(myRep())}
+          </b>
         </div>
         <p className="hint">Dưới 12 điểm giữa mùa hoặc dưới 15 khi tổng kết, bạn sẽ bị sa thải.</p>
       </div>
@@ -61,12 +70,12 @@ function Board() {
           {fmtM(BUDGET_STEP)} ngân sách chuyển nhượng ↔ {fmtW(WAGE_STEP)} quỹ lương.
         </p>
         <div className="row">
-          <button className="btn ghost sm" disabled={me().budget < BUDGET_STEP} onClick={() => commit(() => reallocate("toWage"))}>
+          <Button variant="ghost" size="sm" disabled={me().budget < BUDGET_STEP} onClick={() => commit(() => reallocate("toWage"))}>
             {fmtM(BUDGET_STEP)} → quỹ lương
-          </button>
-          <button className="btn ghost sm" disabled={S.wageCap - w < WAGE_STEP} onClick={() => commit(() => reallocate("toFee"))}>
+          </Button>
+          <Button variant="ghost" size="sm" disabled={S.wageCap - w < WAGE_STEP} onClick={() => commit(() => reallocate("toFee"))}>
             Quỹ lương → {fmtM(BUDGET_STEP)}
-          </button>
+          </Button>
         </div>
       </div>
       {(liab.length > 0 || recv.length > 0) && (
@@ -80,7 +89,7 @@ function Board() {
           />
         </>
       )}
-    </section>
+    </Card>
   );
 }
 
@@ -110,16 +119,21 @@ function Images() {
     );
   };
   return (
-    <section className="panel">
+    <Card className="panel min-w-0 gap-0 rounded-xl p-4 shadow-none">
       <h2>Ảnh & huy hiệu</h2>
       <div className="row">
         <ClubBadge name={name} size={56} />
         <div className="col" style={{ gap: 6, flex: 1 }}>
           <FileButton label="Đổi huy hiệu CLB" accept="image/*" onFiles={(f) => void onBadge(f[0])} />
           {map[key] && (
-            <button className="linkb" style={{ alignSelf: "flex-start" }} onClick={() => void put(key, null)}>
+            <Button
+              variant="link"
+              className="linkb relative h-auto min-h-0 after:absolute after:-inset-x-2 after:-inset-y-3 after:content-[''] border-0 px-1 py-0.5 text-xs font-semibold tracking-normal text-muted-foreground normal-case"
+              style={{ alignSelf: "flex-start" }}
+              onClick={() => void put(key, null)}
+            >
               Về huy hiệu mặc định
-            </button>
+            </Button>
           )}
         </div>
       </div>
@@ -135,27 +149,32 @@ function Images() {
           </span>
           {confirm ? (
             <span className="row">
-              <button
-                className="btn hot sm"
+              <Button
+                variant="hot"
+                size="sm"
                 onClick={() => {
                   setConfirm(false);
                   void clearAll().then(() => toast("Đã xóa tất cả ảnh."));
                 }}
               >
                 Xóa hết
-              </button>
-              <button className="btn ghost sm" onClick={() => setConfirm(false)}>
+              </Button>
+              <Button variant="ghost" size="sm" onClick={() => setConfirm(false)}>
                 Hủy
-              </button>
+              </Button>
             </span>
           ) : (
-            <button className="linkb" onClick={() => setConfirm(true)}>
+            <Button
+              variant="link"
+              className="linkb relative h-auto min-h-0 after:absolute after:-inset-x-2 after:-inset-y-3 after:content-[''] border-0 px-1 py-0.5 text-xs font-semibold tracking-normal text-muted-foreground normal-case"
+              onClick={() => setConfirm(true)}
+            >
               Xóa tất cả ảnh
-            </button>
+            </Button>
           )}
         </div>
       )}
-    </section>
+    </Card>
   );
 }
 
@@ -163,7 +182,7 @@ function Staff() {
   const reset = useGame((s) => s.reset);
   const [confirm, setConfirm] = useState(false);
   return (
-    <section className="panel">
+    <Card className="panel min-w-0 gap-0 rounded-xl p-4 shadow-none">
       <h2>Nhân sự</h2>
       <div className="obj">
         <span>
@@ -174,9 +193,9 @@ function Staff() {
         <span className="stars">{stars(S.scout)}</span>
       </div>
       {S.scout < 5 && (
-        <button className="btn ghost sm" disabled={me().budget < scoutCost()} onClick={() => toast(commit(hireScout)!)}>
+        <Button variant="ghost" size="sm" disabled={me().budget < scoutCost()} onClick={() => toast(commit(hireScout)!)}>
           Thuê người giỏi hơn · {fmtM(scoutCost())}
-        </button>
+        </Button>
       )}
       <h2>Lịch sử</h2>
       {S.seasonLog.length ? (
@@ -204,19 +223,19 @@ function Staff() {
       {confirm ? (
         <div className="row">
           <span>Xóa sự nghiệp hiện tại?</span>
-          <button className="btn hot sm" onClick={() => void reset()}>
+          <Button variant="hot" size="sm" onClick={() => void reset()}>
             Xóa
-          </button>
-          <button className="btn ghost sm" onClick={() => setConfirm(false)}>
+          </Button>
+          <Button variant="ghost" size="sm" onClick={() => setConfirm(false)}>
             Hủy
-          </button>
+          </Button>
         </div>
       ) : (
-        <button className="btn ghost sm" onClick={() => setConfirm(true)}>
+        <Button variant="ghost" size="sm" onClick={() => setConfirm(true)}>
           Bắt đầu lại
-        </button>
+        </Button>
       )}
-    </section>
+    </Card>
   );
 }
 

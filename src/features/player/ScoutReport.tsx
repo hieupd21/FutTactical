@@ -72,6 +72,7 @@ export function ScoutReport({ p }: { p: Player }) {
       <Rep title="Trạng thái" score={w}>
         <b>{willLbl(w)}</b>. Tinh thần {moraleLbl(p.mor).toLowerCase()}, phong độ {Math.round(p.form)}/100.
         {!free && C(p.club!).rival === S.me ? " CLB của cậu ấy là kình địch của bạn." : ""}
+        {p.interest && S.d - p.interest.d >= 0 && S.d - p.interest.d < 60 ? " Cậu ấy đã công khai bày tỏ thiện cảm với CLB bạn." : ""}
       </Rep>
     </>
   );

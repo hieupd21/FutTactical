@@ -1,25 +1,26 @@
 // Màn hình bắt đầu sự nghiệp: chọn nguồn dữ liệu → giải → CLB.
 import { useEffect, useMemo, useState } from "react";
-import { FICT_LEAGUES, REAL_LG } from "@/engine/constants";
-import type { DataRow } from "@/engine/types";
+import { REP_NEWBIE, strReq } from "@/engine/career";
+import { FICT_LEAGUES, OPTIONAL_LG, REAL_LG } from "@/engine/constants";
+import type { DataRow, LowerLeagueData } from "@/engine/types";
 import { packClubs } from "@/engine/world";
 import { ClubBadge } from "@/components/ClubBadge";
-import { FileButton, Seg } from "@/components/ui";
-import { loadPack, PACKS, type PackId } from "@/lib/data";
-import { importCSV, type ImportResult } from "@/lib/import/importer";
+import { Seg } from "@/components/ui";
+import { loadLower, loadPack, PACKS, type PackId } from "@/lib/data";
 import { useGame } from "@/stores/gameStore";
-import { ImportReportView } from "./ImportReportView";
+import { Card } from "@/components/shadcn/card";
 
-type Src = PackId | "import" | "fict";
+type Src = PackId | "fict";
 const LG_ORDER = ["EN", "ES", "DE", "IT", "FR"];
+type Mode = "rookie" | "free";
 
 export function StartScreen() {
   const [src, setSrc] = useState<Src>("fc27");
   const [rows, setRows] = useState<DataRow[] | null>(null);
   const [err, setErr] = useState<string | null>(null);
-  const [imp, setImp] = useState<ImportResult | null>(null);
-  const [busy, setBusy] = useState(false);
-  const [pickLg, setPickLg] = useState("EN");
+  const [pickLg, setPickLg] = useState("");
+  const [mode, setMode] = useState<Mode>("rookie");
+  const [lower, setLower] = useState<LowerLeagueData[]>([]);
   const { startReal, startFict } = useGame();
 
   useEffect(() => {
@@ -29,37 +30,46 @@ export function StartScreen() {
       loadPack(src)
         .then(setRows)
         .catch((e: Error) => setErr(e.message));
-    } else setRows(src === "import" && imp ? imp.rows : null);
-  }, [src, imp]);
+    } else setRows(null);
+  }, [src]);
+
+  useEffect(() => {
+    loadLower()
+      .then(setLower)
+      .catch((e: Error) => setErr(e.message));
+  }, []);
 
   const real = src !== "fict";
-  const lgs = real ? LG_ORDER.map((id) => Object.values(REAL_LG).find((l) => l.id === id)!).filter(Boolean) : FICT_LEAGUES;
+  const have = useMemo(() => new Set((rows ? packClubs(rows) : []).map((c) => c.lid)), [rows]);
+  // hạng thấp hư cấu chỉ dùng khi gói dữ liệu chưa có League One/Two thật
+  const fallback = lower.filter((l) => !Object.entries(REAL_LG).some(([k, r]) => r.id === l.id && have.has(+k)));
+  // HLV mới chỉ nhận được các đội có yêu cầu uy tín trong tầm; chế độ tự chọn mở hết
+  const rookie = real && mode === "rookie";
+  const lgs = real
+    ? [
+        ...[...LG_ORDER, "DE2", "FR2", "ES2", "IT2", "EN3", "EN4"]
+          .map((id) => Object.entries(REAL_LG).find(([k, l]) => l.id === id && (!OPTIONAL_LG.includes(+k) || have.has(+k)))?.[1])
+          .filter((l) => !!l),
+        ...fallback,
+      ].sort((a, b) => (rookie ? a.lvl - b.lvl : b.lvl - a.lvl))
+    : FICT_LEAGUES;
   const lg = lgs.some((l) => l.id === pickLg) ? pickLg : lgs[0].id;
 
   const clubs = useMemo(() => {
     if (!real) return (FICT_LEAGUES.find((l) => l.id === lg)?.clubs || []).map(([n, str], i) => ({ n, str, k: String(i) }));
+    const low = fallback.find((l) => l.id === lg);
+    if (low) return [...low.clubs].sort((a, b) => b[1] - a[1]).map(([n, str]) => ({ n, str, k: n }));
     if (!rows) return [];
     const lid = Object.keys(REAL_LG).find((k) => REAL_LG[+k].id === lg);
     return packClubs(rows)
       .filter((c) => String(c.lid) === lid)
       .sort((a, b) => b.str - a.str)
       .map((c) => ({ n: c.n, str: c.str, k: c.n }));
-  }, [real, rows, lg]);
+  }, [real, rows, lg, fallback]);
 
   const n = clubs.length;
   const tier = (i: number) => (i < 3 ? "Ứng viên vô địch" : i < 7 ? "Nhóm dự cúp châu Âu" : i < n - 5 ? "Nhóm giữa" : "Đội cửa dưới");
-
-  const onFile = async (f: File) => {
-    setBusy(true);
-    setErr(null);
-    try {
-      setImp(await importCSV(await f.text(), f.name, () => loadPack("fc27")));
-    } catch (e) {
-      setImp(null);
-      setErr((e as Error).message);
-    }
-    setBusy(false);
-  };
+  const locked = (str: number) => rookie && strReq(str) > REP_NEWBIE;
 
   const pick = (k: string) => {
     if (!real) {
@@ -67,13 +77,11 @@ export function StartScreen() {
       return;
     }
     if (!rows) return;
-    const label = src === "import" ? `Tệp ${imp?.report.fileName}` : PACKS[src as PackId].src;
-    startReal(rows, lg, k, label);
+    startReal(rows, lg, k, PACKS[src as PackId].src, { lower: fallback, rookie });
   };
 
-  const showClubs = src !== "import" || !!imp;
   return (
-    <section className="panel">
+    <Card className="panel min-w-0 gap-0 rounded-xl p-4 shadow-none">
       <h2>Bắt đầu sự nghiệp</h2>
       <div className="col" style={{ gap: 6 }}>
         <h3>Nguồn dữ liệu</h3>
@@ -82,31 +90,32 @@ export function StartScreen() {
           onChange={setSrc}
           items={[
             ["fc27", PACKS.fc27.label],
-            ["import", "Nhập file CSV"],
             ["fict", "Thế giới hư cấu"],
           ]}
         />
         {src === "fc27" && <p className="hint">{PACKS[src].note}</p>}
-        {src === "import" && (
-          <>
-            <p className="hint">
-              Hỗ trợ 2 định dạng, tự nhận diện theo tiêu đề cột: <b>sofifa</b> (các bộ FC 24/25/26 trên Kaggle, GitHub: league_id,
-              club_name, short_name, overall, value_eur, wage_eur, age…) và <b>FIFPlay</b> (bộ FC 27: first_name, last_name, nation_name,
-              club_name, position, rating). File FIFPlay thiếu tuổi, lương, hợp đồng nên được ghép với dữ liệu trong gói dựng sẵn.
-            </p>
-            <FileButton
-              className="btn ghost"
-              label={busy ? "Đang đọc…" : "Chọn file CSV"}
-              accept=".csv,text/csv"
-              onFiles={(f) => onFile(f[0])}
-            />
-            {imp && <ImportReportView r={imp.report} onClear={() => setImp(null)} />}
-          </>
-        )}
         {src === "fict" && <p className="hint">Tên CLB theo địa danh và màu áo, cầu thủ hư cấu. Dùng bản này khi phát hành công khai.</p>}
         {err && <p className="err">{err}</p>}
       </div>
-      {showClubs && (
+      {real && (
+        <div className="col" style={{ gap: 6 }}>
+          <h3>Cách bắt đầu</h3>
+          <Seg<Mode>
+            value={mode}
+            onChange={setMode}
+            items={[
+              ["rookie", "HLV mới"],
+              ["free", "Tự chọn CLB"],
+            ]}
+          />
+          <p className="hint">
+            {mode === "rookie"
+              ? "Bạn còn vô danh nên chỉ được các đội hạng dưới giao ghế. Hãy đạt thành tích để tăng uy tín, các CLB lớn hơn sẽ gửi lời mời cuối mùa."
+              : "Chọn thẳng bất kỳ CLB nào, kể cả đội mạnh nhất. Uy tín khởi đầu tương xứng với CLB đã chọn."}
+          </p>
+        </div>
+      )}
+      {
         <>
           <Seg value={lg} onChange={setPickLg} items={lgs.map((l) => [l.id, l.n.replace("Giải VĐQG ", "")] as [string, string])} />
           {real && !rows && !err ? (
@@ -114,13 +123,18 @@ export function StartScreen() {
           ) : (
             <div className="pick">
               {clubs.map((c, i) => (
-                <button key={c.k} onClick={() => pick(c.k)}>
+                <button
+                  key={c.k}
+                  onClick={() => pick(c.k)}
+                  disabled={locked(c.str)}
+                  style={locked(c.str) ? { opacity: 0.5, cursor: "not-allowed" } : undefined}
+                >
                   <span className="row" style={{ gap: 10, flexWrap: "nowrap" }}>
                     <ClubBadge name={c.n} size={36} />
                     <span className="nm">{c.n}</span>
                   </span>
                   <span className="hint">
-                    {tier(i)} · sức mạnh {c.str}
+                    {locked(c.str) ? `Cần uy tín ${strReq(c.str)}, bạn mới có ${REP_NEWBIE}` : `${tier(i)} · sức mạnh ${c.str}`}
                   </span>
                 </button>
               ))}
@@ -128,7 +142,7 @@ export function StartScreen() {
             </div>
           )}
         </>
-      )}
-    </section>
+      }
+    </Card>
   );
 }

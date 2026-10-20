@@ -1,44 +1,44 @@
 import { useEffect } from "react";
-import { HashRouter, Navigate, Route, Routes } from "react-router-dom";
-import { BottomNav, Header } from "@/components/AppChrome";
-import { Toast } from "@/components/ui";
-import { ClubPage } from "@/features/club/ClubPage";
-import { HomePage } from "@/features/home/HomePage";
-import { LeaguePage } from "@/features/league/LeaguePage";
-import { MarketPage } from "@/features/market/MarketPage";
-import { SquadPage } from "@/features/squad/SquadPage";
+import { BottomNav, Header, TABS } from "@/components/AppChrome";
+import { Toaster } from "@/components/shadcn/sonner";
 import { StartScreen } from "@/features/start/StartScreen";
 import { useImages } from "@/lib/images";
 import { useGame } from "@/stores/gameStore";
+import { useUi } from "@/stores/uiStore";
+import { AnimatedTabs } from "./AnimatedTabs";
+import { prefetchPages } from "./lazyPages";
 import { SheetHost } from "./SheetHost";
+import { useBackNavigation } from "./useBackNavigation";
+import { Card } from "@/components/shadcn/card";
 
 export function App() {
   const status = useGame((s) => s.status);
+  const tab = useUi((s) => s.tab);
+  useBackNavigation();
   useEffect(() => {
     void useGame.getState().boot();
     void useImages.getState().load();
   }, []);
+  useEffect(() => {
+    if (status === "ready") prefetchPages();
+  }, [status]);
 
   return (
-    <HashRouter>
+    <>
       <div className="wrap">
         <Header />
         <main className="col" style={{ gap: 14 }}>
           {status === "loading" && (
-            <section className="panel">
+            <Card className="panel min-w-0 gap-0 rounded-xl p-4 shadow-none">
               <p className="hint">Đang tải sự nghiệp…</p>
-            </section>
+            </Card>
           )}
           {status === "none" && <StartScreen />}
           {status === "ready" && (
-            <Routes>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/squad" element={<SquadPage />} />
-              <Route path="/market" element={<MarketPage />} />
-              <Route path="/league" element={<LeaguePage />} />
-              <Route path="/club" element={<ClubPage />} />
-              <Route path="*" element={<Navigate to="/" replace />} />
-            </Routes>
+            <>
+              <h1 className="sr-only">{TABS.find((t) => t.k === tab)?.l}</h1>
+              <AnimatedTabs />
+            </>
           )}
         </main>
       </div>
@@ -48,7 +48,7 @@ export function App() {
           <SheetHost />
         </>
       )}
-      <Toast />
-    </HashRouter>
+      <Toaster position="bottom-center" offset={{ bottom: "calc(76px + env(safe-area-inset-bottom, 0px))" }} />
+    </>
   );
 }
