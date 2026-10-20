@@ -4,10 +4,15 @@ Game quản lý bóng đá kiểu Career Mode của EA FC: giả lập trận đ
 
 Luôn trả lời người dùng bằng tiếng Việt. Toàn bộ chữ trong giao diện là tiếng Việt.
 
+## Quy tắc git (bắt buộc)
+
+- NGHIÊM CẤM tự ý `git commit` (kể cả `--amend`) và `git push`. Chỉ commit khi người dùng ra lệnh rõ ràng trong chính lượt đó; lệnh commit trước đó không áp dụng cho lần sau.
+- Khi được lệnh commit: viết message bằng tiếng Anh (conventional commits).
+
 ## Lệnh
 
 - `pnpm dev` — chạy thử
-- `pnpm test` — Vitest (engine + bộ nhập CSV). Chạy sau mọi thay đổi engine.
+- `pnpm test` — Vitest (engine). Chạy sau mọi thay đổi engine.
 - `pnpm build` — `tsc -b` (strict, noUnused*) rồi vite build. Phải sạch lỗi trước khi xong việc.
 - `pnpm lint` / `pnpm lint:fix` — ESLint; `pnpm format` / `pnpm format:check` — Prettier (dấu ; , nháy kép, rộng 140).
 - Husky: pre-commit chạy lint-staged (eslint --fix + prettier); pre-push chạy `pnpm typecheck && pnpm test`. Chỉ dùng pnpm, không dùng npm.
@@ -19,7 +24,8 @@ Luôn trả lời người dùng bằng tiếng Việt. Toàn bộ chữ trong g
 - Thao tác nhỏ của người chơi đặt trong `engine/actions.ts`, không sửa `S` trực tiếp trong component.
 - `features/*` không import lẫn nhau; ghép ở `src/app/`. Thành phần dùng chung ở `src/components/`. Không dùng barrel file.
 - Trạng thái giao diện (sheet đang mở, bộ lọc, giá trị form đàm phán `form[n.id+key]`) ở `stores/uiStore.ts`.
-- Style: một file `src/styles/global.css` (token màu sáng/tối trên `:root`), class giữ nguyên từ bản prototype.
+- Style: `src/styles/global.css` giữ token màu sáng/tối trên `:root` và class từ bản prototype. Nó được nạp qua `src/styles/tailwind.css` vào layer `legacy` (thấp hơn utilities) nên Tailwind v4 (chỉ theme + utilities, không preflight) và shadcn/ui chạy song song. Màu shadcn ánh xạ vào token của global.css trong `tailwind.css`; không thêm biến `--muted`/`--accent` kiểu shadcn vào `:root` vì trùng tên token cũ.
+- shadcn/ui: component sinh ra nằm ở `src/components/shadcn/` (alias trong `components.json`), thêm bằng `pnpm dlx shadcn@latest add <tên>`; sau khi thêm kiểm tra import `cn` phải là `@/lib/utils` (CLI từng sinh nhầm `from "cn"`). Component mới ưu tiên dùng shadcn + Tailwind; màn hình cũ thay dần. Icon dùng `lucide-react`; font Unbounded nạp từ `public/fonts/*.woff2` (subset Latin + tiếng Việt, 5 độ đậm); file `.ttf` gốc ở `fonts-src/`, tạo lại bằng `scripts/build_fonts.sh` (cần `fonttools` + `brotli`).
 
 ## Luật game quan trọng (đừng đổi số nếu không được yêu cầu)
 
@@ -33,8 +39,7 @@ Luôn trả lời người dùng bằng tiếng Việt. Toàn bộ chữ trong g
 - `public/data/fc27.json`, `fc26.json`: mảng dòng `[league_id, club, short, long, positions, ovr, pot, value_eur, wage_eur, age, contract_year, release_clause_eur, nationality, fifa_version, prevClub?]` (kiểu `DataRow`).
 - Dòng có `league_id = 0` và CLB rỗng là cầu thủ tự do (hết hợp đồng): vào `S.free`, người chơi và CLB AI đều ký được (`aiFreeAgentsTick` trong transfers.ts).
 - Giải mô phỏng: 13 EPL, 53 LaLiga, 19 Bundesliga, 31 Serie A, 16 Ligue 1. Giải nguồn (không đá): 14 Championship, 308 Bồ Đào Nha, 10 Hà Lan, 999 đội mới xuống hạng.
-- fc27.json = FC 27 (FIFPlay, 11/10/2026: CLB + chỉ số) ghép FC 26 (sofifa: tuổi+1, tiềm năng, lương, hợp đồng, giá). Script: `scripts/merge_fc27.py`.
-- Nhập CSV trong game: `src/lib/import/` tự nhận định dạng sofifa hoặc FIFPlay, có báo cáo nhập.
+- fc27.json = FC 27 (FIFPlay, 11/10/2026: CLB + chỉ số) ghép FC 26 (sofifa: tuổi+1, tiềm năng, lương, hợp đồng, giá). Gói đã hoàn thiện sẵn, được cập nhật tay; không còn script ghép.
 
 ## Hướng phát triển đã bàn (chưa làm)
 

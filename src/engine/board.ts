@@ -1,3 +1,4 @@
+import { sackedOffers } from "./career";
 import { fmtM, fmtW } from "./format";
 import { clubPlayers, clubStr, myPos } from "./squad";
 import { me, myLg, news, S } from "./state";
@@ -46,4 +47,5 @@ export function objStatus(o: BoardObjective): { ok: boolean; txt: string; pendin
 export function sack(why: string): void {
   S.sacked = why;
   news("Bạn bị sa thải. " + why, "club");
+  sackedOffers();
 }

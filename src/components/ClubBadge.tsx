@@ -12,7 +12,7 @@ export const ClubBadge = memo(function ClubBadge({ name, size = 28 }: { name: st
   const pat = hashStr(name) % 5,
     code = clubCode(name),
     id = "g" + hashStr(name + size);
-  const ring = lum(c1) > 0.85 && lum(c2) > 0.85 ? "#888" : "rgba(0,0,0,.25)";
+  const ring = lum(c1) > 0.85 && lum(c2) > 0.85 ? "var(--muted)" : "rgba(0,0,0,.25)";
   const long = code.length > 2;
   return (
     <svg className="bdg" width={size} height={size} viewBox="0 0 32 33" aria-hidden="true">
@@ -40,7 +40,7 @@ export const ClubBadge = memo(function ClubBadge({ name, size = 28 }: { name: st
         x="16"
         y="20.2"
         textAnchor="middle"
-        fontFamily="Barlow Condensed,Arial Narrow,sans-serif"
+        fontFamily="Unbounded,system-ui,sans-serif"
         fontWeight="800"
         fontSize={long ? 9 : 10.5}
         fill="#ffffff"

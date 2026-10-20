@@ -1,11 +1,12 @@
-// Khởi tạo thế giới: hư cấu hoặc dữ liệu thật (gói FC 26 / FC 27 hoặc CSV nhập).
+// Khởi tạo thế giới: hư cấu hoặc dữ liệu thật (gói FC 27 dựng sẵn).
 import { setBoard } from "./board";
-import { AI_FORMS, FICT_LEAGUES, NAMES, NAT_VI, NATCODE, PHIL, POSLINE, REAL_LG, RIVALS } from "./constants";
+import { AI_FORMS, FICT_LEAGUES, NAMES, NAT_VI, NATCODE, OPTIONAL_LG, PHIL, POSLINE, REAL_LG, RIVALS } from "./constants";
 import { fmtM, fmtW } from "./format";
 import { makeP, valueOf, wageBase } from "./players";
+import { clubReq, REP_NEWBIE } from "./career";
 import { bestXI, clubPlayers } from "./squad";
-import { C, inbox, LEAGUES, me, news, S, setLeagues, setState, simLeagues } from "./state";
-import type { Club, DataRow, GameState, League, Line, Philosophy, Player, Role } from "./types";
+import { C, inbox, LEAGUES, LG, me, news, S, setLeagues, setState, simLeagues } from "./state";
+import type { Club, DataRow, GameState, League, Line, LowerLeagueData, Philosophy, Player, Role } from "./types";
 import { clamp, pickA, r10, ri, rnd } from "./util";
 
 function blankState(year: number, extra: Partial<GameState> = {}): GameState {
@@ -84,6 +85,32 @@ function makeAllFixtures(): void {
     S.res[lg.id] = [];
   });
 }
+const SQUAD_PLAN: Line[] = [
+  "GK",
+  "GK",
+  "GK",
+  "DF",
+  "DF",
+  "DF",
+  "DF",
+  "DF",
+  "DF",
+  "DF",
+  "DF",
+  "MF",
+  "MF",
+  "MF",
+  "MF",
+  "MF",
+  "MF",
+  "MF",
+  "MF",
+  "FW",
+  "FW",
+  "FW",
+  "FW",
+  "FW",
+];
 const randPhil = (): Philosophy => pickA(Object.keys(PHIL) as Philosophy[]);
 
 // ---------- thế giới hư cấu ----------
@@ -91,32 +118,6 @@ export function newGame(lgId: string, clubIdx: number): void {
   setState(blankState(2026, { v: 2 }));
   setLeagues(FICT_LEAGUES);
   let cid = 0;
-  const plan: Line[] = [
-    "GK",
-    "GK",
-    "GK",
-    "DF",
-    "DF",
-    "DF",
-    "DF",
-    "DF",
-    "DF",
-    "DF",
-    "DF",
-    "MF",
-    "MF",
-    "MF",
-    "MF",
-    "MF",
-    "MF",
-    "MF",
-    "MF",
-    "FW",
-    "FW",
-    "FW",
-    "FW",
-    "FW",
-  ];
   LEAGUES.forEach((lg) =>
     lg.clubs.forEach(([name, str0]) => {
       const str = Math.round(str0 + rnd(-0.8, 0.8)),
@@ -134,7 +135,7 @@ export function newGame(lgId: string, clubIdx: number): void {
         budget: r10(4000 * Math.pow(pres, 2.2) * rnd(0.8, 1.2)),
         rival: null,
       };
-      plan.forEach((pos, k) => {
+      SQUAD_PLAN.forEach((pos, k) => {
         const nat = Math.random() < lg.fr ? pickA(lg.imp) : lg.nat;
         const age = k % 5 === 0 ? ri(17, 21) : ri(20, 33);
         const star = k === 4 || k === 13 || k === 20 ? ri(2, 5) : 0;
@@ -195,12 +196,52 @@ export function packClubs(rows: DataRow[]): PackClub[] {
   return Object.values(clubs);
 }
 
-export function newGameReal(rows: DataRow[], lgId: string, clubName: string, src?: string): void {
+export interface RealStart {
+  /** Hạng đấu thấp bổ sung (CLB hư cấu) */
+  lower?: LowerLeagueData[];
+  /** true = HLV mới vô danh, chỉ nhận được các đội hạng dưới; false = tự chọn CLB bất kỳ */
+  rookie?: boolean;
+}
+
+/** Dựng CLB hư cấu của một hạng đấu thấp; trả về số thứ tự CLB tiếp theo */
+function addLowerLeague(lg: League, data: LowerLeagueData, cid: number): number {
+  data.clubs.forEach(([name, str0]) => {
+    const str = Math.round(str0 + rnd(-0.8, 0.8)),
+      id = "c" + cid++;
+    S.clubs[id] = {
+      id,
+      n: name,
+      lg: lg.id,
+      str,
+      pres: 1,
+      phil: randPhil(),
+      form: pickA(AI_FORMS),
+      ids: [],
+      budget: r10(4000 * rnd(0.8, 1.2)),
+      rival: null,
+    };
+    SQUAD_PLAN.forEach((pos, k) => {
+      const age = k % 5 === 0 ? ri(17, 21) : ri(20, 33);
+      const o = Math.round(clamp(str + rnd(-8, 4) - (age < 20 ? 5 : 0) - (k % 3 === 2 ? 3 : 0), 40, 80));
+      S.clubs[id].ids.push(makeP(lg.nat, pos, o, age, id).id);
+    });
+    assignRoles(id);
+  });
+  return cid;
+}
+
+export function newGameReal(rows: DataRow[], lgId: string, clubName: string, src?: string, opts: RealStart = {}): void {
   const ver = rows[0][13] || 26,
     year = 2000 + ver - 1;
-  const meta: League[] = Object.values(REAL_LG)
-    .map((l) => ({ ...l, fr: 0, imp: [], clubs: [] }))
-    .sort((a, b) => b.lvl - a.lvl);
+  const present = new Set(packClubs(rows).map((c) => c.lid));
+  const realMeta = Object.entries(REAL_LG)
+    .filter(([k]) => !OPTIONAL_LG.includes(+k) || present.has(+k))
+    .map(([, l]) => l);
+  const fallback = (opts.lower ?? []).filter((l) => !realMeta.some((r) => r.id === l.id));
+  const meta: League[] = [
+    ...realMeta.map((l) => ({ ...l, fr: 0, imp: [], clubs: [] })),
+    ...fallback.map((l) => ({ id: l.id, n: l.n, nat: l.nat, lvl: l.lvl, fr: 0, imp: [], clubs: [] })),
+  ].sort((a, b) => b.lvl - a.lvl);
   setState(blankState(year, { leagueMeta: meta, src: src || `FC ${ver}` }));
   setLeagues(meta);
   let cid = 0;
@@ -301,6 +342,9 @@ export function newGameReal(rows: DataRow[], lgId: string, clubName: string, src
     while (c.ids.length < 20) filler(pickA<Line>(["DF", "MF", "FW"]));
     assignRoles(id);
   });
+  fallback.forEach((l) => {
+    cid = addLowerLeague(LG(l.id), l, cid);
+  });
   moves
     .sort((a, b) => b[0] - a[0])
     .slice(0, 25)
@@ -332,11 +376,13 @@ export function newGameReal(rows: DataRow[], lgId: string, clubName: string, src
     p.c = null;
     S.free.push(p.id);
   }
-  S.me = byName[clubName] || Object.values(S.clubs).find((c) => c.lg === lgId)!.id;
+  S.me =
+    byName[clubName] || Object.values(S.clubs).find((c) => c.n === clubName)?.id || Object.values(S.clubs).find((c) => c.lg === lgId)!.id;
+  S.rep = opts.rookie ? REP_NEWBIE : Math.min(100, clubReq(me()) + 5);
   finishSetup(1.08);
   news(`Bạn chính thức nhận ghế HLV trưởng ${me().n}.`, "club");
   inbox({
     t: "Chào mừng HLV mới",
-    b: `Dữ liệu: ${S.src} (mùa ${year}/${year + 1}). Kỳ chuyển nhượng hè mở tới hết 31/8. Ngân sách chuyển nhượng ${fmtM(me().budget)}, quỹ lương ${fmtW(S.wageCap)}.`,
+    b: `Dữ liệu: ${S.src} (mùa ${year}/${year + 1}). Kỳ chuyển nhượng hè mở tới hết 31/8. Ngân sách chuyển nhượng ${fmtM(me().budget)}, quỹ lương ${fmtW(S.wageCap)}.${opts.rookie ? " Bạn còn vô danh: hãy chứng tỏ năng lực ở đây, các CLB lớn hơn sẽ ngỏ lời khi uy tín đủ cao." : ""}`,
   });
 }

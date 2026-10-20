@@ -1,0 +1,33 @@
+/* Tailwind v4 chạy song song với global.css: chỉ nạp theme + utilities (không preflight) để không phá style cũ.
+   global.css được đưa vào layer "legacy" thấp hơn utilities, nên rule trần như `button {}` không đè lên component shadcn.
+   Màu của shadcn ánh xạ thẳng vào token trong global.css (sáng/tối theo :root). */
+@layer theme, base, legacy, components, utilities;
+@import "tailwindcss/theme.css" layer(theme);
+@import "./global.css" layer(legacy);
+@import "tailwindcss/utilities.css" layer(utilities);
+@import "tw-animate-css";
+
+/* token màu đã tự đổi theo sáng/tối nên không dùng biến thể dark: */
+@custom-variant dark (&:where(.never-dark, .never-dark *));
+
+@theme inline {
+  --font-sans: var(--f-main);
+  --color-background: var(--bg);
+  --color-foreground: var(--ink);
+  --color-card: var(--surface);
+  --color-card-foreground: var(--ink);
+  --color-popover: var(--surface);
+  --color-popover-foreground: var(--ink);
+  --color-primary: var(--pitch);
+  --color-primary-foreground: var(--chalk);
+  --color-secondary: var(--soft);
+  --color-secondary-foreground: var(--ink);
+  --color-muted: var(--soft);
+  --color-muted-foreground: var(--muted);
+  --color-accent: var(--soft);
+  --color-accent-foreground: var(--ink);
+  --color-destructive: var(--loss);
+  --color-border: var(--line);
+  --color-input: var(--line);
+  --color-ring: var(--info);
+}

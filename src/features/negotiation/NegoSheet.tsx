@@ -1,5 +1,4 @@
 import type { ReactNode } from "react";
-import { useNavigate } from "react-router-dom";
 import { isClosed, quitNego } from "@/engine/actions";
 import { C, isDeadline, N, P } from "@/engine/state";
 import type { Negotiation } from "@/engine/types";
@@ -9,6 +8,7 @@ import { commit, useGameVersion } from "@/stores/gameStore";
 import { useUi } from "@/stores/uiStore";
 import { cx, shortD } from "@/utils/display";
 import { ClubForm, ContractForm, FinalForm, LoanForm, SellForm } from "./NegoForms";
+import { Button } from "@/components/shadcn/button";
 
 function Steps({ n }: { n: Negotiation }) {
   const st = n.stage;
@@ -40,7 +40,7 @@ function Tension({ n }: { n: Negotiation }) {
   if (n.sell)
     return n.tension ? (
       <div className="tension">
-        <div className="bar">
+        <div className="bar" role="img" aria-label={"Căng thẳng " + Math.round(n.tension) + "/100"}>
           <i style={{ left: `${n.tension}%` }} />
         </div>
       </div>
@@ -53,7 +53,7 @@ function Tension({ n }: { n: Negotiation }) {
         <span>Căng thẳng {Math.round(n.tension)}/100</span>
         <span>Đổ vỡ</span>
       </div>
-      <div className="bar">
+      <div className="bar" role="img" aria-label={"Căng thẳng " + Math.round(n.tension) + "/100"}>
         <i style={{ left: `${n.tension}%` }} />
       </div>
     </div>
@@ -75,8 +75,7 @@ const kindTxt = (n: Negotiation, club: string | null): string =>
 
 export function NegoSheet({ id }: { id: string }) {
   useGameVersion();
-  const { closeSheet, err } = useUi();
-  const nav = useNavigate();
+  const { closeSheet, err, setTab } = useUi();
   const n = N(id);
   const p = n && P(n.pid);
   if (!n || !p) return null;
@@ -84,15 +83,15 @@ export function NegoSheet({ id }: { id: string }) {
   let form: ReactNode = null;
   if (st === "failed")
     form = (
-      <button className="btn ghost block" onClick={closeSheet}>
+      <Button variant="ghost" className="w-full" onClick={closeSheet}>
         Đóng
-      </button>
+      </Button>
     );
   else if (st === "done")
     form = (
-      <button className="btn hot block" onClick={closeSheet}>
+      <Button variant="hot" className="w-full" onClick={closeSheet}>
         Tuyệt vời
-      </button>
+      </Button>
     );
   else if (n.waiting || st === "enquiry" || st === "dof")
     form = (
@@ -100,15 +99,16 @@ export function NegoSheet({ id }: { id: string }) {
         <div className="say">
           Đang chờ phản hồi{isDeadline() ? " (khoảng 1 giờ)" : " (khoảng 1 ngày)"}. Bấm "Tiếp tục" ở Trang chủ để thời gian trôi.
         </div>
-        <button
-          className="btn ghost block"
+        <Button
+          variant="ghost"
+          className="w-full"
           onClick={() => {
             closeSheet();
-            nav("/");
+            setTab("home");
           }}
         >
           Về Trang chủ
-        </button>
+        </Button>
       </>
     );
   else if (n.sell) form = <SellForm n={n} p={p} />;
@@ -150,9 +150,9 @@ export function NegoSheet({ id }: { id: string }) {
         </details>
       )}
       {!isClosed(n) && !n.sell && (
-        <button className="btn ghost sm" style={{ alignSelf: "flex-start" }} onClick={() => commit(() => quitNego(n.id))}>
+        <Button variant="ghost" size="sm" style={{ alignSelf: "flex-start" }} onClick={() => commit(() => quitNego(n.id))}>
           Rút lui
-        </button>
+        </Button>
       )}
     </Sheet>
   );

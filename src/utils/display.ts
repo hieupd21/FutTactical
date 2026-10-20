@@ -11,8 +11,7 @@ export function shortD(d: number): string {
 }
 /** Tên ngắn: 2 từ cuối */
 export const sn = (n: string): string => n.split(" ").slice(-2).join(" ");
-/** Màu theo thang 0–100 (tinh thần, phong độ) */
-export const mcol = (m: number): string =>
-  m >= 80 ? "var(--win)" : m >= 60 ? "#7fb069" : m >= 40 ? "var(--gold)" : m >= 20 ? "#e08a3c" : "var(--loss)";
+/** Màu theo thang 0–100 (tinh thần, phong độ): token --lv-1..5 đủ tương phản làm chữ lẫn chấm */
+export const mcol = (m: number): string => `var(--lv-${m >= 80 ? 5 : m >= 60 ? 4 : m >= 40 ? 3 : m >= 20 ? 2 : 1})`;
 export const stars = (n: number, of = 5): string => "★".repeat(n) + "☆".repeat(Math.max(0, of - n));
 export const cx = (...c: (string | false | null | undefined)[]): string => c.filter(Boolean).join(" ");

@@ -1,6 +1,9 @@
 // Các thao tác nhỏ của người chơi (đổi đội hình, vai trò, rao bán, ngân sách…). UI chỉ gọi qua đây, không sửa S trực tiếp.
+import { setBoard } from "./board";
+import { acceptOffer, declineOffer, switchClub } from "./career";
 import { ROLES } from "./constants";
 import { fmtM } from "./format";
+import { applyPending } from "./season";
 import { bestXI, myXI } from "./squad";
 import { C, me, N, P, S, tick } from "./state";
 import type { Formation, Negotiation, Role } from "./types";
@@ -69,7 +72,7 @@ export function quitNego(id: string): void {
   const n = N(id);
   if (!n) return;
   n.stage = "failed";
-  n.msg = "Bạn đã rút khỏi thương vụ.";
+  n.msg = "Bạn đứng dậy khỏi bàn đàm phán. Thương vụ khép lại.";
   n.log.push({ who: "me", t: n.msg, at: tick() });
 }
 export function renamePlayer(pid: string, name: string): void {
@@ -123,4 +126,18 @@ export function stageTxt(n: Negotiation): string {
     failed: "Đổ vỡ",
   };
   return m[n.stage] || n.stage;
+}
+
+/** Nhận lời mời dẫn dắt CLB khác; chuyển sang khi mùa mới bắt đầu */
+export const acceptJob = (cid: string): string => acceptOffer(cid);
+export const declineJob = (cid: string): void => declineOffer(cid);
+/** Sau khi bị sa thải: nhận ngay một CLB trong số các đội ngỏ lời */
+export function takeNewJob(cid: string): string {
+  if (!S.sacked || !(S.offers ?? []).some((o) => o.cid === cid)) return "Lời mời này không còn hiệu lực.";
+  applyPending();
+  switchClub(cid);
+  S.review = null;
+  S.xi = bestXI(S.me, S.form);
+  setBoard();
+  return `Bạn đã nhận ghế HLV trưởng ${C(cid).n}`;
 }

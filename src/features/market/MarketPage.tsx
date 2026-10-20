@@ -9,18 +9,21 @@ import { useGameVersion } from "@/stores/gameStore";
 import { useUi, type MarketSub } from "@/stores/uiStore";
 import { shortD } from "@/utils/display";
 import { SearchView } from "./SearchView";
+import { buttonVariants } from "@/components/shadcn/button";
+import { Card } from "@/components/shadcn/card";
+import { Progress } from "@/components/shadcn/progress";
 
 function NegoList() {
   const openNego = useUi((s) => s.openNego);
   if (!S.negos.length)
     return (
-      <section className="panel">
+      <Card className="panel min-w-0 gap-0 rounded-xl p-4 shadow-none">
         <h2>Các thương vụ</h2>
         <p className="hint">Chưa có thương vụ nào. Tìm cầu thủ ở tab Tìm kiếm rồi bấm "Thăm dò".</p>
-      </section>
+      </Card>
     );
   return (
-    <section className="panel">
+    <Card className="panel min-w-0 gap-0 rounded-xl p-4 shadow-none">
       <h2>Các thương vụ</h2>
       {S.negos.map((n) => {
         const p = P(n.pid);
@@ -37,18 +40,21 @@ function NegoList() {
                 {stageTxt(n)}
               </span>
             </span>
-            <span className={act ? "btn sm hot" : "hint"}>
+            <span className={act ? buttonVariants({ variant: "hot", size: "sm" }) : "hint"}>
               {act ? "Xử lý" : isClosed(n) ? (n.stage === "done" ? "Xong" : "Đổ vỡ") : "Đang chờ"}
             </span>
             {!isClosed(n) && n.tension > 0 && (
-              <div className="mini">
-                <i style={{ width: `${n.tension}%` }} />
-              </div>
+              <Progress
+                value={n.tension}
+                aria-label={"Căng thẳng " + Math.round(n.tension) + "/100"}
+                className="mini col-span-full h-[5px] bg-border"
+                indicatorClassName="bg-[linear-gradient(90deg,var(--win),var(--gold),var(--loss))]"
+              />
             )}
           </button>
         );
       })}
-    </section>
+    </Card>
   );
 }
 
@@ -69,7 +75,7 @@ export function MarketPage() {
   else if (marketSub === "short") {
     const list = S.shortlist.map(P).filter(Boolean);
     body = (
-      <section className="panel">
+      <Card className="panel min-w-0 gap-0 rounded-xl p-4 shadow-none">
         <h2>Danh sách theo dõi</h2>
         <div className="plist">
           {list.length ? (
@@ -78,7 +84,7 @@ export function MarketPage() {
             <p className="hint">Bấm "Theo dõi" trong hồ sơ cầu thủ để thêm vào đây.</p>
           )}
         </div>
-      </section>
+      </Card>
     );
   } else if (marketSub === "nego") body = <NegoList />;
   else if (marketSub === "mine") {
@@ -86,7 +92,7 @@ export function MarketPage() {
       .filter((p) => !p.loan)
       .sort((a, b) => b.val - a.val);
     body = (
-      <section className="panel">
+      <Card className="panel min-w-0 gap-0 rounded-xl p-4 shadow-none">
         <h2>Cầu thủ của bạn</h2>
         <p className="hint">
           Rao bán giúp nhận nhiều lời đề nghị hơn nhưng giá thấp hơn. Cầu thủ trẻ trong danh sách cho mượn sẽ nhận đề nghị mượn.
@@ -106,12 +112,12 @@ export function MarketPage() {
             />
           ))}
         </div>
-      </section>
+      </Card>
     );
   } else {
     const items = S.news.filter((x) => x.k === "transfer").slice(0, 40);
     body = (
-      <section className="panel">
+      <Card className="panel min-w-0 gap-0 rounded-xl p-4 shadow-none">
         <h2>Tin chuyển nhượng</h2>
         {items.length ? (
           items.map((x, i) => (
@@ -126,7 +132,7 @@ export function MarketPage() {
         ) : (
           <p className="hint">Chưa có tin.</p>
         )}
-      </section>
+      </Card>
     );
   }
   return (

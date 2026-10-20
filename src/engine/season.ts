@@ -1,9 +1,11 @@
 // Dòng thời gian: tua ngày/giờ, phát triển hằng tháng, Deadline Day, tổng kết & sang mùa mới.
 import { myWages, objStatus, sack, setBoard } from "./board";
+import { jobOffersTick, myRep, repAfterSeason, switchClub } from "./career";
 import { DEADLINE_HOURS, MATCH0, POSN, PROFILES, REVIEW_DAY, SEASON_LEN, WIN_SUMMER, WIN_WINTER } from "./constants";
-import { fmtM } from "./format";
-import { makeP, moraleLbl, ovrR, valueOf, wageBase, yearsLeft } from "./players";
+import { fmtM, fmtW } from "./format";
+import { makeP, ovrR, valueOf, wageBase, yearsLeft } from "./players";
 import { playRound } from "./match";
+import { moodTick } from "./mood";
 import { bestXI, clubPlayers, clubStr, myPos } from "./squad";
 import { C, dateOf, inbox, isDeadline, LG, me, myLg, news, P, roundOn, S, simLeagues } from "./state";
 import { aiBidsTick, aiTransfersTick, moveP, processNegos, scoutRange } from "./transfers";
@@ -35,17 +37,6 @@ export function monthTick(): void {
     S.conf = clamp(S.conf, 0, 100);
     if (S.conf < 12) sack(`Ban lãnh đạo mất kiên nhẫn sau chuỗi kết quả không như kỳ vọng (đang xếp thứ ${pos}, mục tiêu top ${t}).`);
   }
-  clubPlayers(S.me).forEach((p) => {
-    if (p.mor < 20 && !p.wantOut) {
-      p.wantOut = true;
-      inbox({
-        t: `${p.n} muốn ra đi`,
-        b: `${p.n} không hài lòng (${moraleLbl(p.mor)}) vì ít được ra sân so với vai trò "${p.c!.role}". Cậu ấy đề nghị được rao bán.`,
-        pid: p.id,
-        act: "unhappy",
-      });
-    }
-  });
 }
 
 function hourTick(h: number): void {
@@ -97,6 +88,7 @@ export function dayTick(): void {
     }
   });
   if (dt.getDate() === 1) monthTick();
+  if (S.d % 7 === 3) moodTick();
   const r = roundOn(S.d, myLg());
   if (r >= 0) {
     const m = S.fx[myLg()][r].find((x) => x.includes(S.me))!;
@@ -105,6 +97,24 @@ export function dayTick(): void {
   } else playRound(S.d);
   if (S.d === REVIEW_DAY) seasonReview();
   if (S.d === 150) contractWarn();
+}
+
+const FREE_PER_TIER = 120;
+/** Tầng của cầu thủ tự do theo chỉ số: cao cấp (70+), trung bình (60–69), hạ cấp (dưới 60) */
+export const freeTier = (ovr: number): number => (ovr >= 70 ? 2 : ovr >= 60 ? 1 : 0);
+
+/** Giữ tối đa FREE_PER_TIER cầu thủ tự do mỗi tầng (người cao nhất ở lại) để hạng dưới không bị mất nguồn bổ sung rẻ */
+export function trimFree(): void {
+  const keep = new Set<string>();
+  [0, 1, 2].forEach((t) =>
+    S.free
+      .filter((id) => freeTier(P(id).ovr) === t)
+      .sort((a, b) => P(b).ovr - P(a).ovr)
+      .slice(0, FREE_PER_TIER)
+      .forEach((id) => keep.add(id)),
+  );
+  S.free.filter((id) => !keep.has(id)).forEach((id) => delete S.P[id]);
+  S.free = S.free.filter((id) => keep.has(id));
 }
 
 function contractWarn(): void {
@@ -174,15 +184,26 @@ function seasonReview(): void {
   const nT = leagueSize();
   const prize = r10((nT + 1 - pos) * 900 + me().pres * 3000);
   S.review = { pos, dc, prize, lines };
+  const dr = repAfterSeason(pos, t, nT);
   inbox({
     t: `Tổng kết mùa ${S.year}/${S.year + 1}`,
-    b: `Xếp hạng ${pos}/${nT}. ${lines.join(" · ")}. Niềm tin ban lãnh đạo ${dc >= 0 ? "+" : ""}${Math.round(dc)} → ${Math.round(S.conf)}. Tiền thưởng xếp hạng ${fmtM(prize)} sẽ cộng vào ngân sách mùa tới.`,
+    b: `Xếp hạng ${pos}/${nT}. ${lines.join(" · ")}. Niềm tin ban lãnh đạo ${dc >= 0 ? "+" : ""}${Math.round(dc)} → ${Math.round(S.conf)}. Uy tín HLV ${dr >= 0 ? "+" : ""}${dr} → ${Math.round(myRep())}. Tiền thưởng xếp hạng ${fmtM(prize)} sẽ cộng vào ngân sách mùa tới.`,
   });
   if (S.conf < 15) sack(`Không đạt mục tiêu mùa giải (xếp thứ ${pos}, mục tiêu top ${t}).`);
+  else jobOffersTick(pos, t);
 }
 
 export function newSeason(): void {
-  const prize = S.review ? S.review.prize : 0;
+  let prize = S.review ? S.review.prize : 0;
+  // đã nhận lời CLB khác: hoàn tất các thương vụ của CLB cũ rồi bàn giao
+  const moved = !!S.job && !!S.clubs[S.job];
+  if (moved) {
+    applyPending();
+    switchClub(S.job!);
+    prize = 0;
+  }
+  S.offers = [];
+  S.job = null;
   S.year++;
   S.d = 0;
   S.h = 9;
@@ -214,6 +235,8 @@ export function newSeason(): void {
       } else if (Math.random() < 0.65) {
         p.c.exp = S.year + ri(1, 3);
         p.c.wage = Math.round(Math.max(p.c.wage, wageBase(p)));
+        if (p.ovr >= 78 || C(p.club).lg === myLg())
+          news(`${p.n} gia hạn hợp đồng với ${C(p.club).n} đến 30/6/${p.c.exp}, lương ${fmtW(p.c.wage)}.`, "deal");
       } else {
         moveP(p, null);
         p.c = null;
@@ -236,11 +259,7 @@ export function newSeason(): void {
     const p = P(id);
     if (!p.c) p.c = { wage: wageBase(p), exp: S.year, rc: 0, role: "Xoay tua" };
   });
-  if (S.free.length > 120) {
-    S.free.sort((a, b) => P(b).ovr - P(a).ovr);
-    S.free.slice(120).forEach((id) => delete S.P[id]);
-    S.free = S.free.slice(0, 120);
-  }
+  trimFree();
   // CLB AI: bổ sung cầu thủ trẻ, ngân sách mới, cập nhật sức mạnh
   Object.values(S.clubs).forEach((c) => {
     if (c.id !== S.me) {
@@ -274,7 +293,7 @@ export function newSeason(): void {
   me().budget = r10(me().budget + alloc + prize - due);
   S.wageCap = Math.round(Math.max(S.wageCap, myWages() * 1.05));
   S.seasonLog.unshift({ y: S.year - 1, pos: S.review ? S.review.pos : null });
-  if (S.review) {
+  if (S.review && !moved) {
     const nT = leagueSize();
     if (S.review.pos <= 2) me().pres = Math.min(5, me().pres + 1);
     if (S.review.pos >= nT - 3) me().pres = Math.max(1, me().pres - 1);

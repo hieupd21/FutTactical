@@ -1,6 +1,7 @@
 import { ROLE_START } from "./constants";
 import { bestXI, clubPlayers, myXI, slotPos, strength } from "./squad";
-import { C, inbox, me, P, roundOn, S, simLeagues } from "./state";
+import { trackPromise } from "./mood";
+import { C, inbox, me, news, P, roundOn, S, simLeagues } from "./state";
 import type { Formation, Line, MatchEvent, MatchResult, MatchSim } from "./types";
 import { clamp, pickA, r10, ri, rnd } from "./util";
 
@@ -116,6 +117,7 @@ export function applyMatch(r: MatchSim): void {
         const share = p.st.reduce((a, b) => a + b, 0) / p.st.length;
         p.mor += (diff > 0 ? 2 : diff < 0 ? -1 : 0) + (started ? 1.5 : 0) - (p.st.length >= 3 && share < exp - 0.15 ? 3 : 0);
         p.mor = clamp(p.mor, 0, 100);
+        trackPromise(p, started);
       }
     });
   });
@@ -144,7 +146,36 @@ export function playRound(d: number): void {
       }
     });
     S.res[lg.id][r] = list;
+    roundNews(list);
   });
+}
+
+/** Tin trận đấu: trận của bạn luôn có; các giải còn lại chọn tối đa 2 trận nổi bật mỗi vòng */
+function roundNews(list: MatchResult[]): void {
+  const line = (r: MatchResult): string => `${C(r.h).n} ${r.hg}-${r.ag} ${C(r.a).n}`;
+  const mine = list.find((r) => r.h === S.me || r.a === S.me);
+  if (mine) {
+    const us = mine.h === S.me ? mine.hg : mine.ag,
+      them = mine.h === S.me ? mine.ag : mine.hg;
+    news(`${us > them ? "Chiến thắng" : us < them ? "Thất bại" : "Hòa"}: ${line(mine)}.`, "match");
+  }
+  const top = list
+    .filter((r) => r !== mine)
+    .map((r) => {
+      const diff = Math.abs(r.hg - r.ag);
+      const winner = r.hg > r.ag ? r.h : r.a,
+        loser = r.hg > r.ag ? r.a : r.h;
+      const upset = diff > 0 && C(winner).str <= C(loser).str - 8;
+      const derby = C(r.h).rival === r.a || C(r.a).rival === r.h;
+      const hat = Object.values(r.sc.reduce<Record<string, number>>((m, id) => ({ ...m, [id]: (m[id] || 0) + 1 }), {})).some((n) => n >= 3);
+      const score = (diff >= 3 ? 3 : 0) + (upset ? 3 : 0) + (derby ? 2 : 0) + (hat ? 2 : 0) + (r.hg + r.ag >= 6 ? 2 : 0);
+      const tag = hat ? "Cú hat-trick" : upset ? "Bất ngờ" : derby ? "Derby" : diff >= 3 ? "Đại thắng" : "Mưa bàn thắng";
+      return { r, score, tag };
+    })
+    .filter((x) => x.score >= 2)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 2);
+  top.forEach(({ r, tag }) => news(`${tag}: ${line(r)}.`, "match"));
 }
 
 export function playMyMatch(): { m: MatchSim; us: number; them: number } | null {

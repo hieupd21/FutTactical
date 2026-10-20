@@ -5,6 +5,8 @@ import { Sheet } from "@/components/Sheet";
 import { closeMatch, skipMatch } from "@/stores/matchFlow";
 import { useUi } from "@/stores/uiStore";
 import { sn } from "@/utils/display";
+import { Button } from "@/components/shadcn/button";
+import { Badge } from "@/components/shadcn/badge";
 
 const MISS = ["thủ môn cản phá", "bóng đi chệch cột", "hậu vệ chặn kịp"];
 const nm = (id?: string) => (id && P(id) ? sn(P(id).n) : "?");
@@ -50,9 +52,9 @@ export function MatchSheet() {
         </div>
       </div>
       {!M.done && (
-        <button className="btn ghost sm" style={{ alignSelf: "flex-start" }} onClick={skipMatch}>
+        <Button variant="ghost" size="sm" style={{ alignSelf: "flex-start" }} onClick={skipMatch}>
           Xem kết quả ngay
-        </button>
+        </Button>
       )}
       <div className="feed" aria-live="polite">
         {shown.length ? (
@@ -76,15 +78,18 @@ export function MatchSheet() {
             {myXI.map((p) => (
               <div key={p!.id} className="row between" style={{ padding: "4px 0", borderBottom: "1px solid var(--line)" }}>
                 <span>
-                  <span className={`pos ${p!.pos}`}>{p!.pos}</span> {p!.n}
+                  <Badge variant="pos" className={`pos ${p!.pos}`}>
+                    {p!.pos}
+                  </Badge>{" "}
+                  {p!.n}
                 </span>
                 <b className="mono">{p!.lastR ?? "-"}</b>
               </div>
             ))}
           </div>
-          <button className="btn hot block" onClick={closeMatch}>
+          <Button variant="hot" className="w-full" onClick={closeMatch}>
             Tiếp tục
-          </button>
+          </Button>
         </>
       )}
     </Sheet>

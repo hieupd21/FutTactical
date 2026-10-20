@@ -1,3 +1,4 @@
+import { Angry, Frown, Laugh, Meh, Smile } from "lucide-react";
 import type { ReactNode } from "react";
 import { fmtM } from "@/engine/format";
 import { dyn, moraleLbl, ovrR, yearsLeft } from "@/engine/players";
@@ -6,10 +7,18 @@ import type { Player } from "@/engine/types";
 import { cx, mcol } from "@/utils/display";
 import { Avatar } from "./Avatar";
 import { ClubBadge } from "./ClubBadge";
+import { Badge } from "@/components/shadcn/badge";
+
+const MOODS = [Angry, Frown, Meh, Smile, Laugh];
+/** Tinh thần: biểu tượng mặt (không chỉ dựa vào màu) kèm nhãn chữ cho trình đọc màn hình */
+function Mood({ mor }: { mor: number }) {
+  const Icon = MOODS[mor >= 80 ? 4 : mor >= 60 ? 3 : mor >= 40 ? 2 : mor >= 20 ? 1 : 0];
+  return <Icon size={14} strokeWidth={2.25} style={{ color: mcol(mor) }} role="img" aria-label={"Tinh thần: " + moraleLbl(mor)} />;
+}
 
 export function FitBar({ fit }: { fit: number }) {
   return (
-    <span className="fit">
+    <span className="fit" role="img" aria-label={"Thể lực " + Math.round(fit) + "/100"}>
       <i className={fit < 70 ? "low" : ""} style={{ width: `${fit}%` }} />
     </span>
   );
@@ -52,19 +61,41 @@ export function PlayerRow({ p, right, cls, onClick }: { p: Player; right?: React
       <span>
         <span className="nm">{p.n}</span>
         <span className="sub">
-          <span className={`pos ${p.pos}`}>{p.pos}</span>
+          <Badge variant="pos" className={`pos ${p.pos}`}>
+            {p.pos}
+          </Badge>
           {p.pos2.map((x) => (
-            <span key={x} className={`pos ${x}`} style={{ opacity: 0.55 }}>
+            <Badge key={x} variant="pos" className={`pos alt text-foreground ${x}`}>
               {x}
-            </span>
+            </Badge>
           ))}
           <span>{p.age} tuổi</span>
-          <span className="mdot" style={{ background: mcol(p.mor) }} title={moraleLbl(p.mor)} />
-          {p.inj > 0 && <span className="tag inj">Chấn thương {p.inj}n</span>}
-          {p.away && <span className="tag away">Đang ở {C(p.away.club).n}</span>}
-          {p.loan && <span className="tag loan">Mượn</span>}
-          {p.listed && <span className="tag sale">Rao bán</span>}
-          {mine && yearsLeft(p) <= 1 && !p.loan && <span className="tag exp">HĐ hết 30/6</span>}
+          <Mood mor={p.mor} />
+          {p.inj > 0 && (
+            <Badge variant="tag" className="tag inj">
+              Chấn thương {p.inj}n
+            </Badge>
+          )}
+          {p.away && (
+            <Badge variant="tag" className="tag away">
+              Đang ở {C(p.away.club).n}
+            </Badge>
+          )}
+          {p.loan && (
+            <Badge variant="tag" className="tag loan">
+              Mượn
+            </Badge>
+          )}
+          {p.listed && (
+            <Badge variant="tag" className="tag sale">
+              Rao bán
+            </Badge>
+          )}
+          {mine && yearsLeft(p) <= 1 && !p.loan && (
+            <Badge variant="tag" className="tag exp">
+              HĐ hết 30/6
+            </Badge>
+          )}
         </span>
       </span>
       <span className="rt">{rt}</span>
