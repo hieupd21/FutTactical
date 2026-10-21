@@ -1,17 +1,17 @@
 /** Tiền tính bằng nghìn € → "12,5 tr €" hoặc "850k €" */
-export function fmtM(k: number): string {
-  k = Math.round(k);
-  const a = Math.abs(k);
-  const s = k < 0 ? "−" : "";
-  if (a >= 1000) {
-    const v = (a / 1000)
-      .toFixed(a >= 100000 ? 0 : a >= 10000 ? 1 : 2)
+export function formatMoney(thousands: number): string {
+  thousands = Math.round(thousands);
+  const absolute = Math.abs(thousands);
+  const sign = thousands < 0 ? "−" : "";
+  if (absolute >= 1000) {
+    const text = (absolute / 1000)
+      .toFixed(absolute >= 100000 ? 0 : absolute >= 10000 ? 1 : 2)
       .replace(/\.?0+$/, "")
       .replace(".", ",");
-    return `${s}${v} tr €`;
+    return `${sign}${text} tr €`;
   }
-  return `${s}${a}k €`;
+  return `${sign}${absolute}k €`;
 }
 
 /** Lương tính bằng nghìn € / tuần */
-export const fmtW = (w: number): string => `${Math.round(w)}k €/tuần`;
+export const formatWage = (wage: number): string => `${Math.round(wage)}k €/tuần`;

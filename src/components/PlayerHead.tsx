@@ -1,8 +1,8 @@
 import { useState, type ReactNode } from "react";
 import { renamePlayer } from "@/engine/actions";
-import { POSN } from "@/engine/constants";
-import { dyn, natName, ovrR } from "@/engine/players";
-import { C } from "@/engine/state";
+import { POSITION_NAMES } from "@/engine/constants";
+import { dynamicRating, natName, ovrRange } from "@/engine/players";
+import { getClub } from "@/engine/state";
 import type { Player } from "@/engine/types";
 import { Avatar } from "./Avatar";
 import { ClubBadge } from "./ClubBadge";
@@ -14,19 +14,27 @@ import { Badge } from "@/components/shadcn/badge";
 import { Input } from "@/components/shadcn/input";
 
 /** Phần đầu bảng trượt: ảnh, chỉ số, tên (sửa được), CLB. Dùng cho hồ sơ cầu thủ và đàm phán. */
-export function PlayerHead({ p, extra, onClose }: { p: Player; extra?: ReactNode; onClose?: () => void }) {
+export function PlayerHead({
+  player,
+  extra,
+  onClose,
+}: {
+  player: Player;
+  extra?: ReactNode;
+  onClose?: () => void;
+}) {
   const [edit, setEdit] = useState(false);
-  const [name, setName] = useState(p.n);
-  const key = playerImgKey(p);
-  const custom = useImages((s) => !!s.map[key]);
-  const put = useImages((s) => s.put);
-  const onImg = async (f: File | undefined) => {
-    if (!f) return;
+  const [name, setName] = useState(player.name);
+  const key = playerImgKey(player);
+  const custom = useImages((imageState) => !!imageState.map[key]);
+  const saveImage = useImages((imageState) => imageState.saveImage);
+  const onImg = async (file: File | undefined) => {
+    if (!file) return;
     try {
-      await put(key, await shrinkImage(f));
+      await saveImage(key, await shrinkImage(file));
       toast("Đã cập nhật ảnh.");
-    } catch (e) {
-      toast((e as Error).message);
+    } catch (error) {
+      toast((error as Error).message);
     }
   };
   return (
@@ -34,17 +42,17 @@ export function PlayerHead({ p, extra, onClose }: { p: Player; extra?: ReactNode
       <div className="grab" />
       <div className="sh-head">
         <div className="pav">
-          <Avatar p={p} size={72} />
-          <span className="pr">{dyn(p)}</span>
+          <Avatar player={player} size={72} />
+          <span className="pr">{dynamicRating(player)}</span>
           <label className="pimg" title="Đổi ảnh">
             {custom ? "Đổi" : "Ảnh"}
             <input
               type="file"
               accept="image/*"
               hidden
-              onChange={(e) => {
-                void onImg(e.target.files?.[0]);
-                e.target.value = "";
+              onChange={(event) => {
+                void onImg(event.target.files?.[0]);
+                event.target.value = "";
               }}
             />
           </label>
@@ -58,13 +66,13 @@ export function PlayerHead({ p, extra, onClose }: { p: Player; extra?: ReactNode
                 maxLength={32}
                 style={{ flex: 1 }}
                 autoFocus
-                onChange={(e) => setName(e.target.value)}
+                onChange={(event) => setName(event.target.value)}
                 aria-label="Tên cầu thủ"
               />
               <Button
                 size="sm"
                 onClick={() => {
-                  commit(() => renamePlayer(p.id, name));
+                  commit(() => renamePlayer(player.id, name));
                   setEdit(false);
                 }}
               >
@@ -73,11 +81,11 @@ export function PlayerHead({ p, extra, onClose }: { p: Player; extra?: ReactNode
             </div>
           ) : (
             <div className="sh-name">
-              {p.n}{" "}
+              {player.name}{" "}
               <button
                 className="linkb"
                 onClick={() => {
-                  setName(p.n);
+                  setName(player.name);
                   setEdit(true);
                 }}
               >
@@ -86,24 +94,24 @@ export function PlayerHead({ p, extra, onClose }: { p: Player; extra?: ReactNode
             </div>
           )}
           <div className="row" style={{ gap: 6, marginTop: 4 }}>
-            <Badge variant="pos" className={`pos ${p.pos}`}>
-              {POSN[p.pos]}
+            <Badge variant="pos" className={`pos ${player.pos}`}>
+              {POSITION_NAMES[player.pos]}
             </Badge>
-            {p.pos2.map((x) => (
-              <Badge key={x} variant="pos" className={`pos alt text-foreground ${x}`}>
-                {x}
+            {player.secondaryPositions.map((line) => (
+              <Badge key={line} variant="pos" className={`pos alt text-foreground ${line}`}>
+                {line}
               </Badge>
             ))}
             <span className="hint">
-              {p.age} tuổi · {natName(p)} · gốc {ovrR(p)}
+              {player.age} tuổi · {natName(player)} · gốc {ovrRange(player)}
             </span>
           </div>
           <div className="row" style={{ gap: 6, marginTop: 4 }}>
-            {p.club != null ? (
+            {player.club != null ? (
               <>
-                <ClubBadge name={C(p.club).n} size={20} />
+                <ClubBadge name={getClub(player.club).name} size={20} />
                 <span className="hint" style={{ color: "var(--ink)", fontWeight: 600 }}>
-                  {C(p.club).n}
+                  {getClub(player.club).name}
                 </span>
               </>
             ) : (
@@ -113,19 +121,19 @@ export function PlayerHead({ p, extra, onClose }: { p: Player; extra?: ReactNode
               <Button
                 variant="link"
                 className="linkb relative h-auto min-h-0 after:absolute after:-inset-x-2 after:-inset-y-3 after:content-[''] border-0 px-1 py-0.5 text-xs font-semibold tracking-normal text-muted-foreground normal-case"
-                onClick={() => void put(key, null)}
+                onClick={() => void saveImage(key, null)}
               >
                 Xóa ảnh
               </Button>
             )}
           </div>
-          {p.ln && p.ln !== p.n ? (
+          {player.longName && player.longName !== player.name ? (
             <div className="hint">
-              {p.ln}
-              {p.posD ? " · " + p.posD : ""}
+              {player.longName}
+              {player.positionDetail ? " · " + player.positionDetail : ""}
             </div>
-          ) : p.posD ? (
-            <div className="hint">{p.posD}</div>
+          ) : player.positionDetail ? (
+            <div className="hint">{player.positionDetail}</div>
           ) : null}
           {extra}
         </div>

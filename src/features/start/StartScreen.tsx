@@ -1,148 +1,405 @@
-// Màn hình bắt đầu sự nghiệp: chọn nguồn dữ liệu → giải → CLB.
+// Màn hình bắt đầu sự nghiệp: chọn hạng đấu → đội bóng (kiểu FC26), xem huy hiệu + sức mạnh rồi xác nhận.
+import { allLeagueInfos, findLeagueByPackId, mockData } from "@/engine/mockData";
 import { useEffect, useMemo, useState } from "react";
-import { REP_NEWBIE, strReq } from "@/engine/career";
-import { FICT_LEAGUES, OPTIONAL_LG, REAL_LG } from "@/engine/constants";
-import type { DataRow, LowerLeagueData } from "@/engine/types";
-import { packClubs } from "@/engine/world";
-import { ClubBadge } from "@/components/ClubBadge";
-import { Seg } from "@/components/ui";
-import { loadLower, loadPack, PACKS, type PackId } from "@/lib/data";
-import { useGame } from "@/stores/gameStore";
-import { Card } from "@/components/shadcn/card";
+import { ChevronDown, ChevronLeft, ChevronRight, Lock } from "lucide-react";
+import { NEWBIE_REPUTATION, strengthRequirement } from "@/engine/career";
 
-type Src = PackId | "fict";
-const LG_ORDER = ["EN", "ES", "DE", "IT", "FR"];
+import type { DataRow, Line } from "@/engine/types";
+import { packClubLineStrengths, packClubs } from "@/engine/world";
+import { ClubBadge } from "@/components/ClubBadge";
+import { Sheet } from "@/components/Sheet";
+import { SegmentedControl } from "@/components/ui";
+import { Button } from "@/components/shadcn/button";
+import { Card } from "@/components/shadcn/card";
+import { cn } from "@/lib/utils";
+import { loadPack, PACKS } from "@/lib/data";
+import { useGame } from "@/stores/gameStore";
+
 type Mode = "rookie" | "free";
+type PickerKind = "country" | "league" | "club";
+
+interface ClubChoice {
+  name: string;
+  strength: number;
+  lineStrengths: Record<Line, number>;
+  isLocked: boolean;
+  requiredReputation: number;
+  tierLabel: string;
+}
+
+const LINE_LABELS: [Line, string, string][] = [
+  ["GK", "Thủ môn", "var(--pos-gk)"],
+  ["DF", "Hậu vệ", "var(--pos-df)"],
+  ["MF", "Tiền vệ", "var(--pos-mf)"],
+  ["FW", "Tiền đạo", "var(--pos-fw)"],
+];
+
+function getTierLabel(rankIndex: number, clubCount: number): string {
+  if (rankIndex < 3) return "Ứng viên vô địch";
+  if (rankIndex < 7) return "Nhóm dự cúp châu Âu";
+  if (rankIndex < clubCount - 5) return "Nhóm giữa";
+  return "Đội cửa dưới";
+}
+
+/** Hàng chọn kiểu FC26: mũi tên trái/phải để lướt, bấm giữa để mở danh sách đầy đủ */
+function PickerRow({
+  label,
+  value,
+  onPrevious,
+  onNext,
+  onOpenList,
+  isDisabled,
+}: {
+  label: string;
+  value: string;
+  onPrevious: () => void;
+  onNext: () => void;
+  onOpenList: () => void;
+  isDisabled: boolean;
+}) {
+  const arrowClass =
+    "grid size-12 shrink-0 place-items-center rounded-lg border border-[var(--line)] bg-[var(--surface)] text-[var(--ink)] transition-colors hover:border-[var(--accent)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)] disabled:cursor-not-allowed disabled:opacity-40";
+  return (
+    <div className="flex items-stretch gap-2">
+      <button
+        type="button"
+        className={arrowClass}
+        onClick={onPrevious}
+        disabled={isDisabled}
+        aria-label={`${label}: trước`}
+      >
+        <ChevronLeft size={20} aria-hidden="true" />
+      </button>
+      <button
+        type="button"
+        onClick={onOpenList}
+        disabled={isDisabled}
+        aria-haspopup="dialog"
+        className="flex min-h-12 min-w-0 flex-1 items-center justify-between gap-2 rounded-lg border border-[var(--line)] bg-[var(--surface)] px-3.5 text-left text-[var(--ink)] transition-colors hover:border-[var(--accent)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)] disabled:cursor-not-allowed disabled:opacity-40"
+      >
+        <span className="flex min-w-0 flex-col gap-0.5">
+          <span className="text-[11px] font-medium tracking-wide text-[var(--muted)] uppercase">
+            {label}
+          </span>
+          <span className="truncate text-[15px] font-bold">{value}</span>
+        </span>
+        <ChevronDown size={18} className="shrink-0 text-[var(--muted)]" aria-hidden="true" />
+      </button>
+      <button
+        type="button"
+        className={arrowClass}
+        onClick={onNext}
+        disabled={isDisabled}
+        aria-label={`${label}: sau`}
+      >
+        <ChevronRight size={20} aria-hidden="true" />
+      </button>
+    </div>
+  );
+}
 
 export function StartScreen() {
-  const [src, setSrc] = useState<Src>("fc27");
   const [rows, setRows] = useState<DataRow[] | null>(null);
-  const [err, setErr] = useState<string | null>(null);
-  const [pickLg, setPickLg] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [pickedCountryCode, setPickedCountryCode] = useState("");
+  const [pickedLeagueId, setPickedLeagueId] = useState("");
+  const [pickedClubName, setPickedClubName] = useState("");
+  const [openedPicker, setOpenedPicker] = useState<PickerKind | null>(null);
   const [mode, setMode] = useState<Mode>("rookie");
-  const [lower, setLower] = useState<LowerLeagueData[]>([]);
-  const { startReal, startFict } = useGame();
+  const { startReal } = useGame();
 
   useEffect(() => {
-    setErr(null);
-    if (src === "fc27") {
-      setRows(null);
-      loadPack(src)
-        .then(setRows)
-        .catch((e: Error) => setErr(e.message));
-    } else setRows(null);
-  }, [src]);
-
-  useEffect(() => {
-    loadLower()
-      .then(setLower)
-      .catch((e: Error) => setErr(e.message));
+    loadPack("fc27")
+      .then(setRows)
+      .catch((loadError: Error) => setError(loadError.message));
   }, []);
 
-  const real = src !== "fict";
-  const have = useMemo(() => new Set((rows ? packClubs(rows) : []).map((c) => c.lid)), [rows]);
-  // hạng thấp hư cấu chỉ dùng khi gói dữ liệu chưa có League One/Two thật
-  const fallback = lower.filter((l) => !Object.entries(REAL_LG).some(([k, r]) => r.id === l.id && have.has(+k)));
+  const leagueIdsInPack = useMemo(
+    () => new Set((rows ? packClubs(rows) : []).map((packClub) => packClub.leagueId)),
+    [rows],
+  );
   // HLV mới chỉ nhận được các đội có yêu cầu uy tín trong tầm; chế độ tự chọn mở hết
-  const rookie = real && mode === "rookie";
-  const lgs = real
-    ? [
-        ...[...LG_ORDER, "DE2", "FR2", "ES2", "IT2", "EN3", "EN4"]
-          .map((id) => Object.entries(REAL_LG).find(([k, l]) => l.id === id && (!OPTIONAL_LG.includes(+k) || have.has(+k)))?.[1])
-          .filter((l) => !!l),
-        ...fallback,
-      ].sort((a, b) => (rookie ? a.lvl - b.lvl : b.lvl - a.lvl))
-    : FICT_LEAGUES;
-  const lg = lgs.some((l) => l.id === pickLg) ? pickLg : lgs[0].id;
+  const isRookie = mode === "rookie";
+  const playableLeagues = allLeagueInfos().filter(
+    (league) =>
+      league.isSimulated !== false && (!league.isOptional || leagueIdsInPack.has(league.packId)),
+  );
+  const countryCodes = [...new Set(playableLeagues.map((league) => league.nationality))];
+  const selectedCountryCode = countryCodes.includes(pickedCountryCode)
+    ? pickedCountryCode
+    : countryCodes[0];
+  const countryName = (countryCode: string) => mockData().leagues.countries[countryCode].name;
+  const leagues = playableLeagues
+    .filter((league) => league.nationality === selectedCountryCode)
+    .sort((leagueA, leagueB) =>
+      isRookie ? leagueA.level - leagueB.level : leagueB.level - leagueA.level,
+    );
+  const selectedLeague = leagues.find((league) => league.id === pickedLeagueId) ?? leagues[0];
+  const leagueName = (leagueFullName: string) => leagueFullName.replace("Giải VĐQG ", "");
 
-  const clubs = useMemo(() => {
-    if (!real) return (FICT_LEAGUES.find((l) => l.id === lg)?.clubs || []).map(([n, str], i) => ({ n, str, k: String(i) }));
-    const low = fallback.find((l) => l.id === lg);
-    if (low) return [...low.clubs].sort((a, b) => b[1] - a[1]).map(([n, str]) => ({ n, str, k: n }));
+  const clubs = useMemo<ClubChoice[]>(() => {
     if (!rows) return [];
-    const lid = Object.keys(REAL_LG).find((k) => REAL_LG[+k].id === lg);
-    return packClubs(rows)
-      .filter((c) => String(c.lid) === lid)
-      .sort((a, b) => b.str - a.str)
-      .map((c) => ({ n: c.n, str: c.str, k: c.n }));
-  }, [real, rows, lg, fallback]);
+    const leagueClubs = packClubs(rows)
+      .filter((packClub) => findLeagueByPackId(packClub.leagueId)?.id === selectedLeague.id)
+      .sort((packClubA, packClubB) => packClubB.strength - packClubA.strength);
+    return leagueClubs.map((packClub, rankIndex) => {
+      const requiredReputation = strengthRequirement(packClub.strength);
+      return {
+        name: packClub.name,
+        strength: packClub.strength,
+        lineStrengths: packClubLineStrengths(packClub),
+        isLocked: isRookie && requiredReputation > NEWBIE_REPUTATION,
+        requiredReputation,
+        tierLabel: getTierLabel(rankIndex, leagueClubs.length),
+      };
+    });
+  }, [rows, selectedLeague.id, isRookie]);
 
-  const n = clubs.length;
-  const tier = (i: number) => (i < 3 ? "Ứng viên vô địch" : i < 7 ? "Nhóm dự cúp châu Âu" : i < n - 5 ? "Nhóm giữa" : "Đội cửa dưới");
-  const locked = (str: number) => rookie && strReq(str) > REP_NEWBIE;
+  // Đổi hạng đấu thì tên đã chọn không còn trong danh sách: tự rơi về đội mạnh nhất chọn được
+  const selectedClub =
+    clubs.find((club) => club.name === pickedClubName) ??
+    clubs.find((club) => !club.isLocked) ??
+    clubs[0];
 
-  const pick = (k: string) => {
-    if (!real) {
-      startFict(lg, +k);
-      return;
-    }
-    if (!rows) return;
-    startReal(rows, lg, k, PACKS[src as PackId].src, { lower: fallback, rookie });
+  const stepCountry = (direction: 1 | -1) => {
+    const currentIndex = countryCodes.indexOf(selectedCountryCode);
+    setPickedCountryCode(
+      countryCodes[(currentIndex + direction + countryCodes.length) % countryCodes.length],
+    );
   };
+  const stepLeague = (direction: 1 | -1) => {
+    const currentIndex = leagues.findIndex((league) => league.id === selectedLeague.id);
+    setPickedLeagueId(leagues[(currentIndex + direction + leagues.length) % leagues.length].id);
+  };
+  const stepClub = (direction: 1 | -1) => {
+    if (!selectedClub) return;
+    const currentIndex = clubs.findIndex((club) => club.name === selectedClub.name);
+    setPickedClubName(clubs[(currentIndex + direction + clubs.length) % clubs.length].name);
+  };
+
+  const canConfirm = Boolean(rows && selectedClub && !selectedClub.isLocked);
+  const confirm = () => {
+    if (!rows || !selectedClub || !canConfirm) return;
+    startReal(rows, selectedLeague.id, selectedClub.name, PACKS.fc27.sourceNote, {
+      rookie: isRookie,
+    });
+  };
+
+  const isLoading = !rows && !error;
+  const closePicker = () => setOpenedPicker(null);
 
   return (
     <Card className="panel min-w-0 gap-0 rounded-xl p-4 shadow-none">
-      <h2>Bắt đầu sự nghiệp</h2>
-      <div className="col" style={{ gap: 6 }}>
-        <h3>Nguồn dữ liệu</h3>
-        <Seg<Src>
-          value={src}
-          onChange={setSrc}
+      <h2>Chọn đội bóng</h2>
+      <div className="col mt-3" style={{ gap: 6 }}>
+        <SegmentedControl<Mode>
+          value={mode}
+          onChange={setMode}
           items={[
-            ["fc27", PACKS.fc27.label],
-            ["fict", "Thế giới hư cấu"],
+            ["rookie", "HLV mới"],
+            ["free", "Tự chọn CLB"],
           ]}
         />
-        {src === "fc27" && <p className="hint">{PACKS[src].note}</p>}
-        {src === "fict" && <p className="hint">Tên CLB theo địa danh và màu áo, cầu thủ hư cấu. Dùng bản này khi phát hành công khai.</p>}
-        {err && <p className="err">{err}</p>}
+        <p className="hint">
+          {isRookie
+            ? "Bạn còn vô danh nên chỉ được các đội hạng dưới giao ghế. Đạt thành tích để tăng uy tín, CLB lớn hơn sẽ gửi lời mời cuối mùa."
+            : "Chọn thẳng bất kỳ CLB nào, kể cả đội mạnh nhất. Uy tín khởi đầu tương xứng với CLB đã chọn."}
+        </p>
+        <p className="hint">{PACKS.fc27.note}</p>
       </div>
-      {real && (
-        <div className="col" style={{ gap: 6 }}>
-          <h3>Cách bắt đầu</h3>
-          <Seg<Mode>
-            value={mode}
-            onChange={setMode}
-            items={[
-              ["rookie", "HLV mới"],
-              ["free", "Tự chọn CLB"],
-            ]}
-          />
-          <p className="hint">
-            {mode === "rookie"
-              ? "Bạn còn vô danh nên chỉ được các đội hạng dưới giao ghế. Hãy đạt thành tích để tăng uy tín, các CLB lớn hơn sẽ gửi lời mời cuối mùa."
-              : "Chọn thẳng bất kỳ CLB nào, kể cả đội mạnh nhất. Uy tín khởi đầu tương xứng với CLB đã chọn."}
-          </p>
-        </div>
-      )}
-      {
-        <>
-          <Seg value={lg} onChange={setPickLg} items={lgs.map((l) => [l.id, l.n.replace("Giải VĐQG ", "")] as [string, string])} />
-          {real && !rows && !err ? (
-            <p className="hint">Đang tải dữ liệu…</p>
-          ) : (
-            <div className="pick">
-              {clubs.map((c, i) => (
-                <button
-                  key={c.k}
-                  onClick={() => pick(c.k)}
-                  disabled={locked(c.str)}
-                  style={locked(c.str) ? { opacity: 0.5, cursor: "not-allowed" } : undefined}
-                >
-                  <span className="row" style={{ gap: 10, flexWrap: "nowrap" }}>
-                    <ClubBadge name={c.n} size={36} />
-                    <span className="nm">{c.n}</span>
-                  </span>
-                  <span className="hint">
-                    {locked(c.str) ? `Cần uy tín ${strReq(c.str)}, bạn mới có ${REP_NEWBIE}` : `${tier(i)} · sức mạnh ${c.str}`}
-                  </span>
-                </button>
-              ))}
-              {real && rows && !clubs.length && <p className="hint">Dữ liệu không có CLB nào của giải này.</p>}
+
+      {error && <p className="err mt-3">{error}</p>}
+
+      <div className="mt-4 flex flex-col gap-2.5">
+        <PickerRow
+          label="Quốc gia"
+          value={countryName(selectedCountryCode)}
+          onPrevious={() => stepCountry(-1)}
+          onNext={() => stepCountry(1)}
+          onOpenList={() => setOpenedPicker("country")}
+          isDisabled={countryCodes.length < 2}
+        />
+        <PickerRow
+          label="Hạng đấu"
+          value={leagueName(selectedLeague.name)}
+          onPrevious={() => stepLeague(-1)}
+          onNext={() => stepLeague(1)}
+          onOpenList={() => setOpenedPicker("league")}
+          isDisabled={leagues.length < 2}
+        />
+        <PickerRow
+          label="Đội bóng"
+          value={selectedClub?.name ?? (isLoading ? "Đang tải dữ liệu…" : "Chưa có đội")}
+          onPrevious={() => stepClub(-1)}
+          onNext={() => stepClub(1)}
+          onOpenList={() => setOpenedPicker("club")}
+          isDisabled={clubs.length < 2}
+        />
+      </div>
+
+      <section
+        aria-live="polite"
+        className="mt-5 flex min-h-[300px] flex-col items-center gap-4 rounded-xl border border-[var(--line)] bg-[var(--soft)] px-4 py-6"
+      >
+        {selectedClub ? (
+          <>
+            <div
+              key={selectedClub.name}
+              className={cn(
+                "animate-in fade-in-0 zoom-in-90 duration-300 transition-[filter,opacity]",
+                selectedClub.isLocked && "opacity-60 grayscale",
+              )}
+            >
+              <ClubBadge name={selectedClub.name} size={128} />
             </div>
-          )}
-        </>
-      }
+            <div className="flex flex-col items-center gap-1 text-center">
+              <h3 className="text-balance text-[20px] uppercase">{selectedClub.name}</h3>
+              <p className="hint">
+                {leagueName(selectedLeague.name)} · {selectedClub.tierLabel}
+              </p>
+            </div>
+            <dl className="grid w-full max-w-[420px] grid-cols-5 gap-1.5 text-center">
+              <div className="flex flex-col gap-1 rounded-lg bg-[var(--surface)] px-1 py-2">
+                <dt className="text-[10px] font-medium text-[var(--muted)] uppercase">Sức mạnh</dt>
+                <dd className="text-[20px] font-extrabold text-[var(--ink)] tabular-nums">
+                  {selectedClub.strength}
+                </dd>
+              </div>
+              {LINE_LABELS.map(([line, lineLabel, lineColor]) => (
+                <div
+                  key={line}
+                  className="flex flex-col gap-1 rounded-lg bg-[var(--surface)] px-1 py-2"
+                >
+                  <dt className="truncate text-[10px] font-medium text-[var(--muted)] uppercase">
+                    {lineLabel}
+                  </dt>
+                  <dd
+                    className="text-[20px] font-extrabold tabular-nums"
+                    style={{ color: lineColor }}
+                  >
+                    {selectedClub.lineStrengths[line]}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+            {selectedClub.isLocked && (
+              <p className="flex items-center gap-1.5 text-center text-[13px] font-semibold text-[var(--loss)]">
+                <Lock size={14} aria-hidden="true" />
+                Cần uy tín {selectedClub.requiredReputation}, bạn mới có {NEWBIE_REPUTATION}
+              </p>
+            )}
+          </>
+        ) : (
+          <p className="hint m-auto">
+            {isLoading ? "Đang tải dữ liệu…" : "Dữ liệu không có CLB nào của giải này."}
+          </p>
+        )}
+      </section>
+
+      <div className="sticky bottom-0 z-10 -mx-4 -mb-4 mt-4 rounded-b-xl border-t border-[var(--line)] bg-[var(--surface)] p-4 pb-[max(1rem,env(safe-area-inset-bottom))]">
+        <Button variant="hot" className="w-full" disabled={!canConfirm} onClick={confirm}>
+          {selectedClub?.isLocked ? "Chưa thể chọn đội này" : "Xác nhận"}
+        </Button>
+      </div>
+
+      {openedPicker === "country" && (
+        <Sheet onClose={closePicker}>
+          <h3>Chọn quốc gia</h3>
+          <div className="flex max-h-[60dvh] flex-col gap-2 overflow-y-auto">
+            {countryCodes.map((countryCode) => (
+              <button
+                key={countryCode}
+                type="button"
+                onClick={() => {
+                  setPickedCountryCode(countryCode);
+                  closePicker();
+                }}
+                aria-current={countryCode === selectedCountryCode}
+                className={cn(
+                  "min-h-12 rounded-lg border px-3.5 text-left text-[15px] font-bold text-[var(--ink)]",
+                  countryCode === selectedCountryCode
+                    ? "border-[var(--accent)] bg-[var(--soft)]"
+                    : "border-[var(--line)] bg-[var(--surface)] hover:border-[var(--accent)]",
+                )}
+              >
+                {countryName(countryCode)}
+              </button>
+            ))}
+          </div>
+        </Sheet>
+      )}
+
+      {openedPicker === "league" && (
+        <Sheet onClose={closePicker}>
+          <h3>Chọn hạng đấu · {countryName(selectedCountryCode)}</h3>
+          <div className="flex max-h-[60dvh] flex-col gap-2 overflow-y-auto">
+            {leagues.map((league) => (
+              <button
+                key={league.id}
+                type="button"
+                onClick={() => {
+                  setPickedLeagueId(league.id);
+                  closePicker();
+                }}
+                aria-current={league.id === selectedLeague.id}
+                className={cn(
+                  "min-h-12 rounded-lg border px-3.5 text-left text-[15px] font-bold text-[var(--ink)]",
+                  league.id === selectedLeague.id
+                    ? "border-[var(--accent)] bg-[var(--soft)]"
+                    : "border-[var(--line)] bg-[var(--surface)] hover:border-[var(--accent)]",
+                )}
+              >
+                {leagueName(league.name)}
+              </button>
+            ))}
+          </div>
+        </Sheet>
+      )}
+
+      {openedPicker === "club" && (
+        <Sheet onClose={closePicker}>
+          <h3>Chọn đội · {leagueName(selectedLeague.name)}</h3>
+          <div className="flex max-h-[60dvh] flex-col gap-2 overflow-y-auto">
+            {clubs.map((club) => (
+              <button
+                key={club.name}
+                type="button"
+                onClick={() => {
+                  setPickedClubName(club.name);
+                  closePicker();
+                }}
+                aria-current={club.name === selectedClub?.name}
+                className={cn(
+                  "flex min-h-14 items-center gap-3 rounded-lg border px-3 py-2 text-left text-[var(--ink)]",
+                  club.name === selectedClub?.name
+                    ? "border-[var(--accent)] bg-[var(--soft)]"
+                    : "border-[var(--line)] bg-[var(--surface)] hover:border-[var(--accent)]",
+                  club.isLocked && "opacity-60",
+                )}
+              >
+                <ClubBadge name={club.name} size={36} />
+                <span className="flex min-w-0 flex-1 flex-col gap-0.5">
+                  <span className="truncate text-[15px] font-bold">{club.name}</span>
+                  <span className="hint">
+                    {club.isLocked ? `Cần uy tín ${club.requiredReputation}` : club.tierLabel}
+                  </span>
+                </span>
+                {club.isLocked ? (
+                  <Lock
+                    size={16}
+                    className="shrink-0 text-[var(--muted)]"
+                    aria-label="Chưa mở khóa"
+                  />
+                ) : (
+                  <span className="shrink-0 text-[17px] font-extrabold tabular-nums">
+                    {club.strength}
+                  </span>
+                )}
+              </button>
+            ))}
+          </div>
+        </Sheet>
+      )}
     </Card>
   );
 }

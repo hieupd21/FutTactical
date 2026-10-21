@@ -12,7 +12,7 @@ Một người chơi duy nhất: chủ dự án, dùng riêng. Chơi cả trên 
 
 ## Product Purpose
 
-Sân Cỏ Career là game quản lý bóng đá kiểu Career Mode của EA FC. Trận đấu được giả lập, người chơi không điều khiển; trọng tâm là chuyển nhượng và đàm phán. Thành công là người chơi mở lên là chơi được ngay, và các thương vụ cùng mùa giải diễn ra đủ chân thực để muốn chơi tiếp qua nhiều mùa.
+Sân Cỏ Career là game quản lý bóng đá kiểu Career Mode của EA FC. Trận đấu chạy từng phút; người chơi không điều khiển cầu thủ nhưng có thể tạm dừng, thay người (tối đa 5) và đổi chiến thuật (tâm lý đội, pressing) bất cứ lúc nào. Trọng tâm vẫn là chuyển nhượng và đàm phán. Thành công là người chơi mở lên là chơi được ngay, và các thương vụ cùng mùa giải diễn ra đủ chân thực để muốn chơi tiếp qua nhiều mùa.
 
 ## Positioning
 
@@ -21,8 +21,8 @@ Phần Career Mode của FC được rút gọn thành một ứng dụng web mo
 ## Operating Context
 
 - Lịch mùa giải tính theo ngày từ 1/7; có kỳ chuyển nhượng hè và đông, Deadline Day tua theo giờ, tổng kết mùa ngày 335.
-- Dữ liệu cầu thủ thật theo FC 27 (FIFPlay) ghép FC 26 (sofifa), nằm trong `public/data/fc27.json`; có thể nhập CSV sofifa hoặc FIFPlay ngay trong game. Người chơi có thể đổi tên giải và CLB.
-- Chạy hoàn toàn trên trình duyệt, lưu bằng IndexedDB, không cần server hay tài khoản.
+- Dữ liệu cầu thủ thật theo FC 27 (FIFPlay) ghép FC 26 (sofifa), nằm trong `public/data/fc27.json`. Người chơi có thể đổi tên giải và CLB.
+- Chạy hoàn toàn trên trình duyệt, lưu bằng IndexedDB, không cần server hay tài khoản. Bản lưu có `saveVersion`; bản lưu cũ không tương thích sẽ bị bỏ và bắt đầu sự nghiệp mới.
 - Tiền tính bằng nghìn € (k€); toàn bộ chữ trong giao diện là tiếng Việt.
 
 ## Capabilities and Constraints
@@ -30,7 +30,8 @@ Phần Career Mode của FC được rút gọn thành một ứng dụng web mo
 - Giải mô phỏng: Premier League, LaLiga, Bundesliga, Serie A, Ligue 1. Có cầu thủ tự do, mượn, ký trước, gia hạn, thế giới AI ↔ AI.
 - Quy tắc game (lịch, giá trị, đàm phán) là số liệu đã chốt, không đổi nếu không được yêu cầu (xem CLAUDE.md).
 - Được dùng tên cầu thủ và CLB thật vì chỉ dùng riêng; không thêm logo hay ảnh thật. Huy hiệu CLB là SVG tự vẽ, ảnh cầu thủ do người chơi tự tải lên. Tên cầu thủ chỉ dùng ký tự Latin.
-- Chưa có cúp châu Âu, cúp quốc nội, chiến thuật chi tiết hay lịch sử nhiều mùa; đây là hướng phát triển đã bàn, chưa làm.
+- Hộp thư có 15 loại thông báo, mỗi loại một hành động riêng khi bấm. Thư của người đại diện hiện cả ở tab Chuyển nhượng. Sau mỗi lượt đàm phán hoặc phản giá, đối phương trả lời sau ít nhất 24 giờ game (Deadline Day: 1 giờ).
+- Chiến thuật hiện có tâm lý đội và pressing; chưa có cúp châu Âu, cúp quốc nội, chiến thuật chi tiết hơn (sơ đồ theo tình huống) hay lịch sử nhiều mùa. Đây là hướng phát triển đã bàn, chưa làm.
 - Việc đóng gói thành app (Capacitor) chưa nằm trong kế hoạch hiện tại.
 
 ## Brand Commitments
@@ -39,14 +40,14 @@ Tên sản phẩm: Sân Cỏ Career. Font chữ toàn game là Unbounded, nạp 
 
 ## Evidence on Hand
 
-Dữ liệu cầu thủ thật trong `public/data/fc27.json` và bộ nhập CSV. Không có người dùng khác, đánh giá hay số liệu sử dụng; không được bịa ra các thứ này.
+Dữ liệu cầu thủ thật trong `public/data/fc27.json`. Không có người dùng khác, đánh giá hay số liệu sử dụng; không được bịa ra các thứ này.
 
 ## Product Principles
 
 - Mở là chơi: mọi thao tác chính dùng được bằng một tay trên điện thoại và không bắt người chơi cài đặt hay đăng nhập.
-- Chiều sâu nằm ở chuyển nhượng và đàm phán, không ở điều khiển trận đấu.
+- Chiều sâu nằm ở chuyển nhượng và đàm phán; trận đấu chỉ cần đủ quyết định (thay người, chiến thuật) để người chơi thấy mình tác động được, không cần điều khiển từng cầu thủ.
 - Thế giới phải sống: CLB AI hành động độc lập, người chơi luôn thấy hệ quả.
-- Dữ liệu là của người chơi: nhập được dữ liệu mới, đổi tên giải và CLB, chạy offline.
+- Dữ liệu là của người chơi: đổi tên giải và CLB, tự tải ảnh cầu thủ, chạy offline.
 
 ## Accessibility & Inclusion
 

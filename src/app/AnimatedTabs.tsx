@@ -26,23 +26,23 @@ const PAGES: Record<TabKey, ReactNode> = {
 };
 
 export function AnimatedTabs() {
-  const tab = useUi((s) => s.tab);
+  const currentTab = useUi((ui) => ui.currentTab);
   const reduce = useReducedMotion();
-  const dy = reduce ? 0 : 10;
+  const offsetY = reduce ? 0 : 10;
 
   return (
     <LazyMotion features={domAnimation} strict>
       <AnimatePresence mode="wait" initial={false}>
         <m.div
-          key={tab}
+          key={currentTab}
           className="col"
           style={{ gap: 14 }}
-          initial={{ opacity: 0, y: dy }}
+          initial={{ opacity: 0, y: offsetY }}
           animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -dy }}
+          exit={{ opacity: 0, y: -offsetY }}
           transition={{ duration: 0.15, ease: "easeOut" }}
         >
-          {PAGES[tab]}
+          {PAGES[currentTab]}
         </m.div>
       </AnimatePresence>
     </LazyMotion>

@@ -1,19 +1,25 @@
 // Cầu nối giữa engine (trạng thái S mutable) và React.
 // Mọi thay đổi đi qua commit(): chạy hàm của engine → tăng phiên bản để các component vẽ lại → lưu (debounce).
 import { create } from "zustand";
-import { S, setState } from "@/engine/state";
+import { gameState, setState } from "@/engine/state";
 import type { DataRow } from "@/engine/types";
-import { newGame, newGameReal, type RealStart } from "@/engine/world";
+import { newGameReal, type RealStart } from "@/engine/world";
+import { loadMockData } from "@/lib/mockData";
 import { clearGame, loadGame, saveGame } from "@/lib/persist";
 
 type Status = "loading" | "none" | "ready";
 interface GameStore {
   status: Status;
-  v: number;
+  version: number;
   boot: () => Promise<void>;
-  commit: <T>(fn?: () => T) => T | undefined;
-  startReal: (rows: DataRow[], lgId: string, club: string, src: string, opts?: RealStart) => void;
-  startFict: (lgId: string, clubIdx: number) => void;
+  commit: <T>(action?: () => T) => T | undefined;
+  startReal: (
+    rows: DataRow[],
+    lgId: string,
+    club: string,
+    dataSource: string,
+    opts?: RealStart,
+  ) => void;
   reset: () => Promise<void>;
 }
 
@@ -21,43 +27,39 @@ let saveTimer: ReturnType<typeof setTimeout> | undefined;
 function scheduleSave(): void {
   clearTimeout(saveTimer);
   saveTimer = setTimeout(() => {
-    if (S) void saveGame(S);
+    if (gameState) void saveGame(gameState);
   }, 250);
 }
 
 export const useGame = create<GameStore>((set, get) => ({
   status: "loading",
-  v: 0,
+  version: 0,
   boot: async () => {
-    const s = await loadGame();
-    if (s && !s.lgN) s.lgN = {};
-    setState(s);
-    set({ status: s ? "ready" : "none", v: get().v + 1 });
+    await loadMockData();
+    const state = await loadGame();
+    if (state && !state.leagueNames) state.leagueNames = {};
+    setState(state);
+    set({ status: state ? "ready" : "none", version: get().version + 1 });
   },
-  commit: (fn) => {
-    const r = fn ? fn() : undefined;
-    set({ v: get().v + 1 });
+  commit: (action) => {
+    const result = action ? action() : undefined;
+    set({ version: get().version + 1 });
     scheduleSave();
-    return r;
+    return result;
   },
-  startReal: (rows, lgId, club, src, opts) => {
-    newGameReal(rows, lgId, club, src, opts);
-    set({ status: "ready", v: get().v + 1 });
-    scheduleSave();
-  },
-  startFict: (lgId, clubIdx) => {
-    newGame(lgId, clubIdx);
-    set({ status: "ready", v: get().v + 1 });
+  startReal: (rows, lgId, club, dataSource, opts) => {
+    newGameReal(rows, lgId, club, dataSource, opts);
+    set({ status: "ready", version: get().version + 1 });
     scheduleSave();
   },
   reset: async () => {
     clearTimeout(saveTimer);
     await clearGame();
     setState(null);
-    set({ status: "none", v: get().v + 1 });
+    set({ status: "none", version: get().version + 1 });
   },
 }));
 
 /** Đăng ký vẽ lại khi trạng thái game thay đổi. Trả về phiên bản hiện tại. */
-export const useGameVersion = (): number => useGame((s) => s.v);
-export const commit = <T>(fn?: () => T): T | undefined => useGame.getState().commit(fn);
+export const useGameVersion = (): number => useGame((store) => store.version);
+export const commit = <T>(action?: () => T): T | undefined => useGame.getState().commit(action);

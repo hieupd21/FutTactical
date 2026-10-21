@@ -1,168 +1,10 @@
-// Màu áo đặc trưng [màu chính, màu phụ] và mã viết tắt. Huy hiệu là thiết kế chung (khiên + họa tiết + chữ), không mô phỏng huy hiệu thật.
-export const CLUB_COLORS: Record<string, [string, string]> = {
-  Arsenal: ["#d1001f", "#ffffff"],
-  "Aston Villa": ["#7a1e3d", "#94bee5"],
-  "AFC Bournemouth": ["#c8102e", "#111111"],
-  Brentford: ["#e30613", "#ffffff"],
-  "Brighton & Hove Albion": ["#0057b8", "#ffffff"],
-  Chelsea: ["#034694", "#ffffff"],
-  "Coventry City": ["#6cabdd", "#ffffff"],
-  "Crystal Palace": ["#1b458f", "#c4122e"],
-  Everton: ["#003399", "#ffffff"],
-  "Fulham FC": ["#ffffff", "#111111"],
-  "Hull City": ["#f5a12d", "#111111"],
-  "Ipswich Town": ["#0044a9", "#ffffff"],
-  "Leeds United": ["#ffffff", "#1d428a"],
-  Liverpool: ["#c8102e", "#f6eb61"],
-  "Manchester City": ["#6cabdd", "#1c2c5b"],
-  "Manchester United": ["#da291c", "#fbe122"],
-  "Newcastle United": ["#111111", "#ffffff"],
-  "Nottingham Forest": ["#dd0000", "#ffffff"],
-  Sunderland: ["#eb172b", "#ffffff"],
-  "Tottenham Hotspur": ["#ffffff", "#132257"],
-  "West Ham United": ["#7a263a", "#1bb1e7"],
-  Burnley: ["#6c1d45", "#99d6ea"],
-  "Wolverhampton Wanderers": ["#fdb913", "#231f20"],
-  "Deportivo Alavés": ["#0761af", "#ffffff"],
-  "Athletic Club": ["#ee2523", "#ffffff"],
-  "Atlético Madrid": ["#cb3524", "#ffffff"],
-  "FC Barcelona": ["#a50044", "#004d98"],
-  "RC Celta": ["#8ac3ee", "#e5254e"],
-  "RC Deportivo": ["#1d55a3", "#ffffff"],
-  "Elche CF": ["#ffffff", "#05642c"],
-  "RCD Espanyol": ["#007fc8", "#ffffff"],
-  "Getafe CF": ["#005999", "#ffffff"],
-  "Levante UD": ["#b4053f", "#004d9f"],
-  "Málaga CF": ["#0d8ec5", "#ffffff"],
-  "CA Osasuna": ["#d91a21", "#0a346f"],
-  "Racing Santander": ["#ffffff", "#04754a"],
-  "Rayo Vallecano": ["#ffffff", "#e53027"],
-  "Real Betis Balompié": ["#0bb363", "#ffffff"],
-  "Real Madrid": ["#ffffff", "#febe10"],
-  "Real Sociedad": ["#0067b1", "#ffffff"],
-  "Sevilla FC": ["#ffffff", "#d81e05"],
-  "Valencia CF": ["#ffffff", "#ee3524"],
-  "Villarreal CF": ["#ffe667", "#005187"],
-  "RCD Mallorca": ["#e20613", "#111111"],
-  "Girona FC": ["#e62a2d", "#ffffff"],
-  "Real Oviedo": ["#0a3c8c", "#ffffff"],
-  "FC Augsburg": ["#ba3733", "#46714d"],
-  "1. FC Union Berlin": ["#eb1923", "#ffffff"],
-  "SV Werder Bremen": ["#1d9053", "#ffffff"],
-  "Borussia Dortmund": ["#fde100", "#111111"],
-  "SV Elversberg": ["#111111", "#ffffff"],
-  "Eintracht Frankfurt": ["#e1000f", "#111111"],
-  "SC Freiburg": ["#111111", "#e2001a"],
-  "Hamburger SV": ["#0a3f86", "#ffffff"],
-  "TSG 1899 Hoffenheim": ["#1961b5", "#ffffff"],
-  "1. FC Köln": ["#ffffff", "#ed1c24"],
-  "RB Leipzig": ["#ffffff", "#dd0741"],
-  "Bayer 04 Leverkusen": ["#e32221", "#111111"],
-  "1. FSV Mainz 05": ["#c3141e", "#ffffff"],
-  "Borussia Mönchengladbach": ["#ffffff", "#111111"],
-  "FC Bayern München": ["#dc052d", "#0066b2"],
-  "SC Paderborn 07": ["#005ca9", "#111111"],
-  "FC Schalke 04": ["#004d9d", "#ffffff"],
-  "VfB Stuttgart": ["#ffffff", "#e32219"],
-  "VfL Wolfsburg": ["#65b32e", "#ffffff"],
-  "1. FC Heidenheim 1846": ["#e2001a", "#003b79"],
-  "FC St. Pauli": ["#5b3a29", "#ffffff"],
-  Atalanta: ["#1e71b8", "#111111"],
-  Bologna: ["#1a2f48", "#a21c26"],
-  Cagliari: ["#a00d2b", "#002350"],
-  Como: ["#003e7e", "#ffffff"],
-  Fiorentina: ["#482e92", "#ffffff"],
-  Frosinone: ["#fcd201", "#1f4a9a"],
-  Genoa: ["#a21c26", "#001d3d"],
-  Inter: ["#0068a8", "#111111"],
-  Juventus: ["#ffffff", "#111111"],
-  Lazio: ["#87d8f7", "#ffffff"],
-  Lecce: ["#ffed00", "#d6001c"],
-  "AC Milan": ["#fb090b", "#111111"],
-  Monza: ["#e30613", "#ffffff"],
-  Napoli: ["#12a0d7", "#ffffff"],
-  Parma: ["#ffffff", "#ffd200"],
-  Roma: ["#8e1f2f", "#f0bc42"],
-  Sassuolo: ["#00a752", "#111111"],
-  Torino: ["#8a1e03", "#ffffff"],
-  Udinese: ["#ffffff", "#111111"],
-  Venezia: ["#111111", "#f39200"],
-  Cremonese: ["#e30613", "#9a9a9a"],
-  "Hellas Verona FC": ["#1c3f94", "#ffe600"],
-  Pisa: ["#111111", "#0057a8"],
-  "Angers SCO": ["#111111", "#ffffff"],
-  "AJ Auxerre": ["#ffffff", "#0064b0"],
-  "Stade Brestois 29": ["#e30613", "#ffffff"],
-  "Le Havre AC": ["#87b5df", "#0b2b5b"],
-  "Le Mans FC": ["#e30613", "#fdd000"],
-  "RC Lens": ["#ffd700", "#e30613"],
-  "Lille OSC": ["#e01e13", "#24216a"],
-  "FC Lorient": ["#f58220", "#111111"],
-  "Olympique Lyonnais": ["#ffffff", "#da0812"],
-  "Olympique de Marseille": ["#ffffff", "#2faee0"],
-  "AS Monaco": ["#e51b22", "#ffffff"],
-  "OGC Nice": ["#c8102e", "#111111"],
-  "Paris FC": ["#0b1f4d", "#ffffff"],
-  "Paris Saint-Germain": ["#004170", "#da291c"],
-  "Stade Rennais FC": ["#e13327", "#111111"],
-  "RC Strasbourg Alsace": ["#009fe3", "#ffffff"],
-  "Toulouse FC": ["#5b2d8e", "#ffffff"],
-  "ESTAC Troyes": ["#0072bb", "#ffffff"],
-  "FC Metz": ["#7d1229", "#ffffff"],
-  "FC Nantes": ["#fcd405", "#008a3e"],
-  "SL Benfica": ["#e20e0e", "#ffffff"],
-  "FC Porto": ["#003893", "#ffffff"],
-  "Sporting CP": ["#008057", "#ffffff"],
-  "SC Braga": ["#e2001a", "#ffffff"],
-  "Vitória SC": ["#ffffff", "#111111"],
-  Ajax: ["#ffffff", "#d2122e"],
-  PSV: ["#ed1c24", "#ffffff"],
-  Feyenoord: ["#e30613", "#ffffff"],
-  AZ: ["#e30613", "#ffffff"],
-  "FC Twente": ["#e30613", "#ffffff"],
-  "FC Utrecht": ["#e30613", "#ffffff"],
-};
-const SHORT_CODE: Record<string, string> = {
-  Arsenal: "ARS",
-  "Aston Villa": "AVL",
-  "AFC Bournemouth": "BOU",
-  "Brighton & Hove Albion": "BHA",
-  "Manchester City": "MCI",
-  "Manchester United": "MUN",
-  "Newcastle United": "NEW",
-  "Nottingham Forest": "NFO",
-  "Tottenham Hotspur": "TOT",
-  "West Ham United": "WHU",
-  "Wolverhampton Wanderers": "WOL",
-  "Crystal Palace": "CRY",
-  "Atlético Madrid": "ATM",
-  "FC Barcelona": "FCB",
-  "Real Madrid": "RMA",
-  "Real Betis Balompié": "BET",
-  "Real Sociedad": "RSO",
-  "Athletic Club": "ATH",
-  "FC Bayern München": "FCB",
-  "Borussia Dortmund": "BVB",
-  "Bayer 04 Leverkusen": "B04",
-  "Borussia Mönchengladbach": "BMG",
-  "Eintracht Frankfurt": "SGE",
-  "RB Leipzig": "RBL",
-  "Paris Saint-Germain": "PSG",
-  "Olympique de Marseille": "OM",
-  "Olympique Lyonnais": "OL",
-  "AC Milan": "MIL",
-  Inter: "INT",
-  Juventus: "JUV",
-  Napoli: "NAP",
-  Roma: "ROM",
-  Lazio: "LAZ",
-  Atalanta: "ATA",
-};
+import { mockData } from "@/engine/mockData";
+// Màu áo đặc trưng [màu chính, màu phụ] và mã viết tắt nằm trong public/data/club_visuals.json. Huy hiệu là thiết kế chung (khiên + họa tiết + chữ), không mô phỏng huy hiệu thật.
 
-export function hashStr(s: string): number {
-  let h = 0;
-  for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) | 0;
-  return Math.abs(h);
+export function hashString(text: string): number {
+  let hash = 0;
+  for (let i = 0; i < text.length; i++) hash = (hash * 31 + text.charCodeAt(i)) | 0;
+  return Math.abs(hash);
 }
 const PALETTE: [string, string][] = [
   ["#1f4e9c", "#ffffff"],
@@ -174,23 +16,30 @@ const PALETTE: [string, string][] = [
   ["#e86a1c", "#111111"],
   ["#2b9bd6", "#ffffff"],
 ];
-export const clubColors = (name: string): [string, string] => CLUB_COLORS[name] || PALETTE[hashStr(name) % PALETTE.length];
+export const clubColors = (name: string): [string, string] =>
+  mockData().clubVisuals.colors[name] || PALETTE[hashString(name) % PALETTE.length];
 
 export function clubCode(name: string): string {
-  if (SHORT_CODE[name]) return SHORT_CODE[name];
+  if (mockData().clubVisuals.shortCodes[name]) return mockData().clubVisuals.shortCodes[name];
   const words = name
     .replace(/[0-9.&]/g, " ")
     .split(/\s+/)
-    .filter((w) => w && !/^(FC|AC|CF|SC|RC|RCD|CA|AS|OGC|SV|TSG|VfB|VfL|FSV|AFC|SL|CP|UD|SCO|AJ|ESTAC|de|del|la|le)$/i.test(w));
+    .filter(
+      (word) =>
+        word &&
+        !/^(FC|AC|CF|SC|RC|RCD|CA|AS|OGC|SV|TSG|VfB|VfL|FSV|AFC|SL|CP|UD|SCO|AJ|ESTAC|de|del|la|le)$/i.test(
+          word,
+        ),
+    );
   if (!words.length) return name.slice(0, 3).toUpperCase();
   if (words.length === 1) return words[0].slice(0, 3).toUpperCase();
   return words
     .slice(0, 3)
-    .map((w) => w[0])
+    .map((word) => word[0])
     .join("")
     .toUpperCase();
 }
-export function lum(hex: string): number {
-  const n = parseInt(hex.slice(1), 16);
-  return (0.299 * ((n >> 16) & 255) + 0.587 * ((n >> 8) & 255) + 0.114 * (n & 255)) / 255;
+export function luminance(hexColor: string): number {
+  const rgb = parseInt(hexColor.slice(1), 16);
+  return (0.299 * ((rgb >> 16) & 255) + 0.587 * ((rgb >> 8) & 255) + 0.114 * (rgb & 255)) / 255;
 }

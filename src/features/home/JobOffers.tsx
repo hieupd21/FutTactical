@@ -1,6 +1,6 @@
 import { acceptJob, declineJob, takeNewJob } from "@/engine/actions";
-import { clubReq, offerClubs } from "@/engine/career";
-import { lgName, S } from "@/engine/state";
+import { clubRequirement, offerClubs } from "@/engine/career";
+import { leagueName, gameState } from "@/engine/state";
 import { ClubBadge } from "@/components/ClubBadge";
 import { Button } from "@/components/shadcn/button";
 import { Card } from "@/components/shadcn/card";
@@ -11,31 +11,42 @@ import { toast } from "@/stores/uiStore";
 export function OfferList({ sacked = false }: { sacked?: boolean }) {
   return (
     <div className="col" style={{ gap: 8 }}>
-      {offerClubs().map((c) => {
-        const taken = S.job === c.id;
+      {offerClubs().map((club) => {
+        const taken = gameState.job === club.id;
         return (
-          <div key={c.id} className="need" style={{ cursor: "default" }}>
+          <div key={club.id} className="need" style={{ cursor: "default" }}>
             <span className="row" style={{ gap: 10, flexWrap: "nowrap" }}>
-              <ClubBadge name={c.n} size={36} />
+              <ClubBadge name={club.name} size={36} />
               <span>
-                <b>{c.n}</b>
+                <b>{club.name}</b>
                 <br />
                 <span className="hint">
-                  {lgName(c.lg)} · sức mạnh {c.str} · yêu cầu uy tín {clubReq(c)}
+                  {leagueName(club.leagueId)} · sức mạnh {club.strength} · yêu cầu uy tín{" "}
+                  {clubRequirement(club)}
                 </span>
               </span>
             </span>
             <span className="row" style={{ gap: 6, flexWrap: "nowrap" }}>
               {taken ? (
-                <Button variant="ghost" size="sm" onClick={() => commit(() => declineJob(c.id))}>
+                <Button variant="ghost" size="sm" onClick={() => commit(() => declineJob(club.id))}>
                   Rút lại
                 </Button>
               ) : (
                 <>
-                  <Button variant="ghost" size="sm" onClick={() => commit(() => declineJob(c.id))}>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => commit(() => declineJob(club.id))}
+                  >
                     Từ chối
                   </Button>
-                  <Button variant="hot" size="sm" onClick={() => toast(commit(() => (sacked ? takeNewJob(c.id) : acceptJob(c.id))) ?? "")}>
+                  <Button
+                    variant="hot"
+                    size="sm"
+                    onClick={() =>
+                      toast(commit(() => (sacked ? takeNewJob(club.id) : acceptJob(club.id))) ?? "")
+                    }
+                  >
                     {sacked ? "Nhận việc" : "Nhận lời"}
                   </Button>
                 </>
@@ -49,14 +60,14 @@ export function OfferList({ sacked = false }: { sacked?: boolean }) {
 }
 
 export function JobOffersCard() {
-  if (!(S.offers ?? []).length) return null;
-  const job = S.job && S.clubs[S.job];
+  if (!(gameState.offers ?? []).length) return null;
+  const pendingJobClub = gameState.job && gameState.clubs[gameState.job];
   return (
-    <Card className="panel min-w-0 gap-0 rounded-xl p-4 shadow-none">
-      <h3>Lời mời làm việc ({S.offers!.length})</h3>
+    <Card id="job-offers" className="panel min-w-0 gap-0 rounded-xl p-4 shadow-none">
+      <h3>Lời mời làm việc ({gameState.offers!.length})</h3>
       <p className="hint">
-        {job
-          ? `Bạn đã nhận lời ${job.n}. Bạn sẽ chuyển sang khi mùa mới bắt đầu.`
+        {pendingJobClub
+          ? `Bạn đã nhận lời ${pendingJobClub.name}. Bạn sẽ chuyển sang khi mùa mới bắt đầu.`
           : "Các CLB lớn hơn để ý thành tích của bạn. Nhận lời thì mùa tới bạn sẽ đổi đội; không nhận thì ở lại đội hiện tại."}
       </p>
       <OfferList />

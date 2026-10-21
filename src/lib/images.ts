@@ -5,13 +5,14 @@ import type { Player } from "@/engine/types";
 
 const store = createStore("sanco-career-img", "i");
 
-export const playerImgKey = (p: Pick<Player, "n" | "ln">): string => "p:" + (p.ln || p.n);
+export const playerImgKey = (player: Pick<Player, "name" | "longName">): string =>
+  "p:" + (player.longName || player.name);
 export const clubImgKey = (name: string): string => "c:" + name;
 
 interface ImgState {
   map: Record<string, string>;
   load: () => Promise<void>;
-  put: (key: string, url: string | null) => Promise<void>;
+  saveImage: (key: string, url: string | null) => Promise<void>;
   clearAll: () => Promise<void>;
 }
 
@@ -19,13 +20,13 @@ export const useImages = create<ImgState>((setS, getS) => ({
   map: {},
   load: async () => {
     try {
-      const all = await entries<string, string>(store);
-      setS({ map: Object.fromEntries(all) });
+      const storedEntries = await entries<string, string>(store);
+      setS({ map: Object.fromEntries(storedEntries) });
     } catch {
       /* trình duyệt chặn IndexedDB */
     }
   },
-  put: async (key, url) => {
+  saveImage: async (key, url) => {
     const map = { ...getS().map };
     if (url) map[key] = url;
     else delete map[key];
@@ -47,36 +48,39 @@ export const useImages = create<ImgState>((setS, getS) => ({
   },
 }));
 
-export const useImg = (key: string): string | undefined => useImages((s) => s.map[key]);
+export const useImg = (key: string): string | undefined =>
+  useImages((imageState) => imageState.map[key]);
 
 /** Thu ảnh về khung vuông 192px (webp nếu trình duyệt hỗ trợ) */
 export function shrinkImage(file: File, max = 192): Promise<string> {
-  return new Promise((res, rej) => {
-    const fr = new FileReader();
-    fr.onload = () => {
-      const im = new Image();
-      im.onload = () => {
-        const sc = Math.min(1, max / Math.max(im.width, im.height));
-        const w = Math.round(im.width * sc),
-          h = Math.round(im.height * sc);
-        const cv = document.createElement("canvas");
-        cv.width = max;
-        cv.height = max;
-        cv.getContext("2d")!.drawImage(im, (max - w) / 2, (max - h) / 2, w, h);
-        let u = cv.toDataURL("image/webp", 0.85);
-        if (!u.startsWith("data:image/webp")) u = cv.toDataURL("image/png");
-        res(u);
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const image = new Image();
+      image.onload = () => {
+        const scale = Math.min(1, max / Math.max(image.width, image.height));
+        const width = Math.round(image.width * scale),
+          height = Math.round(image.height * scale);
+        const canvas = document.createElement("canvas");
+        canvas.width = max;
+        canvas.height = max;
+        canvas
+          .getContext("2d")!
+          .drawImage(image, (max - width) / 2, (max - height) / 2, width, height);
+        let dataUrl = canvas.toDataURL("image/webp", 0.85);
+        if (!dataUrl.startsWith("data:image/webp")) dataUrl = canvas.toDataURL("image/png");
+        resolve(dataUrl);
       };
-      im.onerror = () => rej(new Error("Không đọc được ảnh " + file.name));
-      im.src = fr.result as string;
+      image.onerror = () => reject(new Error("Không đọc được ảnh " + file.name));
+      image.src = reader.result as string;
     };
-    fr.onerror = () => rej(fr.error);
-    fr.readAsDataURL(file);
+    reader.onerror = () => reject(reader.error);
+    reader.readAsDataURL(file);
   });
 }
 
-export const normKey = (s: string | undefined): string =>
-  String(s || "")
+export const normalizeKey = (text: string | undefined): string =>
+  String(text || "")
     .normalize("NFD")
     .replace(/[̀-ͯ]/g, "")
     .toLowerCase()
@@ -87,41 +91,41 @@ export async function bulkImages(
   files: File[],
   players: Player[],
   clubNames: string[],
-): Promise<{ pc: number; cc: number; miss: string[] }> {
+): Promise<{ pngCount: number; clubCount: number; miss: string[] }> {
   const pmap = new Map<string, Player>(),
     cmap = new Map<string, string>();
-  players.forEach((p) => {
-    if (p.club == null) return;
-    [p.n, p.ln].forEach((n) => {
-      const k = normKey(n);
-      if (k && !pmap.has(k)) pmap.set(k, p);
+  players.forEach((player) => {
+    if (player.club == null) return;
+    [player.name, player.longName].forEach((playerName) => {
+      const key = normalizeKey(playerName);
+      if (key && !pmap.has(key)) pmap.set(key, player);
     });
   });
-  clubNames.forEach((c) => cmap.set(normKey(c), c));
-  let pc = 0,
-    cc = 0;
+  clubNames.forEach((clubName) => cmap.set(normalizeKey(clubName), clubName));
+  let pngCount = 0,
+    clubCount = 0;
   const miss: string[] = [];
-  const { put } = useImages.getState();
-  for (const f of files) {
-    const base = normKey(f.name.replace(/\.[^.]+$/, ""));
-    const c = cmap.get(base),
-      p = pmap.get(base);
-    if (!c && !p) {
-      miss.push(f.name);
+  const { saveImage } = useImages.getState();
+  for (const file of files) {
+    const base = normalizeKey(file.name.replace(/\.[^.]+$/, ""));
+    const clubName = cmap.get(base),
+      player = pmap.get(base);
+    if (!clubName && !player) {
+      miss.push(file.name);
       continue;
     }
     try {
-      const u = await shrinkImage(f);
-      if (c) {
-        await put(clubImgKey(c), u);
-        cc++;
+      const dataUrl = await shrinkImage(file);
+      if (clubName) {
+        await saveImage(clubImgKey(clubName), dataUrl);
+        clubCount++;
       } else {
-        await put(playerImgKey(p!), u);
-        pc++;
+        await saveImage(playerImgKey(player!), dataUrl);
+        pngCount++;
       }
     } catch {
-      miss.push(f.name);
+      miss.push(file.name);
     }
   }
-  return { pc, cc, miss };
+  return { pngCount, clubCount, miss };
 }

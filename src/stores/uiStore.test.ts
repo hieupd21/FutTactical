@@ -1,7 +1,16 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { useUi } from "./uiStore";
 
-const reset = () => useUi.setState({ tab: "home", tabStack: [], sheet: null, ptab: null, err: null, swapIn: null, match: null });
+const reset = () =>
+  useUi.setState({
+    currentTab: "home",
+    tabStack: [],
+    sheet: null,
+    ptab: null,
+    error: null,
+    swapIn: null,
+    match: null,
+  });
 
 describe("uiStore.goBack", () => {
   beforeEach(reset);
@@ -15,7 +24,7 @@ describe("uiStore.goBack", () => {
     useUi.getState().openPlayer("p1");
     expect(useUi.getState().goBack()).toBe(true);
     expect(useUi.getState().sheet).toBeNull();
-    expect(useUi.getState().tab).toBe("squad");
+    expect(useUi.getState().currentTab).toBe("squad");
   });
 
   it("huỷ chế độ chọn thay người trước khi lùi tab", () => {
@@ -23,7 +32,7 @@ describe("uiStore.goBack", () => {
     useUi.getState().setSwapIn("p1");
     expect(useUi.getState().goBack()).toBe(true);
     expect(useUi.getState().swapIn).toBeNull();
-    expect(useUi.getState().tab).toBe("squad");
+    expect(useUi.getState().currentTab).toBe("squad");
   });
 
   it("lùi lần lượt qua các tab đã mở", () => {
@@ -31,9 +40,9 @@ describe("uiStore.goBack", () => {
     ui.setTab("squad");
     ui.setTab("market");
     expect(useUi.getState().goBack()).toBe(true);
-    expect(useUi.getState().tab).toBe("squad");
+    expect(useUi.getState().currentTab).toBe("squad");
     expect(useUi.getState().goBack()).toBe(true);
-    expect(useUi.getState().tab).toBe("home");
+    expect(useUi.getState().currentTab).toBe("home");
     expect(useUi.getState().goBack()).toBe(false);
   });
 
@@ -47,6 +56,6 @@ describe("uiStore.goBack", () => {
     useUi.setState({ sheet: { type: "match" } });
     expect(useUi.getState().goBack()).toBe(true);
     expect(useUi.getState().sheet).toEqual({ type: "match" });
-    expect(useUi.getState().tab).toBe("squad");
+    expect(useUi.getState().currentTab).toBe("squad");
   });
 });

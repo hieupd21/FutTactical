@@ -1,103 +1,123 @@
 import type { ReactNode } from "react";
 import { isClosed, quitNego } from "@/engine/actions";
-import { C, isDeadline, N, P } from "@/engine/state";
+import { getClub, isDeadline, getNegotiation, getPlayer } from "@/engine/state";
 import type { Negotiation } from "@/engine/types";
 import { PlayerHead } from "@/components/PlayerHead";
 import { Sheet } from "@/components/Sheet";
 import { commit, useGameVersion } from "@/stores/gameStore";
 import { useUi } from "@/stores/uiStore";
-import { cx, shortD } from "@/utils/display";
+import { classNames, formatShortDate } from "@/utils/display";
 import { ClubForm, ContractForm, FinalForm, LoanForm, SellForm } from "./NegoForms";
 import { Button } from "@/components/shadcn/button";
 
-function Steps({ n }: { n: Negotiation }) {
-  const st = n.stage;
-  const steps = n.sell
+function Steps({ negotiation }: { negotiation: Negotiation }) {
+  const stage = negotiation.stage;
+  const steps = negotiation.isSellOffer
     ? ["Đề nghị", "Phản hồi", "Hoàn tất"]
-    : n.type === "renew"
+    : negotiation.type === "renew"
       ? ["Hợp đồng", "Ký"]
-      : n.type === "loan"
+      : negotiation.type === "loan"
         ? ["Thăm dò", "Điều kiện mượn", "Hoàn tất"]
         : ["Thăm dò", "CLB bán", "Hợp đồng", "Hoàn tất"];
   const order: Record<string, number> =
-    n.type === "loan"
+    negotiation.type === "loan"
       ? { enquiry: 0, club: 1, final: 2, done: 3, failed: -1 }
       : { enquiry: 0, dof: 0, club: 1, contract: 2, final: 3, done: 4, failed: -1 };
-  const cur = n.sell ? (st === "offer" ? 0 : 2) : n.type === "renew" ? (st === "contract" ? 0 : 1) : (order[st] ?? 0);
+  const current = negotiation.isSellOffer
+    ? stage === "offer"
+      ? 0
+      : 2
+    : negotiation.type === "renew"
+      ? stage === "contract"
+        ? 0
+        : 1
+      : (order[stage] ?? 0);
   return (
     <div className="steps">
-      {steps.map((s, i) => (
-        <div key={s} className={i < cur || st === "done" ? "done" : i === cur ? "on" : ""}>
-          {s}
+      {steps.map((step, i) => (
+        <div
+          key={step}
+          className={i < current || stage === "done" ? "done" : i === current ? "on" : ""}
+        >
+          {step}
         </div>
       ))}
     </div>
   );
 }
 
-function Tension({ n }: { n: Negotiation }) {
-  if (isClosed(n)) return null;
-  if (n.sell)
-    return n.tension ? (
+function Tension({ negotiation }: { negotiation: Negotiation }) {
+  if (isClosed(negotiation)) return null;
+  if (negotiation.isSellOffer)
+    return negotiation.tension ? (
       <div className="tension">
-        <div className="bar" role="img" aria-label={"Căng thẳng " + Math.round(n.tension) + "/100"}>
-          <i style={{ left: `${n.tension}%` }} />
+        <div
+          className="bar"
+          role="img"
+          aria-label={"Căng thẳng " + Math.round(negotiation.tension) + "/100"}
+        >
+          <i style={{ left: `${negotiation.tension}%` }} />
         </div>
       </div>
     ) : null;
-  if (n.type === "free") return null;
+  if (negotiation.type === "free") return null;
   return (
     <div className="tension">
       <div className="lab">
         <span>Thuận lợi</span>
-        <span>Căng thẳng {Math.round(n.tension)}/100</span>
+        <span>Căng thẳng {Math.round(negotiation.tension)}/100</span>
         <span>Đổ vỡ</span>
       </div>
-      <div className="bar" role="img" aria-label={"Căng thẳng " + Math.round(n.tension) + "/100"}>
-        <i style={{ left: `${n.tension}%` }} />
+      <div
+        className="bar"
+        role="img"
+        aria-label={"Căng thẳng " + Math.round(negotiation.tension) + "/100"}
+      >
+        <i style={{ left: `${negotiation.tension}%` }} />
       </div>
     </div>
   );
 }
 
-const kindTxt = (n: Negotiation, club: string | null): string =>
-  n.sell
-    ? `Bán cho ${C(n.buyer!).n}`
-    : n.type === "renew"
+const kindText = (negotiation: Negotiation, club: string | null): string =>
+  negotiation.isSellOffer
+    ? `Bán cho ${getClub(negotiation.buyer!).name}`
+    : negotiation.type === "renew"
       ? "Gia hạn hợp đồng"
-      : n.type === "loan"
-        ? `Mượn từ ${C(n.seller!).n}`
-        : n.type === "free"
+      : negotiation.type === "loan"
+        ? `Mượn từ ${getClub(negotiation.seller!).name}`
+        : negotiation.type === "free"
           ? "Ký cầu thủ tự do"
-          : n.type === "pre"
+          : negotiation.type === "pre"
             ? "Ký trước hợp đồng"
-            : `Mua từ ${club ? C(club).n : "?"}`;
+            : `Mua từ ${club ? getClub(club).name : "?"}`;
 
 export function NegoSheet({ id }: { id: string }) {
   useGameVersion();
-  const { closeSheet, err, setTab } = useUi();
-  const n = N(id);
-  const p = n && P(n.pid);
-  if (!n || !p) return null;
-  const st = n.stage;
+  const { closeSheet, error, setTab } = useUi();
+  const negotiation = getNegotiation(id);
+  const player = negotiation && getPlayer(negotiation.playerId);
+  if (!negotiation || !player) return null;
+  const stage = negotiation.stage;
   let form: ReactNode = null;
-  if (st === "failed")
+  if (stage === "failed")
     form = (
       <Button variant="ghost" className="w-full" onClick={closeSheet}>
         Đóng
       </Button>
     );
-  else if (st === "done")
+  else if (stage === "done")
     form = (
       <Button variant="hot" className="w-full" onClick={closeSheet}>
         Tuyệt vời
       </Button>
     );
-  else if (n.waiting || st === "enquiry" || st === "dof")
+  else if (negotiation.waiting || stage === "enquiry" || stage === "dof")
     form = (
       <>
         <div className="say">
-          Đang chờ phản hồi{isDeadline() ? " (khoảng 1 giờ)" : " (khoảng 1 ngày)"}. Bấm "Tiếp tục" ở Trang chủ để thời gian trôi.
+          Đang chờ phản hồi{isDeadline() ? " (khoảng 1 giờ)" : " (khoảng 1 ngày)"}. Bấm "Tiếp tục" ở
+          Trang chủ để thời gian trôi.
         </div>
         <Button
           variant="ghost"
@@ -111,46 +131,57 @@ export function NegoSheet({ id }: { id: string }) {
         </Button>
       </>
     );
-  else if (n.sell) form = <SellForm n={n} p={p} />;
-  else if (st === "club") form = n.type === "loan" ? <LoanForm n={n} p={p} /> : <ClubForm n={n} p={p} />;
-  else if (st === "contract") form = <ContractForm n={n} p={p} />;
-  else if (st === "final") form = <FinalForm n={n} p={p} />;
+  else if (negotiation.isSellOffer) form = <SellForm negotiation={negotiation} player={player} />;
+  else if (stage === "club")
+    form =
+      negotiation.type === "loan" ? (
+        <LoanForm negotiation={negotiation} player={player} />
+      ) : (
+        <ClubForm negotiation={negotiation} player={player} />
+      );
+  else if (stage === "contract") form = <ContractForm negotiation={negotiation} player={player} />;
+  else if (stage === "final") form = <FinalForm negotiation={negotiation} player={player} />;
 
-  const sayCls = st === "failed" ? "bad" : st === "done" || st === "final" ? "good" : "";
+  const sayCls = stage === "failed" ? "bad" : stage === "done" || stage === "final" ? "good" : "";
   return (
     <Sheet onClose={closeSheet}>
       <PlayerHead
-        p={p}
+        player={player}
         onClose={closeSheet}
         extra={
           <div className="hint" style={{ marginTop: 4 }}>
-            {kindTxt(n, n.seller || p.club)}
+            {kindText(negotiation, negotiation.seller || player.club)}
           </div>
         }
       />
-      <Steps n={n} />
-      <Tension n={n} />
-      <div className={cx("say", sayCls)}>{n.msg}</div>
-      {err && <p className="err">{err}</p>}
+      <Steps negotiation={negotiation} />
+      <Tension negotiation={negotiation} />
+      <div className={classNames("say", sayCls)}>{negotiation.message}</div>
+      {error && <p className="err">{error}</p>}
       {form}
-      {n.log.length > 1 && (
+      {negotiation.log.length > 1 && (
         <details>
-          <summary className="hint">Diễn biến ({n.log.length})</summary>
+          <summary className="hint">Diễn biến ({negotiation.log.length})</summary>
           <div className="logl">
-            {n.log.map((l, i) => (
-              <div key={i} className={l.who}>
-                <span className="mono">{shortD(Math.floor(l.at / 24))}</span>
+            {negotiation.log.map((logEntry, i) => (
+              <div key={i} className={logEntry.author}>
+                <span className="mono">{formatShortDate(Math.floor(logEntry.tickAt / 24))}</span>
                 <span>
-                  {l.who === "me" ? "Bạn: " : ""}
-                  {l.t}
+                  {logEntry.author === "me" ? "Bạn: " : ""}
+                  {logEntry.text}
                 </span>
               </div>
             ))}
           </div>
         </details>
       )}
-      {!isClosed(n) && !n.sell && (
-        <Button variant="ghost" size="sm" style={{ alignSelf: "flex-start" }} onClick={() => commit(() => quitNego(n.id))}>
+      {!isClosed(negotiation) && !negotiation.isSellOffer && (
+        <Button
+          variant="ghost"
+          size="sm"
+          style={{ alignSelf: "flex-start" }}
+          onClick={() => commit(() => quitNego(negotiation.id))}
+        >
           Rút lui
         </Button>
       )}
