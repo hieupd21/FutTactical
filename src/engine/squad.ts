@@ -1,131 +1,198 @@
 import { FORMS } from "./constants";
-import { dyn } from "./players";
-import { C, P, S } from "./state";
+import { dynamicRating } from "./players";
+import { getClub, getPlayer, gameState } from "./state";
 import type { Formation, Line, Player, Role, TableRow } from "./types";
 
-export function clubPlayers(cid: string): Player[] {
-  return C(cid).ids.map(P).filter(Boolean);
+export function clubPlayers(clubId: string): Player[] {
+  return getClub(clubId).playerIds.map(getPlayer).filter(Boolean);
 }
-export function slotPos(f: Formation): Line[] {
-  const [d, m, a] = FORMS[f];
-  return ["GK", ...Array<Line>(d).fill("DF"), ...Array<Line>(m).fill("MF"), ...Array<Line>(a).fill("FW")];
+export function slotPositions(formation: Formation): Line[] {
+  const [defenders, midfielders, attackers] = FORMS[formation];
+  return [
+    "GK",
+    ...Array<Line>(defenders).fill("DF"),
+    ...Array<Line>(midfielders).fill("MF"),
+    ...Array<Line>(attackers).fill("FW"),
+  ];
 }
-export function fitAt(p: Player, pos: Line): number {
-  if (p.pos === pos || p.pos2.includes(pos)) return 1;
-  if (p.pos === "GK" || pos === "GK") return 0.4;
+export function fitAt(player: Player, pos: Line): number {
+  if (player.pos === pos || player.secondaryPositions.includes(pos)) return 1;
+  if (player.pos === "GK" || pos === "GK") return 0.4;
   return 0.85;
 }
-export const available = (p: Player | undefined): p is Player => !!p && p.inj <= 0 && !p.away;
+export const available = (player: Player | undefined): player is Player =>
+  !!player && player.injuryDays <= 0 && !player.away;
 
-export function bestXI(cid: string, form: Formation): (string | null)[] {
-  const pool = clubPlayers(cid).filter(available);
+export function bestLineup(clubId: string, form: Formation): (string | null)[] {
+  const pool = clubPlayers(clubId).filter(available);
   const used = new Set<string>();
-  return slotPos(form).map((pos) => {
-    let b: Player | null = null;
-    let bv = -1;
-    pool.forEach((p) => {
-      if (used.has(p.id)) return;
-      const v = dyn(p) * fitAt(p, pos) + (p.fit - 80) / 20;
-      if (v > bv) {
-        bv = v;
-        b = p;
+  return slotPositions(form).map((pos) => {
+    let player: Player | null = null;
+    let bestValue = -1;
+    pool.forEach((candidate) => {
+      if (used.has(candidate.id)) return;
+      const score =
+        dynamicRating(candidate) * fitAt(candidate, pos) + (candidate.fitness - 80) / 20;
+      if (score > bestValue) {
+        bestValue = score;
+        player = candidate;
       }
     });
-    if (b) used.add((b as Player).id);
-    return b ? (b as Player).id : null;
+    if (player) used.add((player as Player).id);
+    return player ? (player as Player).id : null;
   });
 }
 
 /** Đội hình của bạn; tự lấp chỗ trống khi cầu thủ chấn thương / rời đội */
-export function myXI(): (string | null)[] {
-  const f = S.form;
-  const need = slotPos(f);
-  let xi = (S.xi || []).slice(0, 11);
-  const ok = (id: string | null): id is string => !!id && !!P(id) && P(id).club === S.me && available(P(id));
-  if (xi.length !== 11 || xi.some((id) => !ok(id))) {
-    const auto = bestXI(S.me, f);
-    const used = new Set(xi.filter(ok));
-    xi = need.map((_, i) => (ok(xi[i]) ? xi[i] : null));
-    xi = xi.map((id) => {
+export function myLineup(): (string | null)[] {
+  const formation = gameState.form;
+  const need = slotPositions(formation);
+  let lineup = (gameState.lineup || []).slice(0, 11);
+  const ok = (id: string | null): id is string =>
+    !!id &&
+    !!getPlayer(id) &&
+    getPlayer(id).club === gameState.myClubId &&
+    available(getPlayer(id));
+  if (lineup.length !== 11 || lineup.some((id) => !ok(id))) {
+    const auto = bestLineup(gameState.myClubId, formation);
+    const used = new Set(lineup.filter(ok));
+    lineup = need.map((_, i) => (ok(lineup[i]) ? lineup[i] : null));
+    lineup = lineup.map((id) => {
       if (id) return id;
-      const c = auto.find((a) => a && !used.has(a));
-      if (c) used.add(c);
-      return c || null;
+      const firstFree = auto.find((candidateId) => candidateId && !used.has(candidateId));
+      if (firstFree) used.add(firstFree);
+      return firstFree || null;
     });
-    S.xi = xi;
+    gameState.lineup = lineup;
   }
-  return xi;
+  return lineup;
 }
 
-export function strength(_cid: string, xi: (string | null)[], form: Formation): { att: number; def: number; pow: number } {
-  const sp = slotPos(form);
-  const g: Record<Line, number[]> = { GK: [], DF: [], MF: [], FW: [] };
-  xi.forEach((id, i) => {
-    const p = id ? P(id) : null;
-    g[sp[i]].push(p ? dyn(p) * fitAt(p, sp[i]) : 35);
+export function strength(
+  _cid: string,
+  lineup: (string | null)[],
+  form: Formation,
+): { att: number; def: number; power: number } {
+  const lines = slotPositions(form);
+  const effByLine: Record<Line, number[]> = { GK: [], DF: [], MF: [], FW: [] };
+  lineup.forEach((id, i) => {
+    const player = id ? getPlayer(id) : null;
+    effByLine[lines[i]].push(player ? dynamicRating(player) * fitAt(player, lines[i]) : 35);
   });
-  const avg = (a: number[]) => (a.length ? a.reduce((x, y) => x + y, 0) / a.length : 35);
-  const att = avg(g.FW) * 0.45 + avg(g.MF) * 0.38 + avg(g.DF) * 0.17 + (g.FW.length - 2) * 1.4;
-  const def = avg(g.DF) * 0.42 + avg(g.GK) * 0.3 + avg(g.MF) * 0.28 + (g.DF.length - 4) * 1.4;
-  return { att, def, pow: Math.round((att + def) / 2) };
+  const average = (values: number[]) =>
+    values.length ? values.reduce((sum, value) => sum + value, 0) / values.length : 35;
+  const att =
+    average(effByLine.FW) * 0.45 +
+    average(effByLine.MF) * 0.38 +
+    average(effByLine.DF) * 0.17 +
+    (effByLine.FW.length - 2) * 1.4;
+  const def =
+    average(effByLine.DF) * 0.42 +
+    average(effByLine.GK) * 0.3 +
+    average(effByLine.MF) * 0.28 +
+    (effByLine.DF.length - 4) * 1.4;
+  return { att, def, power: Math.round((att + def) / 2) };
 }
-export function clubStr(cid: string) {
-  const c = C(cid);
-  const f = cid === S.me ? S.form : c.form;
-  return strength(cid, cid === S.me ? myXI() : bestXI(cid, f), f);
+export function clubStrength(clubId: string) {
+  const club = getClub(clubId);
+  const formation = clubId === gameState.myClubId ? gameState.form : club.form;
+  return strength(
+    clubId,
+    clubId === gameState.myClubId ? myLineup() : bestLineup(clubId, formation),
+    formation,
+  );
 }
 
 /** Thứ hạng của cầu thủ ở vị trí của cậu ấy trong một đội, và vai trò tương ứng */
-export function squadRank(p: Player, cid: string, form?: Formation): { rank: number; slots: number; role: Role } {
-  const f = form || (cid === S.me ? S.form : C(cid).form);
-  const slots = slotPos(f).filter((x) => x === p.pos).length;
-  const mates = clubPlayers(cid).filter((x) => x.id !== p.id && (x.pos === p.pos || x.pos2.includes(p.pos)));
-  const rank = 1 + mates.filter((x) => x.ovr > p.ovr).length;
-  const top = clubPlayers(cid).filter((x) => x.id !== p.id && x.ovr > p.ovr).length < 2;
+export function squadRank(
+  player: Player,
+  clubId: string,
+  form?: Formation,
+): { rank: number; slots: number; role: Role } {
+  const formation = form || (clubId === gameState.myClubId ? gameState.form : getClub(clubId).form);
+  const slots = slotPositions(formation).filter((line) => line === player.pos).length;
+  const mates = clubPlayers(clubId).filter(
+    (teammate) =>
+      teammate.id !== player.id &&
+      (teammate.pos === player.pos || teammate.secondaryPositions.includes(player.pos)),
+  );
+  const rank = 1 + mates.filter((teammate) => teammate.ovr > player.ovr).length;
+  const isTopPlayer =
+    clubPlayers(clubId).filter((teammate) => teammate.id !== player.id && teammate.ovr > player.ovr)
+      .length < 2;
   const role: Role =
-    top && rank <= slots ? "Ngôi sao" : rank <= slots ? "Đá chính" : rank <= slots + 1 ? "Xoay tua" : p.age <= 20 ? "Triển vọng" : "Dự bị";
+    isTopPlayer && rank <= slots
+      ? "Ngôi sao"
+      : rank <= slots
+        ? "Đá chính"
+        : rank <= slots + 1
+          ? "Xoay tua"
+          : player.age <= 20
+            ? "Triển vọng"
+            : "Dự bị";
   return { rank, slots, role };
 }
 
-export function table(lg: string): TableRow[] {
-  const T: Record<string, TableRow> = {};
-  Object.values(S.clubs)
-    .filter((c) => c.lg === lg)
-    .forEach((c) => (T[c.id] = { id: c.id, p: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, pts: 0, form: [] }));
-  (S.res[lg] || []).forEach(
-    (rs) =>
-      rs &&
-      rs.forEach((r) => {
-        const H = T[r.h],
-          A = T[r.a];
-        H.p++;
-        A.p++;
-        H.gf += r.hg;
-        H.ga += r.ag;
-        A.gf += r.ag;
-        A.ga += r.hg;
-        if (r.hg > r.ag) {
-          H.w++;
-          A.l++;
-          H.pts += 3;
-          H.form.push("W");
-          A.form.push("L");
-        } else if (r.hg < r.ag) {
-          A.w++;
-          H.l++;
-          A.pts += 3;
-          A.form.push("W");
-          H.form.push("L");
+export function table(leagueId: string): TableRow[] {
+  const tableByClub: Record<string, TableRow> = {};
+  Object.values(gameState.clubs)
+    .filter((club) => club.leagueId === leagueId)
+    .forEach(
+      (club) =>
+        (tableByClub[club.id] = {
+          id: club.id,
+          played: 0,
+          won: 0,
+          drawn: 0,
+          lost: 0,
+          goalsFor: 0,
+          goalsAgainst: 0,
+          points: 0,
+          form: [],
+        }),
+    );
+  (gameState.results[leagueId] || []).forEach(
+    (matchResults) =>
+      matchResults &&
+      matchResults.forEach((matchResult) => {
+        const tableRow = tableByClub[matchResult.homeId],
+          awayRow = tableByClub[matchResult.awayId];
+        tableRow.played++;
+        awayRow.played++;
+        tableRow.goalsFor += matchResult.homeGoals;
+        tableRow.goalsAgainst += matchResult.awayGoals;
+        awayRow.goalsFor += matchResult.awayGoals;
+        awayRow.goalsAgainst += matchResult.homeGoals;
+        if (matchResult.homeGoals > matchResult.awayGoals) {
+          tableRow.won++;
+          awayRow.lost++;
+          tableRow.points += 3;
+          tableRow.form.push("W");
+          awayRow.form.push("L");
+        } else if (matchResult.homeGoals < matchResult.awayGoals) {
+          awayRow.won++;
+          tableRow.lost++;
+          awayRow.points += 3;
+          awayRow.form.push("W");
+          tableRow.form.push("L");
         } else {
-          H.d++;
-          A.d++;
-          H.pts++;
-          A.pts++;
-          H.form.push("D");
-          A.form.push("D");
+          tableRow.drawn++;
+          awayRow.drawn++;
+          tableRow.points++;
+          awayRow.points++;
+          tableRow.form.push("D");
+          awayRow.form.push("D");
         }
       }),
   );
-  return Object.values(T).sort((a, b) => b.pts - a.pts || b.gf - b.ga - (a.gf - a.ga) || b.gf - a.gf);
+  return Object.values(tableByClub).sort(
+    (tableRowA, tableRowB) =>
+      tableRowB.points - tableRowA.points ||
+      tableRowB.goalsFor - tableRowB.goalsAgainst - (tableRowA.goalsFor - tableRowA.goalsAgainst) ||
+      tableRowB.goalsFor - tableRowA.goalsFor,
+  );
 }
-export const myPos = (): number => table(C(S.me).lg).findIndex((t) => t.id === S.me) + 1;
+export const myLeaguePosition = (): number =>
+  table(getClub(gameState.myClubId).leagueId).findIndex(
+    (tableRow) => tableRow.id === gameState.myClubId,
+  ) + 1;

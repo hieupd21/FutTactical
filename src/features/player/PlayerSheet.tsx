@@ -1,70 +1,104 @@
 import { setRole, toggleListed, toggleLoanList, toggleShortlist } from "@/engine/actions";
-import { ROLES, WIN_WINTER } from "@/engine/constants";
-import { appeaseChance, nextRole, PROMISE_OPTS, respondDemand, type DemandChoice } from "@/engine/mood";
-import { fmtM, fmtW } from "@/engine/format";
+import { ROLES, WINTER_WINDOW } from "@/engine/constants";
+import {
+  appeaseChance,
+  nextRole,
+  PROMISE_OPTS,
+  respondDemand,
+  type DemandChoice,
+} from "@/engine/mood";
+import { formatMoney, formatWage } from "@/engine/format";
 import { yearsLeft } from "@/engine/players";
-import { available, myXI } from "@/engine/squad";
-import { C, P, S } from "@/engine/state";
+import { available, myLineup } from "@/engine/squad";
+import { getClub, getPlayer, gameState } from "@/engine/state";
 import { activeNegoFor, delegate, enquire, feeEstimate, renew } from "@/engine/transfers";
 import type { NegoType, Player, Role } from "@/engine/types";
-import { r10 } from "@/engine/util";
+import { roundToTen } from "@/engine/util";
 import { Sheet } from "@/components/Sheet";
-import { KV, RangeField, Seg } from "@/components/ui";
+import { KeyValueRows, RangeField, SegmentedControl } from "@/components/ui";
 import { commit, useGameVersion } from "@/stores/gameStore";
 import { toast, useUi } from "@/stores/uiStore";
-import { mcol, sn } from "@/utils/display";
+import { moraleColor, shortName } from "@/utils/display";
 import { PlayerHead } from "@/components/PlayerHead";
 import { ScoutReport } from "./ScoutReport";
 import { Button } from "@/components/shadcn/button";
 import { SelectField } from "@/components/ui";
 
-function Stats({ p }: { p: Player }) {
+function Stats({ player }: { player: Player }) {
   return (
     <div className="stats">
       <div className="stat">
-        <b style={{ color: mcol(p.form) }}>{Math.round(p.form)}</b>
+        <b style={{ color: moraleColor(player.form) }}>{Math.round(player.form)}</b>
         <span>Phong độ</span>
       </div>
       <div className="stat">
-        <b style={{ color: mcol(p.mor) }}>{Math.round(p.mor)}</b>
+        <b style={{ color: moraleColor(player.morale) }}>{Math.round(player.morale)}</b>
         <span>Tinh thần</span>
       </div>
       <div className="stat">
-        <b style={{ color: p.fit < 70 ? "var(--lv-1)" : "var(--lv-5)" }}>{Math.round(p.fit)}</b>
+        <b style={{ color: player.fitness < 70 ? "var(--lv-1)" : "var(--lv-5)" }}>
+          {Math.round(player.fitness)}
+        </b>
         <span>Thể lực</span>
       </div>
       <div className="stat">
-        <b>{p.inj > 0 ? p.inj + "n" : "Khỏe"}</b>
+        <b>{player.injuryDays > 0 ? player.injuryDays + "n" : "Khỏe"}</b>
         <span>Chấn thương</span>
       </div>
     </div>
   );
 }
 
-function Info({ p }: { p: Player }) {
+function Info({ player }: { player: Player }) {
   return (
     <>
-      <KV
+      <KeyValueRows
         rows={[
-          ["Giá trị", fmtM(p.val)],
-          ["Lương", p.c ? fmtW(p.c.wage) : "—"],
-          ["Hợp đồng đến", p.c && p.club != null ? "30/6/" + p.c.exp : "Tự do"],
-          ["Điều khoản giải phóng", p.c?.rc ? fmtM(p.c.rc) : "Không có"],
-          ["Vai trò", p.c ? p.c.role : "—"],
-          ["Mùa này", `${p.apps} trận · ${p.goals} bàn`],
-          ["Tổng từ khi bạn dẫn dắt", `${p.tot.apps} trận · ${p.tot.goals} bàn`],
-          !!p.sellOn && ["Điều khoản bán lại", `${p.sellOn.pct}% cho ${C(p.sellOn.club).n}`],
-          !!p.addon && !p.addon.paid && ["Thưởng theo số trận", `${fmtM(p.addon.amt)} sau ${p.addon.apps} trận`],
-          !!p.promise && ["Cam kết với cầu thủ", `Đá chính ${p.promise.left} trận nữa`],
-          !!p.loan && ["Đang mượn từ", `${C(p.loan.from).n} · trả ${p.loan.pct}% lương`],
+          ["Giá trị", formatMoney(player.marketValue)],
+          ["Lương", player.contract ? formatWage(player.contract.wage) : "—"],
+          [
+            "Hợp đồng đến",
+            player.contract && player.club != null ? "30/6/" + player.contract.expiryYear : "Tự do",
+          ],
+          [
+            "Điều khoản giải phóng",
+            player.contract?.releaseClause
+              ? formatMoney(player.contract.releaseClause)
+              : "Không có",
+          ],
+          ["Vai trò", player.contract ? player.contract.role : "—"],
+          ["Mùa này", `${player.apps} trận · ${player.goals} bàn`],
+          [
+            "Tổng từ khi bạn dẫn dắt",
+            `${player.careerTotals.apps} trận · ${player.careerTotals.goals} bàn`,
+          ],
+          !!player.sellOn && [
+            "Điều khoản bán lại",
+            `${player.sellOn.percent}% cho ${getClub(player.sellOn.club).name}`,
+          ],
+          !!player.addon &&
+            !player.addon.paid && [
+              "Thưởng theo số trận",
+              `${formatMoney(player.addon.amount)} sau ${player.addon.apps} trận`,
+            ],
+          !!player.promise && ["Cam kết với cầu thủ", `Đá chính ${player.promise.left} trận nữa`],
+          !!player.loan && [
+            "Đang mượn từ",
+            `${getClub(player.loan.fromClub).name} · trả ${player.loan.percent}% lương`,
+          ],
         ]}
       />
-      {p.hist.length > 0 && (
+      {player.transferHistory.length > 0 && (
         <>
           <h3>Lịch sử chuyển nhượng</h3>
-          {p.hist.map((h, i) => (
+          {player.transferHistory.map((transferRecord, i) => (
             <p key={i} className="hint">
-              {h.y}: {h.from} → {h.to} · {h.fee ? fmtM(h.fee) : h.fee === null ? "đã có trong dữ liệu" : "miễn phí"}
+              {transferRecord.year}: {transferRecord.fromClub} → {transferRecord.toClub} ·{" "}
+              {transferRecord.fee
+                ? formatMoney(transferRecord.fee)
+                : transferRecord.fee === null
+                  ? "đã có trong dữ liệu"
+                  : "miễn phí"}
             </p>
           ))}
         </>
@@ -74,48 +108,67 @@ function Info({ p }: { p: Player }) {
 }
 
 /** Cầu thủ đang đòi ra sân hoặc đòi ra đi: người chơi chọn cách đáp lại */
-function DemandPanel({ p }: { p: Player }) {
-  const d = p.demand!;
-  const leave = d.kind === "leave";
-  const nr = nextRole(p.c!.role);
-  const answer = (c: DemandChoice) => toast(commit(() => respondDemand(p.id, c))?.msg ?? "");
+function DemandPanel({ player }: { player: Player }) {
+  const demand = player.demand!;
+  const leave = demand.kind === "leave";
+  const role = nextRole(player.contract!.role);
+  const answer = (choice: DemandChoice) =>
+    toast(commit(() => respondDemand(player.id, choice))?.message ?? "");
   return (
-    <div className="say bad col" role="group" aria-label={leave ? "Cầu thủ đòi ra đi" : "Cầu thủ đòi được ra sân"}>
-      <b>{leave ? `${sn(p.n)} muốn ra đi` : `${sn(p.n)} đòi được ra sân`}</b>
+    <div
+      className="say bad col"
+      role="group"
+      aria-label={leave ? "Cầu thủ đòi ra đi" : "Cầu thủ đòi được ra sân"}
+    >
+      <b>
+        {leave
+          ? `${shortName(player.name)} muốn ra đi`
+          : `${shortName(player.name)} đòi được ra sân`}
+      </b>
       <p className="hint">
         {leave
           ? "Bạn có thể cam kết để xoa dịu, hoặc đồng ý rao bán / cho mượn. Giữ lại bằng mọi giá sẽ làm tinh thần sa sút."
           : "Cam kết cho đá chính nhiều trận thì cậu ấy yên tâm hơn, nhưng thất hứa sẽ phải trả giá."}
       </p>
       <div className="opts">
-        {PROMISE_OPTS.map((n) => (
-          <Button key={n} variant="ghost" size="sm" onClick={() => answer({ a: "promise", n })}>
-            Cam kết đá chính {n} trận{leave ? ` (${Math.round(appeaseChance(p, n) * 100)}%)` : ""}
+        {PROMISE_OPTS.map((years) => (
+          <Button
+            key={years}
+            variant="ghost"
+            size="sm"
+            onClick={() => answer({ action: "promise", starts: years })}
+          >
+            Cam kết đá chính {years} trận
+            {leave ? ` (${Math.round(appeaseChance(player, years) * 100)}%)` : ""}
           </Button>
         ))}
       </div>
       <div className="opts">
-        {!leave && nr && (
-          <Button variant="ghost" size="sm" onClick={() => answer({ a: "promote" })}>
-            Nâng vai trò lên "{nr}"
+        {!leave && role && (
+          <Button variant="ghost" size="sm" onClick={() => answer({ action: "promote" })}>
+            Nâng vai trò lên "{role}"
           </Button>
         )}
         {!leave && (
-          <Button variant="ghost" size="sm" onClick={() => answer({ a: "persuade" })}>
+          <Button variant="ghost" size="sm" onClick={() => answer({ action: "persuade" })}>
             Khuyên nhủ, chờ cơ hội
           </Button>
         )}
         {leave && (
           <>
-            <Button variant="ghost" size="sm" onClick={() => answer({ a: "sell" })}>
+            <Button variant="ghost" size="sm" onClick={() => answer({ action: "sell" })}>
               Đồng ý rao bán
             </Button>
-            <Button variant="ghost" size="sm" onClick={() => answer({ a: "loan" })}>
+            <Button variant="ghost" size="sm" onClick={() => answer({ action: "loan" })}>
               Cho mượn
             </Button>
           </>
         )}
-        <Button variant="ghost" size="sm" onClick={() => answer({ a: leave ? "hold" : "refuse" })}>
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => answer({ action: leave ? "hold" : "refuse" })}
+        >
           {leave ? "Giữ lại bằng mọi giá" : "Từ chối thẳng"}
         </Button>
       </div>
@@ -123,17 +176,17 @@ function DemandPanel({ p }: { p: Player }) {
   );
 }
 
-function MineActions({ p }: { p: Player }) {
+function MineActions({ player }: { player: Player }) {
   const { setSwapIn, closeSheet, openNego, setTab } = useUi();
-  const inXI = myXI().includes(p.id);
+  const inXI = myLineup().includes(player.id);
   return (
     <div className="col">
-      {!inXI && available(p) && (
+      {!inXI && available(player) && (
         <Button
           className="w-full"
           onClick={() => {
             closeSheet();
-            setSwapIn(p.id);
+            setSwapIn(player.id);
             setTab("squad");
             window.scrollTo({ top: 0, behavior: "smooth" });
           }}
@@ -141,15 +194,15 @@ function MineActions({ p }: { p: Player }) {
           Đưa vào đội hình chính
         </Button>
       )}
-      {!p.loan && (
+      {!player.loan && (
         <div className="row">
           <Button
             variant="ghost"
             size="sm"
             onClick={() => {
-              const r = commit(() => renew(p.id))!;
-              if (r.err) toast(r.err);
-              else openNego(r.n!.id);
+              const result = commit(() => renew(player.id))!;
+              if (result.error) toast(result.error);
+              else openNego(result.negotiation!.id);
             }}
           >
             Gia hạn hợp đồng
@@ -157,92 +210,103 @@ function MineActions({ p }: { p: Player }) {
           <Button
             variant="ghost"
             size="sm"
-            onClick={() => toast(commit(() => toggleListed(p.id)) ? "Đã rao bán. Các CLB sẽ sớm liên hệ." : "Đã gỡ rao bán.")}
+            onClick={() =>
+              toast(
+                commit(() => toggleListed(player.id))
+                  ? "Đã rao bán. Các CLB sẽ sớm liên hệ."
+                  : "Đã gỡ rao bán.",
+              )
+            }
           >
-            {p.listed ? "Gỡ rao bán" : "Rao bán"}
+            {player.listed ? "Gỡ rao bán" : "Rao bán"}
           </Button>
-          {p.age <= 23 && (
-            <Button variant="ghost" size="sm" onClick={() => commit(() => toggleLoanList(p.id))}>
-              {p.loanList ? "Gỡ khỏi DS cho mượn" : "Cho mượn"}
+          {player.age <= 23 && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => commit(() => toggleLoanList(player.id))}
+            >
+              {player.loanList ? "Gỡ khỏi DS cho mượn" : "Cho mượn"}
             </Button>
           )}
         </div>
       )}
       <SelectField
         label="Vai trò trong đội"
-        value={p.c!.role}
-        onChange={(v) => {
-          if (commit(() => setRole(p.id, v as Role))) toast(`${sn(p.n)} không vui khi bị hạ vai trò.`);
+        value={player.contract!.role}
+        onChange={(value) => {
+          if (commit(() => setRole(player.id, value as Role)))
+            toast(`${shortName(player.name)} không vui khi bị hạ vai trò.`);
         }}
-        options={ROLES.map((r): [string, string] => [r, r])}
+        options={ROLES.map((role): [string, string] => [role, role])}
       />
       <p className="hint">
-        Vai trò là lời hứa về thời gian thi đấu. Cầu thủ "Ngôi sao" mong đá chính khoảng 80% số trận, "Dự bị" khoảng 10%. Không giữ lời thì
-        tinh thần giảm.
+        Vai trò là lời hứa về thời gian thi đấu. Cầu thủ "Ngôi sao" mong đá chính khoảng 80% số
+        trận, "Dự bị" khoảng 10%. Không giữ lời thì tinh thần giảm.
       </p>
     </div>
   );
 }
 
-function BuyActions({ p }: { p: Player }) {
+function BuyActions({ player }: { player: Player }) {
   const { openNego, form } = useUi();
-  const free = p.club == null,
-    pre = !free && yearsLeft(p) <= 1 && S.d >= WIN_WINTER[0];
-  const est = feeEstimate(p);
-  const dofKey = "dof:" + p.id,
-    dofDef = r10(est[1] * 1.05);
-  const go = (type: NegoType) => {
-    const r = commit(() => enquire(p.id, type))!;
-    if (r.err) toast(r.err);
-    else openNego(r.n!.id);
+  const free = player.club == null,
+    canPreContract = !free && yearsLeft(player) <= 1 && gameState.day >= WINTER_WINDOW[0];
+  const estimate = feeEstimate(player);
+  const dofKey = "dof:" + player.id,
+    dofDef = roundToTen(estimate[1] * 1.05);
+  const startNegotiation = (type: NegoType) => {
+    const result = commit(() => enquire(player.id, type))!;
+    if (result.error) toast(result.error);
+    else openNego(result.negotiation!.id);
   };
-  const dof = () => {
+  const delegateToDirector = () => {
     const max = (form[dofKey] as number | undefined) ?? dofDef;
-    const r = commit(() => delegate(p.id, max))!;
-    if (r.err) toast(r.err);
+    const result = commit(() => delegate(player.id, max))!;
+    if (result.error) toast(result.error);
     else {
       toast("Đã giao cho Giám đốc thể thao.");
-      openNego(r.n!.id);
+      openNego(result.negotiation!.id);
     }
   };
   return (
     <div className="col">
       {free ? (
-        <Button variant="hot" className="w-full" onClick={() => go("free")}>
+        <Button variant="hot" className="w-full" onClick={() => startNegotiation("free")}>
           Đàm phán hợp đồng (tự do)
         </Button>
       ) : (
         <>
           <div className="row">
-            <Button variant="hot" style={{ flex: 1 }} onClick={() => go("transfer")}>
+            <Button variant="hot" style={{ flex: 1 }} onClick={() => startNegotiation("transfer")}>
               Thăm dò mua
             </Button>
-            <Button variant="ghost" onClick={() => go("loan")}>
+            <Button variant="ghost" onClick={() => startNegotiation("loan")}>
               Hỏi mượn
             </Button>
           </div>
-          {pre && (
-            <Button variant="ghost" className="w-full" onClick={() => go("pre")}>
+          {canPreContract && (
+            <Button variant="ghost" className="w-full" onClick={() => startNegotiation("pre")}>
               Ký trước (miễn phí từ 1/7)
             </Button>
           )}
           <RangeField
-            k={dofKey}
+            fieldKey={dofKey}
             label="Giao Giám đốc thể thao, trần phí"
-            min={r10(est[0] * 0.6)}
-            max={Math.max(r10(est[1] * 2), r10(est[0] * 0.6) + 10)}
+            min={roundToTen(estimate[0] * 0.6)}
+            max={Math.max(roundToTen(estimate[1] * 2), roundToTen(estimate[0] * 0.6) + 10)}
             step={10}
-            fmt="m"
+            format="m"
             def={dofDef}
           />
-          <Button variant="ghost" size="sm" onClick={dof}>
+          <Button variant="ghost" size="sm" onClick={delegateToDirector}>
             Giao việc
           </Button>
           <span className="hint">GĐTT tự đàm phán trong 2 ngày, không vượt trần bạn đặt.</span>
         </>
       )}
-      <Button variant="ghost" size="sm" onClick={() => commit(() => toggleShortlist(p.id))}>
-        {S.shortlist.includes(p.id) ? "Bỏ theo dõi" : "Theo dõi"}
+      <Button variant="ghost" size="sm" onClick={() => commit(() => toggleShortlist(player.id))}>
+        {gameState.shortlist.includes(player.id) ? "Bỏ theo dõi" : "Theo dõi"}
       </Button>
     </div>
   );
@@ -251,33 +315,33 @@ function BuyActions({ p }: { p: Player }) {
 export function PlayerSheet({ id }: { id: string }) {
   useGameVersion();
   const { ptab, setPtab, closeSheet, openNego } = useUi();
-  const p = P(id);
-  if (!p) return null;
-  const mine = p.club === S.me || p.homeClub === S.me;
-  const tab = ptab || (mine ? "info" : "scout");
-  const neg = activeNegoFor(p.id);
+  const player = getPlayer(id);
+  if (!player) return null;
+  const mine = player.club === gameState.myClubId || player.homeClub === gameState.myClubId;
+  const currentPlayerTab = ptab || (mine ? "info" : "scout");
+  const negotiation = activeNegoFor(player.id);
   return (
     <Sheet onClose={closeSheet}>
-      <PlayerHead p={p} onClose={closeSheet} />
-      <Stats p={p} />
-      <Seg
-        value={tab}
+      <PlayerHead player={player} onClose={closeSheet} />
+      <Stats player={player} />
+      <SegmentedControl
+        value={currentPlayerTab}
         onChange={setPtab}
         items={[
           ["info", "Tổng quan"],
           ["scout", "Báo cáo tuyển trạch"],
         ]}
       />
-      {mine && p.demand ? <DemandPanel p={p} /> : null}
-      {tab === "info" ? <Info p={p} /> : <ScoutReport p={p} />}
-      {neg ? (
-        <Button variant="hot" className="w-full" onClick={() => openNego(neg.id)}>
+      {mine && player.demand ? <DemandPanel player={player} /> : null}
+      {currentPlayerTab === "info" ? <Info player={player} /> : <ScoutReport player={player} />}
+      {negotiation ? (
+        <Button variant="hot" className="w-full" onClick={() => openNego(negotiation.id)}>
           Xem thương vụ đang diễn ra
         </Button>
-      ) : mine && !p.homeClub ? (
-        <MineActions p={p} />
+      ) : mine && !player.homeClub ? (
+        <MineActions player={player} />
       ) : !mine ? (
-        <BuyActions p={p} />
+        <BuyActions player={player} />
       ) : null}
     </Sheet>
   );

@@ -1,69 +1,103 @@
 // Trạng thái game đang chạy. Engine thao tác trực tiếp trên S (mutable) — tầng React đăng ký lắng nghe qua store.
-import { DEADLINE_HOURS, FICT_LEAGUES, MATCH0, MATCH_GAP, MAX_WEEKLY, WIN_SUMMER, WIN_WINTER } from "./constants";
-import type { Club, GameState, InboxMessage, League, Negotiation, NewsItem, Player, TransferWindow } from "./types";
+import {
+  DEADLINE_HOURS,
+  FIRST_MATCH_DAY,
+  MATCH_GAP,
+  MAX_WEEKLY,
+  SUMMER_WINDOW,
+  WINTER_WINDOW,
+} from "./constants";
+import type {
+  Club,
+  GameState,
+  InboxKind,
+  InboxMessage,
+  League,
+  Negotiation,
+  NewsItem,
+  Player,
+  TransferWindow,
+} from "./types";
 
-export let S: GameState = null as unknown as GameState;
-export let LEAGUES: League[] = FICT_LEAGUES;
+export let gameState: GameState = null as unknown as GameState;
+export let LEAGUES: League[] = [];
 
-export function setState(s: GameState | null): void {
-  S = s as GameState;
-  LEAGUES = s && s.leagueMeta ? s.leagueMeta : FICT_LEAGUES;
+export function setState(state: GameState | null): void {
+  gameState = state as GameState;
+  LEAGUES = state?.leagueMeta ?? [];
 }
-export function setLeagues(l: League[]): void {
-  LEAGUES = l;
+export function setLeagues(leagues: League[]): void {
+  LEAGUES = leagues;
 }
-export const hasGame = (): boolean => !!S;
+export const hasGame = (): boolean => !!gameState;
 
-export const LG = (id: string): League => LEAGUES.find((l) => l.id === id) as League;
-export const simLeagues = (): League[] => LEAGUES.filter((l) => l.sim !== false);
-export const lgName = (id: string): string => (S && S.lgN && S.lgN[id]) || LG(id).n;
+export const getLeague = (id: string): League =>
+  LEAGUES.find((league) => league.id === id) as League;
+export const simLeagues = (): League[] => LEAGUES.filter((league) => league.isSimulated !== false);
+export const leagueName = (id: string): string =>
+  (gameState && gameState.leagueNames && gameState.leagueNames[id]) || getLeague(id).name;
 
-export const P = (id: string): Player => S.P[id];
-export const C = (id: string): Club => S.clubs[id];
-export const me = (): Club => S.clubs[S.me];
-export const myLg = (): string => me().lg;
-export const N = (id: string): Negotiation | undefined => S.negos.find((n) => n.id === id);
+export const getPlayer = (id: string): Player => gameState.players[id];
+export const getClub = (id: string): Club => gameState.clubs[id];
+export const myClub = (): Club => gameState.clubs[gameState.myClubId];
+export const myLeagueId = (): string => myClub().leagueId;
+export const getNegotiation = (id: string): Negotiation | undefined =>
+  gameState.negos.find((negotiation) => negotiation.id === id);
 
 // ---------- lịch ----------
-export function dateOf(d: number): Date {
-  const x = new Date(S.year, 6, 1);
-  x.setDate(x.getDate() + d);
-  return x;
+export function dateOf(day: number): Date {
+  const date = new Date(gameState.year, 6, 1);
+  date.setDate(date.getDate() + day);
+  return date;
 }
-export function windowNow(d: number = S.d): TransferWindow {
-  if (d >= WIN_SUMMER[0] && d <= WIN_SUMMER[1]) return "summer";
-  if (d >= WIN_WINTER[0] && d <= WIN_WINTER[1]) return "winter";
+export function windowNow(day: number = gameState.day): TransferWindow {
+  if (day >= SUMMER_WINDOW[0] && day <= SUMMER_WINDOW[1]) return "summer";
+  if (day >= WINTER_WINDOW[0] && day <= WINTER_WINDOW[1]) return "winter";
   return null;
 }
-export const isDeadline = (d: number = S.d): boolean => d === WIN_SUMMER[1] || d === WIN_WINTER[1];
-export const deadlineOver = (): boolean => S.h >= 9 + DEADLINE_HOURS;
+export const isDeadline = (day: number = gameState.day): boolean =>
+  day === SUMMER_WINDOW[1] || day === WINTER_WINDOW[1];
+export const deadlineOver = (): boolean => gameState.hour >= 9 + DEADLINE_HOURS;
 /** Thời điểm tuyệt đối trong mùa, tính bằng giờ */
-export const tick = (): number => S.d * 24 + S.h;
+export const tick = (): number => gameState.day * 24 + gameState.hour;
 /** Ngày đá của vòng r trong giải có `total` vòng. Mỗi tuần một vòng; giải quá dài (trên MAX_WEEKLY vòng) dồn lịch để vẫn kết thúc trước ngày tổng kết */
-export function roundDay(r: number, total: number): number {
-  if (total <= MAX_WEEKLY) return MATCH0 + r * MATCH_GAP;
-  return MATCH0 + Math.floor((r * (MAX_WEEKLY - 1) * MATCH_GAP) / (total - 1));
+export function roundDay(round: number, total: number): number {
+  if (total <= MAX_WEEKLY) return FIRST_MATCH_DAY + round * MATCH_GAP;
+  return FIRST_MATCH_DAY + Math.floor((round * (MAX_WEEKLY - 1) * MATCH_GAP) / (total - 1));
 }
-export function roundOn(d: number, lg: string): number {
-  if (!S.fx[lg]) return -1;
-  const total = S.fx[lg].length;
+export function roundOn(day: number, leagueId: string): number {
+  if (!gameState.fixtures[leagueId]) return -1;
+  const total = gameState.fixtures[leagueId].length;
   if (total <= MAX_WEEKLY) {
-    const r = (d - MATCH0) / MATCH_GAP;
-    return Number.isInteger(r) && r >= 0 && r < total ? r : -1;
+    const round = (day - FIRST_MATCH_DAY) / MATCH_GAP;
+    return Number.isInteger(round) && round >= 0 && round < total ? round : -1;
   }
-  const r = Math.round(((d - MATCH0) * (total - 1)) / ((MAX_WEEKLY - 1) * MATCH_GAP));
-  return r >= 0 && r < total && roundDay(r, total) === d ? r : -1;
+  const round = Math.round(
+    ((day - FIRST_MATCH_DAY) * (total - 1)) / ((MAX_WEEKLY - 1) * MATCH_GAP),
+  );
+  return round >= 0 && round < total && roundDay(round, total) === day ? round : -1;
 }
 
 // ---------- tin tức & hộp thư ----------
-export function news(t: string, k: NewsItem["k"] = "gen"): void {
-  S.news.unshift({ t, k, d: S.d, y: S.year });
-  S.news = S.news.slice(0, 400);
+export function news(text: string, kind: NewsItem["kind"] = "gen"): void {
+  gameState.news.unshift({ text, kind, day: gameState.day, year: gameState.year });
+  gameState.news = gameState.news.slice(0, 400);
 }
-export function inbox(m: Omit<InboxMessage, "id" | "d" | "h" | "y" | "read">): InboxMessage {
-  const full: InboxMessage = { ...m, id: "m" + S.nnid++, d: S.d, h: S.h, y: S.year, read: false };
-  S.inbox.unshift(full);
-  S.inbox = S.inbox.slice(0, 60);
-  S.stopFlag = true;
+export function inbox(
+  message: Omit<InboxMessage, "id" | "day" | "hour" | "year" | "read" | "kind"> & {
+    kind: InboxKind;
+  },
+): InboxMessage {
+  const full: InboxMessage = {
+    ...message,
+    id: "m" + gameState.nextRecordNumber++,
+    day: gameState.day,
+    hour: gameState.hour,
+    year: gameState.year,
+    read: false,
+  };
+  gameState.inbox.unshift(full);
+  gameState.inbox = gameState.inbox.slice(0, 60);
+  gameState.stopFlag = true;
   return full;
 }

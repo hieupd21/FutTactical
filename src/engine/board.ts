@@ -1,51 +1,85 @@
 import { sackedOffers } from "./career";
-import { fmtM, fmtW } from "./format";
-import { clubPlayers, clubStr, myPos } from "./squad";
-import { me, myLg, news, S } from "./state";
+import { formatMoney, formatWage } from "./format";
+import { clubPlayers, clubStrength, myLeaguePosition } from "./squad";
+import { myClub, myLeagueId, news, gameState } from "./state";
 import type { BoardObjective } from "./types";
 import { clamp } from "./util";
 
 export function setBoard(): void {
-  const lc = Object.values(S.clubs)
-    .filter((c) => c.lg === myLg())
-    .sort((a, b) => clubStr(b.id).pow - clubStr(a.id).pow);
-  const exp = lc.findIndex((c) => c.id === S.me) + 1;
-  const target = clamp(exp + 2, 1, lc.length - 3);
-  S.board = {
+  const clubs = Object.values(gameState.clubs)
+    .filter((club) => club.leagueId === myLeagueId())
+    .sort((clubA, clubB) => clubStrength(clubB.id).power - clubStrength(clubA.id).power);
+  const expectedPosition = clubs.findIndex((club) => club.id === gameState.myClubId) + 1;
+  const target = clamp(expectedPosition + 2, 1, clubs.length - 3);
+  gameState.board = {
     target,
-    objs: [
-      { k: "pos", n: target === 1 ? "Vô địch quốc gia" : `Cán đích trong top ${target}`, imp: "Rất quan trọng" },
-      { k: "wage", n: "Không để tổng lương vượt quỹ lương", imp: "Quan trọng" },
-      { k: "youth", n: "Cầu thủ U21 ra sân tổng cộng 15 trận", imp: "Trung bình", target: 15 },
-      { k: "sell", n: "Không lỗ quá 30% ngân sách chuyển nhượng đầu mùa", imp: "Trung bình", start: me().budget },
+    objectives: [
+      {
+        kind: "pos",
+        label: target === 1 ? "Vô địch quốc gia" : `Cán đích trong top ${target}`,
+        importance: "Rất quan trọng",
+      },
+      { kind: "wage", label: "Không để tổng lương vượt quỹ lương", importance: "Quan trọng" },
+      {
+        kind: "youth",
+        label: "Cầu thủ U21 ra sân tổng cộng 15 trận",
+        importance: "Trung bình",
+        target: 15,
+      },
+      {
+        kind: "sell",
+        label: "Không lỗ quá 30% ngân sách chuyển nhượng đầu mùa",
+        importance: "Trung bình",
+        start: myClub().budget,
+      },
     ],
   };
 }
-export const myWages = (): number => clubPlayers(S.me).reduce((s, p) => s + (p.loan ? (p.c!.wage * p.loan.pct) / 100 : p.c!.wage), 0);
+export const myWages = (): number =>
+  clubPlayers(gameState.myClubId).reduce(
+    (total, player) =>
+      total +
+      (player.loan ? (player.contract!.wage * player.loan.percent) / 100 : player.contract!.wage),
+    0,
+  );
 export const youthApps = (): number =>
-  clubPlayers(S.me)
-    .filter((p) => p.age <= 21)
-    .reduce((s, p) => s + p.apps, 0);
+  clubPlayers(gameState.myClubId)
+    .filter((player) => player.age <= 21)
+    .reduce((total, player) => total + player.apps, 0);
 
-export function objStatus(o: BoardObjective): { ok: boolean; txt: string; pending?: boolean } {
-  if (o.k === "pos") {
-    if (!(S.res[myLg()] || []).some(Boolean)) return { ok: true, pending: true, txt: "Mùa giải chưa bắt đầu" };
-    const p = myPos();
-    return { ok: p <= S.board.target, txt: `Đang xếp thứ ${p}` };
+export function objectiveStatus(objective: BoardObjective): {
+  ok: boolean;
+  text: string;
+  pending?: boolean;
+} {
+  if (objective.kind === "pos") {
+    if (!(gameState.results[myLeagueId()] || []).some(Boolean))
+      return { ok: true, pending: true, text: "Mùa giải chưa bắt đầu" };
+    const position = myLeaguePosition();
+    return { ok: position <= gameState.board.target, text: `Đang xếp thứ ${position}` };
   }
-  if (o.k === "wage") {
-    const w = myWages();
-    return { ok: w <= S.wageCap, txt: `${fmtW(w)} / ${fmtW(S.wageCap)}` };
+  if (objective.kind === "wage") {
+    const wages = myWages();
+    return {
+      ok: wages <= gameState.wageCap,
+      text: `${formatWage(wages)} / ${formatWage(gameState.wageCap)}`,
+    };
   }
-  if (o.k === "youth") {
-    const a = youthApps();
-    return { ok: a >= (o.target || 0), txt: `${a}/${o.target} trận` };
+  if (objective.kind === "youth") {
+    const youthAppearances = youthApps();
+    return {
+      ok: youthAppearances >= (objective.target || 0),
+      text: `${youthAppearances}/${objective.target} trận`,
+    };
   }
-  const ok = me().budget >= (o.start || 0) * 0.7;
-  return { ok, txt: `Còn ${fmtM(me().budget)} / đầu mùa ${fmtM(o.start || 0)}` };
+  const ok = myClub().budget >= (objective.start || 0) * 0.7;
+  return {
+    ok,
+    text: `Còn ${formatMoney(myClub().budget)} / đầu mùa ${formatMoney(objective.start || 0)}`,
+  };
 }
-export function sack(why: string): void {
-  S.sacked = why;
-  news("Bạn bị sa thải. " + why, "club");
+export function sack(reason: string): void {
+  gameState.sacked = reason;
+  news("Bạn bị sa thải. " + reason, "club");
   sackedOffers();
 }

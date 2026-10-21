@@ -12,8 +12,8 @@ import { useBackNavigation } from "./useBackNavigation";
 import { Card } from "@/components/shadcn/card";
 
 export function App() {
-  const status = useGame((s) => s.status);
-  const tab = useUi((s) => s.tab);
+  const status = useGame((store) => store.status);
+  const currentTab = useUi((ui) => ui.currentTab);
   useBackNavigation();
   useEffect(() => {
     void useGame.getState().boot();
@@ -36,7 +36,9 @@ export function App() {
           {status === "none" && <StartScreen />}
           {status === "ready" && (
             <>
-              <h1 className="sr-only">{TABS.find((t) => t.k === tab)?.l}</h1>
+              <h1 className="sr-only">
+                {TABS.find((tabItem) => tabItem.tab === currentTab)?.label}
+              </h1>
               <AnimatedTabs />
             </>
           )}
@@ -48,7 +50,10 @@ export function App() {
           <SheetHost />
         </>
       )}
-      <Toaster position="bottom-center" offset={{ bottom: "calc(76px + env(safe-area-inset-bottom, 0px))" }} />
+      <Toaster
+        position="bottom-center"
+        offset={{ bottom: "calc(76px + env(safe-area-inset-bottom, 0px))" }}
+      />
     </>
   );
 }

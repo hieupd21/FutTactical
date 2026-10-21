@@ -2,11 +2,24 @@
 import { lazy } from "react";
 
 const loaders = {
-  market: () => import("@/features/market/MarketPage").then((m) => ({ default: m.MarketPage })),
-  league: () => import("@/features/league/LeaguePage").then((m) => ({ default: m.LeaguePage })),
-  club: () => import("@/features/club/ClubPage").then((m) => ({ default: m.ClubPage })),
-  nego: () => import("@/features/negotiation/NegoSheet").then((m) => ({ default: m.NegoSheet })),
-  match: () => import("@/features/match/MatchSheet").then((m) => ({ default: m.MatchSheet })),
+  market: () =>
+    import("@/features/market/MarketPage").then((loadedModule) => ({
+      default: loadedModule.MarketPage,
+    })),
+  league: () =>
+    import("@/features/league/LeaguePage").then((loadedModule) => ({
+      default: loadedModule.LeaguePage,
+    })),
+  club: () =>
+    import("@/features/club/ClubPage").then((loadedModule) => ({ default: loadedModule.ClubPage })),
+  nego: () =>
+    import("@/features/negotiation/NegoSheet").then((loadedModule) => ({
+      default: loadedModule.NegoSheet,
+    })),
+  match: () =>
+    import("@/features/match/MatchSheet").then((loadedModule) => ({
+      default: loadedModule.MatchSheet,
+    })),
 };
 
 export const MarketPage = lazy(loaders.market);
@@ -17,7 +30,8 @@ export const MatchSheet = lazy(loaders.match);
 
 /** Nạp trước mọi chunk khi trình duyệt rảnh */
 export function prefetchPages(): void {
-  const run = () => Object.values(loaders).forEach((load) => void load().catch(() => undefined));
-  if ("requestIdleCallback" in window) window.requestIdleCallback(run);
-  else setTimeout(run, 1500);
+  const preloadAll = () =>
+    Object.values(loaders).forEach((load) => void load().catch(() => undefined));
+  if ("requestIdleCallback" in window) window.requestIdleCallback(preloadAll);
+  else setTimeout(preloadAll, 1500);
 }

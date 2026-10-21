@@ -1,39 +1,40 @@
-// Khởi tạo thế giới: hư cấu hoặc dữ liệu thật (gói FC 27 dựng sẵn).
+// Khởi tạo thế giới: dữ liệu thật (gói FC 27 dựng sẵn).
+import { allLeagueInfos, findLeagueByPackId, mockData } from "./mockData";
 import { setBoard } from "./board";
-import { AI_FORMS, FICT_LEAGUES, NAMES, NAT_VI, NATCODE, OPTIONAL_LG, PHIL, POSLINE, REAL_LG, RIVALS } from "./constants";
-import { fmtM, fmtW } from "./format";
-import { makeP, valueOf, wageBase } from "./players";
-import { clubReq, REP_NEWBIE } from "./career";
-import { bestXI, clubPlayers } from "./squad";
-import { C, inbox, LEAGUES, LG, me, news, S, setLeagues, setState, simLeagues } from "./state";
-import type { Club, DataRow, GameState, League, Line, LowerLeagueData, Philosophy, Player, Role } from "./types";
-import { clamp, pickA, r10, ri, rnd } from "./util";
+import { AI_FORMS, PHILOSOPHY_LABEL } from "./constants";
+import { formatMoney, formatWage } from "./format";
+import { makePlayer, valueOf, wageBase } from "./players";
+import { clubRequirement, NEWBIE_REPUTATION } from "./career";
+import { bestLineup, clubPlayers } from "./squad";
+import { getClub, inbox, myClub, news, gameState, setLeagues, setState, simLeagues } from "./state";
+import type { Club, DataRow, GameState, League, Line, Philosophy, Player, Role } from "./types";
+import { clamp, pickRandom, roundToTen, randomInt, randomBetween } from "./util";
 
 function blankState(year: number, extra: Partial<GameState> = {}): GameState {
   return {
-    v: 3,
-    nid: 1,
+    saveVersion: 3,
+    nextPlayerNumber: 1,
     year,
-    d: 0,
-    h: 9,
-    P: {},
+    day: 0,
+    hour: 9,
+    players: {},
     clubs: {},
-    me: "",
-    fx: {},
-    res: {},
+    myClubId: "",
+    fixtures: {},
+    results: {},
     news: [],
     inbox: [],
     negos: [],
-    nnid: 1,
-    liab: [],
+    nextRecordNumber: 1,
+    liabilities: [],
     pending: [],
-    lgN: {},
+    leagueNames: {},
     form: "4-3-3",
-    xi: [],
+    lineup: [],
     scout: 2,
     shortlist: [],
-    board: { target: 1, objs: [] },
-    conf: 60,
+    board: { target: 1, objectives: [] },
+    boardConfidence: 60,
     sacked: false,
     matchToday: null,
     lastMatch: null,
@@ -45,284 +46,246 @@ function blankState(year: number, extra: Partial<GameState> = {}): GameState {
   };
 }
 
-export function makeFixtures(ids: string[]): [string, string][][] {
-  const n = ids.length,
-    arr = ids.slice(),
+export function makeFixtures(clubIds: string[]): [string, string][][] {
+  const clubCount = clubIds.length,
+    rotation = clubIds.slice(),
     rounds: [string, string][][] = [];
-  for (let r = 0; r < n - 1; r++) {
-    const m: [string, string][] = [];
-    for (let i = 0; i < n / 2; i++) {
-      const a = arr[i],
-        b = arr[n - 1 - i];
-      m.push(r % 2 ? [b, a] : [a, b]);
+  for (let roundIndex = 0; roundIndex < clubCount - 1; roundIndex++) {
+    const roundFixtures: [string, string][] = [];
+    for (let i = 0; i < clubCount / 2; i++) {
+      const homeId = rotation[i],
+        awayId = rotation[clubCount - 1 - i];
+      roundFixtures.push(roundIndex % 2 ? [awayId, homeId] : [homeId, awayId]);
     }
-    rounds.push(m);
-    arr.splice(1, 0, arr.pop() as string);
+    rounds.push(roundFixtures);
+    rotation.splice(1, 0, rotation.pop() as string);
   }
-  return rounds.concat(rounds.map((r) => r.map(([a, b]) => [b, a] as [string, string])));
+  return rounds.concat(
+    rounds.map((roundFixtures) =>
+      roundFixtures.map(([homeId, awayId]) => [awayId, homeId] as [string, string]),
+    ),
+  );
 }
-export const lgIdx = (c: Club): number =>
-  Object.values(S.clubs)
-    .filter((x) => x.lg === c.lg)
-    .findIndex((x) => x.id === c.id);
+export const leagueIndex = (club: Club): number =>
+  Object.values(gameState.clubs)
+    .filter((otherClub) => otherClub.leagueId === club.leagueId)
+    .findIndex((otherClub) => otherClub.id === club.id);
 
-function assignRoles(cid: string, bumpStars = false): void {
-  clubPlayers(cid)
-    .sort((a, b) => b.ovr - a.ovr)
-    .forEach((p, j) => {
-      const role: Role = j < 2 ? "Ngôi sao" : j < 11 ? "Đá chính" : j < 15 ? "Xoay tua" : p.age <= 20 ? "Triển vọng" : "Dự bị";
-      p.c!.role = role;
-      if (bumpStars && j < 2) p.c!.wage = Math.round(p.c!.wage * 1.3);
+function assignRoles(clubId: string, bumpStars = false): void {
+  clubPlayers(clubId)
+    .sort((playerA, playerB) => playerB.ovr - playerA.ovr)
+    .forEach((player, j) => {
+      const role: Role =
+        j < 2
+          ? "Ngôi sao"
+          : j < 11
+            ? "Đá chính"
+            : j < 15
+              ? "Xoay tua"
+              : player.age <= 20
+                ? "Triển vọng"
+                : "Dự bị";
+      player.contract!.role = role;
+      if (bumpStars && j < 2) player.contract!.wage = Math.round(player.contract!.wage * 1.3);
     });
 }
 function makeAllFixtures(): void {
-  simLeagues().forEach((lg) => {
-    S.fx[lg.id] = makeFixtures(
-      Object.values(S.clubs)
-        .filter((c) => c.lg === lg.id)
-        .map((c) => c.id),
+  simLeagues().forEach((league) => {
+    gameState.fixtures[league.id] = makeFixtures(
+      Object.values(gameState.clubs)
+        .filter((club) => club.leagueId === league.id)
+        .map((club) => club.id),
     );
-    S.res[lg.id] = [];
+    gameState.results[league.id] = [];
   });
 }
-const SQUAD_PLAN: Line[] = [
-  "GK",
-  "GK",
-  "GK",
-  "DF",
-  "DF",
-  "DF",
-  "DF",
-  "DF",
-  "DF",
-  "DF",
-  "DF",
-  "MF",
-  "MF",
-  "MF",
-  "MF",
-  "MF",
-  "MF",
-  "MF",
-  "MF",
-  "FW",
-  "FW",
-  "FW",
-  "FW",
-  "FW",
-];
-const randPhil = (): Philosophy => pickA(Object.keys(PHIL) as Philosophy[]);
-
-// ---------- thế giới hư cấu ----------
-export function newGame(lgId: string, clubIdx: number): void {
-  setState(blankState(2026, { v: 2 }));
-  setLeagues(FICT_LEAGUES);
-  let cid = 0;
-  LEAGUES.forEach((lg) =>
-    lg.clubs.forEach(([name, str0]) => {
-      const str = Math.round(str0 + rnd(-0.8, 0.8)),
-        id = "c" + cid++;
-      const pres = clamp(Math.round((str - 70) / 3.4), 1, 5);
-      S.clubs[id] = {
-        id,
-        n: name,
-        lg: lg.id,
-        str,
-        pres,
-        phil: randPhil(),
-        form: pickA(AI_FORMS),
-        ids: [],
-        budget: r10(4000 * Math.pow(pres, 2.2) * rnd(0.8, 1.2)),
-        rival: null,
-      };
-      SQUAD_PLAN.forEach((pos, k) => {
-        const nat = Math.random() < lg.fr ? pickA(lg.imp) : lg.nat;
-        const age = k % 5 === 0 ? ri(17, 21) : ri(20, 33);
-        const star = k === 4 || k === 13 || k === 20 ? ri(2, 5) : 0;
-        const o = Math.round(clamp(str + rnd(-9, 5) + star - (age < 20 ? 6 : 0) - (k % 3 === 2 ? 3 : 0), 48, 92));
-        S.clubs[id].ids.push(makeP(nat, pos, o, age, id).id);
-      });
-      assignRoles(id, true);
-    }),
-  );
-  Object.values(S.clubs).forEach((c) => {
-    const same = Object.values(S.clubs).filter((x) => x.lg === c.lg && x.id !== c.id);
-    c.rival = same[(lgIdx(c) + 1) % same.length].id;
-  });
-  for (let i = 0; i < 60; i++) {
-    const p = makeP(pickA(Object.keys(NAMES)), pickA<Line>(["GK", "DF", "DF", "MF", "MF", "FW"]), ri(62, 76), ri(20, 33), null);
-    p.c = null;
-    S.free.push(p.id);
-  }
-  S.me = Object.values(S.clubs).filter((c) => c.lg === lgId)[clubIdx].id;
-  finishSetup(1.1);
-  news(`Bạn chính thức nhận ghế HLV trưởng ${me().n}. Ban lãnh đạo đặt niềm tin, nhưng kiên nhẫn có giới hạn.`, "club");
-  inbox({
-    t: "Chào mừng HLV mới",
-    b: `Kỳ chuyển nhượng hè mở tới hết 31/8. Ngân sách chuyển nhượng ${fmtM(me().budget)}, quỹ lương ${fmtW(S.wageCap)}. Mục tiêu của ban lãnh đạo nằm ở tab CLB.`,
-  });
-}
+const randomPhilosophy = (): Philosophy =>
+  pickRandom(Object.keys(PHILOSOPHY_LABEL) as Philosophy[]);
 
 function finishSetup(capMul: number): void {
-  const mc = me();
-  mc.budget = r10(4000 * Math.pow(mc.pres, 2.1));
-  S.wageCap = Math.round(clubPlayers(S.me).reduce((s, p) => s + p.c!.wage, 0) * capMul);
+  const club = myClub();
+  club.budget = roundToTen(4000 * Math.pow(club.prestige, 2.1));
+  gameState.wageCap = Math.round(
+    clubPlayers(gameState.myClubId).reduce((total, player) => total + player.contract!.wage, 0) *
+      capMul,
+  );
   makeAllFixtures();
-  S.xi = bestXI(S.me, S.form);
+  gameState.lineup = bestLineup(gameState.myClubId, gameState.form);
   setBoard();
 }
 
 // ---------- dữ liệu thật ----------
 export interface PackClub {
-  lid: number;
-  n: string;
+  leagueId: number;
+  name: string;
   rows: DataRow[];
-  str: number;
+  strength: number;
 }
 export function packClubs(rows: DataRow[]): PackClub[] {
   const clubs: Record<string, PackClub> = {};
-  rows.forEach((r) => {
-    if (!REAL_LG[r[0]]) return;
-    const k = r[0] + "|" + r[1];
-    (clubs[k] = clubs[k] || { lid: r[0], n: r[1], rows: [], str: 0 }).rows.push(r);
+  rows.forEach((dataRow) => {
+    if (!findLeagueByPackId(dataRow[0])) return;
+    const clubKey = dataRow[0] + "|" + dataRow[1];
+    (clubs[clubKey] = clubs[clubKey] || {
+      leagueId: dataRow[0],
+      name: dataRow[1],
+      rows: [],
+      strength: 0,
+    }).rows.push(dataRow);
   });
-  Object.values(clubs).forEach((c) => {
-    const o = c.rows
-      .map((r) => r[5])
-      .sort((a, b) => b - a)
+  Object.values(clubs).forEach((packClub) => {
+    const topOvrs = packClub.rows
+      .map((dataRow) => dataRow[5])
+      .sort((ovrA, ovrB) => ovrB - ovrA)
       .slice(0, 14);
-    c.str = Math.round(o.reduce((a, b) => a + b, 0) / o.length);
+    packClub.strength = Math.round(topOvrs.reduce((sum, ovr) => sum + ovr, 0) / topOvrs.length);
   });
   return Object.values(clubs);
 }
 
+const LINE_SAMPLE_SIZE: Record<Line, number> = { GK: 1, DF: 4, MF: 4, FW: 3 };
+
+/** Sức mạnh từng nhóm vị trí của CLB: trung bình ovr các cầu thủ mạnh nhất, xếp theo vị trí chính (cột đầu của dòng dữ liệu) */
+export function packClubLineStrengths(packClub: PackClub): Record<Line, number> {
+  const { positionLine } = mockData().nationalities;
+  const ovrsByLine: Record<Line, number[]> = { GK: [], DF: [], MF: [], FW: [] };
+  packClub.rows.forEach((dataRow) => {
+    const mainPosition = String(dataRow[4]).split(",")[0].trim();
+    ovrsByLine[(positionLine[mainPosition] || "MF") as Line].push(dataRow[5]);
+  });
+  const averageOf = (line: Line): number => {
+    const topOvrs = ovrsByLine[line]
+      .sort((ovrA, ovrB) => ovrB - ovrA)
+      .slice(0, LINE_SAMPLE_SIZE[line]);
+    return topOvrs.length
+      ? Math.round(topOvrs.reduce((sum, ovr) => sum + ovr, 0) / topOvrs.length)
+      : 0;
+  };
+  return { GK: averageOf("GK"), DF: averageOf("DF"), MF: averageOf("MF"), FW: averageOf("FW") };
+}
+
 export interface RealStart {
-  /** Hạng đấu thấp bổ sung (CLB hư cấu) */
-  lower?: LowerLeagueData[];
   /** true = HLV mới vô danh, chỉ nhận được các đội hạng dưới; false = tự chọn CLB bất kỳ */
   rookie?: boolean;
 }
 
-/** Dựng CLB hư cấu của một hạng đấu thấp; trả về số thứ tự CLB tiếp theo */
-function addLowerLeague(lg: League, data: LowerLeagueData, cid: number): number {
-  data.clubs.forEach(([name, str0]) => {
-    const str = Math.round(str0 + rnd(-0.8, 0.8)),
-      id = "c" + cid++;
-    S.clubs[id] = {
-      id,
-      n: name,
-      lg: lg.id,
-      str,
-      pres: 1,
-      phil: randPhil(),
-      form: pickA(AI_FORMS),
-      ids: [],
-      budget: r10(4000 * rnd(0.8, 1.2)),
-      rival: null,
-    };
-    SQUAD_PLAN.forEach((pos, k) => {
-      const age = k % 5 === 0 ? ri(17, 21) : ri(20, 33);
-      const o = Math.round(clamp(str + rnd(-8, 4) - (age < 20 ? 5 : 0) - (k % 3 === 2 ? 3 : 0), 40, 80));
-      S.clubs[id].ids.push(makeP(lg.nat, pos, o, age, id).id);
-    });
-    assignRoles(id);
-  });
-  return cid;
-}
-
-export function newGameReal(rows: DataRow[], lgId: string, clubName: string, src?: string, opts: RealStart = {}): void {
-  const ver = rows[0][13] || 26,
-    year = 2000 + ver - 1;
-  const present = new Set(packClubs(rows).map((c) => c.lid));
-  const realMeta = Object.entries(REAL_LG)
-    .filter(([k]) => !OPTIONAL_LG.includes(+k) || present.has(+k))
-    .map(([, l]) => l);
-  const fallback = (opts.lower ?? []).filter((l) => !realMeta.some((r) => r.id === l.id));
+export function newGameReal(
+  rows: DataRow[],
+  lgId: string,
+  clubName: string,
+  dataSource?: string,
+  opts: RealStart = {},
+): void {
+  const version = rows[0][13] || 26,
+    year = 2000 + version - 1;
+  const present = new Set(packClubs(rows).map((packClub) => packClub.leagueId));
+  const realMeta = allLeagueInfos().filter(
+    (league) => !league.isOptional || present.has(league.packId),
+  );
   const meta: League[] = [
-    ...realMeta.map((l) => ({ ...l, fr: 0, imp: [], clubs: [] })),
-    ...fallback.map((l) => ({ id: l.id, n: l.n, nat: l.nat, lvl: l.lvl, fr: 0, imp: [], clubs: [] })),
-  ].sort((a, b) => b.lvl - a.lvl);
-  setState(blankState(year, { leagueMeta: meta, src: src || `FC ${ver}` }));
+    ...realMeta.map(({ packId: _packId, isOptional: _isOptional, ...realLeague }) => ({
+      ...realLeague,
+      foreignRatio: 0,
+      importNationalities: [],
+      clubs: [],
+    })),
+  ].sort((leagueA, leagueB) => leagueB.level - leagueA.level);
+  setState(blankState(year, { leagueMeta: meta, dataSource: dataSource || `FC ${version}` }));
   setLeagues(meta);
-  let cid = 0;
+  let clubId = 0;
   const byName: Record<string, string> = {};
   const moves: [number, string, string, string][] = [];
   // dựng một cầu thủ từ dòng dữ liệu; owner = null là cầu thủ tự do (leagueId 0, không CLB)
-  const addRow = (r: DataRow, owner: string | null, toN: string, es: boolean): void => {
-    const ps = String(r[4])
+  const addRow = (
+    dataRow: DataRow,
+    owner: string | null,
+    toClubName: string,
+    hasReleaseClauseData: boolean,
+  ): void => {
+    const positionTokens = String(dataRow[4])
       .split(",")
-      .map((x) => x.trim())
+      .map((positionToken) => positionToken.trim())
       .filter(Boolean);
-    const lines = [...new Set(ps.map((x) => POSLINE[x] || "MF"))] as Line[];
+    const lines = [
+      ...new Set(
+        positionTokens.map(
+          (positionToken) => mockData().nationalities.positionLine[positionToken] || "MF",
+        ),
+      ),
+    ] as Line[];
     if (!lines.length) lines.push("MF");
-    const pid = "p" + S.nid++;
-    const age = r[9] || ri(20, 29);
-    const p: Player = {
-      id: pid,
-      n: r[2],
-      ln: r[3] || r[2],
-      nat: NATCODE[r[12]] || "XX",
-      natN: NAT_VI[r[12]] || r[12],
+    const playerId = "p" + gameState.nextPlayerNumber++;
+    const age = dataRow[9] || randomInt(20, 29);
+    const player: Player = {
+      id: playerId,
+      name: dataRow[2],
+      longName: dataRow[3] || dataRow[2],
+      nationality: mockData().nationalities.codeByDataName[dataRow[12]] || "XX",
+      nationalityName:
+        mockData().nationalities.vietnameseNameByDataName[dataRow[12]] || dataRow[12],
       pos: lines[0],
-      pos2: lines.slice(1),
-      posD: ps.join(", "),
+      secondaryPositions: lines.slice(1),
+      positionDetail: positionTokens.join(", "),
       age,
-      ovr: r[5],
-      pot: Math.max(r[5], r[6] + (r[9] ? 0 : age <= 22 ? ri(3, 10) : 0)),
-      prof: r[9] <= 21 && r[6] - r[5] >= 10 ? "prodigy" : pickA(["early", "late", "steady", "steady", "durable", "fragile"] as const),
-      form: ri(45, 60),
-      mor: ri(55, 75),
-      fit: 100,
-      inj: 0,
+      ovr: dataRow[5],
+      pot: Math.max(dataRow[5], dataRow[6] + (dataRow[9] ? 0 : age <= 22 ? randomInt(3, 10) : 0)),
+      profile:
+        dataRow[9] <= 21 && dataRow[6] - dataRow[5] >= 10
+          ? "prodigy"
+          : pickRandom(["early", "late", "steady", "steady", "durable", "fragile"] as const),
+      form: randomInt(45, 60),
+      morale: randomInt(55, 75),
+      fitness: 100,
+      injuryDays: 0,
       club: owner,
-      c: null,
+      contract: null,
       apps: 0,
       goals: 0,
-      st: [],
-      tot: { apps: 0, goals: 0 },
+      recentStarts: [],
+      careerTotals: { apps: 0, goals: 0 },
       joined: -999,
-      pbias: rnd(-1, 1),
-      hist: [],
-      val: 0,
+      potentialBias: randomBetween(-1, 1),
+      transferHistory: [],
+      marketValue: 0,
     };
-    if (r[14]) {
-      p.hist.push({ y: year, from: r[14], to: toN, fee: null });
-      if (owner) moves.push([r[5], p.n, r[14], toN]);
+    if (dataRow[14]) {
+      player.transferHistory.push({ year, fromClub: dataRow[14], toClub: toClubName, fee: null });
+      if (owner) moves.push([dataRow[5], player.name, dataRow[14], toClubName]);
     }
-    p.c = {
-      wage: Math.max(1, Math.round((r[8] || 0) / 1000)) || 0,
-      exp: owner ? Math.max(year + 1, r[10] || year + 2) : year,
-      rc: es && r[11] ? r10(r[11] / 1000) : 0,
+    player.contract = {
+      wage: Math.max(1, Math.round((dataRow[8] || 0) / 1000)) || 0,
+      expiryYear: owner ? Math.max(year + 1, dataRow[10] || year + 2) : year,
+      releaseClause: hasReleaseClauseData && dataRow[11] ? roundToTen(dataRow[11] / 1000) : 0,
       role: "Xoay tua",
     };
-    S.P[pid] = p;
-    if (owner) C(owner).ids.push(pid);
-    else S.free.push(pid);
-    const fv = valueOf({ ...p, vk: 0 }),
-      real = (r[7] || 0) / 1000;
-    p.vk = real > 0 ? clamp(real / Math.max(1, fv), 0.25, 4) : 1;
-    p.val = valueOf(p);
-    if (!r[8]) p.c.wage = wageBase(p);
+    gameState.players[playerId] = player;
+    if (owner) getClub(owner).playerIds.push(playerId);
+    else gameState.free.push(playerId);
+    const freeValue = valueOf({ ...player, valueAnchor: 0 }),
+      real = (dataRow[7] || 0) / 1000;
+    player.valueAnchor = real > 0 ? clamp(real / Math.max(1, freeValue), 0.25, 4) : 1;
+    player.marketValue = valueOf(player);
+    if (!dataRow[8]) player.contract.wage = wageBase(player);
   };
-  packClubs(rows).forEach((pc) => {
-    const L = REAL_LG[pc.lid],
-      id = "c" + cid++,
-      pres = clamp(Math.round((pc.str - 68) / 3.6), 1, 5);
-    const c: Club = {
+  packClubs(rows).forEach((packClub) => {
+    const realLeague = findLeagueByPackId(packClub.leagueId)!,
+      id = "c" + clubId++,
+      pres = clamp(Math.round((packClub.strength - 68) / 3.6), 1, 5);
+    const club: Club = {
       id,
-      n: pc.n,
-      lg: L.id,
-      str: pc.str,
-      pres,
-      phil: randPhil(),
-      form: pickA(AI_FORMS),
-      ids: [],
-      budget: r10(4000 * Math.pow(pres, 2.2) * rnd(0.8, 1.2)),
+      name: packClub.name,
+      leagueId: realLeague.id,
+      strength: packClub.strength,
+      prestige: pres,
+      philosophy: randomPhilosophy(),
+      form: pickRandom(AI_FORMS),
+      playerIds: [],
+      budget: roundToTen(4000 * Math.pow(pres, 2.2) * randomBetween(0.8, 1.2)),
       rival: null,
     };
-    S.clubs[id] = c;
-    byName[pc.n] = id;
-    pc.rows.forEach((r) => addRow(r, id, pc.n, L.id === "ES"));
+    gameState.clubs[id] = club;
+    byName[packClub.name] = id;
+    packClub.rows.forEach((dataRow) => addRow(dataRow, id, packClub.name, realLeague.id === "ES"));
     // bổ sung cầu thủ trẻ nếu đội hình trong dữ liệu quá mỏng
     const need: [Line, number][] = [
       ["GK", 2],
@@ -331,58 +294,62 @@ export function newGameReal(rows: DataRow[], lgId: string, clubName: string, src
       ["FW", 3],
     ];
     const filler = (pos: Line) => {
-      const q = makeP(L.nat, pos, Math.round(pc.str - ri(10, 16)), ri(18, 21), id);
-      q.c!.role = "Triển vọng";
-      q.gen = true;
-      c.ids.push(q.id);
+      const player = makePlayer(
+        realLeague.nationality,
+        pos,
+        Math.round(packClub.strength - randomInt(10, 16)),
+        randomInt(18, 21),
+        id,
+      );
+      player.contract!.role = "Triển vọng";
+      player.isGenerated = true;
+      club.playerIds.push(player.id);
     };
-    need.forEach(([pos, n]) => {
-      while (clubPlayers(id).filter((p) => p.pos === pos).length < n) filler(pos);
+    need.forEach(([pos, count]) => {
+      while (clubPlayers(id).filter((player) => player.pos === pos).length < count) filler(pos);
     });
-    while (c.ids.length < 20) filler(pickA<Line>(["DF", "MF", "FW"]));
+    while (club.playerIds.length < 20) filler(pickRandom<Line>(["DF", "MF", "FW"]));
     assignRoles(id);
   });
-  fallback.forEach((l) => {
-    cid = addLowerLeague(LG(l.id), l, cid);
-  });
   moves
-    .sort((a, b) => b[0] - a[0])
+    .sort((rowA, rowB) => rowB[0] - rowA[0])
     .slice(0, 25)
     .reverse()
-    .forEach((m) => news(`Hè ${year}: ${m[1]} (${m[0]}) chuyển từ ${m[2]} sang ${m[3]}.`, "transfer"));
-  RIVALS.forEach(([a, b]) => {
-    if (byName[a] && byName[b]) {
-      C(byName[a]).rival = byName[b];
-      C(byName[b]).rival = byName[a];
+    .forEach((line) =>
+      news(`Hè ${year}: ${line[1]} (${line[0]}) chuyển từ ${line[2]} sang ${line[3]}.`, "transfer"),
+    );
+  mockData().leagues.rivals.forEach(([clubNameA, clubNameB]) => {
+    if (byName[clubNameA] && byName[clubNameB]) {
+      getClub(byName[clubNameA]).rival = byName[clubNameB];
+      getClub(byName[clubNameB]).rival = byName[clubNameA];
     }
   });
-  Object.values(S.clubs).forEach((c) => {
-    if (c.rival) return;
-    const same = Object.values(S.clubs)
-      .filter((x) => x.lg === c.lg && x.id !== c.id)
-      .sort((x, y) => Math.abs(x.str - c.str) - Math.abs(y.str - c.str));
-    c.rival = same[0]?.id ?? null;
+  Object.values(gameState.clubs).forEach((club) => {
+    if (club.rival) return;
+    const same = Object.values(gameState.clubs)
+      .filter((otherClub) => otherClub.leagueId === club.leagueId && otherClub.id !== club.id)
+      .sort(
+        (clubA, clubB) =>
+          Math.abs(clubA.strength - club.strength) - Math.abs(clubB.strength - club.strength),
+      );
+    club.rival = same[0]?.id ?? null;
   });
   // cầu thủ hết hợp đồng (leagueId 0): tự do, CLB nào cũng có thể ký
-  rows.filter((r) => !r[0] && !r[1]).forEach((r) => addRow(r, null, "", false));
-  for (let i = S.free.length; i < 50; i++) {
-    const p = makeP(
-      pickA(["EN", "ES", "DE", "IT", "FR", "BR", "AR", "PT", "NL", "SN"]),
-      pickA<Line>(["GK", "DF", "DF", "MF", "MF", "FW"]),
-      ri(62, 74),
-      ri(23, 33),
-      null,
-    );
-    p.c = null;
-    S.free.push(p.id);
-  }
-  S.me =
-    byName[clubName] || Object.values(S.clubs).find((c) => c.n === clubName)?.id || Object.values(S.clubs).find((c) => c.lg === lgId)!.id;
-  S.rep = opts.rookie ? REP_NEWBIE : Math.min(100, clubReq(me()) + 5);
+  rows
+    .filter((dataRow) => !dataRow[0] && !dataRow[1])
+    .forEach((dataRow) => addRow(dataRow, null, "", false));
+  gameState.myClubId =
+    byName[clubName] ||
+    Object.values(gameState.clubs).find((club) => club.name === clubName)?.id ||
+    Object.values(gameState.clubs).find((club) => club.leagueId === lgId)!.id;
+  gameState.managerReputation = opts.rookie
+    ? NEWBIE_REPUTATION
+    : Math.min(100, clubRequirement(myClub()) + 5);
   finishSetup(1.08);
-  news(`Bạn chính thức nhận ghế HLV trưởng ${me().n}.`, "club");
+  news(`Bạn chính thức nhận ghế HLV trưởng ${myClub().name}.`, "club");
   inbox({
-    t: "Chào mừng HLV mới",
-    b: `Dữ liệu: ${S.src} (mùa ${year}/${year + 1}). Kỳ chuyển nhượng hè mở tới hết 31/8. Ngân sách chuyển nhượng ${fmtM(me().budget)}, quỹ lương ${fmtW(S.wageCap)}.${opts.rookie ? " Bạn còn vô danh: hãy chứng tỏ năng lực ở đây, các CLB lớn hơn sẽ ngỏ lời khi uy tín đủ cao." : ""}`,
+    kind: "welcome",
+    title: "Chào mừng HLV mới",
+    body: `Dữ liệu: ${gameState.dataSource} (mùa ${year}/${year + 1}). Kỳ chuyển nhượng hè mở tới hết 31/8. Ngân sách chuyển nhượng ${formatMoney(myClub().budget)}, quỹ lương ${formatWage(gameState.wageCap)}.${opts.rookie ? " Bạn còn vô danh: hãy chứng tỏ năng lực ở đây, các CLB lớn hơn sẽ ngỏ lời khi uy tín đủ cao." : ""}`,
   });
 }

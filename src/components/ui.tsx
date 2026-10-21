@@ -2,27 +2,41 @@
 import { Check, Minus, X } from "lucide-react";
 import { Fragment, type ReactNode } from "react";
 import { Label } from "@/components/shadcn/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/shadcn/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/shadcn/select";
 import { Slider } from "@/components/shadcn/slider";
 import { Tabs, TabsList, TabsTrigger } from "@/components/shadcn/tabs";
 import { ToggleGroup, ToggleGroupItem } from "@/components/shadcn/toggle-group";
-import { fmtM, fmtW } from "@/engine/format";
+import { formatMoney, formatWage } from "@/engine/format";
 import { useUi } from "@/stores/uiStore";
 import { cn } from "@/lib/utils";
-import { cx } from "@/utils/display";
+import { classNames } from "@/utils/display";
 import { Button } from "@/components/shadcn/button";
 
-export function Seg<K extends string>({ items, value, onChange }: { items: [K, ReactNode][]; value: K; onChange: (k: K) => void }) {
+export function SegmentedControl<K extends string>({
+  items,
+  value,
+  onChange,
+}: {
+  items: [K, ReactNode][];
+  value: K;
+  onChange: (optionKey: K) => void;
+}) {
   return (
-    <Tabs value={value} onValueChange={(k) => onChange(k as K)}>
+    <Tabs value={value} onValueChange={(selectedKey) => onChange(selectedKey as K)}>
       <TabsList className="seg h-auto w-full justify-start gap-1 overflow-x-auto rounded-[10px] bg-secondary p-1 group-data-[orientation=horizontal]/tabs:h-auto">
-        {items.map(([k, l]) => (
+        {items.map(([optionKey, label]) => (
           <TabsTrigger
-            key={k}
-            value={k}
+            key={optionKey}
+            value={optionKey}
             className="h-auto min-h-11 flex-[1_0_auto] rounded-[7px] border-0 px-2.5 text-[13px] font-semibold text-muted-foreground data-[state=active]:bg-card data-[state=active]:text-foreground data-[state=active]:shadow-[0_1px_3px_rgba(0,0,0,0.12)]"
           >
-            {l}
+            {label}
           </TabsTrigger>
         ))}
       </TabsList>
@@ -31,7 +45,14 @@ export function Seg<K extends string>({ items, value, onChange }: { items: [K, R
 }
 
 export type Fmt = "m" | "w" | "p" | "n";
-export const fmtVal = (v: number, f: Fmt): string => (f === "m" ? fmtM(v) : f === "w" ? fmtW(v) : f === "p" ? v + "%" : String(v));
+export const formatValue = (value: number, format: Fmt): string =>
+  format === "m"
+    ? formatMoney(value)
+    : format === "w"
+      ? formatWage(value)
+      : format === "p"
+        ? value + "%"
+        : String(value);
 
 /** Trạng thái một điều khoản so với mức người đại diện đòi: đạt / gần đạt / chưa đạt */
 export type TermState = "ok" | "near" | "no";
@@ -40,7 +61,13 @@ const TERM_LABEL: Record<TermState, string> = { ok: "Đạt", near: "Gần đạ
 export function TermBadge({ state }: { state: TermState }) {
   const Icon = state === "ok" ? Check : state === "near" ? Minus : X;
   return (
-    <em className="term-badge" data-state={state} role="img" aria-label={TERM_LABEL[state]} title={TERM_LABEL[state]}>
+    <em
+      className="term-badge"
+      data-state={state}
+      role="img"
+      aria-label={TERM_LABEL[state]}
+      title={TERM_LABEL[state]}
+    >
       <Icon aria-hidden size={12} strokeWidth={3} />
     </em>
   );
@@ -48,26 +75,26 @@ export function TermBadge({ state }: { state: TermState }) {
 
 /** Thanh trượt gắn với một khóa trong uiStore.form */
 export function RangeField({
-  k,
+  fieldKey,
   label,
   min,
   max,
   step,
-  fmt,
+  format,
   def,
   status,
 }: {
-  k: string;
+  fieldKey: string;
   label: string;
   min: number;
   max: number;
   step: number;
-  fmt: Fmt;
+  format: Fmt;
   def: number;
   status?: TermState;
 }) {
-  const v = useUi((s) => (s.form[k] as number | undefined) ?? def);
-  const setForm = useUi((s) => s.setForm);
+  const value = useUi((ui) => (ui.form[fieldKey] as number | undefined) ?? def);
+  const setForm = useUi((ui) => ui.setForm);
   return (
     <div className="fld" data-term={status}>
       <div className="top">
@@ -75,29 +102,37 @@ export function RangeField({
           {label}
           {status ? <TermBadge state={status} /> : null}
         </span>
-        <b>{fmtVal(v, fmt)}</b>
+        <b>{formatValue(value, format)}</b>
       </div>
-      <Slider min={min} max={max} step={step} value={[v]} onValueChange={([n]) => setForm(k, n)} aria-label={label} className="py-[14px]" />
+      <Slider
+        min={min}
+        max={max}
+        step={step}
+        value={[value]}
+        onValueChange={([newValue]) => setForm(fieldKey, newValue)}
+        aria-label={label}
+        className="py-[14px]"
+      />
     </div>
   );
 }
 
 /** Nhóm nút chọn một gắn với một khóa trong uiStore.form */
 export function OptsField<V extends string | number>({
-  k,
+  fieldKey,
   label,
   list,
   def,
   status,
 }: {
-  k: string;
+  fieldKey: string;
   label: string;
   list: [V, string][];
   def: V;
   status?: TermState;
 }) {
-  const v = useUi((s) => (s.form[k] as V | undefined) ?? def);
-  const setForm = useUi((s) => s.setForm);
+  const fieldValue = useUi((ui) => (ui.form[fieldKey] as V | undefined) ?? def);
+  const setForm = useUi((ui) => ui.setForm);
   return (
     <div className="fld" data-term={status}>
       <div className="top">
@@ -108,21 +143,23 @@ export function OptsField<V extends string | number>({
       </div>
       <ToggleGroup
         type="single"
-        value={String(v)}
-        onValueChange={(x) => {
-          const hit = list.find(([val]) => String(val) === x);
-          if (hit) setForm(k, hit[0]);
+        value={String(fieldValue)}
+        onValueChange={(selectedValue) => {
+          const selectedOption = list.find(
+            ([optionValue]) => String(optionValue) === selectedValue,
+          );
+          if (selectedOption) setForm(fieldKey, selectedOption[0]);
         }}
         spacing={1.5}
         className="opts w-full flex-wrap justify-start"
       >
-        {list.map(([val, l]) => (
+        {list.map(([optionValue, optionLabel]) => (
           <ToggleGroupItem
-            key={String(val)}
-            value={String(val)}
+            key={String(optionValue)}
+            value={String(optionValue)}
             className="h-auto min-h-11 rounded-lg border-[1.5px] border-border bg-card px-3 py-1.5 text-[13px] font-semibold text-foreground hover:bg-card hover:text-foreground data-[state=on]:border-[var(--accent)] data-[state=on]:bg-[color-mix(in_srgb,var(--accent)_10%,var(--surface))] data-[state=on]:text-foreground"
           >
-            {l}
+            {optionLabel}
           </ToggleGroupItem>
         ))}
       </ToggleGroup>
@@ -130,28 +167,32 @@ export function OptsField<V extends string | number>({
   );
 }
 
-export function Sum({ rows }: { rows: [ReactNode, ReactNode, string?][] }) {
+export function SummaryRows({ rows }: { rows: [ReactNode, ReactNode, string?][] }) {
   return (
     <div className="sum">
-      {rows.map(([a, b, cls], i) => (
+      {rows.map(([labelText, valueText, className], i) => (
         <Fragment key={i}>
-          <span>{a}</span>
-          <span className={cx(cls)}>{b}</span>
+          <span>{labelText}</span>
+          <span className={classNames(className)}>{valueText}</span>
         </Fragment>
       ))}
     </div>
   );
 }
 
-export function KV({ rows }: { rows: ([ReactNode, ReactNode, string?] | false | null | undefined)[] }) {
+export function KeyValueRows({
+  rows,
+}: {
+  rows: ([ReactNode, ReactNode, string?] | false | null | undefined)[];
+}) {
   return (
     <div className="kv">
       {rows
-        .filter((r): r is [ReactNode, ReactNode, string?] => !!r)
-        .map(([a, b, cls], i) => (
+        .filter((row): row is [ReactNode, ReactNode, string?] => !!row)
+        .map(([labelText, valueText, className], i) => (
           <Fragment key={i}>
-            <span>{a}</span>
-            <span className={cx(cls)}>{b}</span>
+            <span>{labelText}</span>
+            <span className={classNames(className)}>{valueText}</span>
           </Fragment>
         ))}
     </div>
@@ -170,7 +211,7 @@ export function FileButton({
   label: string;
   accept: string;
   multiple?: boolean;
-  onFiles: (f: File[]) => void;
+  onFiles: (files: File[]) => void;
   variant?: "default" | "ghost" | "hot";
   size?: "default" | "sm";
 }) {
@@ -183,10 +224,10 @@ export function FileButton({
           accept={accept}
           multiple={multiple}
           hidden
-          onChange={(e) => {
-            const f = [...(e.target.files || [])];
-            e.target.value = "";
-            if (f.length) onFiles(f);
+          onChange={(event) => {
+            const files = [...(event.target.files || [])];
+            event.target.value = "";
+            if (files.length) onFiles(files);
           }}
         />
       </label>
@@ -219,21 +260,24 @@ export function SelectField({
 }: {
   label: ReactNode;
   value: string;
-  onChange: (v: string) => void;
+  onChange: (selectedValue: string) => void;
   options: [string, ReactNode][];
   style?: React.CSSProperties;
 }) {
   return (
     <FieldLabel style={style}>
       {label}
-      <Select value={value === "" ? NONE : value} onValueChange={(x) => onChange(x === NONE ? "" : x)}>
+      <Select
+        value={value === "" ? NONE : value}
+        onValueChange={(selectedValue) => onChange(selectedValue === NONE ? "" : selectedValue)}
+      >
         <SelectTrigger className="w-full gap-1 bg-card px-2.5 text-[13px] font-normal tracking-normal text-foreground normal-case">
           <SelectValue />
         </SelectTrigger>
         <SelectContent className="z-[70]">
-          {options.map(([v, l]) => (
-            <SelectItem key={v} value={v === "" ? NONE : v}>
-              {l}
+          {options.map(([optionValue, optionLabel]) => (
+            <SelectItem key={optionValue} value={optionValue === "" ? NONE : optionValue}>
+              {optionLabel}
             </SelectItem>
           ))}
         </SelectContent>

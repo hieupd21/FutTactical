@@ -1,8 +1,8 @@
 import { useMemo } from "react";
-import { POSN } from "@/engine/constants";
-import { fmtM } from "@/engine/format";
-import { dyn, yearsLeft } from "@/engine/players";
-import { C, LEAGUES, lgName, P, S } from "@/engine/state";
+import { POSITION_NAMES } from "@/engine/constants";
+import { formatMoney } from "@/engine/format";
+import { dynamicRating, yearsLeft } from "@/engine/players";
+import { getClub, LEAGUES, leagueName, getPlayer, gameState } from "@/engine/state";
 import { scoutRange } from "@/engine/transfers";
 import type { Player } from "@/engine/types";
 import { PlayerRow } from "@/components/PlayerRow";
@@ -14,63 +14,89 @@ import { SelectField } from "@/components/ui";
 const SHOW = 60;
 
 export function SearchView() {
-  const v = useGameVersion();
-  const { flt: f, setFlt, openPlayer } = useUi();
+  const version = useGameVersion();
+  const { filters, setFlt, openPlayer } = useUi();
   const list = useMemo(() => {
-    let l: Player[] =
-      f.lg === "free"
-        ? S.free.map(P).filter(Boolean)
-        : Object.values(S.P).filter((p) => p.club != null && p.club !== S.me && !p.homeClub && (!f.lg || C(p.club).lg === f.lg));
-    l = l.filter(
-      (p) =>
-        (!f.pos || p.pos === f.pos || p.pos2.includes(f.pos as Player["pos"])) &&
-        p.age <= f.age &&
-        (!f.max || p.val <= f.max) &&
-        (!f.exp || yearsLeft(p) <= 1),
+    let players: Player[] =
+      filters.leagueId === "free"
+        ? gameState.free.map(getPlayer).filter(Boolean)
+        : Object.values(gameState.players).filter(
+            (player) =>
+              player.club != null &&
+              player.club !== gameState.myClubId &&
+              !player.homeClub &&
+              (!filters.leagueId || getClub(player.club).leagueId === filters.leagueId),
+          );
+    players = players.filter(
+      (player) =>
+        (!filters.pos ||
+          player.pos === filters.pos ||
+          player.secondaryPositions.includes(filters.pos as Player["pos"])) &&
+        player.age <= filters.age &&
+        (!filters.max || player.marketValue <= filters.max) &&
+        (!filters.expiringOnly || yearsLeft(player) <= 1),
     );
-    const key: Record<Filters["sort"], (p: Player) => number> = {
-      ovr: (p) => -dyn(p),
-      val: (p) => p.val,
-      age: (p) => p.age,
-      pot: (p) => -scoutRange(p)[1],
+    const key: Record<Filters["sort"], (player: Player) => number> = {
+      ovr: (player) => -dynamicRating(player),
+      val: (player) => player.marketValue,
+      age: (player) => player.age,
+      pot: (player) => -scoutRange(player)[1],
     };
-    return l.sort((a, b) => key[f.sort](a) - key[f.sort](b));
-  }, [f, v]);
+    return players.sort(
+      (playerA, playerB) => key[filters.sort](playerA) - key[filters.sort](playerB),
+    );
+  }, [filters, version]);
 
   return (
     <Card className="panel min-w-0 gap-0 rounded-xl p-4 shadow-none">
       <div className="filters">
         <SelectField
           label="Vị trí"
-          value={f.pos}
-          onChange={(v) => setFlt({ pos: v })}
-          options={[["", "Tất cả"], ...(["GK", "DF", "MF", "FW"] as const).map((x): [string, string] => [x, POSN[x]])]}
+          value={filters.pos}
+          onChange={(selected) => setFlt({ pos: selected })}
+          options={[
+            ["", "Tất cả"],
+            ...(["GK", "DF", "MF", "FW"] as const).map((line): [string, string] => [
+              line,
+              POSITION_NAMES[line],
+            ]),
+          ]}
         />
         <SelectField
           label="Giải"
-          value={f.lg}
-          onChange={(v) => setFlt({ lg: v })}
-          options={[["", "Tất cả"], ...LEAGUES.map((l): [string, string] => [String(l.id), lgName(l.id)]), ["free", "Cầu thủ tự do"]]}
+          value={filters.leagueId}
+          onChange={(selected) => setFlt({ leagueId: selected })}
+          options={[
+            ["", "Tất cả"],
+            ...LEAGUES.map((league): [string, string] => [
+              String(league.id),
+              leagueName(league.id),
+            ]),
+            ["free", "Cầu thủ tự do"],
+          ]}
         />
         <SelectField
           label="Tuổi tối đa"
-          value={String(f.age)}
-          onChange={(v) => setFlt({ age: +v })}
-          options={[40, 30, 26, 23, 21].map((a): [string, string] => [String(a), a === 40 ? "Không giới hạn" : "≤ " + a])}
+          value={String(filters.age)}
+          onChange={(selected) => setFlt({ age: +selected })}
+          options={[40, 30, 26, 23, 21].map((option): [string, string] => [
+            String(option),
+            option === 40 ? "Không giới hạn" : "≤ " + option,
+          ])}
         />
         <SelectField
           label="Giá trị tối đa"
-          value={String(f.max)}
-          onChange={(v) => setFlt({ max: +v })}
-          options={[0, 500, 1000, 2000, 5000, 10000, 30000].map((a): [string, string] => [
-            String(a),
-            a ? "≤ " + fmtM(a) : "Không giới hạn",
+          value={String(filters.max)}
+          onChange={(selected) => setFlt({ max: +selected })}
+          options={[0, 500, 1000, 2000, 5000, 10000, 30000].map((option): [string, string] => [
+            String(option),
+            option ? "≤ " + formatMoney(option) : "Không giới hạn",
           ])}
         />
         <SelectField
           label="Sắp xếp"
-          value={f.sort}
-          onChange={(v) => setFlt({ sort: v as Filters["sort"] })}
+          value={filters.sort}
+          onChange={(selected) => setFlt({ sort: selected as Filters["sort"] })}
           options={[
             ["ovr", "Chỉ số"],
             ["pot", "Tiềm năng ước tính"],
@@ -80,8 +106,8 @@ export function SearchView() {
         />
         <SelectField
           label="Hợp đồng"
-          value={String(f.exp)}
-          onChange={(v) => setFlt({ exp: v === "true" })}
+          value={String(filters.expiringOnly)}
+          onChange={(selected) => setFlt({ expiringOnly: selected === "true" })}
           options={[
             ["false", "Tất cả"],
             ["true", "Hết hạn 30/6"],
@@ -93,7 +119,11 @@ export function SearchView() {
       </p>
       <div className="plist">
         {list.length ? (
-          list.slice(0, SHOW).map((p) => <PlayerRow key={p.id} p={p} onClick={() => openPlayer(p.id)} />)
+          list
+            .slice(0, SHOW)
+            .map((player) => (
+              <PlayerRow key={player.id} player={player} onClick={() => openPlayer(player.id)} />
+            ))
         ) : (
           <p className="hint">Không có cầu thủ phù hợp.</p>
         )}

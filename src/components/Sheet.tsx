@@ -3,8 +3,8 @@ import { Sheet as SheetRoot, SheetContent, SheetTitle } from "@/components/shadc
 
 /** Bảng trượt từ dưới lên (hồ sơ cầu thủ, đàm phán, trận đấu). Không truyền onClose = không cho đóng bằng Esc / bấm nền. */
 export function Sheet({ children, onClose }: { children: ReactNode; onClose?: () => void }) {
-  const block = (e: Event) => {
-    if (!onClose) e.preventDefault();
+  const block = (event: Event) => {
+    if (!onClose) event.preventDefault();
   };
   return (
     <SheetRoot open onOpenChange={(open) => !open && onClose?.()}>

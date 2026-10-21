@@ -1,199 +1,271 @@
 import { ROLE_START } from "./constants";
-import { bestXI, clubPlayers, myXI, slotPos, strength } from "./squad";
+import { autoRest, buildSim, newLive, expectedGoalsRate } from "./liveMatch";
+import { bestLineup, clubPlayers, myLineup, slotPositions, strength } from "./squad";
 import { trackPromise } from "./mood";
-import { C, inbox, me, news, P, roundOn, S, simLeagues } from "./state";
-import type { Formation, Line, MatchEvent, MatchResult, MatchSim } from "./types";
-import { clamp, pickA, r10, ri, rnd } from "./util";
+import { getClub, inbox, myClub, news, getPlayer, roundOn, gameState, simLeagues } from "./state";
+import type { Formation, Line, LiveSim, MatchEvent, MatchResult, MatchSim } from "./types";
+import { clamp, roundToTen, randomInt, randomBetween } from "./util";
 
-const xgf = (a: number, d: number): number => clamp(1.25 * Math.exp((a - d) / 9), 0.15, 4.5);
-function poisson(l: number): number {
-  const L = Math.exp(-l);
-  let k = 0,
-    p = 1;
+function poisson(expectedGoals: number): number {
+  const limit = Math.exp(-expectedGoals);
+  let goals = 0,
+    product = 1;
   do {
-    k++;
-    p *= Math.random();
-  } while (p > L);
-  return k - 1;
+    goals++;
+    product *= Math.random();
+  } while (product > limit);
+  return goals - 1;
 }
-function pickScorer(xi: (string | null)[], form: Formation): string {
-  const sp = slotPos(form);
-  const w: Record<Line, number> = { GK: 0, DF: 1, MF: 3, FW: 6 };
-  const arr = xi.map((id, i) => [id, w[sp[i]]] as const).filter((a): a is readonly [string, number] => !!a[0]);
-  const t = arr.reduce((s, a) => s + a[1], 0);
-  let r = Math.random() * t;
-  for (const [id, ww] of arr) {
-    r -= ww;
-    if (r <= 0) return id;
+function pickScorer(lineup: (string | null)[], form: Formation): string {
+  const lines = slotPositions(form);
+  const weightByLine: Record<Line, number> = { GK: 0, DF: 1, MF: 3, FW: 6 };
+  const candidates = lineup
+    .map((id, i) => [id, weightByLine[lines[i]]] as const)
+    .filter((candidate): candidate is readonly [string, number] => !!candidate[0]);
+  const totalWeight = candidates.reduce((total, candidate) => total + candidate[1], 0);
+  let remaining = Math.random() * totalWeight;
+  for (const [id, weight] of candidates) {
+    remaining -= weight;
+    if (remaining <= 0) return id;
   }
-  return arr[0] ? arr[0][0] : "";
+  return candidates[0] ? candidates[0][0] : "";
 }
 
-/** Mô phỏng một trận. detail = true: diễn biến từng phút (trận của bạn) */
-export function simMatch(h: string, a: string, detail: boolean): MatchSim {
-  const fh = h === S.me ? S.form : C(h).form,
-    fa = a === S.me ? S.form : C(a).form;
-  const xh = h === S.me ? myXI() : bestXI(h, fh),
-    xa = a === S.me ? myXI() : bestXI(a, fa);
-  const sh = strength(h, xh, fh),
-    sa = strength(a, xa, fa);
-  const lh = xgf(sh.att + 1.5, sa.def),
-    la = xgf(sa.att, sh.def + 1.5);
-  const ev: MatchEvent[] = [];
-  let hg = 0,
-    ag = 0;
-  const shots: [number, number] = [0, 0];
-  if (!detail) {
-    hg = poisson(lh);
-    ag = poisson(la);
-    for (let i = 0; i < hg; i++) ev.push({ m: ri(1, 90), s: 0, goal: pickScorer(xh, fh) });
-    for (let i = 0; i < ag; i++) ev.push({ m: ri(1, 90), s: 1, goal: pickScorer(xa, fa) });
-  } else {
-    for (let m = 1; m <= 90; m++) {
-      for (const s of [0, 1] as const) {
-        const l = s ? la : lh;
-        if (Math.random() < (l * 3) / 90) {
-          shots[s]++;
-          const pid = pickScorer(s ? xa : xh, s ? fa : fh);
-          if (Math.random() < 1 / 3) {
-            if (s) ag++;
-            else hg++;
-            ev.push({ m, s, goal: pid });
-          } else ev.push({ m, s, miss: pid });
-        }
-      }
-      if (Math.random() < 0.022) {
-        const s = Math.random() < 0.5 ? 0 : 1;
-        const xi = (s ? xa : xh).filter((x): x is string => !!x);
-        if (xi.length) ev.push({ m, s, card: pickA(xi) });
-      }
-    }
-  }
+/** Mô phỏng nhanh một trận (các trận của đội khác): chỉ ra tỷ số + người ghi bàn */
+export function simMatch(homeId: string, awayId: string): MatchSim {
+  const formation = homeId === gameState.myClubId ? gameState.form : getClub(homeId).form,
+    awayFormation = awayId === gameState.myClubId ? gameState.form : getClub(awayId).form;
+  const homeLineup = homeId === gameState.myClubId ? myLineup() : bestLineup(homeId, formation),
+    awayLineup = awayId === gameState.myClubId ? myLineup() : bestLineup(awayId, awayFormation);
+  const homeStrength = strength(homeId, homeLineup, formation),
+    awayStrength = strength(awayId, awayLineup, awayFormation);
+  const homeGoals = poisson(expectedGoalsRate(homeStrength.att + 1.5, awayStrength.def)),
+    awayGoals = poisson(expectedGoalsRate(awayStrength.att, homeStrength.def + 1.5));
+  const events: MatchEvent[] = [];
+  for (let i = 0; i < homeGoals; i++)
+    events.push({ minute: randomInt(1, 90), side: 0, goal: pickScorer(homeLineup, formation) });
+  for (let i = 0; i < awayGoals; i++)
+    events.push({ minute: randomInt(1, 90), side: 1, goal: pickScorer(awayLineup, awayFormation) });
   // chấn thương
   (
     [
-      [xh, 0],
-      [xa, 1],
+      [homeLineup, 0],
+      [awayLineup, 1],
     ] as const
-  ).forEach(([xi, s]) =>
-    xi.forEach((id) => {
-      const p = id ? P(id) : null;
-      if (p && Math.random() < (p.fit < 60 ? 0.025 : 0.011)) {
-        p.inj = ri(4, 45);
-        ev.push({ m: ri(10, 88), s, inj: p.id, days: p.inj });
+  ).forEach(([lineup, sideIndex]) =>
+    lineup.forEach((id) => {
+      const player = id ? getPlayer(id) : null;
+      if (player && Math.random() < (player.fitness < 60 ? 0.025 : 0.011)) {
+        player.injuryDays = randomInt(4, 45);
+        events.push({
+          minute: randomInt(10, 88),
+          side: sideIndex,
+          injured: player.id,
+          days: player.injuryDays,
+        });
       }
     }),
   );
-  ev.sort((x, y) => x.m - y.m);
-  return { h, a, hg, ag, ev, xh, xa, shots, pow: [sh.pow, sa.pow] };
+  events.sort((eventA, eventB) => eventA.minute - eventB.minute);
+  return {
+    homeId,
+    awayId,
+    homeGoals,
+    awayGoals,
+    events,
+    homeLineup,
+    awayLineup,
+    shots: [0, 0],
+    power: [homeStrength.power, awayStrength.power],
+  };
 }
 
 /** Cập nhật phong độ, thể lực, tinh thần sau trận */
-export function applyMatch(r: MatchSim): void {
+export function applyMatch(matchSim: MatchSim): void {
   (
     [
-      [r.xh, r.hg - r.ag, r.h],
-      [r.xa, r.ag - r.hg, r.a],
+      [matchSim.homeLineup, matchSim.homeGoals - matchSim.awayGoals, matchSim.homeId, 0],
+      [matchSim.awayLineup, matchSim.awayGoals - matchSim.homeGoals, matchSim.awayId, 1],
     ] as const
-  ).forEach(([xi, diff, cid]) => {
-    const starters = new Set(xi);
-    clubPlayers(cid).forEach((p) => {
-      const started = starters.has(p.id);
-      p.st.push(started ? 1 : 0);
-      p.st = p.st.slice(-6);
-      if (started) {
-        p.apps++;
-        p.tot.apps++;
-        p.fit = clamp(p.fit - ri(16, 24), 20, 100);
-        const g = r.ev.filter((e) => e.goal === p.id).length;
-        p.goals += g;
-        p.tot.goals += g;
-        const rating = clamp(6.4 + g * 0.9 + (diff > 0 ? 0.5 : diff < 0 ? -0.4 : 0) + rnd(-0.9, 0.9), 4, 10);
-        p.lastR = Math.round(rating * 10) / 10;
-        p.form = clamp(p.form * 0.65 + (50 + (rating - 6.4) * 22) * 0.35, 5, 95);
+  ).forEach(([lineup, diff, clubId, side]) => {
+    const starters = new Set(lineup);
+    const played = new Set(matchSim.usedPlayers ? matchSim.usedPlayers[side] : lineup);
+    clubPlayers(clubId).forEach((player) => {
+      const started = starters.has(player.id);
+      player.recentStarts.push(started ? 1 : 0);
+      player.recentStarts = player.recentStarts.slice(-6);
+      if (played.has(player.id)) {
+        const mins = matchSim.minutes?.[player.id] ?? 90;
+        player.apps++;
+        player.careerTotals.apps++;
+        player.fitness = clamp(
+          player.fitness - Math.round((randomInt(16, 24) * mins) / 90),
+          20,
+          100,
+        );
+        const goals = matchSim.events.filter((event) => event.goal === player.id).length;
+        player.goals += goals;
+        player.careerTotals.goals += goals;
+        const rating =
+          matchSim.ratings?.[player.id] ??
+          clamp(
+            6.4 + goals * 0.9 + (diff > 0 ? 0.5 : diff < 0 ? -0.4 : 0) + randomBetween(-0.9, 0.9),
+            4,
+            10,
+          );
+        player.lastRating = Math.round(rating * 10) / 10;
+        player.form = clamp(
+          player.form * 0.65 + (50 + (rating - 6.4) * 22) * (mins >= 45 ? 0.35 : 0.15),
+          5,
+          95,
+        );
       }
-      if (cid === S.me && p.c) {
-        const exp = ROLE_START[p.c.role] ?? 0.3;
-        const share = p.st.reduce((a, b) => a + b, 0) / p.st.length;
-        p.mor += (diff > 0 ? 2 : diff < 0 ? -1 : 0) + (started ? 1.5 : 0) - (p.st.length >= 3 && share < exp - 0.15 ? 3 : 0);
-        p.mor = clamp(p.mor, 0, 100);
-        trackPromise(p, started);
+      if (clubId === gameState.myClubId && player.contract) {
+        const expectedStarts = ROLE_START[player.contract.role] ?? 0.3;
+        const share =
+          player.recentStarts.reduce((sum, starts) => sum + starts, 0) / player.recentStarts.length;
+        player.morale +=
+          (diff > 0 ? 2 : diff < 0 ? -1 : 0) +
+          (started ? 1.5 : played.has(player.id) ? 0.7 : 0) -
+          (player.recentStarts.length >= 3 && share < expectedStarts - 0.15 ? 3 : 0);
+        player.morale = clamp(player.morale, 0, 100);
+        trackPromise(player, started);
       }
     });
   });
 }
 
-const toResult = (m: MatchSim): MatchResult => ({
-  h: m.h,
-  a: m.a,
-  hg: m.hg,
-  ag: m.ag,
-  sc: m.ev.filter((e) => e.goal).map((e) => e.goal as string),
+const toResult = (matchSim: MatchSim): MatchResult => ({
+  homeId: matchSim.homeId,
+  awayId: matchSim.awayId,
+  homeGoals: matchSim.homeGoals,
+  awayGoals: matchSim.awayGoals,
+  scorers: matchSim.events.filter((event) => event.goal).map((event) => event.goal as string),
 });
 
 /** Đá các trận khác trong ngày ở mọi giải mô phỏng */
-export function playRound(d: number): void {
-  simLeagues().forEach((lg) => {
-    const r = roundOn(d, lg.id);
-    if (r < 0) return;
+export function playRound(day: number): void {
+  simLeagues().forEach((league) => {
+    const round = roundOn(day, league.id);
+    if (round < 0) return;
     const list: MatchResult[] = [];
-    S.fx[lg.id][r].forEach(([h, a]) => {
-      if ((h === S.me || a === S.me) && S.lastMatch) list.push(S.lastMatch.res);
+    gameState.fixtures[league.id][round].forEach(([homeId, awayId]) => {
+      if ((homeId === gameState.myClubId || awayId === gameState.myClubId) && gameState.lastMatch)
+        list.push(gameState.lastMatch.result);
       else {
-        const m = simMatch(h, a, false);
-        applyMatch(m);
-        list.push(toResult(m));
+        const matchSim = simMatch(homeId, awayId);
+        applyMatch(matchSim);
+        list.push(toResult(matchSim));
       }
     });
-    S.res[lg.id][r] = list;
+    gameState.results[league.id][round] = list;
     roundNews(list);
   });
 }
 
 /** Tin trận đấu: trận của bạn luôn có; các giải còn lại chọn tối đa 2 trận nổi bật mỗi vòng */
 function roundNews(list: MatchResult[]): void {
-  const line = (r: MatchResult): string => `${C(r.h).n} ${r.hg}-${r.ag} ${C(r.a).n}`;
-  const mine = list.find((r) => r.h === S.me || r.a === S.me);
+  const line = (matchResult: MatchResult): string =>
+    `${getClub(matchResult.homeId).name} ${matchResult.homeGoals}-${matchResult.awayGoals} ${getClub(matchResult.awayId).name}`;
+  const mine = list.find(
+    (matchResult) =>
+      matchResult.homeId === gameState.myClubId || matchResult.awayId === gameState.myClubId,
+  );
   if (mine) {
-    const us = mine.h === S.me ? mine.hg : mine.ag,
-      them = mine.h === S.me ? mine.ag : mine.hg;
-    news(`${us > them ? "Chiến thắng" : us < them ? "Thất bại" : "Hòa"}: ${line(mine)}.`, "match");
+    const ourGoals = mine.homeId === gameState.myClubId ? mine.homeGoals : mine.awayGoals,
+      them = mine.homeId === gameState.myClubId ? mine.awayGoals : mine.homeGoals;
+    news(
+      `${ourGoals > them ? "Chiến thắng" : ourGoals < them ? "Thất bại" : "Hòa"}: ${line(mine)}.`,
+      "match",
+    );
   }
-  const top = list
-    .filter((r) => r !== mine)
-    .map((r) => {
-      const diff = Math.abs(r.hg - r.ag);
-      const winner = r.hg > r.ag ? r.h : r.a,
-        loser = r.hg > r.ag ? r.a : r.h;
-      const upset = diff > 0 && C(winner).str <= C(loser).str - 8;
-      const derby = C(r.h).rival === r.a || C(r.a).rival === r.h;
-      const hat = Object.values(r.sc.reduce<Record<string, number>>((m, id) => ({ ...m, [id]: (m[id] || 0) + 1 }), {})).some((n) => n >= 3);
-      const score = (diff >= 3 ? 3 : 0) + (upset ? 3 : 0) + (derby ? 2 : 0) + (hat ? 2 : 0) + (r.hg + r.ag >= 6 ? 2 : 0);
-      const tag = hat ? "Cú hat-trick" : upset ? "Bất ngờ" : derby ? "Derby" : diff >= 3 ? "Đại thắng" : "Mưa bàn thắng";
-      return { r, score, tag };
+  const highlights = list
+    .filter((matchResult) => matchResult !== mine)
+    .map((matchResult) => {
+      const diff = Math.abs(matchResult.homeGoals - matchResult.awayGoals);
+      const winner =
+          matchResult.homeGoals > matchResult.awayGoals ? matchResult.homeId : matchResult.awayId,
+        loser =
+          matchResult.homeGoals > matchResult.awayGoals ? matchResult.awayId : matchResult.homeId;
+      const upset = diff > 0 && getClub(winner).strength <= getClub(loser).strength - 8;
+      const derby =
+        getClub(matchResult.homeId).rival === matchResult.awayId ||
+        getClub(matchResult.awayId).rival === matchResult.homeId;
+      const hasHatTrick = Object.values(
+        matchResult.scorers.reduce<Record<string, number>>(
+          (goalsByPlayer, id) => ({ ...goalsByPlayer, [id]: (goalsByPlayer[id] || 0) + 1 }),
+          {},
+        ),
+      ).some((goals) => goals >= 3);
+      const score =
+        (diff >= 3 ? 3 : 0) +
+        (upset ? 3 : 0) +
+        (derby ? 2 : 0) +
+        (hasHatTrick ? 2 : 0) +
+        (matchResult.homeGoals + matchResult.awayGoals >= 6 ? 2 : 0);
+      const label = hasHatTrick
+        ? "Cú hat-trick"
+        : upset
+          ? "Bất ngờ"
+          : derby
+            ? "Derby"
+            : diff >= 3
+              ? "Đại thắng"
+              : "Mưa bàn thắng";
+      return { matchResult: matchResult, score, label: label };
     })
-    .filter((x) => x.score >= 2)
-    .sort((a, b) => b.score - a.score)
+    .filter((highlight) => highlight.score >= 2)
+    .sort((highlightA, highlightB) => highlightB.score - highlightA.score)
     .slice(0, 2);
-  top.forEach(({ r, tag }) => news(`${tag}: ${line(r)}.`, "match"));
+  highlights.forEach(({ matchResult: matchResult, label: label }) =>
+    news(`${label}: ${line(matchResult)}.`, "match"),
+  );
 }
 
-export function playMyMatch(): { m: MatchSim; us: number; them: number } | null {
-  const mt = S.matchToday;
-  if (!mt) return null;
-  const m = simMatch(mt.h, mt.a, true);
-  applyMatch(m);
-  const res = toResult(m);
-  S.lastMatch = { m, res };
-  const us = mt.h === S.me ? m.hg : m.ag,
-    them = mt.h === S.me ? m.ag : m.hg;
-  if (mt.h === S.me) me().budget += r10(150 * me().pres); // doanh thu sân nhà
-  m.ev
-    .filter((e) => e.inj && P(e.inj) && P(e.inj).club === S.me)
-    .forEach((e) =>
-      inbox({ t: `Chấn thương: ${P(e.inj!).n}`, b: `Dự kiến nghỉ ${e.days} ngày. Cẩn thận nguy cơ tái phát khi vừa trở lại.`, pid: e.inj }),
+/** Khởi tạo trận của bạn (chưa đá). null nếu hôm nay không có trận */
+export function beginMyMatch(): LiveSim | null {
+  const matchToday = gameState.matchToday;
+  return matchToday ? newLive(matchToday.homeId, matchToday.awayId, false) : null;
+}
+
+/** Chốt trận của bạn sau khi đã mô phỏng đủ: cập nhật cầu thủ, doanh thu, các trận còn lại trong ngày */
+export function finishMyMatch(liveSim: LiveSim): {
+  matchSim: MatchSim;
+  ourGoals: number;
+  them: number;
+} {
+  const matchSim = buildSim(liveSim);
+  applyMatch(matchSim);
+  const result = toResult(matchSim);
+  gameState.lastMatch = { matchSim, result };
+  const home = liveSim.mySide === 0;
+  const ourGoals = home ? matchSim.homeGoals : matchSim.awayGoals,
+    them = home ? matchSim.awayGoals : matchSim.homeGoals;
+  if (home) myClub().budget += roundToTen(150 * myClub().prestige); // doanh thu sân nhà
+  matchSim.events
+    .filter(
+      (event) =>
+        event.injured &&
+        getPlayer(event.injured) &&
+        getPlayer(event.injured).club === gameState.myClubId,
+    )
+    .forEach((event) =>
+      inbox({
+        kind: "injury",
+        title: `Chấn thương: ${getPlayer(event.injured!).name}`,
+        body: `Dự kiến nghỉ ${event.days} ngày. Cẩn thận nguy cơ tái phát khi vừa trở lại.`,
+        playerId: event.injured,
+      }),
     );
-  playRound(S.d);
-  S.matchToday = null;
-  return { m, us, them };
+  playRound(gameState.day);
+  gameState.matchToday = null;
+  return { matchSim, ourGoals, them };
+}
+
+/** Đá cả trận ngay, máy điều hành giúp bạn */
+export function playMyMatch(): { matchSim: MatchSim; ourGoals: number; them: number } | null {
+  const liveSim = beginMyMatch();
+  if (!liveSim) return null;
+  autoRest(liveSim);
+  return finishMyMatch(liveSim);
 }

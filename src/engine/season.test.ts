@@ -5,81 +5,99 @@ import { myWages } from "./board";
 import { playMyMatch } from "./match";
 import { advance } from "./season";
 import { clubPlayers, table } from "./squad";
-import { me, myLg, S, simLeagues } from "./state";
+import { myClub, myLeagueId, gameState, simLeagues } from "./state";
 import { completeBuy, enquire, submitClubOffer } from "./transfers";
 import type { DataRow } from "./types";
-import { newGame, newGameReal } from "./world";
+import { newGameReal } from "./world";
+import { startTestGame } from "@/test/helpers";
 
-const pack = (f: string): DataRow[] => JSON.parse(readFileSync(resolve(__dirname, "../../public/data", f), "utf8"));
+const pack = (fileName: string): DataRow[] =>
+  JSON.parse(readFileSync(resolve(__dirname, "../../public/data", fileName), "utf8"));
 
 function playSeason(): void {
-  const startYear = S.year;
+  const startYear = gameState.year;
   let guard = 0;
-  while (S.year === startYear && guard++ < 2000 && !S.sacked) {
-    if (S.matchToday) playMyMatch();
+  while (gameState.year === startYear && guard++ < 2000 && !gameState.sacked) {
+    if (gameState.matchToday) playMyMatch();
     else advance("next");
   }
 }
 
 describe("engine", () => {
-  it("thế giới hư cấu chạy trọn một mùa", () => {
-    newGame("EN", 3);
-    expect(Object.keys(S.clubs).length).toBeGreaterThan(80);
+  it("sự nghiệp chạy trọn một mùa với CLB mặc định", () => {
+    startTestGame();
+    expect(Object.keys(gameState.clubs).length).toBeGreaterThan(80);
     playSeason();
-    if (!S.sacked) {
-      expect(S.year).toBe(2027);
-      expect(S.seasonLog.length).toBe(1);
-      expect(clubPlayers(S.me).length).toBeGreaterThanOrEqual(18);
+    expect(gameState.inbox.length).toBeGreaterThan(0);
+    expect(gameState.inbox.every((message) => !!message.kind)).toBe(true);
+    if (!gameState.sacked) {
+      expect(gameState.year).toBe(2027);
+      expect(gameState.seasonLog.length).toBe(1);
+      expect(clubPlayers(gameState.myClubId).length).toBeGreaterThanOrEqual(18);
     }
   });
 
   it("dữ liệu FC 27 khởi tạo đúng và chạy trọn một mùa", () => {
     const rows = pack("fc27.json");
     newGameReal(rows, "EN", "Arsenal", "FC 27");
-    expect(S.year).toBe(2026);
-    expect(me().n).toBe("Arsenal");
-    simLeagues().forEach((lg) => expect(S.fx[lg.id].length).toBeGreaterThan(30));
-    expect(myWages()).toBeLessThanOrEqual(S.wageCap);
+    expect(gameState.year).toBe(2026);
+    expect(myClub().name).toBe("Arsenal");
+    simLeagues().forEach((league) =>
+      expect(gameState.fixtures[league.id].length).toBeGreaterThanOrEqual(30),
+    );
+    expect(myWages()).toBeLessThanOrEqual(gameState.wageCap);
     playSeason();
-    if (!S.sacked) {
-      expect(S.year).toBe(2027);
-      const t = table(myLg());
-      expect(t.every((r) => r.p === 0)).toBe(true);
-      expect(S.aiDone).toBeGreaterThan(0);
+    if (!gameState.sacked) {
+      expect(gameState.year).toBe(2027);
+      const tableRows = table(myLeagueId());
+      expect(tableRows.every((tableRow) => tableRow.played === 0)).toBe(true);
+      expect(gameState.aiDone).toBeGreaterThan(0);
     }
   });
 
   it("cầu thủ hết hợp đồng trong dữ liệu là cầu thủ tự do và CLB AI ký được", () => {
     newGameReal(pack("fc27.json"), "EN", "Arsenal", "FC 27");
-    const free = S.free.map((id) => S.P[id]);
+    const free = gameState.free.map((id) => gameState.players[id]);
     expect(free.length).toBeGreaterThan(100);
-    expect(free.every((p) => p.club == null)).toBe(true);
-    expect(free.some((p) => p.n === "Carvajal")).toBe(true);
-    const before = S.free.length;
+    expect(free.every((player) => player.club == null)).toBe(true);
+    expect(free.some((player) => player.name === "Carvajal")).toBe(true);
+    const before = gameState.free.length;
     for (let i = 0; i < 30; i++) advance("day");
-    expect(S.free.length).toBeLessThan(before);
-    const signed = Object.values(S.P).find((p) => p.club && p.club !== S.me && p.hist.some((h) => h.from === "Tự do"));
-    expect(signed?.c?.exp).toBeGreaterThan(S.year);
+    expect(gameState.free.length).toBeLessThan(before);
+    const signed = Object.values(gameState.players).find(
+      (player) =>
+        player.club &&
+        player.club !== gameState.myClubId &&
+        player.transferHistory.some((transferRecord) => transferRecord.fromClub === "Tự do"),
+    );
+    expect(signed?.contract?.expiryYear).toBeGreaterThan(gameState.year);
   });
 
   it("thương vụ mua qua điều khoản đàm phán hoàn tất được", () => {
     newGameReal(pack("fc27.json"), "EN", "Arsenal", "FC 27");
-    me().budget = 500000;
-    S.wageCap = 99999;
-    const target = Object.values(S.P).find((p) => p.club && p.club !== S.me && p.ovr >= 70 && p.ovr <= 76)!;
-    const r = enquire(target.id, "transfer");
-    expect(r.err).toBeUndefined();
-    const n = r.n!;
-    for (let i = 0; i < 3 && n.stage === "enquiry"; i++) advance("day");
-    if (n.stage === "club") {
-      submitClubOffer(n, { fee: n.ask! * 1.1, inst: 1, timing: "now" });
+    myClub().budget = 500000;
+    gameState.wageCap = 99999;
+    const target = Object.values(gameState.players).find(
+      (player) =>
+        player.club && player.club !== gameState.myClubId && player.ovr >= 70 && player.ovr <= 76,
+    )!;
+    const result = enquire(target.id, "transfer");
+    expect(result.error).toBeUndefined();
+    const negotiation = result.negotiation!;
+    for (let i = 0; i < 3 && negotiation.stage === "enquiry"; i++) advance("day");
+    if (negotiation.stage === "club") {
+      submitClubOffer(negotiation, {
+        fee: negotiation.askingFee! * 1.1,
+        installments: 1,
+        timing: "now",
+      });
       advance("day");
-      expect(["contract", "failed"]).toContain(n.stage);
-      if ((n.stage as string) === "contract") {
-        n.cOffer = { ...n.cAsk!, rc: 0 };
-        n.stage = "final";
-        completeBuy(n);
-        expect(target.club).toBe(S.me);
+      expect(["contract", "failed"]).toContain(negotiation.stage);
+      if ((negotiation.stage as string) === "contract") {
+        negotiation.contractOffer = { ...negotiation.contractAsk!, releaseClause: 0 };
+        negotiation.stage = "final";
+        completeBuy(negotiation);
+        expect(target.club).toBe(gameState.myClubId);
       }
     }
   });

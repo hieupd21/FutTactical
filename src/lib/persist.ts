@@ -5,26 +5,32 @@ import type { GameState } from "@/engine/types";
 const store = createStore("sanco-career", "s");
 const LS_KEY = "sanco-career-v2";
 
+// Bản lưu cũ (trước khi đổi tên field cho rõ nghĩa) không có saveVersion: bỏ qua, bắt đầu sự nghiệp mới.
+const isCurrentSave = (save: GameState | null | undefined): save is GameState =>
+  typeof save?.saveVersion === "number";
+
 export async function loadGame(): Promise<GameState | null> {
   try {
-    return ((await get("career", store)) as GameState | undefined) ?? null;
+    const save = (await get("career", store)) as GameState | undefined;
+    return isCurrentSave(save) ? save : null;
   } catch {
     try {
-      const s = localStorage.getItem(LS_KEY);
-      return s ? (JSON.parse(s) as GameState) : null;
+      const rawSave = localStorage.getItem(LS_KEY);
+      const save = rawSave ? (JSON.parse(rawSave) as GameState) : null;
+      return isCurrentSave(save) ? save : null;
     } catch {
       return null;
     }
   }
 }
 
-export async function saveGame(s: GameState): Promise<void> {
+export async function saveGame(state: GameState): Promise<void> {
   try {
-    await set("career", s, store);
+    await set("career", state, store);
     await set("at", Date.now(), store);
   } catch {
     try {
-      localStorage.setItem(LS_KEY, JSON.stringify(s));
+      localStorage.setItem(LS_KEY, JSON.stringify(state));
     } catch {
       /* hết chỗ lưu */
     }

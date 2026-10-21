@@ -1,49 +1,67 @@
 import { Angry, Frown, Laugh, Meh, Smile } from "lucide-react";
 import type { ReactNode } from "react";
-import { fmtM } from "@/engine/format";
-import { dyn, moraleLbl, ovrR, yearsLeft } from "@/engine/players";
-import { C, S } from "@/engine/state";
+import { formatMoney } from "@/engine/format";
+import { dynamicRating, moraleLabel, ovrRange, yearsLeft } from "@/engine/players";
+import { getClub, gameState } from "@/engine/state";
 import type { Player } from "@/engine/types";
-import { cx, mcol } from "@/utils/display";
+import { classNames, moraleColor } from "@/utils/display";
 import { Avatar } from "./Avatar";
 import { ClubBadge } from "./ClubBadge";
 import { Badge } from "@/components/shadcn/badge";
 
 const MOODS = [Angry, Frown, Meh, Smile, Laugh];
 /** Tinh thần: biểu tượng mặt (không chỉ dựa vào màu) kèm nhãn chữ cho trình đọc màn hình */
-function Mood({ mor }: { mor: number }) {
-  const Icon = MOODS[mor >= 80 ? 4 : mor >= 60 ? 3 : mor >= 40 ? 2 : mor >= 20 ? 1 : 0];
-  return <Icon size={14} strokeWidth={2.25} style={{ color: mcol(mor) }} role="img" aria-label={"Tinh thần: " + moraleLbl(mor)} />;
+function Mood({ morale }: { morale: number }) {
+  const Icon = MOODS[morale >= 80 ? 4 : morale >= 60 ? 3 : morale >= 40 ? 2 : morale >= 20 ? 1 : 0];
+  return (
+    <Icon
+      size={14}
+      strokeWidth={2.25}
+      style={{ color: moraleColor(morale) }}
+      role="img"
+      aria-label={"Tinh thần: " + moraleLabel(morale)}
+    />
+  );
 }
 
-export function FitBar({ fit }: { fit: number }) {
+export function FitBar({ fitness }: { fitness: number }) {
   return (
-    <span className="fit" role="img" aria-label={"Thể lực " + Math.round(fit) + "/100"}>
-      <i className={fit < 70 ? "low" : ""} style={{ width: `${fit}%` }} />
+    <span className="fit" role="img" aria-label={"Thể lực " + Math.round(fitness) + "/100"}>
+      <i className={fitness < 70 ? "low" : ""} style={{ width: `${fitness}%` }} />
     </span>
   );
 }
 
 /** Một dòng cầu thủ trong danh sách */
-export function PlayerRow({ p, right, cls, onClick }: { p: Player; right?: ReactNode; cls?: string; onClick: () => void }) {
-  const d = dyn(p),
-    diff = d - ovrR(p);
-  const mine = p.club === S.me;
-  const rt =
+export function PlayerRow({
+  player,
+  right,
+  className,
+  onClick,
+}: {
+  player: Player;
+  right?: ReactNode;
+  className?: string;
+  onClick: () => void;
+}) {
+  const rating = dynamicRating(player),
+    diff = rating - ovrRange(player);
+  const mine = player.club === gameState.myClubId;
+  const ratingLabel =
     right ??
     (mine ? (
       <>
-        <FitBar fit={p.fit} />
-        <span>{moraleLbl(p.mor)}</span>
+        <FitBar fitness={player.fitness} />
+        <span>{moraleLabel(player.morale)}</span>
       </>
     ) : (
       <>
-        <b>{fmtM(p.val)}</b>
+        <b>{formatMoney(player.marketValue)}</b>
         <span className="row" style={{ gap: 4, justifyContent: "flex-end" }}>
-          {p.club != null ? (
+          {player.club != null ? (
             <>
-              <ClubBadge name={C(p.club).n} size={16} />
-              {C(p.club).n}
+              <ClubBadge name={getClub(player.club).name} size={16} />
+              {getClub(player.club).name}
             </>
           ) : (
             "Tự do"
@@ -52,53 +70,53 @@ export function PlayerRow({ p, right, cls, onClick }: { p: Player; right?: React
       </>
     ));
   return (
-    <button className={cx("prow", cls)} onClick={onClick}>
+    <button className={classNames("prow", className)} onClick={onClick}>
       <span className="ovr">
-        {d}
+        {rating}
         <small>{diff ? (diff > 0 ? "+" : "") + diff : "·"}</small>
       </span>
-      <Avatar p={p} size={36} />
+      <Avatar player={player} size={36} />
       <span>
-        <span className="nm">{p.n}</span>
+        <span className="nm">{player.name}</span>
         <span className="sub">
-          <Badge variant="pos" className={`pos ${p.pos}`}>
-            {p.pos}
+          <Badge variant="pos" className={`pos ${player.pos}`}>
+            {player.pos}
           </Badge>
-          {p.pos2.map((x) => (
-            <Badge key={x} variant="pos" className={`pos alt text-foreground ${x}`}>
-              {x}
+          {player.secondaryPositions.map((line) => (
+            <Badge key={line} variant="pos" className={`pos alt text-foreground ${line}`}>
+              {line}
             </Badge>
           ))}
-          <span>{p.age} tuổi</span>
-          <Mood mor={p.mor} />
-          {p.inj > 0 && (
+          <span>{player.age} tuổi</span>
+          <Mood morale={player.morale} />
+          {player.injuryDays > 0 && (
             <Badge variant="tag" className="tag inj">
-              Chấn thương {p.inj}n
+              Chấn thương {player.injuryDays}n
             </Badge>
           )}
-          {p.away && (
+          {player.away && (
             <Badge variant="tag" className="tag away">
-              Đang ở {C(p.away.club).n}
+              Đang ở {getClub(player.away.club).name}
             </Badge>
           )}
-          {p.loan && (
+          {player.loan && (
             <Badge variant="tag" className="tag loan">
               Mượn
             </Badge>
           )}
-          {p.listed && (
+          {player.listed && (
             <Badge variant="tag" className="tag sale">
               Rao bán
             </Badge>
           )}
-          {mine && yearsLeft(p) <= 1 && !p.loan && (
+          {mine && yearsLeft(player) <= 1 && !player.loan && (
             <Badge variant="tag" className="tag exp">
               HĐ hết 30/6
             </Badge>
           )}
         </span>
       </span>
-      <span className="rt">{rt}</span>
+      <span className="rt">{ratingLabel}</span>
     </button>
   );
 }
