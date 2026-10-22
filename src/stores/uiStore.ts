@@ -3,7 +3,7 @@ import { toast as sonner } from "sonner";
 import { create } from "zustand";
 import type { LiveSim, MatchSim } from "@/engine/types";
 
-export type SheetState =
+type SheetState =
   { type: "player"; id: string } | { type: "nego"; id: string } | { type: "match" } | null;
 export type TabKey = "home" | "squad" | "market" | "league" | "club";
 export type MarketSub = "search" | "short" | "nego" | "mine" | "news";

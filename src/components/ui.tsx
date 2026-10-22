@@ -16,7 +16,6 @@ import { formatMoney, formatWage } from "@/engine/format";
 import { useUi } from "@/stores/uiStore";
 import { cn } from "@/lib/utils";
 import { classNames } from "@/utils/display";
-import { Button } from "@/components/shadcn/button";
 
 export function SegmentedControl<K extends string>({
   items,
@@ -45,7 +44,7 @@ export function SegmentedControl<K extends string>({
 }
 
 export type Fmt = "m" | "w" | "p" | "n";
-export const formatValue = (value: number, format: Fmt): string =>
+const formatValue = (value: number, format: Fmt): string =>
   format === "m"
     ? formatMoney(value)
     : format === "w"
@@ -111,7 +110,7 @@ export function RangeField({
         value={[value]}
         onValueChange={([newValue]) => setForm(fieldKey, newValue)}
         aria-label={label}
-        className="py-[14px]"
+        className="py-3.5"
       />
     </div>
   );
@@ -157,7 +156,7 @@ export function OptsField<V extends string | number>({
           <ToggleGroupItem
             key={String(optionValue)}
             value={String(optionValue)}
-            className="h-auto min-h-11 rounded-lg border-[1.5px] border-border bg-card px-3 py-1.5 text-[13px] font-semibold text-foreground hover:bg-card hover:text-foreground data-[state=on]:border-[var(--accent)] data-[state=on]:bg-[color-mix(in_srgb,var(--accent)_10%,var(--surface))] data-[state=on]:text-foreground"
+            className="h-auto min-h-11 rounded-lg border-[1.5px] border-border bg-card px-3 py-1.5 text-[13px] font-semibold text-foreground hover:bg-card hover:text-foreground data-[state=on]:border-(--accent) data-[state=on]:bg-[color-mix(in_srgb,var(--accent)_10%,var(--surface))] data-[state=on]:text-foreground"
           >
             {optionLabel}
           </ToggleGroupItem>
@@ -199,48 +198,12 @@ export function KeyValueRows({
   );
 }
 
-/** Nút chọn file ẩn trong label */
-export function FileButton({
-  label,
-  accept,
-  multiple,
-  onFiles,
-  variant = "ghost",
-  size = "sm",
-}: {
-  label: string;
-  accept: string;
-  multiple?: boolean;
-  onFiles: (files: File[]) => void;
-  variant?: "default" | "ghost" | "hot";
-  size?: "default" | "sm";
-}) {
-  return (
-    <Button asChild variant={variant} size={size}>
-      <label style={{ textAlign: "center" }}>
-        {label}
-        <input
-          type="file"
-          accept={accept}
-          multiple={multiple}
-          hidden
-          onChange={(event) => {
-            const files = [...(event.target.files || [])];
-            event.target.value = "";
-            if (files.length) onFiles(files);
-          }}
-        />
-      </label>
-    </Button>
-  );
-}
-
 /** Nhãn trên ô nhập (chữ hoa nhỏ, xếp dọc) */
-export function FieldLabel({ className, ...props }: React.ComponentProps<typeof Label>) {
+function FieldLabel({ className, ...props }: React.ComponentProps<typeof Label>) {
   return (
     <Label
       className={cn(
-        "lbl flex-col items-stretch gap-1 text-xs leading-normal font-semibold tracking-[0.06em] text-muted-foreground uppercase",
+        "lbl flex-col items-stretch gap-1 text-xs/normal font-semibold tracking-[0.06em] text-muted-foreground uppercase",
         className,
       )}
       {...props}
@@ -274,7 +237,7 @@ export function SelectField({
         <SelectTrigger className="w-full gap-1 bg-card px-2.5 text-[13px] font-normal tracking-normal text-foreground normal-case">
           <SelectValue />
         </SelectTrigger>
-        <SelectContent className="z-[70]">
+        <SelectContent className="z-70">
           {options.map(([optionValue, optionLabel]) => (
             <SelectItem key={optionValue} value={optionValue === "" ? NONE : optionValue}>
               {optionLabel}

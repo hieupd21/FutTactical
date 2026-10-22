@@ -1,5 +1,5 @@
 import { mockData } from "@/engine/mockData";
-// Màu áo đặc trưng [màu chính, màu phụ] và mã viết tắt nằm trong public/data/club_visuals.json. Huy hiệu là thiết kế chung (khiên + họa tiết + chữ), không mô phỏng huy hiệu thật.
+// Màu áo [màu chính, màu phụ] lấy từ clubs.json của FIFACM; mã viết tắt tự suy từ tên CLB. Huy hiệu là thiết kế chung (khiên + họa tiết + chữ), không mô phỏng huy hiệu thật.
 
 export function hashString(text: string): number {
   let hash = 0;
@@ -20,7 +20,6 @@ export const clubColors = (name: string): [string, string] =>
   mockData().clubVisuals.colors[name] || PALETTE[hashString(name) % PALETTE.length];
 
 export function clubCode(name: string): string {
-  if (mockData().clubVisuals.shortCodes[name]) return mockData().clubVisuals.shortCodes[name];
   const words = name
     .replace(/[0-9.&]/g, " ")
     .split(/\s+/)

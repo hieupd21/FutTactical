@@ -116,7 +116,7 @@ export const willingnessLabel = (willingnessScore: number): string =>
         ? "Do dự"
         : "Không muốn đến";
 
-export function askFactor(player: Player): number {
+function askFactor(player: Player): number {
   const clubId = player.club;
   if (clubId == null) return 0;
   const club = getClub(clubId),
@@ -143,8 +143,7 @@ export function feeEstimate(player: Player): [number, number] {
     scoutError = (6 - gameState.scout) * 0.06;
   return [roundToTen(askingFee * (1 - scoutError)), roundToTen(askingFee * (1 + scoutError))];
 }
-export const expectedRoleAtMe = (player: Player): Role =>
-  squadRank(player, gameState.myClubId).role;
+const expectedRoleAtMe = (player: Player): Role => squadRank(player, gameState.myClubId).role;
 export const roleIdx = (role: Role): number =>
   ["Ngôi sao", "Đá chính", "Xoay tua", "Triển vọng", "Dự bị"].indexOf(role);
 
@@ -202,7 +201,7 @@ export const activeNegoFor = (playerId: string): Negotiation | undefined =>
   );
 
 /** Cầu thủ mà người đại diện đã gửi thư thăm dò CLB bạn (còn hiệu lực 60 ngày, chưa có đàm phán) */
-export const AGENT_LETTER_DAYS = 60;
+const AGENT_LETTER_DAYS = 60;
 export const agentLetters = (): Player[] =>
   Object.values(gameState.players)
     .filter(
@@ -215,7 +214,7 @@ export const agentLetters = (): Player[] =>
     )
     .sort((playerA, playerB) => playerB.interest!.day - playerA.interest!.day);
 
-export function failNegotiation(negotiation: Negotiation, reason: string, coolDays = 15): void {
+function failNegotiation(negotiation: Negotiation, reason: string, coolDays = 15): void {
   negotiation.stage = "failed";
   negotiation.message = reason;
   logNegotiation(negotiation, "them", reason);
@@ -356,7 +355,7 @@ function processEnquiry(negotiation: Negotiation): void {
 }
 
 // ---------- đề nghị với CLB bán ----------
-export function offerValue(negotiation: Negotiation, clubOffer: ClubOffer): number {
+function offerValue(negotiation: Negotiation, clubOffer: ClubOffer): number {
   const player = getPlayer(negotiation.playerId);
   let total = clubOffer.fee;
   if (clubOffer.installments === 2) total *= 0.96;
@@ -369,7 +368,7 @@ export function offerValue(negotiation: Negotiation, clubOffer: ClubOffer): numb
   if (clubOffer.timing === "next") total *= 0.98;
   return total;
 }
-export const canAffordNow = (clubOffer: ClubOffer): boolean =>
+const canAffordNow = (clubOffer: ClubOffer): boolean =>
   (clubOffer.installments > 1 ? clubOffer.fee / clubOffer.installments : clubOffer.fee) <=
   myClub().budget;
 
@@ -892,7 +891,7 @@ export function aiBidsTick(hours: number): void {
     });
 }
 
-export const MIN_SQUAD = 18;
+const MIN_SQUAD = 18;
 
 export function respondSell(
   negotiation: Negotiation,

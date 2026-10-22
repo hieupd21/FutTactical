@@ -79,18 +79,6 @@ export function quitNego(id: string): void {
   negotiation.message = "Bạn đứng dậy khỏi bàn đàm phán. Thương vụ khép lại.";
   negotiation.log.push({ author: "me", text: negotiation.message, tickAt: tick() });
 }
-export function renamePlayer(playerId: string, name: string): void {
-  const trimmedName = name.trim();
-  if (trimmedName) getPlayer(playerId).name = trimmedName;
-}
-export function renameClub(clubId: string, name: string): void {
-  const trimmedName = name.trim();
-  if (trimmedName) getClub(clubId).name = trimmedName;
-}
-export function renameLeague(leagueId: string, name: string): void {
-  const trimmedName = name.trim();
-  if (trimmedName) gameState.leagueNames[leagueId] = trimmedName;
-}
 export function readMessage(id: string): void {
   const message = gameState.inbox.find((item) => item.id === id);
   if (message) message.read = true;

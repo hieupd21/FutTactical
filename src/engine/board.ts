@@ -42,7 +42,7 @@ export const myWages = (): number =>
       (player.loan ? (player.contract!.wage * player.loan.percent) / 100 : player.contract!.wage),
     0,
   );
-export const youthApps = (): number =>
+const youthApps = (): number =>
   clubPlayers(gameState.myClubId)
     .filter((player) => player.age <= 21)
     .reduce((total, player) => total + player.apps, 0);

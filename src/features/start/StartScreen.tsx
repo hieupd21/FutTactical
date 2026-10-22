@@ -59,7 +59,7 @@ function PickerRow({
   isDisabled: boolean;
 }) {
   const arrowClass =
-    "grid size-12 shrink-0 place-items-center rounded-lg border border-[var(--line)] bg-[var(--surface)] text-[var(--ink)] transition-colors hover:border-[var(--accent)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)] disabled:cursor-not-allowed disabled:opacity-40";
+    "grid size-12 shrink-0 place-items-center rounded-lg border border-(--line) bg-(--surface) text-(--ink) transition-colors hover:border-(--accent) focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--accent) disabled:cursor-not-allowed disabled:opacity-40";
   return (
     <div className="flex items-stretch gap-2">
       <button
@@ -76,15 +76,15 @@ function PickerRow({
         onClick={onOpenList}
         disabled={isDisabled}
         aria-haspopup="dialog"
-        className="flex min-h-12 min-w-0 flex-1 items-center justify-between gap-2 rounded-lg border border-[var(--line)] bg-[var(--surface)] px-3.5 text-left text-[var(--ink)] transition-colors hover:border-[var(--accent)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)] disabled:cursor-not-allowed disabled:opacity-40"
+        className="flex min-h-12 min-w-0 flex-1 items-center justify-between gap-2 rounded-lg border border-(--line) bg-(--surface) px-3.5 text-left text-(--ink) transition-colors hover:border-(--accent) focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--accent) disabled:cursor-not-allowed disabled:opacity-40"
       >
         <span className="flex min-w-0 flex-col gap-0.5">
-          <span className="text-[11px] font-medium tracking-wide text-[var(--muted)] uppercase">
+          <span className="text-[11px] font-medium tracking-wide text-(--muted) uppercase">
             {label}
           </span>
           <span className="truncate text-[15px] font-bold">{value}</span>
         </span>
-        <ChevronDown size={18} className="shrink-0 text-[var(--muted)]" aria-hidden="true" />
+        <ChevronDown size={18} className="shrink-0 text-(--muted)" aria-hidden="true" />
       </button>
       <button
         type="button"
@@ -116,16 +116,9 @@ export function StartScreen() {
       .catch((loadError: Error) => setError(loadError.message));
   }, []);
 
-  const leagueIdsInPack = useMemo(
-    () => new Set((rows ? packClubs(rows) : []).map((packClub) => packClub.leagueId)),
-    [rows],
-  );
   // HLV mới chỉ nhận được các đội có yêu cầu uy tín trong tầm; chế độ tự chọn mở hết
   const isRookie = mode === "rookie";
-  const playableLeagues = allLeagueInfos().filter(
-    (league) =>
-      league.isSimulated !== false && (!league.isOptional || leagueIdsInPack.has(league.packId)),
-  );
+  const playableLeagues = allLeagueInfos().filter((league) => league.isSimulated !== false);
   const countryCodes = [...new Set(playableLeagues.map((league) => league.nationality))];
   const selectedCountryCode = countryCodes.includes(pickedCountryCode)
     ? pickedCountryCode
@@ -137,7 +130,6 @@ export function StartScreen() {
       isRookie ? leagueA.level - leagueB.level : leagueB.level - leagueA.level,
     );
   const selectedLeague = leagues.find((league) => league.id === pickedLeagueId) ?? leagues[0];
-  const leagueName = (leagueFullName: string) => leagueFullName.replace("Giải VĐQG ", "");
 
   const clubs = useMemo<ClubChoice[]>(() => {
     if (!rows) return [];
@@ -224,7 +216,7 @@ export function StartScreen() {
         />
         <PickerRow
           label="Hạng đấu"
-          value={leagueName(selectedLeague.name)}
+          value={selectedLeague.name}
           onPrevious={() => stepLeague(-1)}
           onNext={() => stepLeague(1)}
           onOpenList={() => setOpenedPicker("league")}
@@ -242,7 +234,7 @@ export function StartScreen() {
 
       <section
         aria-live="polite"
-        className="mt-5 flex min-h-[300px] flex-col items-center gap-4 rounded-xl border border-[var(--line)] bg-[var(--soft)] px-4 py-6"
+        className="mt-5 flex min-h-75 flex-col items-center gap-4 rounded-xl border border-(--line) bg-(--soft) px-4 py-6"
       >
         {selectedClub ? (
           <>
@@ -258,22 +250,19 @@ export function StartScreen() {
             <div className="flex flex-col items-center gap-1 text-center">
               <h3 className="text-balance text-[20px] uppercase">{selectedClub.name}</h3>
               <p className="hint">
-                {leagueName(selectedLeague.name)} · {selectedClub.tierLabel}
+                {selectedLeague.name} · {selectedClub.tierLabel}
               </p>
             </div>
-            <dl className="grid w-full max-w-[420px] grid-cols-5 gap-1.5 text-center">
-              <div className="flex flex-col gap-1 rounded-lg bg-[var(--surface)] px-1 py-2">
-                <dt className="text-[10px] font-medium text-[var(--muted)] uppercase">Sức mạnh</dt>
-                <dd className="text-[20px] font-extrabold text-[var(--ink)] tabular-nums">
+            <dl className="grid w-full max-w-105 grid-cols-5 gap-1.5 text-center">
+              <div className="flex flex-col gap-1 rounded-lg bg-(--surface) px-1 py-2">
+                <dt className="text-[10px] font-medium text-(--muted) uppercase">Sức mạnh</dt>
+                <dd className="text-[20px] font-extrabold text-(--ink) tabular-nums">
                   {selectedClub.strength}
                 </dd>
               </div>
               {LINE_LABELS.map(([line, lineLabel, lineColor]) => (
-                <div
-                  key={line}
-                  className="flex flex-col gap-1 rounded-lg bg-[var(--surface)] px-1 py-2"
-                >
-                  <dt className="truncate text-[10px] font-medium text-[var(--muted)] uppercase">
+                <div key={line} className="flex flex-col gap-1 rounded-lg bg-(--surface) px-1 py-2">
+                  <dt className="truncate text-[10px] font-medium text-(--muted) uppercase">
                     {lineLabel}
                   </dt>
                   <dd
@@ -286,7 +275,7 @@ export function StartScreen() {
               ))}
             </dl>
             {selectedClub.isLocked && (
-              <p className="flex items-center gap-1.5 text-center text-[13px] font-semibold text-[var(--loss)]">
+              <p className="flex items-center gap-1.5 text-center text-[13px] font-semibold text-(--loss)">
                 <Lock size={14} aria-hidden="true" />
                 Cần uy tín {selectedClub.requiredReputation}, bạn mới có {NEWBIE_REPUTATION}
               </p>
@@ -299,7 +288,7 @@ export function StartScreen() {
         )}
       </section>
 
-      <div className="sticky bottom-0 z-10 -mx-4 -mb-4 mt-4 rounded-b-xl border-t border-[var(--line)] bg-[var(--surface)] p-4 pb-[max(1rem,env(safe-area-inset-bottom))]">
+      <div className="sticky bottom-0 z-10 -mx-4 -mb-4 mt-4 rounded-b-xl border-t border-(--line) bg-(--surface) p-4 pb-[max(1rem,env(safe-area-inset-bottom))]">
         <Button variant="hot" className="w-full" disabled={!canConfirm} onClick={confirm}>
           {selectedClub?.isLocked ? "Chưa thể chọn đội này" : "Xác nhận"}
         </Button>
@@ -319,10 +308,10 @@ export function StartScreen() {
                 }}
                 aria-current={countryCode === selectedCountryCode}
                 className={cn(
-                  "min-h-12 rounded-lg border px-3.5 text-left text-[15px] font-bold text-[var(--ink)]",
+                  "min-h-12 rounded-lg border px-3.5 text-left text-[15px] font-bold text-(--ink)",
                   countryCode === selectedCountryCode
-                    ? "border-[var(--accent)] bg-[var(--soft)]"
-                    : "border-[var(--line)] bg-[var(--surface)] hover:border-[var(--accent)]",
+                    ? "border-(--accent) bg-(--soft)"
+                    : "border-(--line) bg-(--surface) hover:border-(--accent)",
                 )}
               >
                 {countryName(countryCode)}
@@ -346,13 +335,13 @@ export function StartScreen() {
                 }}
                 aria-current={league.id === selectedLeague.id}
                 className={cn(
-                  "min-h-12 rounded-lg border px-3.5 text-left text-[15px] font-bold text-[var(--ink)]",
+                  "min-h-12 rounded-lg border px-3.5 text-left text-[15px] font-bold text-(--ink)",
                   league.id === selectedLeague.id
-                    ? "border-[var(--accent)] bg-[var(--soft)]"
-                    : "border-[var(--line)] bg-[var(--surface)] hover:border-[var(--accent)]",
+                    ? "border-(--accent) bg-(--soft)"
+                    : "border-(--line) bg-(--surface) hover:border-(--accent)",
                 )}
               >
-                {leagueName(league.name)}
+                {league.name}
               </button>
             ))}
           </div>
@@ -361,7 +350,7 @@ export function StartScreen() {
 
       {openedPicker === "club" && (
         <Sheet onClose={closePicker}>
-          <h3>Chọn đội · {leagueName(selectedLeague.name)}</h3>
+          <h3>Chọn đội · {selectedLeague.name}</h3>
           <div className="flex max-h-[60dvh] flex-col gap-2 overflow-y-auto">
             {clubs.map((club) => (
               <button
@@ -373,10 +362,10 @@ export function StartScreen() {
                 }}
                 aria-current={club.name === selectedClub?.name}
                 className={cn(
-                  "flex min-h-14 items-center gap-3 rounded-lg border px-3 py-2 text-left text-[var(--ink)]",
+                  "flex min-h-14 items-center gap-3 rounded-lg border px-3 py-2 text-left text-(--ink)",
                   club.name === selectedClub?.name
-                    ? "border-[var(--accent)] bg-[var(--soft)]"
-                    : "border-[var(--line)] bg-[var(--surface)] hover:border-[var(--accent)]",
+                    ? "border-(--accent) bg-(--soft)"
+                    : "border-(--line) bg-(--surface) hover:border-(--accent)",
                   club.isLocked && "opacity-60",
                 )}
               >
@@ -388,11 +377,7 @@ export function StartScreen() {
                   </span>
                 </span>
                 {club.isLocked ? (
-                  <Lock
-                    size={16}
-                    className="shrink-0 text-[var(--muted)]"
-                    aria-label="Chưa mở khóa"
-                  />
+                  <Lock size={16} className="shrink-0 text-(--muted)" aria-label="Chưa mở khóa" />
                 ) : (
                   <span className="shrink-0 text-[17px] font-extrabold tabular-nums">
                     {club.strength}

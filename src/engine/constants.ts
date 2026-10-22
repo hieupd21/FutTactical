@@ -17,6 +17,13 @@ export const FORMS = Object.fromEntries(
     ],
   ]),
 ) as Record<Formation, [number, number, number]>;
+/** Số quốc gia có giải hạng 1 mạnh nhất (theo overallRating trung bình của CLB) được mô phỏng mọi hạng đấu; các giải còn lại chỉ là nguồn thị trường */
+export const SIMULATED_LEAGUE_COUNT = 5;
+/** Quy đổi overallRating trung bình của giải sang `level`: giải trung bình LEAGUE_RATING_ANCHOR có level LEAGUE_LEVEL_ANCHOR, mỗi điểm rating lệch thêm LEAGUE_LEVEL_PER_RATING */
+export const LEAGUE_RATING_ANCHOR = 79;
+export const LEAGUE_LEVEL_ANCHOR = 4;
+export const LEAGUE_LEVEL_PER_RATING = 0.16;
+export const MIN_LEAGUE_LEVEL = 1;
 export const POSITION_NAMES: Record<Line, string> = {
   GK: "Thủ môn",
   DF: "Hậu vệ",

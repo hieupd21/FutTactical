@@ -1,0 +1,7 @@
+{
+  "$schema": "https://unpkg.com/knip@latest/schema.json",
+  "entry": ["src/main.tsx", "plugins/*.ts"],
+  "project": ["src/**/*.{ts,tsx}", "plugins/**/*.ts"],
+  "ignore": ["src/components/shadcn/**"],
+  "ignoreDependencies": ["tailwindcss", "tw-animate-css"]
+}

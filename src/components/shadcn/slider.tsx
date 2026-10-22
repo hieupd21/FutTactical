@@ -2,7 +2,14 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 import { Slider as SliderPrimitive } from "radix-ui";
 
-function Slider({ className, defaultValue, value, min = 0, max = 100, ...props }: React.ComponentProps<typeof SliderPrimitive.Root>) {
+function Slider({
+  className,
+  defaultValue,
+  value,
+  min = 0,
+  max = 100,
+  ...props
+}: React.ComponentProps<typeof SliderPrimitive.Root>) {
   const _values = React.useMemo(
     () => (Array.isArray(value) ? value : Array.isArray(defaultValue) ? defaultValue : [min, max]),
     [value, defaultValue, min, max],
@@ -16,7 +23,7 @@ function Slider({ className, defaultValue, value, min = 0, max = 100, ...props }
       min={min}
       max={max}
       className={cn(
-        "relative flex w-full touch-none items-center select-none data-[disabled]:opacity-50 data-[orientation=vertical]:h-full data-[orientation=vertical]:min-h-44 data-[orientation=vertical]:w-auto data-[orientation=vertical]:flex-col",
+        "relative flex w-full touch-none items-center select-none data-disabled:opacity-50 data-[orientation=vertical]:h-full data-[orientation=vertical]:min-h-44 data-[orientation=vertical]:w-auto data-[orientation=vertical]:flex-col",
         className,
       )}
       {...props}
@@ -29,7 +36,9 @@ function Slider({ className, defaultValue, value, min = 0, max = 100, ...props }
       >
         <SliderPrimitive.Range
           data-slot="slider-range"
-          className={cn("absolute bg-[var(--accent)] data-[orientation=horizontal]:h-full data-[orientation=vertical]:w-full")}
+          className={cn(
+            "absolute bg-(--accent) data-[orientation=horizontal]:h-full data-[orientation=vertical]:w-full",
+          )}
         />
       </SliderPrimitive.Track>
       {Array.from({ length: _values.length }, (_, index) => (
@@ -37,7 +46,7 @@ function Slider({ className, defaultValue, value, min = 0, max = 100, ...props }
           data-slot="slider-thumb"
           aria-label={props["aria-label"]}
           key={index}
-          className="block size-5 shrink-0 rounded-full border-2 border-[var(--accent)] bg-card shadow-sm ring-[var(--accent)]/40 transition-[color,box-shadow] hover:ring-4 focus-visible:ring-4 focus-visible:outline-hidden disabled:pointer-events-none disabled:opacity-50"
+          className="block size-5 shrink-0 rounded-full border-2 border-(--accent) bg-card shadow-sm ring-(--accent)/40 transition-[color,box-shadow] hover:ring-4 focus-visible:ring-4 focus-visible:outline-hidden disabled:pointer-events-none disabled:opacity-50"
         />
       ))}
     </SliderPrimitive.Root>

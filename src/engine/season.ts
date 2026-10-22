@@ -35,7 +35,7 @@ import type { Line } from "./types";
 import { clamp, pickRandom, roundToTen, randomInt, randomBetween } from "./util";
 import { makeFixtures } from "./world";
 
-export function monthTick(): void {
+function monthTick(): void {
   Object.values(gameState.players).forEach((player) => {
     const profile = PROFILES[player.profile],
       [peakStart, peakEnd] = profile.peak;
@@ -81,7 +81,7 @@ function hourTick(hour: number): void {
   aiTransfersTick(hour);
 }
 
-export function dayTick(): void {
+function dayTick(): void {
   gameState.day++;
   gameState.hour = 9;
   if (gameState.day >= SEASON_LEN) {
@@ -227,7 +227,7 @@ export function applyPending(winter = false): void {
   gameState.pending = keep;
 }
 
-export const leagueSize = (): number => gameState.fixtures[myLeagueId()].length / 2 + 1;
+const leagueSize = (): number => gameState.fixtures[myLeagueId()].length / 2 + 1;
 
 function seasonReview(): void {
   const pos = myLeaguePosition(),
@@ -258,7 +258,7 @@ function seasonReview(): void {
   else jobOffersTick(pos, target);
 }
 
-export function newSeason(): void {
+function newSeason(): void {
   let prize = gameState.review ? gameState.review.prize : 0;
   // đã nhận lời CLB khác: hoàn tất các thương vụ của CLB cũ rồi bàn giao
   const moved = !!gameState.job && !!gameState.clubs[gameState.job];

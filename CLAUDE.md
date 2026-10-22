@@ -1,6 +1,6 @@
 # Sân Cỏ Career — ghi chú cho Claude Code
 
-Game quản lý bóng đá kiểu Career Mode của EA FC: trận đấu chạy từng phút (người chơi chỉ tạm dừng, thay người, đổi chiến thuật; không điều khiển cầu thủ), chuyển nhượng và đàm phán giống FC. Mobile-first, chạy trên web. Dùng riêng nên được phép dùng tên cầu thủ/CLB thật. KHÔNG thêm logo hoặc ảnh thật (chỉ huy hiệu SVG tự vẽ + ảnh người chơi tự tải lên).
+Game quản lý bóng đá kiểu Career Mode của EA FC: trận đấu chạy từng phút (người chơi chỉ tạm dừng, thay người, đổi chiến thuật; không điều khiển cầu thủ), chuyển nhượng và đàm phán giống FC. Mobile-first, chạy trên web. Dùng riêng nên được phép dùng tên cầu thủ/CLB thật. KHÔNG tự thêm logo hoặc ảnh ngoài dữ liệu: tên và ảnh chỉ lấy từ `data/fifacm/` (không có chức năng đổi tên hay tải ảnh); huy hiệu SVG tự vẽ chỉ là dự phòng khi ảnh nguồn lỗi.
 
 Luôn trả lời người dùng bằng tiếng Việt. Toàn bộ chữ trong giao diện là tiếng Việt.
 
@@ -29,6 +29,7 @@ Luôn trả lời người dùng bằng tiếng Việt. Toàn bộ chữ trong g
 - `features/*` không import lẫn nhau; ghép ở `src/app/`. Thành phần dùng chung ở `src/components/`. Không dùng barrel file.
 - Trạng thái giao diện (sheet đang mở, bộ lọc, giá trị form đàm phán `form[negotiation.id+key]`) ở `stores/uiStore.ts`.
 - Style: `src/styles/global.css` giữ token màu sáng/tối trên `:root` và class từ bản prototype. Nó được nạp qua `src/styles/tailwind.css` vào layer `legacy` (thấp hơn utilities) nên Tailwind v4 (chỉ theme + utilities, không preflight) và shadcn/ui chạy song song. Màu shadcn ánh xạ vào token của global.css trong `tailwind.css`; không thêm biến `--muted`/`--accent` kiểu shadcn vào `:root` vì trùng tên token cũ.
+- Tailwind v4 (bắt buộc, không được vi phạm): dùng biến CSS thì viết `border-(--accent)`, KHÔNG viết `border-[var(--accent)]` (chi tiết: `.claude/rules/tailwind.md`).
 - shadcn/ui: component sinh ra nằm ở `src/components/shadcn/` (alias trong `components.json`), thêm bằng `pnpm dlx shadcn@latest add <tên>`; sau khi thêm kiểm tra import `cn` phải là `@/lib/utils` (CLI từng sinh nhầm `from "cn"`). Component mới ưu tiên dùng shadcn + Tailwind; màn hình cũ thay dần. Icon dùng `lucide-react`; font Unbounded nạp từ `public/fonts/*.woff2` (subset Latin + tiếng Việt, 5 độ đậm).
 
 ## Luật game quan trọng (đừng đổi số nếu không được yêu cầu)
@@ -44,19 +45,20 @@ Luôn trả lời người dùng bằng tiếng Việt. Toàn bộ chữ trong g
 
 ## Dữ liệu
 
+- Toàn bộ dữ liệu của dự án chỉ lấy từ `data/fifacm/`. Chỉ được fetch/crawl để cập nhật dữ liệu này từ nguồn FIFACM (fifacm.com); NGHIÊM CẤM fetch, crawl hoặc tạo dữ liệu từ bất kỳ nguồn nào khác (chi tiết: `.claude/rules/data.md`).
+
 - Sự nghiệp mới dùng `data/fifacm/` (FC27 nam, snapshot 06/10/2026). `src/lib/data.ts` tải players/clubs/leagues/nations/manifest; `src/engine/fifacm.ts` nối ID và tạo DataRow trong bộ nhớ. Không ghép tuổi, tiềm năng, hợp đồng hoặc tài chính FC26 vào nguồn này.
 - `plugins/fifacmData.ts` phục vụ JSON tại `data/fifacm/*.json` khi dev, xuất nguyên bản vào `dist/data/fifacm/` khi build. Không tạo bản sao thủ công trong public. `formations.json` cũng được engine dùng để dựng 22 sơ đồ; các tuyến giữa gộp thành MF cho logic GK/DF/MF/FW hiện có.
 - ID game của cầu thủ nguồn là `f<sourceId>`, CLB là `fc<sourceId>`; trường `sourceId` giữ ID số để truy nguồn. Cầu thủ tự do có `club = null`, `contract = null`. Lương/giá trị/điều khoản đổi từ EUR sang nghìn EUR; không làm tròn lương thấp thành 1k. `nationId` tham chiếu nations.json.
-- Mọi CLB/cầu thủ của bộ FIFACM được nạp. Phạm vi mô phỏng và cân bằng giải vẫn theo cấu hình public/data/leagues.json; các giải mới còn lại chỉ là nguồn thị trường. Khởi tạo giữ đúng danh sách cầu thủ FIFACM, không bù cầu thủ giả; học viện và phát triển trong quá trình chơi vẫn theo luật game.
+- Mọi CLB/cầu thủ của bộ FIFACM được nạp. Giải, quốc gia, quốc tịch, màu CLB và ảnh đều suy ra từ `data/fifacm` bởi `createFifacmPack` (ID giải `fl<id>`, mã quốc tịch `n<id>`, quốc gia của giải = quốc tịch đông nhất trong các CLB của giải, `level` quy đổi từ overallRating trung bình của CLB theo hằng số trong `constants.ts`). Mọi hạng đấu của 5 quốc gia có giải hạng 1 mạnh nhất (`SIMULATED_LEAGUE_COUNT`: Anh, Tây Ban Nha, Đức, Ý, Pháp) được mô phỏng, các giải còn lại chỉ là nguồn thị trường. Không còn bản dịch tiếng Việt cho tên giải/quốc tịch, không còn mã viết tắt hay cặp kình địch viết tay (kình địch = CLB cùng giải có sức mạnh gần nhất). Khởi tạo giữ đúng danh sách cầu thủ FIFACM, không bù cầu thủ giả; học viện và phát triển trong quá trình chơi vẫn theo luật game.
 - Budget nguồn hiện toàn 0 và chưa xác minh: tiếp tục dùng công thức ngân sách game, không dùng Worth làm tiền chuyển nhượng. Quỹ lương tính trên lương cầu thủ nguồn × hệ số trần lương hiện có.
 - Bản lưu cũ vẫn dùng dữ liệu đã lưu; FIFACM áp dụng khi tạo sự nghiệp mới. `saveVersion` giữ tương thích, trường `dataProvider: "fifacm"` nhận diện nguồn mới.
 
-### Định dạng cũ (lưu trữ, không còn được giao diện tải để tạo sự nghiệp)
+### DataRow (dòng trung gian dựng trong bộ nhớ)
 
-- `public/data/fc27.json`: mảng dòng `[league_id, club, short, long, positions, ovr, pot, value_eur, wage_eur, age, contract_year, release_clause_eur, nationality, fifa_version, prevClub?]` (kiểu `DataRow`).
+- `createFifacmPack` biến mỗi cầu thủ FIFACM thành `DataRow`: `[league_id, club, short, long, positions, ovr, pot, value_eur, wage_eur, age, contract_year, release_clause_eur, nationality, fifa_version, prevClub?]`; `engine/world.ts` dựng game từ các dòng này.
 - Dòng có `league_id = 0` và CLB rỗng là cầu thủ tự do (hết hợp đồng): vào `gameState.free`, người chơi và CLB AI đều ký được (`aiFreeAgentsTick` trong transfers.ts).
-- Giải mô phỏng: 13 EPL, 53 LaLiga, 19 Bundesliga, 31 Serie A, 16 Ligue 1. Giải nguồn (không đá): 14 Championship, 308 Bồ Đào Nha, 10 Hà Lan, 999 đội mới xuống hạng.
-- fc27.json = FC 27 (FIFPlay, 11/10/2026: CLB + chỉ số) ghép FC 26 (sofifa: tuổi+1, tiềm năng, lương, hợp đồng, giá). Gói đã hoàn thiện sẵn, được cập nhật tay; không còn script ghép. Chỉ dùng dữ liệu thật, không có thế giới hư cấu. Cấu hình giải/quốc tịch/màu CLB nằm ở `nationalities.json`, `leagues.json`, `club_visuals.json`, nạp qua `lib/mockData.ts`, không viết bảng dữ liệu trong TS. Cầu thủ do game tạo (học viện, bù đội hình) lấy tên ghép từ cầu thủ thật cùng quốc tịch.
+- Cầu thủ do game tạo (học viện) lấy tên ghép từ cầu thủ FIFACM cùng quốc tịch.
 
 ## Hướng phát triển đã bàn (chưa làm)
 

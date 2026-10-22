@@ -14,7 +14,7 @@ export function Sheet({ children, onClose }: { children: ReactNode; onClose?: ()
         aria-describedby={undefined}
         onEscapeKeyDown={block}
         onInteractOutside={block}
-        className="sheet z-[60] mx-auto max-w-[680px] gap-3.5 border-t-0 bg-card shadow-[0_-10px_40px_rgba(0,0,0,0.25)] data-[state=closed]:duration-200 data-[state=open]:duration-300"
+        className="sheet z-60 mx-auto max-w-170 gap-3.5 border-t-0 bg-card shadow-[0_-10px_40px_rgba(0,0,0,0.25)] data-[state=closed]:duration-200 data-[state=open]:duration-300"
       >
         <SheetTitle className="sr-only">Chi tiết</SheetTitle>
         {children}

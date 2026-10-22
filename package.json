@@ -16,6 +16,7 @@
     "test": "vitest run",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
+    "knip": "knip",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "prepare": "husky"
@@ -49,6 +50,7 @@
     "globals": "^17.13.0",
     "husky": "^9.1.7",
     "jiti": "^2.7.0",
+    "knip": "^6.42.1",
     "lint-staged": "^16.4.0",
     "prettier": "^3.9.10",
     "typescript": "^5.6.3",

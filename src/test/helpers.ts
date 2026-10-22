@@ -1,32 +1,34 @@
 // Tiện ích cho test: dùng cùng bộ FIFACM với sự nghiệp mới trong ứng dụng.
 import { readFileSync } from "node:fs";
-import { findLeagueByPackId, mockData, setMockData } from "@/engine/mockData";
+import { findLeagueByPackId, setMockData } from "@/engine/mockData";
 import { createFifacmPack, type FifacmDataset, type FifacmPack } from "@/engine/fifacm";
-import type { DataRow } from "@/engine/types";
 import { newGameReal, packClubs } from "@/engine/world";
 
+/** ID giải Premier League trong dữ liệu FIFACM (13) theo quy ước `fl<id>` */
+const PREMIER_LEAGUE_ID = "fl13";
+
 let cachedPack: FifacmPack | undefined;
-export function fifacmPack(): FifacmPack {
+function fifacmPack(): FifacmPack {
   if (!cachedPack) {
     const read = <Value>(filename: string): Value =>
       JSON.parse(readFileSync(`data/fifacm/${filename}.json`, "utf8")) as Value;
-    cachedPack = createFifacmPack(
-      {
-        players: read<FifacmDataset["players"]>("players"),
-        clubs: read<FifacmDataset["clubs"]>("clubs"),
-        leagues: read<FifacmDataset["leagues"]>("leagues"),
-        nations: read<FifacmDataset["nations"]>("nations"),
-        snapshotDate: read<{ snapshotDate: string }>("manifest").snapshotDate,
-      },
-      mockData(),
-    );
+    cachedPack = createFifacmPack({
+      players: read<FifacmDataset["players"]>("players"),
+      clubs: read<FifacmDataset["clubs"]>("clubs"),
+      leagues: read<FifacmDataset["leagues"]>("leagues"),
+      nations: read<FifacmDataset["nations"]>("nations"),
+      snapshotDate: read<{ snapshotDate: string }>("manifest").snapshotDate,
+    });
   }
   setMockData(cachedPack.references);
   return cachedPack;
 }
-export const packRows = (): DataRow[] => fifacmPack().rows;
 
-export function startTestGame(clubName = "Arsenal", leagueId = "EN", rookie = false): void {
+export function startTestGame(
+  clubName = "Arsenal",
+  leagueId = PREMIER_LEAGUE_ID,
+  rookie = false,
+): void {
   const dataset = fifacmPack();
   newGameReal(dataset.rows, leagueId, clubName, "FIFACM FC27 · 06/10/2026", { rookie, dataset });
 }

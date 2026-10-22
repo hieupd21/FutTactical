@@ -1,5 +1,5 @@
 import { readFileSync } from "node:fs";
-import { afterAll, beforeAll, describe, expect, it } from "vitest";
+import { beforeAll, describe, expect, it } from "vitest";
 import { FORMS } from "./constants";
 import {
   createFifacmPack,
@@ -7,7 +7,7 @@ import {
   type FifacmDataset,
   type FifacmPack,
 } from "./fifacm";
-import { mockData, setMockData } from "./mockData";
+import { setMockData } from "./mockData";
 import { myWages } from "./board";
 import { newGameReal, packClubs } from "./world";
 import { gameState, myClub } from "./state";
@@ -24,13 +24,11 @@ const dataset: FifacmDataset = {
   nations: readDataset("nations"),
   snapshotDate: readDataset<{ snapshotDate: string }>("manifest").snapshotDate,
 };
-const defaults = mockData();
 let pack: FifacmPack;
 
 beforeAll(() => {
-  pack = createFifacmPack(dataset, defaults);
+  pack = createFifacmPack(dataset);
 });
-afterAll(() => setMockData(defaults));
 
 describe("dữ liệu FIFACM trong sự nghiệp", () => {
   it("giữ đủ cầu thủ, CLB, giải và tham chiếu quốc tịch", () => {
@@ -41,13 +39,22 @@ describe("dữ liệu FIFACM trong sự nghiệp", () => {
     expect(
       Object.values(pack.references.leagues.countries).flatMap((country) => country.leagues),
     ).toHaveLength(36);
-    expect(
-      pack.references.leagues.countries.EN.leagues.some((league) => league.packId === 999),
-    ).toBe(false);
+    const premierLeague = Object.values(pack.references.leagues.countries)
+      .flatMap((country) => country.leagues)
+      .find((league) => league.packId === 13)!;
+    expect(premierLeague.id).toBe("fl13");
+    expect(premierLeague.name).toBe("England Premier League");
+    expect(premierLeague.level).toBeCloseTo(4, 0);
+    const simulatedLeagueIds = Object.values(pack.references.leagues.countries)
+      .flatMap((country) => country.leagues)
+      .filter((league) => league.isSimulated)
+      .map((league) => league.packId)
+      .sort((idA, idB) => idA - idB);
+    expect(simulatedLeagueIds).toEqual([13, 14, 16, 17, 19, 20, 31, 32, 53, 54, 60, 61, 2076]);
   });
 
   it("khởi tạo đúng đội, lương, giá trị, hợp đồng, điều khoản và cầu thủ tự do", () => {
-    newGameReal(pack.rows, "EN", "Arsenal", "FIFACM FC27", { dataset: pack });
+    newGameReal(pack.rows, "fl13", "Arsenal", "FIFACM FC27", { dataset: pack });
     expect(gameState.dataProvider).toBe("fifacm");
     expect(gameState.year).toBe(2026);
     expect(Object.keys(gameState.players)).toHaveLength(18763);
@@ -92,7 +99,7 @@ describe("dữ liệu FIFACM trong sự nghiệp", () => {
   });
 
   it("sơ đồ dữ liệu đều có 11 vị trí và có thể mô phỏng trận đấu", () => {
-    newGameReal(pack.rows, "EN", "Arsenal", "FIFACM FC27", { dataset: pack });
+    newGameReal(pack.rows, "fl13", "Arsenal", "FIFACM FC27", { dataset: pack });
     expect(Object.keys(FORMS)).toHaveLength(22);
     Object.keys(FORMS).forEach((formation) => {
       expect(slotPositions(formation as keyof typeof FORMS)).toHaveLength(11);
@@ -105,6 +112,6 @@ describe("dữ liệu FIFACM trong sự nghiệp", () => {
 
   it("không âm thầm bỏ cầu thủ khi tham chiếu CLB bị lỗi", () => {
     const broken = { ...dataset, players: [{ ...dataset.players[0], clubId: -1 }] };
-    expect(() => createFifacmPack(broken, defaults)).toThrow("không hợp lệ");
+    expect(() => createFifacmPack(broken)).toThrow("không hợp lệ");
   });
 });

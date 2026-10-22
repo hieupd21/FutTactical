@@ -1,6 +1,6 @@
 // Dữ liệu nguồn ở data/fifacm; Vite phục vụ và xuất JSON riêng, không gói cầu thủ vào JS.
 import { createFifacmPack, type FifacmDataset, type FifacmPack } from "@/engine/fifacm";
-import { mockData, setMockData } from "@/engine/mockData";
+import { setMockData } from "@/engine/mockData";
 import { FORMS } from "@/engine/constants";
 
 export type PackId = "fifacm";
@@ -29,10 +29,13 @@ export function loadPack(id: PackId): Promise<FifacmPack> {
       fetchDatasetFile<FifacmDataset["nations"]>("nations"),
       fetchDatasetFile<{ snapshotDate: string }>("manifest"),
     ]).then(([players, clubs, leagues, nations, manifest]) => {
-      const dataset = createFifacmPack(
-        { players, clubs, leagues, nations, snapshotDate: manifest.snapshotDate },
-        mockData(),
-      );
+      const dataset = createFifacmPack({
+        players,
+        clubs,
+        leagues,
+        nations,
+        snapshotDate: manifest.snapshotDate,
+      });
       clubs.forEach((club) => {
         if (club.formation && !FORMS[club.formation])
           throw new Error(`Sơ đồ CLB ${club.label} không có trong formations.json.`);

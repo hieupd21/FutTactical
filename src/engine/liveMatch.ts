@@ -31,7 +31,7 @@ export const expectedGoalsRate = (attack: number, defence: number): number =>
 export const MAX_SUBS = 5;
 const BENCH_SIZE = 9;
 const DEFAULT_TACTIC: Tactic = { ment: "bal", press: "mid" };
-export const myTactic = (): Tactic => gameState.tactic ?? DEFAULT_TACTIC;
+const myTactic = (): Tactic => gameState.tactic ?? DEFAULT_TACTIC;
 
 export const MENTALITY_LABEL: Record<Mentality, string> = {
   att: "Tấn công",
@@ -66,7 +66,7 @@ const VAR_CHANCE = 0.04;
 const FATIGUE_PER_TICK = 0.33; // thể lực mất mỗi tick (MF, pressing vừa)
 const AUTO_MINUTES = [58, 66, 74, 82];
 
-export function aiTactic(ownPower: number, opponent: number): Tactic {
+function aiTactic(ownPower: number, opponent: number): Tactic {
   const powerGap = ownPower - opponent;
   return {
     ment: powerGap >= 4 ? "att" : powerGap <= -4 ? "def" : "bal",

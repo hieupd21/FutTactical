@@ -1,38 +1,32 @@
-// Kho dữ liệu mock (tên, quốc tịch, giải đấu, màu CLB) do lib/mockData.ts nạp từ public/data/*.json một lần khi khởi động.
+// Kho tham chiếu (quốc tịch, giải đấu, màu và ảnh CLB) dựng từ data/fifacm bởi createFifacmPack, đặt vào đây khi nạp gói FIFACM.
 // Engine chỉ đọc qua mockData(); không viết bảng dữ liệu trực tiếp trong code.
-import type { League, Line } from "./types";
+import type { League } from "./types";
 
 export type LeagueInfo = Omit<
   League,
   "foreignRatio" | "importNationalities" | "clubs" | "nationality"
 > & {
-  /** Mã giải trong cột league_id của gói cầu thủ */
+  /** ID giải trong dữ liệu FIFACM (cột league_id của DataRow) */
   packId: number;
-  /** Giải chỉ dựng khi gói dữ liệu có CLB của giải đó */
-  isOptional?: boolean;
 };
-export interface CountryInfo {
+interface CountryInfo {
   name: string;
   leagues: LeagueInfo[];
 }
 
 export interface MockData {
-  playerImageUrlBySourceId?: Record<number, string>;
+  playerImageUrlBySourceId: Record<number, string>;
   nationalities: {
     shortNameByCode: Record<string, string>;
     codeByDataName: Record<string, string>;
-    vietnameseNameByDataName: Record<string, string>;
-    positionLine: Record<string, Line>;
   };
   leagues: {
-    /** Giải thật nhóm theo quốc gia (khóa là mã quốc tịch), từ hạng cao xuống thấp */
+    /** Giải nhóm theo quốc gia (khóa là mã quốc tịch), từ mạnh xuống yếu */
     countries: Record<string, CountryInfo>;
-    rivals: [string, string][];
   };
   clubVisuals: {
-    imageUrlByName?: Record<string, string>;
+    imageUrlByName: Record<string, string>;
     colors: Record<string, [string, string]>;
-    shortCodes: Record<string, string>;
   };
 }
 
@@ -43,7 +37,7 @@ export function setMockData(data: MockData | null): void {
 }
 
 export function mockData(): MockData {
-  if (!loaded) throw new Error("Dữ liệu mock chưa được nạp (gọi loadMockData trước).");
+  if (!loaded) throw new Error("Dữ liệu mock chưa được nạp (gọi loadPack trước).");
   return loaded;
 }
 
