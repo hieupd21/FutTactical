@@ -1,0 +1,595 @@
+[
+  {
+    "id": 1,
+    "label": "Denmark Superliga (1)",
+    "imageUrl": "https://www.fifacm.com/content/media/imgs/fc27/leagues/l1.png",
+    "sourceUrl": "https://www.fifacm.com/27/league/1/denmark-superliga-1",
+    "fifaVersion": 27,
+    "gender": {
+      "id": 0,
+      "label": "Male"
+    },
+    "teamIds": [269, 270, 271, 272, 819, 1443, 1446, 1447, 1516, 1786, 1788, 15001],
+    "sourceTeamCount": 12,
+    "listedInCatalogue": true
+  },
+  {
+    "id": 4,
+    "label": "Belgium Pro League (1)",
+    "imageUrl": "https://www.fifacm.com/content/media/imgs/fc27/leagues/l4.png",
+    "sourceUrl": "https://www.fifacm.com/27/league/4/belgium-pro-league-1",
+    "fifaVersion": 27,
+    "gender": {
+      "id": 0,
+      "label": "Male"
+    },
+    "teamIds": [
+      37, 229, 230, 231, 232, 670, 673, 674, 680, 681, 1750, 2014, 15005, 100081, 100087, 110724,
+      110913, 132231
+    ],
+    "sourceTeamCount": 18,
+    "listedInCatalogue": true
+  },
+  {
+    "id": 10,
+    "label": "Holland Eredivisie (1)",
+    "imageUrl": "https://www.fifacm.com/content/media/imgs/fc27/leagues/l10.png",
+    "sourceUrl": "https://www.fifacm.com/27/league/10/holland-eredivisie-1",
+    "fifaVersion": 27,
+    "gender": {
+      "id": 0,
+      "label": "Male"
+    },
+    "teamIds": [
+      245, 246, 247, 634, 647, 650, 1903, 1906, 1907, 1908, 1910, 1913, 1914, 1915, 1971, 100632,
+      100638, 100646
+    ],
+    "sourceTeamCount": 18,
+    "listedInCatalogue": true
+  },
+  {
+    "id": 13,
+    "label": "England Premier League (1)",
+    "imageUrl": "https://www.fifacm.com/content/media/imgs/fc27/leagues/l13.png",
+    "sourceUrl": "https://www.fifacm.com/27/league/13/england-premier-league-1",
+    "fifaVersion": 27,
+    "gender": {
+      "id": 0,
+      "label": "Male"
+    },
+    "teamIds": [
+      1, 2, 5, 7, 8, 9, 10, 11, 13, 14, 18, 94, 106, 144, 1799, 1800, 1808, 1925, 1943, 1952
+    ],
+    "sourceTeamCount": 20,
+    "listedInCatalogue": true
+  },
+  {
+    "id": 14,
+    "label": "England Championship (2)",
+    "imageUrl": "https://www.fifacm.com/content/media/imgs/fc27/leagues/l14.png",
+    "sourceUrl": "https://www.fifacm.com/27/league/14/england-championship-2",
+    "fifaVersion": 27,
+    "gender": {
+      "id": 0,
+      "label": "Male"
+    },
+    "teamIds": [
+      3, 4, 12, 15, 17, 19, 88, 89, 91, 97, 109, 110, 149, 1790, 1792, 1794, 1795, 1796, 1801, 1806,
+      1919, 1947, 1960, 1961
+    ],
+    "sourceTeamCount": 24,
+    "listedInCatalogue": true
+  },
+  {
+    "id": 16,
+    "label": "France Ligue 1 (1)",
+    "imageUrl": "https://www.fifacm.com/content/media/imgs/fc27/leagues/l16.png",
+    "sourceUrl": "https://www.fifacm.com/27/league/16/france-ligue-1-1",
+    "fifaVersion": 27,
+    "gender": {
+      "id": 0,
+      "label": "Male"
+    },
+    "teamIds": [
+      57, 64, 65, 66, 69, 72, 73, 74, 76, 217, 219, 294, 378, 1530, 1738, 1739, 1809, 111817
+    ],
+    "sourceTeamCount": 18,
+    "listedInCatalogue": true
+  },
+  {
+    "id": 17,
+    "label": "France Ligue 2 (2)",
+    "imageUrl": "https://www.fifacm.com/content/media/imgs/fc27/leagues/l17.png",
+    "sourceUrl": "https://www.fifacm.com/27/league/17/france-ligue-2-2",
+    "fifaVersion": 27,
+    "gender": {
+      "id": 0,
+      "label": "Male"
+    },
+    "teamIds": [
+      62, 68, 70, 71, 226, 379, 1805, 1814, 1815, 1819, 1823, 110321, 110569, 111273, 111276,
+      111659, 131447, 132680
+    ],
+    "sourceTeamCount": 18,
+    "listedInCatalogue": true
+  },
+  {
+    "id": 19,
+    "label": "Germany 1. Bundesliga (1)",
+    "imageUrl": "https://www.fifacm.com/content/media/imgs/fc27/leagues/l19.png",
+    "sourceUrl": "https://www.fifacm.com/27/league/19/germany-1.-bundesliga-1",
+    "fifaVersion": 27,
+    "gender": {
+      "id": 0,
+      "label": "Male"
+    },
+    "teamIds": [
+      21, 22, 23, 25, 28, 31, 32, 34, 36, 38, 169, 580, 1824, 1831, 10029, 10030, 100409, 112172
+    ],
+    "sourceTeamCount": 18,
+    "listedInCatalogue": true
+  },
+  {
+    "id": 20,
+    "label": "Germany 2. Bundesliga (2)",
+    "imageUrl": "https://www.fifacm.com/content/media/imgs/fc27/leagues/l20.png",
+    "sourceUrl": "https://www.fifacm.com/27/league/20/germany-2.-bundesliga-2",
+    "fifaVersion": 27,
+    "gender": {
+      "id": 0,
+      "label": "Male"
+    },
+    "teamIds": [
+      29, 159, 160, 162, 165, 166, 171, 175, 485, 487, 503, 576, 1832, 110329, 110500, 110502,
+      110588, 111235
+    ],
+    "sourceTeamCount": 18,
+    "listedInCatalogue": true
+  },
+  {
+    "id": 31,
+    "label": "Italy Serie A (1)",
+    "imageUrl": "https://www.fifacm.com/content/media/imgs/fc27/leagues/l31.png",
+    "sourceUrl": "https://www.fifacm.com/27/league/31/italy-serie-a-1",
+    "fifaVersion": 27,
+    "gender": {
+      "id": 0,
+      "label": "Male"
+    },
+    "teamIds": [
+      45, 48, 50, 52, 54, 55, 189, 205, 347, 1745, 1842, 110374, 110556, 111657, 111811, 111974,
+      115841, 115845, 131681, 131682
+    ],
+    "sourceTeamCount": 20,
+    "listedInCatalogue": true
+  },
+  {
+    "id": 32,
+    "label": "Italy Serie B (2)",
+    "imageUrl": "https://www.fifacm.com/content/media/imgs/fc27/leagues/l32.png",
+    "sourceUrl": "https://www.fifacm.com/27/league/32/italy-serie-b-2",
+    "fifaVersion": 27,
+    "gender": {
+      "id": 0,
+      "label": "Male"
+    },
+    "teamIds": [
+      206, 1744, 1746, 1837, 1843, 1847, 2038, 110738, 110907, 110908, 110912, 110915, 111433,
+      111434, 112026, 112124, 112493, 112494, 112954, 113147
+    ],
+    "sourceTeamCount": 20,
+    "listedInCatalogue": true
+  },
+  {
+    "id": 39,
+    "label": "USA Major League Soccer (1)",
+    "imageUrl": "https://www.fifacm.com/content/media/imgs/fc27/leagues/l39.png",
+    "sourceUrl": "https://www.fifacm.com/27/league/39/usa-major-league-soccer-1",
+    "fifaVersion": 27,
+    "gender": {
+      "id": 0,
+      "label": "Male"
+    },
+    "teamIds": [
+      687, 688, 689, 691, 693, 694, 695, 696, 697, 698, 101112, 111065, 111138, 111139, 111140,
+      111144, 111651, 111928, 112134, 112606, 112828, 112885, 112893, 112996, 113018, 113149,
+      114161, 114162, 114640, 131439
+    ],
+    "sourceTeamCount": 30,
+    "listedInCatalogue": true
+  },
+  {
+    "id": 41,
+    "label": "Norway Eliteserien (1)",
+    "imageUrl": "https://www.fifacm.com/content/media/imgs/fc27/leagues/l41.png",
+    "sourceUrl": "https://www.fifacm.com/27/league/41/norway-eliteserien-1",
+    "fifaVersion": 27,
+    "gender": {
+      "id": 0,
+      "label": "Male"
+    },
+    "teamIds": [
+      298, 299, 300, 417, 418, 918, 919, 920, 1524, 1755, 1756, 1757, 2041, 112199, 113459, 131491
+    ],
+    "sourceTeamCount": 16,
+    "listedInCatalogue": true
+  },
+  {
+    "id": 50,
+    "label": "Scotland Premiership (1)",
+    "imageUrl": "https://www.fifacm.com/content/media/imgs/fc27/leagues/l50.png",
+    "sourceUrl": "https://www.fifacm.com/27/league/50/scotland-premiership-1",
+    "fifaVersion": 27,
+    "gender": {
+      "id": 0,
+      "label": "Male"
+    },
+    "teamIds": [77, 78, 79, 80, 81, 82, 83, 86, 180, 181, 100804, 100805],
+    "sourceTeamCount": 12,
+    "listedInCatalogue": true
+  },
+  {
+    "id": 53,
+    "label": "Spain Primera División (1)",
+    "imageUrl": "https://www.fifacm.com/content/media/imgs/fc27/leagues/l53.png",
+    "sourceUrl": "https://www.fifacm.com/27/league/53/spain-primera-division-1",
+    "fifaVersion": 27,
+    "gender": {
+      "id": 0,
+      "label": "Male"
+    },
+    "teamIds": [
+      240, 241, 242, 243, 448, 449, 450, 452, 456, 457, 461, 463, 468, 479, 480, 481, 483, 573,
+      1853, 1860
+    ],
+    "sourceTeamCount": 20,
+    "listedInCatalogue": true
+  },
+  {
+    "id": 54,
+    "label": "Spain Segunda División (2)",
+    "imageUrl": "https://www.fifacm.com/content/media/imgs/fc27/leagues/l54.png",
+    "sourceUrl": "https://www.fifacm.com/27/league/54/spain-segunda-division-2",
+    "fifaVersion": 27,
+    "gender": {
+      "id": 0,
+      "label": "Male"
+    },
+    "teamIds": [
+      260, 453, 459, 462, 467, 472, 1854, 1861, 1867, 1894, 1968, 10846, 15021, 100852, 100888,
+      110062, 110711, 110716, 110827, 110832, 114554, 131110
+    ],
+    "sourceTeamCount": 22,
+    "listedInCatalogue": true
+  },
+  {
+    "id": 56,
+    "label": "Sweden Allsvenskan (1)",
+    "imageUrl": "https://www.fifacm.com/content/media/imgs/fc27/leagues/l56.png",
+    "sourceUrl": "https://www.fifacm.com/27/league/56/sweden-allsvenskan-1",
+    "fifaVersion": 27,
+    "gender": {
+      "id": 0,
+      "label": "Male"
+    },
+    "teamIds": [
+      319, 320, 321, 433, 700, 706, 708, 710, 711, 1439, 111594, 111705, 112072, 112180, 113458,
+      113892
+    ],
+    "sourceTeamCount": 16,
+    "listedInCatalogue": true
+  },
+  {
+    "id": 60,
+    "label": "England League One (3)",
+    "imageUrl": "https://www.fifacm.com/content/media/imgs/fc27/leagues/l60.png",
+    "sourceUrl": "https://www.fifacm.com/27/league/60/england-league-one-3",
+    "fifaVersion": 27,
+    "gender": {
+      "id": 0,
+      "label": "Male"
+    },
+    "teamIds": [
+      95, 142, 361, 1793, 1798, 1804, 1807, 1917, 1923, 1926, 1929, 1931, 1932, 1933, 1937, 1938,
+      1939, 1940, 1944, 1951, 1958, 15015, 112259, 112764
+    ],
+    "sourceTeamCount": 24,
+    "listedInCatalogue": true
+  },
+  {
+    "id": 61,
+    "label": "England League Two (4)",
+    "imageUrl": "https://www.fifacm.com/content/media/imgs/fc27/leagues/l61.png",
+    "sourceUrl": "https://www.fifacm.com/27/league/61/england-league-two-4",
+    "fifaVersion": 27,
+    "gender": {
+      "id": 0,
+      "label": "Male"
+    },
+    "teamIds": [
+      92, 121, 127, 135, 143, 1797, 1802, 1803, 1920, 1924, 1928, 1930, 1934, 1935, 1936, 1948,
+      1955, 1962, 15048, 110313, 110890, 112254, 112260, 113926
+    ],
+    "sourceTeamCount": 24,
+    "listedInCatalogue": true
+  },
+  {
+    "id": 65,
+    "label": "Rep. Ireland Premier Division (1)",
+    "imageUrl": "https://www.fifacm.com/content/media/imgs/fc27/leagues/l65.png",
+    "sourceUrl": "https://www.fifacm.com/27/league/65/rep.-ireland-premier-division-1",
+    "fifaVersion": 27,
+    "gender": {
+      "id": 0,
+      "label": "Male"
+    },
+    "teamIds": [305, 306, 423, 445, 563, 753, 834, 837, 1571, 1572],
+    "sourceTeamCount": 10,
+    "listedInCatalogue": true
+  },
+  {
+    "id": 66,
+    "label": "Poland Ekstraklasa (1)",
+    "imageUrl": "https://www.fifacm.com/content/media/imgs/fc27/leagues/l66.png",
+    "sourceUrl": "https://www.fifacm.com/27/league/66/poland-ekstraklasa-1",
+    "fifaVersion": 27,
+    "gender": {
+      "id": 0,
+      "label": "Male"
+    },
+    "teamIds": [
+      301, 420, 873, 1569, 1871, 1873, 110206, 110745, 110746, 110747, 110749, 111083, 111086,
+      111088, 111092, 111097, 114326, 131464
+    ],
+    "sourceTeamCount": 18,
+    "listedInCatalogue": true
+  },
+  {
+    "id": 68,
+    "label": "Turkey Süper Lig (1)",
+    "imageUrl": "https://www.fifacm.com/content/media/imgs/fc27/leagues/l68.png",
+    "sourceUrl": "https://www.fifacm.com/27/league/68/turkey-super-lig-1",
+    "fifaVersion": 27,
+    "gender": {
+      "id": 0,
+      "label": "Male"
+    },
+    "teamIds": [
+      325, 326, 327, 436, 748, 749, 101014, 101025, 101026, 101032, 101033, 101037, 110776, 111339,
+      113142, 131174, 132392, 132868
+    ],
+    "sourceTeamCount": 18,
+    "listedInCatalogue": true
+  },
+  {
+    "id": 80,
+    "label": "Austria Bundesliga (1)",
+    "imageUrl": "https://www.fifacm.com/content/media/imgs/fc27/leagues/l80.png",
+    "sourceUrl": "https://www.fifacm.com/27/league/80/austria-bundesliga-1",
+    "fifaVersion": 27,
+    "gender": {
+      "id": 0,
+      "label": "Male"
+    },
+    "teamIds": [191, 209, 252, 254, 256, 780, 781, 2017, 15009, 15040, 111822, 113616],
+    "sourceTeamCount": 12,
+    "listedInCatalogue": true
+  },
+  {
+    "id": 83,
+    "label": "Korea K League 1 (1)",
+    "imageUrl": "https://www.fifacm.com/content/media/imgs/fc27/leagues/l83.png",
+    "sourceUrl": "https://www.fifacm.com/27/league/83/korea-k-league-1-1",
+    "fifaVersion": 27,
+    "gender": {
+      "id": 0,
+      "label": "Male"
+    },
+    "teamIds": [980, 982, 1473, 1474, 1477, 1478, 2055, 110765, 112115, 112258, 112554, 112555],
+    "sourceTeamCount": 12,
+    "listedInCatalogue": true
+  },
+  {
+    "id": 189,
+    "label": "Switzerland Super League (1)",
+    "imageUrl": "https://www.fifacm.com/content/media/imgs/fc27/leagues/l189.png",
+    "sourceUrl": "https://www.fifacm.com/27/league/189/switzerland-super-league-1",
+    "fifaVersion": 27,
+    "gender": {
+      "id": 0,
+      "label": "Male"
+    },
+    "teamIds": [286, 322, 324, 894, 896, 897, 898, 900, 1715, 1862, 10032, 110770],
+    "sourceTeamCount": 12,
+    "listedInCatalogue": true
+  },
+  {
+    "id": 308,
+    "label": "Portugal Primeira Liga (1)",
+    "imageUrl": "https://www.fifacm.com/content/media/imgs/fc27/leagues/l308.png",
+    "sourceUrl": "https://www.fifacm.com/27/league/308/portugal-primeira-liga-1",
+    "fifaVersion": 27,
+    "gender": {
+      "id": 0,
+      "label": "Male"
+    },
+    "teamIds": [
+      234, 236, 237, 717, 718, 744, 1438, 1887, 1888, 1891, 1893, 1896, 1900, 10020, 112513, 112587,
+      112809, 114510
+    ],
+    "sourceTeamCount": 18,
+    "listedInCatalogue": true
+  },
+  {
+    "id": 330,
+    "label": "Romania Liga I (1)",
+    "imageUrl": "https://www.fifacm.com/content/media/imgs/fc27/leagues/l330.png",
+    "sourceUrl": "https://www.fifacm.com/27/league/330/romania-liga-i-1",
+    "fifaVersion": 27,
+    "gender": {
+      "id": 0,
+      "label": "Male"
+    },
+    "teamIds": [
+      308, 310, 100757, 100759, 100761, 110072, 110075, 110078, 110750, 110751, 110752, 113182,
+      113378, 113449, 114385, 114546
+    ],
+    "sourceTeamCount": 16,
+    "listedInCatalogue": true
+  },
+  {
+    "id": 341,
+    "label": "Mexico Liga MX (1)",
+    "imageUrl": "https://www.fifacm.com/content/media/imgs/fc27/leagues/l341.png",
+    "sourceUrl": "https://www.fifacm.com/27/league/341/mexico-liga-mx-1",
+    "fifaVersion": 27,
+    "gender": {
+      "id": 0,
+      "label": "Male"
+    },
+    "teamIds": [
+      1032, 1878, 1879, 1880, 1881, 1882, 1970, 101114, 101116, 101121, 110144, 110147, 110150,
+      110152, 110781, 111678, 112678, 113134
+    ],
+    "sourceTeamCount": 18,
+    "listedInCatalogue": true
+  },
+  {
+    "id": 350,
+    "label": "Saudi Pro League (1)",
+    "imageUrl": "https://www.fifacm.com/content/media/imgs/fc27/leagues/l350.png",
+    "sourceUrl": "https://www.fifacm.com/27/league/350/saudi-pro-league-1",
+    "fifaVersion": 27,
+    "gender": {
+      "id": 0,
+      "label": "Male"
+    },
+    "teamIds": [
+      605, 607, 111674, 112096, 112139, 112387, 112389, 112390, 112391, 112393, 112883, 113037,
+      113057, 113058, 113222, 113224, 131735, 131798
+    ],
+    "sourceTeamCount": 18,
+    "listedInCatalogue": true
+  },
+  {
+    "id": 351,
+    "label": "Australia A-League (1)",
+    "imageUrl": "https://www.fifacm.com/content/media/imgs/fc27/leagues/l351.png",
+    "sourceUrl": "https://www.fifacm.com/27/league/351/australia-a-league-1",
+    "fifaVersion": 27,
+    "gender": {
+      "id": 0,
+      "label": "Male"
+    },
+    "teamIds": [
+      111393, 111395, 111396, 111397, 111398, 111399, 111400, 111766, 112224, 112427, 114604, 131739
+    ],
+    "sourceTeamCount": 12,
+    "listedInCatalogue": true
+  },
+  {
+    "id": 353,
+    "label": "Argentina Primera División (1)",
+    "imageUrl": "https://www.fifacm.com/content/media/imgs/fc27/leagues/l353.png",
+    "sourceUrl": "https://www.fifacm.com/27/league/353/argentina-primera-division-1",
+    "fifaVersion": 27,
+    "gender": {
+      "id": 0,
+      "label": "Male"
+    },
+    "teamIds": [
+      1013, 1876, 1877, 101083, 101084, 101085, 101088, 110093, 110395, 110396, 110404, 110580,
+      110953, 111019, 111020, 111022, 111707, 111708, 111710, 111711, 111715, 111716, 112670,
+      112689, 112713, 112965, 113044, 113050, 115470, 115472
+    ],
+    "sourceTeamCount": 30,
+    "listedInCatalogue": true
+  },
+  {
+    "id": 1003,
+    "label": "CONMEBOL Libertadores",
+    "imageUrl": "https://www.fifacm.com/content/media/imgs/fc27/leagues/l1003.png",
+    "sourceUrl": "https://www.fifacm.com/27/league/1003/conmebol-libertadores",
+    "fifaVersion": 27,
+    "gender": {
+      "id": 0,
+      "label": "Male"
+    },
+    "teamIds": [
+      383, 567, 568, 1041, 1043, 101101, 101103, 101104, 101110, 110968, 110975, 110981, 110986,
+      111008, 111013, 111014, 111325, 111722, 111975, 112659, 112705, 112716, 112853, 112908,
+      114577, 115693
+    ],
+    "sourceTeamCount": 26,
+    "listedInCatalogue": true
+  },
+  {
+    "id": 1014,
+    "label": "CONMEBOL Sudamericana",
+    "imageUrl": "https://www.fifacm.com/content/media/imgs/fc27/leagues/l1014.png",
+    "sourceUrl": "https://www.fifacm.com/27/league/1014/conmebol-sudamericana",
+    "fifaVersion": 27,
+    "gender": {
+      "id": 0,
+      "label": "Male"
+    },
+    "teamIds": [
+      517, 569, 598, 1035, 1053, 1629, 101097, 101099, 101105, 101108, 110967, 110982, 110989,
+      110991, 111011, 111012, 111328, 112112, 112116, 112472, 112868, 113143, 114578, 114611,
+      115517, 131826
+    ],
+    "sourceTeamCount": 26,
+    "listedInCatalogue": true
+  },
+  {
+    "id": 2012,
+    "label": "China Super League (1)",
+    "imageUrl": "https://www.fifacm.com/content/media/imgs/fc27/leagues/l2012.png",
+    "sourceUrl": "https://www.fifacm.com/27/league/2012/china-super-league-1",
+    "fifaVersion": 27,
+    "gender": {
+      "id": 0,
+      "label": "Male"
+    },
+    "teamIds": [
+      110955, 111724, 111768, 111774, 111779, 112163, 112540, 116360, 116361, 131173, 131487,
+      131488, 131531, 132139, 132305, 132784
+    ],
+    "sourceTeamCount": 16,
+    "listedInCatalogue": true
+  },
+  {
+    "id": 2076,
+    "label": "Germany 3. Liga (3)",
+    "imageUrl": "https://www.fifacm.com/content/media/imgs/fc27/leagues/l2076.png",
+    "sourceUrl": "https://www.fifacm.com/27/league/2076/germany-3.-liga-3",
+    "fifaVersion": 27,
+    "gender": {
+      "id": 0,
+      "label": "Male"
+    },
+    "teamIds": [
+      27, 492, 523, 526, 531, 543, 1825, 1826, 110169, 110197, 110501, 110532, 110597, 110636,
+      110645, 110678, 110685, 110697, 111239, 111379
+    ],
+    "sourceTeamCount": 20,
+    "listedInCatalogue": true
+  },
+  {
+    "id": 2149,
+    "label": "Indian Super League (1)",
+    "imageUrl": "https://www.fifacm.com/content/media/imgs/fc27/leagues/l2149.png",
+    "sourceUrl": "https://www.fifacm.com/27/league/2149/indian-super-league-1",
+    "fifaVersion": 27,
+    "gender": {
+      "id": 0,
+      "label": "Male"
+    },
+    "teamIds": [
+      113040, 113146, 113257, 113297, 113298, 113299, 113300, 113301, 113302, 114168, 115202,
+      131461, 132681
+    ],
+    "sourceTeamCount": 13,
+    "listedInCatalogue": true
+  }
+]

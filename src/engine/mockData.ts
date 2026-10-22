@@ -17,6 +17,7 @@ export interface CountryInfo {
 }
 
 export interface MockData {
+  playerImageUrlBySourceId?: Record<number, string>;
   nationalities: {
     shortNameByCode: Record<string, string>;
     codeByDataName: Record<string, string>;
@@ -29,6 +30,7 @@ export interface MockData {
     rivals: [string, string][];
   };
   clubVisuals: {
+    imageUrlByName?: Record<string, string>;
     colors: Record<string, [string, string]>;
     shortCodes: Record<string, string>;
   };

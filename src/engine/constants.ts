@@ -1,4 +1,5 @@
 import type { Formation, Line, Philosophy, ProfileKey, Role, Tone } from "./types";
+import formations from "../../data/fifacm/formations.json";
 
 export const PHILOSOPHY_LABEL: Record<Philosophy, string> = {
   young: "Ưu tiên trẻ",
@@ -6,13 +7,16 @@ export const PHILOSOPHY_LABEL: Record<Philosophy, string> = {
   bargain: "Săn hời",
   bal: "Cân bằng",
 };
-export const FORMS: Record<Formation, [number, number, number]> = {
-  "4-4-2": [4, 4, 2],
-  "4-3-3": [4, 3, 3],
-  "4-2-3-1": [4, 5, 1],
-  "3-5-2": [3, 5, 2],
-  "5-3-2": [5, 3, 2],
-};
+export const FORMS = Object.fromEntries(
+  formations.map(({ id, lines }) => [
+    id,
+    [
+      lines[0],
+      lines.slice(1, -1).reduce((total, count) => total + count, 0),
+      lines[lines.length - 1],
+    ],
+  ]),
+) as Record<Formation, [number, number, number]>;
 export const POSITION_NAMES: Record<Line, string> = {
   GK: "Thủ môn",
   DF: "Hậu vệ",

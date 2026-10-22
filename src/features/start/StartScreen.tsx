@@ -4,7 +4,8 @@ import { useEffect, useMemo, useState } from "react";
 import { ChevronDown, ChevronLeft, ChevronRight, Lock } from "lucide-react";
 import { NEWBIE_REPUTATION, strengthRequirement } from "@/engine/career";
 
-import type { DataRow, Line } from "@/engine/types";
+import type { Line } from "@/engine/types";
+import type { FifacmPack } from "@/engine/fifacm";
 import { packClubLineStrengths, packClubs } from "@/engine/world";
 import { ClubBadge } from "@/components/ClubBadge";
 import { Sheet } from "@/components/Sheet";
@@ -99,7 +100,8 @@ function PickerRow({
 }
 
 export function StartScreen() {
-  const [rows, setRows] = useState<DataRow[] | null>(null);
+  const [dataset, setDataset] = useState<FifacmPack | null>(null);
+  const rows = dataset?.rows ?? null;
   const [error, setError] = useState<string | null>(null);
   const [pickedCountryCode, setPickedCountryCode] = useState("");
   const [pickedLeagueId, setPickedLeagueId] = useState("");
@@ -109,8 +111,8 @@ export function StartScreen() {
   const { startReal } = useGame();
 
   useEffect(() => {
-    loadPack("fc27")
-      .then(setRows)
+    loadPack("fifacm")
+      .then(setDataset)
       .catch((loadError: Error) => setError(loadError.message));
   }, []);
 
@@ -139,7 +141,7 @@ export function StartScreen() {
 
   const clubs = useMemo<ClubChoice[]>(() => {
     if (!rows) return [];
-    const leagueClubs = packClubs(rows)
+    const leagueClubs = packClubs(rows, dataset ?? undefined)
       .filter((packClub) => findLeagueByPackId(packClub.leagueId)?.id === selectedLeague.id)
       .sort((packClubA, packClubB) => packClubB.strength - packClubA.strength);
     return leagueClubs.map((packClub, rankIndex) => {
@@ -153,7 +155,7 @@ export function StartScreen() {
         tierLabel: getTierLabel(rankIndex, leagueClubs.length),
       };
     });
-  }, [rows, selectedLeague.id, isRookie]);
+  }, [rows, dataset, selectedLeague.id, isRookie]);
 
   // Đổi hạng đấu thì tên đã chọn không còn trong danh sách: tự rơi về đội mạnh nhất chọn được
   const selectedClub =
@@ -179,9 +181,10 @@ export function StartScreen() {
 
   const canConfirm = Boolean(rows && selectedClub && !selectedClub.isLocked);
   const confirm = () => {
-    if (!rows || !selectedClub || !canConfirm) return;
-    startReal(rows, selectedLeague.id, selectedClub.name, PACKS.fc27.sourceNote, {
+    if (!rows || !dataset || !selectedClub || !canConfirm) return;
+    startReal(rows, selectedLeague.id, selectedClub.name, PACKS.fifacm.sourceNote, {
       rookie: isRookie,
+      dataset,
     });
   };
 
@@ -205,7 +208,7 @@ export function StartScreen() {
             ? "Bạn còn vô danh nên chỉ được các đội hạng dưới giao ghế. Đạt thành tích để tăng uy tín, CLB lớn hơn sẽ gửi lời mời cuối mùa."
             : "Chọn thẳng bất kỳ CLB nào, kể cả đội mạnh nhất. Uy tín khởi đầu tương xứng với CLB đã chọn."}
         </p>
-        <p className="hint">{PACKS.fc27.note}</p>
+        <p className="hint">{PACKS.fifacm.note}</p>
       </div>
 
       {error && <p className="err mt-3">{error}</p>}

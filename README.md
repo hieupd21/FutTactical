@@ -1,6 +1,6 @@
 # Sân Cỏ Career
 
-Game quản lý bóng đá kiểu Career Mode của FC: trận đấu chạy từng phút (tạm dừng, thay người, đổi chiến thuật), chuyển nhượng, đàm phán hợp đồng. Dữ liệu cầu thủ thật theo FC 27/FC 26. Đây là bản dùng riêng, chưa phát hành công khai.
+Game quản lý bóng đá kiểu Career Mode của FC: trận đấu chạy từng phút (tạm dừng, thay người, đổi chiến thuật), chuyển nhượng, đàm phán hợp đồng. Sự nghiệp mới dùng bộ bóng đá nam FC27 từ FIFACM, snapshot 06/10/2026. Đây là bản dùng riêng, chưa phát hành công khai.
 
 ## Chạy dự án
 
@@ -23,7 +23,9 @@ Dự án dùng React 19, TypeScript (strict), Vite 5, Tailwind CSS 4, shadcn/ui 
 Thư mục được chia theo tính năng, theo hướng dẫn của tài liệu React ("Build a React app from scratch") và bulletproof-react.
 
 ```
-public/data/            Gói dữ liệu cầu thủ (fc27.json, gồm cả giải nguồn bổ sung từ FC 26), tải bằng fetch khi chọn
+data/fifacm/            Nguồn cầu thủ, CLB, giải, quốc tịch, đội tuyển và sơ đồ
+public/data/            Cấu hình cân bằng giải, bản dịch quốc tịch, màu CLB; các gói cầu thủ cũ được giữ để lưu trữ
+plugins/fifacmData.ts   Phục vụ nguồn JSON khi dev và xuất vào dist/data/fifacm khi build
 src/
   app/                  Ghép ứng dụng: App (khung, chuyển tab), AnimatedTabs, SheetHost (bảng trượt)
   engine/               Logic game thuần TypeScript, không phụ thuộc React
@@ -37,6 +39,7 @@ src/
     transfers.ts        Thăm dò, đàm phán CLB, hợp đồng, bán, mượn, GĐTT, AI ↔ AI
     season.ts           Tua ngày/giờ, Deadline Day, phát triển tháng, sang mùa
     board.ts            Mục tiêu và niềm tin của ban lãnh đạo
+    fifacm.ts           Đọc quan hệ ID và chuyển dữ liệu FIFACM sang định dạng engine
     world.ts            Khởi tạo thế giới từ dữ liệu thật
     actions.ts          Thao tác nhỏ của người chơi cho UI gọi
     *.test.ts           Kiểm thử: chạy trọn mùa, thương vụ mua
@@ -54,14 +57,13 @@ src/
 
 ## Dữ liệu cầu thủ
 
-Dữ liệu là các file JSON dựng sẵn trong `public/data/`, cùng định dạng `DataRow` (xem `CLAUDE.md`):
+Nguồn chuẩn nằm trong `data/fifacm/`: **18.763 cầu thủ nam, 663 CLB, 36 nhóm giải, 169 quốc tịch và 22 sơ đồ**. Các file này được phục vụ tại `data/fifacm/*.json` và xuất nguyên bản vào bản build; không cần sao chép sang public thủ công. Danh mục đội tuyển cũng được xuất để dùng cho tính năng sau này; hiện game quản lý CLB.
 
-- `fc27.json`: các giải mô phỏng, giải nguồn và cầu thủ tự do.
-- `nationalities.json`: tên quốc tịch, ánh xạ mã quốc tịch và vị trí.
-- `leagues.json`: giải thật theo mã sofifa, giải tùy chọn, cặp kình địch.
-- `club_visuals.json`: màu áo và mã viết tắt CLB.
+`src/lib/data.ts` tải nguồn khi tạo sự nghiệp. `src/engine/fifacm.ts` nối `players.clubId` → `clubs.id`, `clubs.leagueIds` → `leagues.id`, `players.nationality.id` → `nations.id`, rồi tạo `DataRow` trong bộ nhớ cho engine. Cầu thủ và CLB giữ `sourceId`; không ghép dữ liệu cầu thủ FC26 vào nguồn mới. Cầu thủ tự do có `club: null` và `contract: null`.
 
-Tất cả nạp một lần khi khởi động bởi `src/lib/mockData.ts` vào `src/engine/mockData.ts`; engine đọc qua `mockData()`.
+Lương, giá trị, hợp đồng và điều khoản giải phóng lấy từ nguồn; tiền được đổi từ € sang nghìn €. Khởi tạo không thêm cầu thủ giả vào đội hình FIFACM. Formation và đội hình của CLB người chơi lấy theo nguồn; `engine/constants.ts` đọc 22 sơ đồ từ `formations.json` và gộp các tuyến tiền vệ cho engine GK/DF/MF/FW. Ngân sách 0 ở nguồn chưa xác minh nên game tiếp tục dùng công thức ngân sách sự nghiệp và trần lương hiện có; `worthEur` không được dùng làm tiền chuyển nhượng.
+
+Các cấu hình trong `public/data/nationalities.json`, `leagues.json`, `club_visuals.json` tiếp tục cung cấp bản dịch, độ mạnh giải, phạm vi mô phỏng, kình địch và màu huy hiệu. Các giải đã cấu hình được mô phỏng như trước; các giải mới ngoài phạm vi đó cung cấp CLB/cầu thủ cho thị trường. Bản lưu cũ tiếp tục dùng thế giới đã lưu; tạo sự nghiệp mới để dùng FIFACM.
 
 ## Hình ảnh
 
