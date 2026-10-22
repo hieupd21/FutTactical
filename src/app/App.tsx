@@ -2,7 +2,6 @@ import { useEffect } from "react";
 import { BottomNav, Header, TABS } from "@/components/AppChrome";
 import { Toaster } from "@/components/shadcn/sonner";
 import { StartScreen } from "@/features/start/StartScreen";
-import { useImages } from "@/lib/images";
 import { useGame } from "@/stores/gameStore";
 import { useUi } from "@/stores/uiStore";
 import { AnimatedTabs } from "./AnimatedTabs";
@@ -17,7 +16,6 @@ export function App() {
   useBackNavigation();
   useEffect(() => {
     void useGame.getState().boot();
-    void useImages.getState().load();
   }, []);
   useEffect(() => {
     if (status === "ready") prefetchPages();

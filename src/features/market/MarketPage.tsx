@@ -28,7 +28,7 @@ function AgentLetters() {
   const list = agentLetters();
   if (!list.length) return null;
   return (
-    <Card className="panel min-w-0 gap-0 rounded-xl border-[var(--accent)] p-4 shadow-none">
+    <Card className="panel min-w-0 gap-0 rounded-xl border-(--accent) p-4 shadow-none">
       <h2>Thư từ người đại diện ({list.length})</h2>
       <p className="hint">
         Các cầu thủ này sẵn sàng ngồi xuống nói chuyện với bạn. Mở hồ sơ rồi bấm "Thăm dò" để bắt
@@ -114,7 +114,7 @@ function NegoList() {
                 <Progress
                   value={negotiation.tension}
                   aria-label={"Căng thẳng " + Math.round(negotiation.tension) + "/100"}
-                  className="mini col-span-full h-[5px] bg-border"
+                  className="mini col-span-full h-1.25 bg-border"
                   indicatorClassName="bg-[linear-gradient(90deg,var(--win),var(--gold),var(--loss))]"
                 />
               )}

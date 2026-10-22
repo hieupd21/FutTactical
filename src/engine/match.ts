@@ -81,7 +81,7 @@ export function simMatch(homeId: string, awayId: string): MatchSim {
 }
 
 /** Cập nhật phong độ, thể lực, tinh thần sau trận */
-export function applyMatch(matchSim: MatchSim): void {
+function applyMatch(matchSim: MatchSim): void {
   (
     [
       [matchSim.homeLineup, matchSim.homeGoals - matchSim.awayGoals, matchSim.homeId, 0],

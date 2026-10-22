@@ -10,16 +10,16 @@ const buttonVariants = cva(
       variant: {
         default: "border-foreground bg-foreground text-background",
         ghost: "border-foreground bg-transparent text-foreground",
-        hot: "border-[var(--accent)] bg-[var(--accent)] text-[var(--on-fill)]",
-        onInk: "border-[color-mix(in_srgb,var(--bg)_50%,transparent)] bg-transparent text-[var(--bg)]",
-        onAccent: "border-[var(--on-fill)] bg-[var(--on-fill)] text-[var(--accent)]",
-        destructive: "border-destructive bg-destructive text-[var(--on-fill)]",
+        hot: "border-(--accent) bg-(--accent) text-(--on-fill)",
+        onInk: "border-[color-mix(in_srgb,var(--bg)_50%,transparent)] bg-transparent text-(--bg)",
+        onAccent: "border-(--on-fill) bg-(--on-fill) text-(--accent)",
+        destructive: "border-destructive bg-destructive text-(--on-fill)",
         link: "border-transparent bg-transparent text-foreground normal-case underline underline-offset-4",
       },
       size: {
-        default: "min-h-[46px] px-[18px] py-[9px] text-[17px]",
+        default: "min-h-11.5 px-4.5 py-2.25 text-[17px]",
         sm: "min-h-11 px-3 py-1.5 text-[14px]",
-        icon: "size-[46px] p-0",
+        icon: "size-11.5 p-0",
       },
     },
     defaultVariants: {

@@ -22,7 +22,7 @@ function StatRow({
         <b className="mono">{formatValue(awayValue)}</b>
       </div>
       <div className="flex h-1.5 overflow-hidden rounded-full bg-secondary" aria-hidden>
-        <i className="block h-full bg-[var(--accent)]" style={{ width: `${awayPower}%` }} />
+        <i className="block h-full bg-(--accent)" style={{ width: `${awayPower}%` }} />
       </div>
     </div>
   );

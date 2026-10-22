@@ -2,7 +2,7 @@ import { COMMON_PROFILES } from "./constants";
 import { mockData } from "./mockData";
 import { getClub, getLeague, gameState } from "./state";
 import type { Line, Player } from "./types";
-import { clamp, pickRandom, roundToTen, randomInt, randomBetween } from "./util";
+import { pickRandom, roundToTen, randomInt, randomBetween } from "./util";
 
 // Cầu thủ do game tạo thêm (học viện, bù đội hình) lấy tên ghép từ cầu thủ thật cùng quốc tịch trong dữ liệu.
 let namePool: { state: unknown; byNationality: Record<string, Player[]>; all: Player[] } | null =
@@ -16,7 +16,7 @@ function realNamePool() {
   }
   return namePool;
 }
-export function genName(nationality: string): string {
+function genName(nationality: string): string {
   const { byNationality, all } = realNamePool();
   const pool = byNationality[nationality]?.length ? byNationality[nationality] : all;
   if (!pool.length) return "Cầu thủ trẻ";
@@ -31,7 +31,7 @@ export const natName = (player: Player): string =>
   player.nationality;
 export const ovrRange = (player: Player): number => Math.round(player.ovr);
 
-export function moraleAdj(morale: number): number {
+function moraleAdj(morale: number): number {
   return morale >= 80 ? 2 : morale >= 60 ? 1 : morale >= 40 ? 0 : morale >= 20 ? -2 : -4;
 }
 /** Chỉ số động: chỉ số gốc ± phong độ, tinh thần, thể lực */
@@ -139,5 +139,3 @@ export function makePlayer(
   gameState.players[id] = player;
   return player;
 }
-
-export const clampStat = (value: number): number => clamp(value, 0, 100);

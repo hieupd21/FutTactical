@@ -24,7 +24,6 @@ Thư mục được chia theo tính năng, theo hướng dẫn của tài liệu
 
 ```
 data/fifacm/            Nguồn cầu thủ, CLB, giải, quốc tịch, đội tuyển và sơ đồ
-public/data/            Cấu hình cân bằng giải, bản dịch quốc tịch, màu CLB; các gói cầu thủ cũ được giữ để lưu trữ
 plugins/fifacmData.ts   Phục vụ nguồn JSON khi dev và xuất vào dist/data/fifacm khi build
 src/
   app/                  Ghép ứng dụng: App (khung, chuyển tab), AnimatedTabs, SheetHost (bảng trượt)
@@ -63,8 +62,8 @@ Nguồn chuẩn nằm trong `data/fifacm/`: **18.763 cầu thủ nam, 663 CLB, 3
 
 Lương, giá trị, hợp đồng và điều khoản giải phóng lấy từ nguồn; tiền được đổi từ € sang nghìn €. Khởi tạo không thêm cầu thủ giả vào đội hình FIFACM. Formation và đội hình của CLB người chơi lấy theo nguồn; `engine/constants.ts` đọc 22 sơ đồ từ `formations.json` và gộp các tuyến tiền vệ cho engine GK/DF/MF/FW. Ngân sách 0 ở nguồn chưa xác minh nên game tiếp tục dùng công thức ngân sách sự nghiệp và trần lương hiện có; `worthEur` không được dùng làm tiền chuyển nhượng.
 
-Các cấu hình trong `public/data/nationalities.json`, `leagues.json`, `club_visuals.json` tiếp tục cung cấp bản dịch, độ mạnh giải, phạm vi mô phỏng, kình địch và màu huy hiệu. Các giải đã cấu hình được mô phỏng như trước; các giải mới ngoài phạm vi đó cung cấp CLB/cầu thủ cho thị trường. Bản lưu cũ tiếp tục dùng thế giới đã lưu; tạo sự nghiệp mới để dùng FIFACM.
+Giải, quốc tịch, độ mạnh giải, màu CLB đều được suy ra từ `data/fifacm`. mọi hạng đấu của 5 quốc gia có giải hạng 1 mạnh nhất được mô phỏng, các giải còn lại cung cấp CLB/cầu thủ cho thị trường. Bản lưu cũ tiếp tục dùng thế giới đã lưu; tạo sự nghiệp mới để dùng FIFACM.
 
 ## Hình ảnh
 
-Game không kèm logo hay ảnh thật. Huy hiệu được vẽ bằng SVG theo màu áo, ảnh cầu thủ là hình cách điệu. Người chơi có thể tự thêm ảnh trong tab CLB, kể cả nhập hàng loạt: tên file phải trùng tên cầu thủ hoặc tên CLB. Ảnh chỉ lưu trong trình duyệt.
+Tên cầu thủ, CLB, giải và ảnh (chân dung, logo) lấy nguyên từ dữ liệu FIFACM trong `data/fifacm/`; game không cho đổi tên hay tự thêm ảnh. Khi ảnh nguồn không tải được, game dùng huy hiệu SVG theo màu áo và chân dung cách điệu.

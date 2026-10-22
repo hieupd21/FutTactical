@@ -67,11 +67,6 @@ export function makeFixtures(clubIds: string[]): [string, string][][] {
     ),
   );
 }
-export const leagueIndex = (club: Club): number =>
-  Object.values(gameState.clubs)
-    .filter((otherClub) => otherClub.leagueId === club.leagueId)
-    .findIndex((otherClub) => otherClub.id === club.id);
-
 function assignRoles(clubId: string, bumpStars = false): void {
   clubPlayers(clubId)
     .sort((playerA, playerB) => playerB.ovr - playerA.ovr)
@@ -151,11 +146,10 @@ const LINE_SAMPLE_SIZE: Record<Line, number> = { GK: 1, DF: 4, MF: 4, FW: 3 };
 
 /** Sức mạnh từng nhóm vị trí của CLB: trung bình ovr các cầu thủ mạnh nhất, xếp theo vị trí chính (cột đầu của dòng dữ liệu) */
 export function packClubLineStrengths(packClub: PackClub): Record<Line, number> {
-  const { positionLine } = mockData().nationalities;
   const ovrsByLine: Record<Line, number[]> = { GK: [], DF: [], MF: [], FW: [] };
   packClub.rows.forEach((dataRow) => {
     const mainPosition = String(dataRow[4]).split(",")[0].trim();
-    ovrsByLine[(positionLine[mainPosition] || "MF") as Line].push(dataRow[5]);
+    ovrsByLine[fifacmPositionLine(mainPosition)].push(dataRow[5]);
   });
   const averageOf = (line: Line): number => {
     const topOvrs = ovrsByLine[line]
@@ -185,12 +179,9 @@ export function newGameReal(
   if (dataset) setMockData(dataset.references);
   const version = rows[0][13] || 26,
     year = 2000 + version - 1;
-  const present = new Set(packClubs(rows, dataset).map((packClub) => packClub.leagueId));
-  const realMeta = allLeagueInfos().filter(
-    (league) => !league.isOptional || present.has(league.packId),
-  );
+  const realMeta = allLeagueInfos();
   const meta: League[] = [
-    ...realMeta.map(({ packId: _packId, isOptional: _isOptional, ...realLeague }) => ({
+    ...realMeta.map(({ packId: _packId, ...realLeague }) => ({
       ...realLeague,
       foreignRatio: 0,
       importNationalities: [],
@@ -220,11 +211,7 @@ export function newGameReal(
       .map((positionToken) => positionToken.trim())
       .filter(Boolean);
     const lines = [
-      ...new Set(
-        positionTokens.map(
-          (positionToken) => mockData().nationalities.positionLine[positionToken] || "MF",
-        ),
-      ),
+      ...new Set(positionTokens.map((positionToken) => fifacmPositionLine(positionToken))),
     ] as Line[];
     if (!lines.length) lines.push("MF");
     const sourcePlayer = dataset?.playerByRow.get(dataRow);
@@ -237,8 +224,7 @@ export function newGameReal(
       name: dataRow[2],
       longName: dataRow[3] || dataRow[2],
       nationality: mockData().nationalities.codeByDataName[dataRow[12]] || "XX",
-      nationalityName:
-        mockData().nationalities.vietnameseNameByDataName[dataRow[12]] || dataRow[12],
+      nationalityName: dataRow[12],
       pos: lines[0],
       secondaryPositions: lines.slice(1),
       positionDetail: positionTokens.join(", "),
@@ -328,7 +314,7 @@ export function newGameReal(
     };
     gameState.clubs[id] = club;
     byName[packClub.name] = id;
-    packClub.rows.forEach((dataRow) => addRow(dataRow, id, packClub.name, realLeague.id === "ES"));
+    packClub.rows.forEach((dataRow) => addRow(dataRow, id, packClub.name, true));
     if (sourceClub) {
       assignRoles(id);
       return;
@@ -365,12 +351,6 @@ export function newGameReal(
     .forEach((line) =>
       news(`Hè ${year}: ${line[1]} (${line[0]}) chuyển từ ${line[2]} sang ${line[3]}.`, "transfer"),
     );
-  mockData().leagues.rivals.forEach(([clubNameA, clubNameB]) => {
-    if (byName[clubNameA] && byName[clubNameB]) {
-      getClub(byName[clubNameA]).rival = byName[clubNameB];
-      getClub(byName[clubNameB]).rival = byName[clubNameA];
-    }
-  });
   Object.values(gameState.clubs).forEach((club) => {
     if (club.rival) return;
     const same = Object.values(gameState.clubs)

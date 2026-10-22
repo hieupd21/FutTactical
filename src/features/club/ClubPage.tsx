@@ -4,9 +4,7 @@ import { myWages, objectiveStatus } from "@/engine/board";
 import { myReputation, repLabel } from "@/engine/career";
 import { formatMoney, formatWage } from "@/engine/format";
 import { myClub, gameState } from "@/engine/state";
-import { ClubBadge } from "@/components/ClubBadge";
-import { FileButton, KeyValueRows } from "@/components/ui";
-import { bulkImages, clubImgKey, shrinkImage, useImages } from "@/lib/images";
+import { KeyValueRows } from "@/components/ui";
 import { commit, useGame, useGameVersion } from "@/stores/gameStore";
 import { toast } from "@/stores/uiStore";
 import { formatShortDate, stars } from "@/utils/display";
@@ -120,102 +118,6 @@ function Board() {
   );
 }
 
-function Images() {
-  const { map, saveImage, clearAll } = useImages();
-  const [confirm, setConfirm] = useState(false);
-  const name = myClub().name,
-    key = clubImgKey(name);
-  const keys = Object.keys(map);
-  const onBadge = async (file: File) => {
-    try {
-      await saveImage(key, await shrinkImage(file));
-      toast("Đã cập nhật huy hiệu.");
-    } catch (error) {
-      toast((error as Error).message);
-    }
-  };
-  const onBulk = async (files: File[]) => {
-    toast(`Đang xử lý ${files.length} ảnh…`);
-    const importResult = await bulkImages(
-      files,
-      Object.values(gameState.players),
-      Object.values(gameState.clubs).map((club) => club.name),
-    );
-    toast(
-      `Đã thêm ${importResult.pngCount} ảnh cầu thủ, ${importResult.clubCount} huy hiệu${importResult.miss.length ? `. Không khớp tên: ${importResult.miss.slice(0, 3).join(", ")}${importResult.miss.length > 3 ? "…" : ""}` : ""}.`,
-    );
-  };
-  return (
-    <Card className="panel min-w-0 gap-0 rounded-xl p-4 shadow-none">
-      <h2>Ảnh & huy hiệu</h2>
-      <div className="row">
-        <ClubBadge name={name} size={56} />
-        <div className="col" style={{ gap: 6, flex: 1 }}>
-          <FileButton
-            label="Đổi huy hiệu CLB"
-            accept="image/*"
-            onFiles={(files) => void onBadge(files[0])}
-          />
-          {map[key] && (
-            <Button
-              variant="link"
-              className="linkb relative h-auto min-h-0 after:absolute after:-inset-x-2 after:-inset-y-3 after:content-[''] border-0 px-1 py-0.5 text-xs font-semibold tracking-normal text-muted-foreground normal-case"
-              style={{ alignSelf: "flex-start" }}
-              onClick={() => void saveImage(key, null)}
-            >
-              Về huy hiệu mặc định
-            </Button>
-          )}
-        </div>
-      </div>
-      <p className="hint">
-        Nhập nhiều ảnh cùng lúc: đặt tên file trùng tên cầu thủ hoặc CLB như trong game (ví dụ "B.
-        Saka.png", "Bukayo Saka.jpg", "Arsenal.png"). Ảnh được thu nhỏ và chỉ lưu trong trình duyệt
-        này.
-      </p>
-      <FileButton
-        label="Nhập ảnh hàng loạt"
-        accept="image/*"
-        multiple
-        onFiles={(files) => void onBulk(files)}
-      />
-      {keys.length > 0 && (
-        <div className="row between">
-          <span className="hint">
-            Đã thêm {keys.filter((storedKey) => storedKey[0] === "p").length} ảnh cầu thủ,{" "}
-            {keys.filter((storedKey) => storedKey[0] === "c").length} huy hiệu.
-          </span>
-          {confirm ? (
-            <span className="row">
-              <Button
-                variant="hot"
-                size="sm"
-                onClick={() => {
-                  setConfirm(false);
-                  void clearAll().then(() => toast("Đã xóa tất cả ảnh."));
-                }}
-              >
-                Xóa hết
-              </Button>
-              <Button variant="ghost" size="sm" onClick={() => setConfirm(false)}>
-                Hủy
-              </Button>
-            </span>
-          ) : (
-            <Button
-              variant="link"
-              className="linkb relative h-auto min-h-0 after:absolute after:-inset-x-2 after:-inset-y-3 after:content-[''] border-0 px-1 py-0.5 text-xs font-semibold tracking-normal text-muted-foreground normal-case"
-              onClick={() => setConfirm(true)}
-            >
-              Xóa tất cả ảnh
-            </Button>
-          )}
-        </div>
-      )}
-    </Card>
-  );
-}
-
 function Staff() {
   const reset = useGame((store) => store.reset);
   const [confirm, setConfirm] = useState(false);
@@ -290,7 +192,6 @@ export function ClubPage() {
     <div className="grid2">
       <Board />
       <div className="col">
-        <Images />
         <Staff />
       </div>
     </div>

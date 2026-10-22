@@ -1,11 +1,10 @@
 import { memo, useState } from "react";
 import { mockData } from "@/engine/mockData";
 import { clubCode, clubColors, hashString, luminance } from "@/lib/clubVisual";
-import { clubImgKey, useImg } from "@/lib/images";
 
 const SHIELD = "M16 2 L29 6 V16 C29 24 23 29 16 31 C9 29 3 24 3 16 V6 Z";
 
-/** Logo CLB từ FIFACM; ưu tiên ảnh tự thêm và dùng khiên SVG khi ảnh không tải được. */
+/** Logo CLB từ FIFACM; dùng khiên SVG khi ảnh không tải được. */
 export const ClubBadge = memo(function ClubBadge({
   name,
   size = 28,
@@ -13,12 +12,9 @@ export const ClubBadge = memo(function ClubBadge({
   name: string;
   size?: number;
 }) {
-  const customImage = useImg(clubImgKey(name));
   const sourceImage = mockData().clubVisuals.imageUrlByName?.[name];
   const [failedImageUrls, setFailedImageUrls] = useState<string[]>([]);
-  const imageUrl = [customImage, sourceImage].find(
-    (candidate) => candidate && !failedImageUrls.includes(candidate),
-  );
+  const imageUrl = sourceImage && !failedImageUrls.includes(sourceImage) ? sourceImage : undefined;
   if (imageUrl)
     return (
       <img

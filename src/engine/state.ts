@@ -1,12 +1,5 @@
 // Trạng thái game đang chạy. Engine thao tác trực tiếp trên S (mutable) — tầng React đăng ký lắng nghe qua store.
-import {
-  DEADLINE_HOURS,
-  FIRST_MATCH_DAY,
-  MATCH_GAP,
-  MAX_WEEKLY,
-  SUMMER_WINDOW,
-  WINTER_WINDOW,
-} from "./constants";
+import { FIRST_MATCH_DAY, MATCH_GAP, MAX_WEEKLY, SUMMER_WINDOW, WINTER_WINDOW } from "./constants";
 import type {
   Club,
   GameState,
@@ -29,7 +22,6 @@ export function setState(state: GameState | null): void {
 export function setLeagues(leagues: League[]): void {
   LEAGUES = leagues;
 }
-export const hasGame = (): boolean => !!gameState;
 
 export const getLeague = (id: string): League =>
   LEAGUES.find((league) => league.id === id) as League;
@@ -57,7 +49,6 @@ export function windowNow(day: number = gameState.day): TransferWindow {
 }
 export const isDeadline = (day: number = gameState.day): boolean =>
   day === SUMMER_WINDOW[1] || day === WINTER_WINDOW[1];
-export const deadlineOver = (): boolean => gameState.hour >= 9 + DEADLINE_HOURS;
 /** Thời điểm tuyệt đối trong mùa, tính bằng giờ */
 export const tick = (): number => gameState.day * 24 + gameState.hour;
 /** Ngày đá của vòng r trong giải có `total` vòng. Mỗi tuần một vòng; giải quá dài (trên MAX_WEEKLY vòng) dồn lịch để vẫn kết thúc trước ngày tổng kết */

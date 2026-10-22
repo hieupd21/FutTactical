@@ -96,7 +96,7 @@ export function InboxCard() {
                   <span className="mt-1.5 flex items-center gap-1.5 text-[12px] font-semibold text-foreground">
                     <kindDef.icon size={14} aria-hidden />
                     {kindDef.label}
-                    <span className="text-[var(--accent)]">· {kindDef.actionLabel} →</span>
+                    <span className="text-(--accent)">· {kindDef.actionLabel} →</span>
                   </span>
                 </span>
                 <span className="when">{formatShortDate(message.day)}</span>

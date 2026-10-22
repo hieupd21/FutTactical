@@ -29,14 +29,14 @@ export type ProfileKey = "early" | "late" | "steady" | "durable" | "fragile" | "
 export type Philosophy = "young" | "win" | "bargain" | "bal";
 export type TransferWindow = "summer" | "winter" | null;
 
-export interface Contract {
+interface Contract {
   wage: number; // nghìn € / tuần
   expiryYear: number; // năm hết hạn (30/6 của năm đó)
   releaseClause: number; // điều khoản giải phóng, nghìn €; 0 = không có
   role: Role;
 }
 
-export interface TransferRecord {
+interface TransferRecord {
   year: number;
   fromClub: string;
   toClub: string;
@@ -53,7 +53,7 @@ export interface Player {
   name: string; // tên hiển thị
   longName?: string; // tên đầy đủ
   nationality: string; // mã quốc tịch nội bộ (EN, ES…) hoặc "XX"
-  nationalityName?: string; // tên quốc tịch tiếng Việt
+  nationalityName?: string; // tên quốc tịch theo nhãn FIFACM
   pos: Line;
   secondaryPositions: Line[];
   positionDetail?: string; // vị trí chi tiết, ví dụ "CM, CDM"
@@ -123,7 +123,7 @@ export interface League {
   name: string;
   nationality: string;
   level: number;
-  isSimulated?: boolean; // false = giải nguồn cầu thủ, không thi đấu
+  isSimulated?: boolean; // false = giải chỉ là nguồn thị trường, không thi đấu
   foreignRatio: number;
   importNationalities: string[];
   clubs: [string, number][];
@@ -250,8 +250,7 @@ export interface ContractOffer {
   releaseClause: number;
 }
 
-export type NegoStage =
-  "enquiry" | "dof" | "club" | "contract" | "final" | "offer" | "done" | "failed";
+type NegoStage = "enquiry" | "dof" | "club" | "contract" | "final" | "offer" | "done" | "failed";
 export type NegoType = "transfer" | "loan" | "free" | "pre" | "renew" | "loanout";
 
 /** Giọng điệu người chơi chọn khi gửi đề nghị: điềm đạm (trung tính), chân thành (an toàn), cứng rắn (đánh cược) */
@@ -326,13 +325,13 @@ export interface InboxMessage {
 }
 
 /** Lời mời dẫn dắt CLB khác, gửi sau khi tổng kết mùa */
-export interface JobOffer {
+interface JobOffer {
   clubId: string;
   year: number;
 }
 
 /** Loại tin: chung, CLB, chuyển nhượng xong, đàm phán, thả thính, nổi loạn, trận đấu */
-export type NewsKind = "gen" | "club" | "transfer" | "deal" | "flirt" | "rebel" | "match";
+type NewsKind = "gen" | "club" | "transfer" | "deal" | "flirt" | "rebel" | "match";
 
 export interface NewsItem {
   text: string;
@@ -349,7 +348,7 @@ export interface BoardObjective {
   start?: number;
 }
 
-export interface PendingTransfer {
+interface PendingTransfer {
   playerId: string;
   from: string | null;
   contract: Contract;
@@ -357,14 +356,14 @@ export interface PendingTransfer {
   type: NegoType;
 }
 
-export interface Liability {
+interface Liability {
   year: number;
   amount: number; // dương = phải trả, âm = được nhận
   toClub: string;
   playerId: string;
 }
 
-export interface SeasonReview {
+interface SeasonReview {
   position: number;
   confidenceDelta: number;
   prize: number;
