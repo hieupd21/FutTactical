@@ -1,7 +1,29 @@
 // Kiểu dữ liệu cốt lõi của game. Engine chỉ làm việc với các kiểu này, không biết gì về React.
 
 export type Line = "GK" | "DF" | "MF" | "FW";
-export type Formation = "4-4-2" | "4-3-3" | "4-2-3-1" | "3-5-2" | "5-3-2";
+export type Formation =
+  | "3-1-4-2"
+  | "3-4-1-2"
+  | "3-4-2-1"
+  | "3-4-3"
+  | "3-5-1-1"
+  | "3-5-2"
+  | "4-1-2-1-2"
+  | "4-1-3-2"
+  | "4-1-4-1"
+  | "4-2-2-2"
+  | "4-2-3-1"
+  | "4-2-4"
+  | "4-3-1-2"
+  | "4-3-2-1"
+  | "4-3-3"
+  | "4-4-1-1"
+  | "4-4-2"
+  | "4-5-1"
+  | "5-2-1-2"
+  | "5-2-3"
+  | "5-3-2"
+  | "5-4-1";
 export type Role = "Ngôi sao" | "Đá chính" | "Xoay tua" | "Dự bị" | "Triển vọng";
 export type ProfileKey = "early" | "late" | "steady" | "durable" | "fragile" | "prodigy";
 export type Philosophy = "young" | "win" | "bargain" | "bal";
@@ -26,6 +48,8 @@ export type MoodCause = "playtime" | "tactics" | "morale";
 
 export interface Player {
   id: string;
+  sourceId?: number;
+  nationId?: number;
   name: string; // tên hiển thị
   longName?: string; // tên đầy đủ
   nationality: string; // mã quốc tịch nội bộ (EN, ES…) hoặc "XX"
@@ -79,6 +103,10 @@ export interface Player {
 
 export interface Club {
   id: string;
+  sourceId?: number;
+  worthEur?: number;
+  squadValueEur?: number;
+  weeklyWageEur?: number;
   name: string;
   leagueId: string;
   strength: number;
@@ -363,6 +391,7 @@ export interface GameState {
   leagueNames: Record<string, string>;
   leagueMeta?: League[];
   dataSource?: string;
+  dataProvider?: "fifacm";
   form: Formation;
   tactic?: Tactic;
   lineup: (string | null)[];

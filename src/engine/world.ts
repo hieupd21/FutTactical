@@ -1,5 +1,6 @@
-// Khởi tạo thế giới: dữ liệu thật (gói FC 27 dựng sẵn).
-import { allLeagueInfos, findLeagueByPackId, mockData } from "./mockData";
+// Khởi tạo thế giới: dữ liệu FIFACM hoặc gói dòng cũ dùng cho tương thích.
+import { allLeagueInfos, findLeagueByPackId, mockData, setMockData } from "./mockData";
+import { fifacmPositionLine, type FifacmPack } from "./fifacm";
 import { setBoard } from "./board";
 import { AI_FORMS, PHILOSOPHY_LABEL } from "./constants";
 import { formatMoney, formatWage } from "./format";
@@ -102,12 +103,12 @@ function makeAllFixtures(): void {
 const randomPhilosophy = (): Philosophy =>
   pickRandom(Object.keys(PHILOSOPHY_LABEL) as Philosophy[]);
 
-function finishSetup(capMul: number): void {
+function finishSetup(wageCapMultiplier: number, shouldKeepBudget = false): void {
   const club = myClub();
-  club.budget = roundToTen(4000 * Math.pow(club.prestige, 2.1));
+  if (!shouldKeepBudget) club.budget = roundToTen(4000 * Math.pow(club.prestige, 2.1));
   gameState.wageCap = Math.round(
     clubPlayers(gameState.myClubId).reduce((total, player) => total + player.contract!.wage, 0) *
-      capMul,
+      wageCapMultiplier,
   );
   makeAllFixtures();
   gameState.lineup = bestLineup(gameState.myClubId, gameState.form);
@@ -121,10 +122,11 @@ export interface PackClub {
   rows: DataRow[];
   strength: number;
 }
-export function packClubs(rows: DataRow[]): PackClub[] {
+export function packClubs(rows: DataRow[], dataset?: FifacmPack): PackClub[] {
   const clubs: Record<string, PackClub> = {};
+  const knownLeagueIds = new Set(allLeagueInfos().map((league) => league.packId));
   rows.forEach((dataRow) => {
-    if (!findLeagueByPackId(dataRow[0])) return;
+    if (!knownLeagueIds.has(dataRow[0])) return;
     const clubKey = dataRow[0] + "|" + dataRow[1];
     (clubs[clubKey] = clubs[clubKey] || {
       leagueId: dataRow[0],
@@ -138,7 +140,9 @@ export function packClubs(rows: DataRow[]): PackClub[] {
       .map((dataRow) => dataRow[5])
       .sort((ovrA, ovrB) => ovrB - ovrA)
       .slice(0, 14);
-    packClub.strength = Math.round(topOvrs.reduce((sum, ovr) => sum + ovr, 0) / topOvrs.length);
+    packClub.strength =
+      dataset?.clubByName.get(packClub.name)?.overallRating ??
+      Math.round(topOvrs.reduce((sum, ovr) => sum + ovr, 0) / topOvrs.length);
   });
   return Object.values(clubs);
 }
@@ -167,6 +171,7 @@ export function packClubLineStrengths(packClub: PackClub): Record<Line, number> 
 export interface RealStart {
   /** true = HLV mới vô danh, chỉ nhận được các đội hạng dưới; false = tự chọn CLB bất kỳ */
   rookie?: boolean;
+  dataset?: FifacmPack;
 }
 
 export function newGameReal(
@@ -176,9 +181,11 @@ export function newGameReal(
   dataSource?: string,
   opts: RealStart = {},
 ): void {
+  const dataset = opts.dataset;
+  if (dataset) setMockData(dataset.references);
   const version = rows[0][13] || 26,
     year = 2000 + version - 1;
-  const present = new Set(packClubs(rows).map((packClub) => packClub.leagueId));
+  const present = new Set(packClubs(rows, dataset).map((packClub) => packClub.leagueId));
   const realMeta = allLeagueInfos().filter(
     (league) => !league.isOptional || present.has(league.packId),
   );
@@ -190,7 +197,13 @@ export function newGameReal(
       clubs: [],
     })),
   ].sort((leagueA, leagueB) => leagueB.level - leagueA.level);
-  setState(blankState(year, { leagueMeta: meta, dataSource: dataSource || `FC ${version}` }));
+  setState(
+    blankState(year, {
+      leagueMeta: meta,
+      dataSource: dataSource || `FC ${version}`,
+      ...(dataset ? { dataProvider: "fifacm" as const } : {}),
+    }),
+  );
   setLeagues(meta);
   let clubId = 0;
   const byName: Record<string, string> = {};
@@ -214,10 +227,13 @@ export function newGameReal(
       ),
     ] as Line[];
     if (!lines.length) lines.push("MF");
-    const playerId = "p" + gameState.nextPlayerNumber++;
+    const sourcePlayer = dataset?.playerByRow.get(dataRow);
+    if (dataset && !sourcePlayer) throw new Error("Không tìm thấy cầu thủ trong gói FIFACM.");
+    const playerId = sourcePlayer ? `f${sourcePlayer.id}` : "p" + gameState.nextPlayerNumber++;
     const age = dataRow[9] || randomInt(20, 29);
     const player: Player = {
       id: playerId,
+      ...(sourcePlayer ? { sourceId: sourcePlayer.id, nationId: sourcePlayer.nationality.id } : {}),
       name: dataRow[2],
       longName: dataRow[3] || dataRow[2],
       nationality: mockData().nationalities.codeByDataName[dataRow[12]] || "XX",
@@ -253,39 +269,70 @@ export function newGameReal(
       if (owner) moves.push([dataRow[5], player.name, dataRow[14], toClubName]);
     }
     player.contract = {
-      wage: Math.max(1, Math.round((dataRow[8] || 0) / 1000)) || 0,
-      expiryYear: owner ? Math.max(year + 1, dataRow[10] || year + 2) : year,
-      releaseClause: hasReleaseClauseData && dataRow[11] ? roundToTen(dataRow[11] / 1000) : 0,
+      wage: sourcePlayer
+        ? sourcePlayer.wageEur / 1000
+        : Math.max(1, Math.round((dataRow[8] || 0) / 1000)) || 0,
+      expiryYear: sourcePlayer
+        ? sourcePlayer.contractYear
+        : owner
+          ? Math.max(year + 1, dataRow[10] || year + 2)
+          : year,
+      releaseClause: sourcePlayer
+        ? sourcePlayer.releaseClauseEur / 1000
+        : hasReleaseClauseData && dataRow[11]
+          ? roundToTen(dataRow[11] / 1000)
+          : 0,
       role: "Xoay tua",
     };
+    if (sourcePlayer && !owner) player.contract = null;
     gameState.players[playerId] = player;
     if (owner) getClub(owner).playerIds.push(playerId);
     else gameState.free.push(playerId);
-    const freeValue = valueOf({ ...player, valueAnchor: 0 }),
+    const freeValue = valueOf({ ...player, valueAnchor: undefined }),
       real = (dataRow[7] || 0) / 1000;
-    player.valueAnchor = real > 0 ? clamp(real / Math.max(1, freeValue), 0.25, 4) : 1;
-    player.marketValue = valueOf(player);
-    if (!dataRow[8]) player.contract.wage = wageBase(player);
+    player.valueAnchor = sourcePlayer
+      ? real / Math.max(1, freeValue)
+      : real > 0
+        ? clamp(real / Math.max(1, freeValue), 0.25, 4)
+        : 1;
+    player.marketValue = sourcePlayer ? real : valueOf(player);
+    if (!sourcePlayer && !dataRow[8]) player.contract!.wage = wageBase(player);
   };
-  packClubs(rows).forEach((packClub) => {
+  packClubs(rows, dataset).forEach((packClub) => {
+    const sourceClub = dataset?.clubByName.get(packClub.name);
     const realLeague = findLeagueByPackId(packClub.leagueId)!,
-      id = "c" + clubId++,
+      id = sourceClub ? `fc${sourceClub.id}` : "c" + clubId++,
       pres = clamp(Math.round((packClub.strength - 68) / 3.6), 1, 5);
     const club: Club = {
       id,
+      ...(sourceClub
+        ? {
+            sourceId: sourceClub.id,
+            worthEur: sourceClub.worthEur,
+            squadValueEur: sourceClub.squadValueEur,
+            weeklyWageEur: sourceClub.weeklyWageEur,
+          }
+        : {}),
       name: packClub.name,
       leagueId: realLeague.id,
       strength: packClub.strength,
       prestige: pres,
       philosophy: randomPhilosophy(),
-      form: pickRandom(AI_FORMS),
+      form: sourceClub?.formation ?? pickRandom(AI_FORMS),
       playerIds: [],
-      budget: roundToTen(4000 * Math.pow(pres, 2.2) * randomBetween(0.8, 1.2)),
+      budget:
+        sourceClub && sourceClub.budgetEur > 0
+          ? sourceClub.budgetEur / 1000
+          : roundToTen(4000 * Math.pow(pres, 2.2) * randomBetween(0.8, 1.2)),
       rival: null,
     };
     gameState.clubs[id] = club;
     byName[packClub.name] = id;
     packClub.rows.forEach((dataRow) => addRow(dataRow, id, packClub.name, realLeague.id === "ES"));
+    if (sourceClub) {
+      assignRoles(id);
+      return;
+    }
     // bổ sung cầu thủ trẻ nếu đội hình trong dữ liệu quá mỏng
     const need: [Line, number][] = [
       ["GK", 2],
@@ -345,7 +392,21 @@ export function newGameReal(
   gameState.managerReputation = opts.rookie
     ? NEWBIE_REPUTATION
     : Math.min(100, clubRequirement(myClub()) + 5);
-  finishSetup(1.08);
+  if (dataset) gameState.form = myClub().form;
+  const hasSourceBudget = (dataset?.clubByName.get(myClub().name)?.budgetEur ?? 0) > 0;
+  finishSetup(1.08, hasSourceBudget);
+  const sourceStartingXI = dataset?.clubByName.get(myClub().name)?.startingXI;
+  if (sourceStartingXI?.length === 11) {
+    const positionPriority = { GK: 0, DF: 1, MF: 2, FW: 3 };
+    // The engine slots run GK -> DF -> MF -> FW; source pitch cards run in the opposite direction.
+    gameState.lineup = sourceStartingXI
+      .map((slot) => ({
+        id: `f${slot.playerId}`,
+        line: fifacmPositionLine(slot.position),
+      }))
+      .sort((first, second) => positionPriority[first.line] - positionPriority[second.line])
+      .map((slot) => slot.id);
+  }
   news(`Bạn chính thức nhận ghế HLV trưởng ${myClub().name}.`, "club");
   inbox({
     kind: "welcome",

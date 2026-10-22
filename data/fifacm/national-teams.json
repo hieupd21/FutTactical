@@ -1,0 +1,6746 @@
+[
+  {
+    "id": 974,
+    "label": "Korea Republic",
+    "fifaVersion": 27,
+    "imageUrl": "https://www.fifacm.com/content/media/imgs/fc27/teams/256/l974.png",
+    "overallRating": 75,
+    "attack": 78,
+    "midfield": 74,
+    "defense": 74,
+    "worthEur": 0,
+    "budgetEur": 0,
+    "foundationYear": 1933,
+    "stadiumCapacity": 69950,
+    "averageAge": 28,
+    "youthDevelopment": 0,
+    "profitability": 0,
+    "internationalPrestige": 5,
+    "colors": {
+      "background": "rgb(236, 16, 63)",
+      "text": "rgb(136, 119, 193)"
+    },
+    "sourceUrl": "https://www.fifacm.com/27/team/974/korea-republic",
+    "sourceAttributes": {
+      "name": "Korea Republic",
+      "worth": "0",
+      "budget": "0",
+      "foundation": "1933",
+      "capacity": "69950",
+      "ovr": "75",
+      "att": "78",
+      "mid": "74",
+      "def": "74",
+      "youth": "0",
+      "profitability": "0",
+      "international": "5",
+      "age": "28"
+    },
+    "gender": {
+      "id": 0,
+      "label": "Male"
+    },
+    "teamType": "national",
+    "playerIds": [
+      191655, 254980, 261062, 237086, 261063, 243780, 228010, 221671, 226380, 248712, 200104,
+      251161, 238570, 260474, 245054, 234264, 252198, 243672, 248188, 243673, 231947, 75437, 272772,
+      234748, 212432, 255035
+    ],
+    "squadBuilder": {
+      "formation": null,
+      "formationShape": "4-4-2",
+      "formationCandidates": ["442", "442-2"],
+      "formationMethod": "Exact position-multiset match against FIFACM squad-builder definitions; null if ambiguous or unmatched.",
+      "rating": 75,
+      "ratingMethod": "FIFACM team profile Rating; not a calculated community-squad rating.",
+      "valueEur": 182825000,
+      "wageEur": 402600,
+      "financialScope": "All source-displayed playerIds, including substitutes/reserves; excludes loaned-out players. National rosters may be partial.",
+      "financialMethod": "Sum of players.json valueEur/wageEur; source player amounts may be rounded.",
+      "wagePeriod": "week",
+      "startingXI": [
+        {
+          "playerId": 200104,
+          "position": "LS",
+          "overallRating": 81,
+          "sourcePositionId": 26
+        },
+        {
+          "playerId": 248712,
+          "position": "RS",
+          "overallRating": 75,
+          "sourcePositionId": 24
+        },
+        {
+          "playerId": 226380,
+          "position": "LM",
+          "overallRating": 73,
+          "sourcePositionId": 16
+        },
+        {
+          "playerId": 221671,
+          "position": "LCM",
+          "overallRating": 76,
+          "sourcePositionId": 15
+        },
+        {
+          "playerId": 228010,
+          "position": "RCM",
+          "overallRating": 76,
+          "sourcePositionId": 13
+        },
+        {
+          "playerId": 243780,
+          "position": "RM",
+          "overallRating": 81,
+          "sourcePositionId": 12
+        },
+        {
+          "playerId": 261063,
+          "position": "LB",
+          "overallRating": 69,
+          "sourcePositionId": 7
+        },
+        {
+          "playerId": 237086,
+          "position": "LCB",
+          "overallRating": 83,
+          "sourcePositionId": 6
+        },
+        {
+          "playerId": 261062,
+          "position": "RCB",
+          "overallRating": 72,
+          "sourcePositionId": 4
+        },
+        {
+          "playerId": 254980,
+          "position": "RB",
+          "overallRating": 73,
+          "sourcePositionId": 3
+        },
+        {
+          "playerId": 191655,
+          "position": "GK",
+          "overallRating": 72,
+          "sourcePositionId": 0
+        }
+      ],
+      "startingXIComplete": true,
+      "missingStartingPlayerCount": 0,
+      "snapshotDate": "2026-10-06",
+      "sourceUrl": "https://www.fifacm.com/27/team/974/korea-republic",
+      "retrievedAt": "2026-10-22T03:02:45.092Z"
+    },
+    "nationId": 167
+  },
+  {
+    "id": 1318,
+    "label": "England",
+    "fifaVersion": 27,
+    "imageUrl": "https://www.fifacm.com/content/media/imgs/fc27/teams/256/l1318.png",
+    "overallRating": 84,
+    "attack": 85,
+    "midfield": 86,
+    "defense": 84,
+    "worthEur": 0,
+    "budgetEur": 0,
+    "foundationYear": 1863,
+    "stadiumCapacity": 90000,
+    "averageAge": 27,
+    "youthDevelopment": 0,
+    "profitability": 0,
+    "internationalPrestige": 8,
+    "colors": {
+      "background": "rgb(255, 255, 255)",
+      "text": "rgb(241, 6, 6)"
+    },
+    "sourceUrl": "https://www.fifacm.com/27/team/1318/england",
+    "sourceAttributes": {
+      "name": "England",
+      "worth": "0",
+      "budget": "0",
+      "foundation": "1863",
+      "capacity": "90000",
+      "ovr": "84",
+      "att": "85",
+      "mid": "86",
+      "def": "84",
+      "youth": "0",
+      "profitability": "0",
+      "international": "8",
+      "age": "27"
+    },
+    "gender": {
+      "id": 0,
+      "label": "Male"
+    },
+    "teamType": "national",
+    "playerIds": [
+      204935, 238074, 227678, 241159, 277427, 254243, 252371, 234378, 246669, 202126, 242964,
+      260247, 221697, 203574, 262118, 235794, 243702, 231677, 198032, 254796, 212228, 269136,
+      233306, 273651, 183711, 263063
+    ],
+    "squadBuilder": {
+      "formation": "433-4",
+      "formationShape": "4-3-3",
+      "formationCandidates": ["433-4"],
+      "formationMethod": "Exact position-multiset match against FIFACM squad-builder definitions; null if ambiguous or unmatched.",
+      "rating": 84,
+      "ratingMethod": "FIFACM team profile Rating; not a calculated community-squad rating.",
+      "valueEur": 1233000000,
+      "wageEur": 3104500,
+      "financialScope": "All source-displayed playerIds, including substitutes/reserves; excludes loaned-out players. National rosters may be partial.",
+      "financialMethod": "Sum of players.json valueEur/wageEur; source player amounts may be rounded.",
+      "wagePeriod": "week",
+      "startingXI": [
+        {
+          "playerId": 242964,
+          "position": "LW",
+          "overallRating": 82,
+          "sourcePositionId": 27
+        },
+        {
+          "playerId": 202126,
+          "position": "ST",
+          "overallRating": 90,
+          "sourcePositionId": 25
+        },
+        {
+          "playerId": 246669,
+          "position": "RW",
+          "overallRating": 87,
+          "sourcePositionId": 23
+        },
+        {
+          "playerId": 234378,
+          "position": "LCM",
+          "overallRating": 88,
+          "sourcePositionId": 15
+        },
+        {
+          "playerId": 252371,
+          "position": "RCM",
+          "overallRating": 90,
+          "sourcePositionId": 13
+        },
+        {
+          "playerId": 254243,
+          "position": "CDM",
+          "overallRating": 84,
+          "sourcePositionId": 10
+        },
+        {
+          "playerId": 277427,
+          "position": "LB",
+          "overallRating": 83,
+          "sourcePositionId": 7
+        },
+        {
+          "playerId": 241159,
+          "position": "LCB",
+          "overallRating": 85,
+          "sourcePositionId": 6
+        },
+        {
+          "playerId": 227678,
+          "position": "RCB",
+          "overallRating": 84,
+          "sourcePositionId": 4
+        },
+        {
+          "playerId": 238074,
+          "position": "RB",
+          "overallRating": 84,
+          "sourcePositionId": 3
+        },
+        {
+          "playerId": 204935,
+          "position": "GK",
+          "overallRating": 85,
+          "sourcePositionId": 0
+        }
+      ],
+      "startingXIComplete": true,
+      "missingStartingPlayerCount": 0,
+      "snapshotDate": "2026-10-06",
+      "sourceUrl": "https://www.fifacm.com/27/team/1318/england",
+      "retrievedAt": "2026-10-22T03:02:36.069Z"
+    },
+    "nationId": 14
+  },
+  {
+    "id": 1322,
+    "label": "Austria",
+    "fifaVersion": 27,
+    "imageUrl": "https://www.fifacm.com/content/media/imgs/fc27/teams/256/l1322.png",
+    "overallRating": 78,
+    "attack": 76,
+    "midfield": 78,
+    "defense": 79,
+    "worthEur": 0,
+    "budgetEur": 0,
+    "foundationYear": 1904,
+    "stadiumCapacity": 50865,
+    "averageAge": 28,
+    "youthDevelopment": 0,
+    "profitability": 0,
+    "internationalPrestige": 5,
+    "colors": {
+      "background": "rgb(204, 9, 26)",
+      "text": "rgb(255, 255, 255)"
+    },
+    "sourceUrl": "https://www.fifacm.com/27/team/1322/austria",
+    "sourceAttributes": {
+      "name": "Austria",
+      "worth": "0",
+      "budget": "0",
+      "foundation": "1904",
+      "capacity": "50865",
+      "ovr": "78",
+      "att": "76",
+      "mid": "78",
+      "def": "79",
+      "youth": "0",
+      "profitability": "0",
+      "international": "5",
+      "age": "28"
+    },
+    "gender": {
+      "id": 0,
+      "label": "Male"
+    },
+    "teamType": "national",
+    "playerIds": [
+      215522, 225375, 231366, 197445, 216275, 257876, 233195, 239701, 266237, 204923, 199439,
+      261264, 239901, 228336, 254566, 237595, 263041, 240916, 228505, 237985, 223671, 259356,
+      220925, 242187, 250779
+    ],
+    "squadBuilder": {
+      "formation": "4231",
+      "formationShape": "4-2-3-1",
+      "formationCandidates": ["4231"],
+      "formationMethod": "Exact position-multiset match against FIFACM squad-builder definitions; null if ambiguous or unmatched.",
+      "rating": 78,
+      "ratingMethod": "FIFACM team profile Rating; not a calculated community-squad rating.",
+      "valueEur": 376200000,
+      "wageEur": 918800,
+      "financialScope": "All source-displayed playerIds, including substitutes/reserves; excludes loaned-out players. National rosters may be partial.",
+      "financialMethod": "Sum of players.json valueEur/wageEur; source player amounts may be rounded.",
+      "wagePeriod": "week",
+      "startingXI": [
+        {
+          "playerId": 199439,
+          "position": "ST",
+          "overallRating": 76,
+          "sourcePositionId": 25
+        },
+        {
+          "playerId": 204923,
+          "position": "LAM",
+          "overallRating": 81,
+          "sourcePositionId": 19
+        },
+        {
+          "playerId": 266237,
+          "position": "CAM",
+          "overallRating": 76,
+          "sourcePositionId": 18
+        },
+        {
+          "playerId": 239701,
+          "position": "RAM",
+          "overallRating": 78,
+          "sourcePositionId": 17
+        },
+        {
+          "playerId": 233195,
+          "position": "LDM",
+          "overallRating": 78,
+          "sourcePositionId": 11
+        },
+        {
+          "playerId": 257876,
+          "position": "RDM",
+          "overallRating": 81,
+          "sourcePositionId": 9
+        },
+        {
+          "playerId": 216275,
+          "position": "LB",
+          "overallRating": 75,
+          "sourcePositionId": 7
+        },
+        {
+          "playerId": 197445,
+          "position": "LCB",
+          "overallRating": 80,
+          "sourcePositionId": 6
+        },
+        {
+          "playerId": 231366,
+          "position": "RCB",
+          "overallRating": 79,
+          "sourcePositionId": 4
+        },
+        {
+          "playerId": 225375,
+          "position": "RB",
+          "overallRating": 85,
+          "sourcePositionId": 3
+        },
+        {
+          "playerId": 215522,
+          "position": "GK",
+          "overallRating": 72,
+          "sourcePositionId": 0
+        }
+      ],
+      "startingXIComplete": true,
+      "missingStartingPlayerCount": 0,
+      "snapshotDate": "2026-10-06",
+      "sourceUrl": "https://www.fifacm.com/27/team/1322/austria",
+      "retrievedAt": "2026-10-22T03:02:27.619Z"
+    },
+    "nationId": 4
+  },
+  {
+    "id": 1325,
+    "label": "Belgium",
+    "fifaVersion": 27,
+    "imageUrl": "https://www.fifacm.com/content/media/imgs/fc27/teams/256/l1325.png",
+    "overallRating": 81,
+    "attack": 82,
+    "midfield": 82,
+    "defense": 78,
+    "worthEur": 0,
+    "budgetEur": 0,
+    "foundationYear": 1895,
+    "stadiumCapacity": 50122,
+    "averageAge": 26,
+    "youthDevelopment": 0,
+    "profitability": 0,
+    "internationalPrestige": 7,
+    "colors": {
+      "background": "rgb(238, 40, 57)",
+      "text": "rgb(250, 224, 69)"
+    },
+    "sourceUrl": "https://www.fifacm.com/27/team/1325/belgium",
+    "sourceAttributes": {
+      "name": "Belgium",
+      "worth": "0",
+      "budget": "0",
+      "foundation": "1895",
+      "capacity": "50122",
+      "ovr": "81",
+      "att": "82",
+      "mid": "82",
+      "def": "78",
+      "youth": "0",
+      "profitability": "0",
+      "international": "7",
+      "age": "26"
+    },
+    "gender": {
+      "id": 0,
+      "label": "Male"
+    },
+    "teamType": "national",
+    "playerIds": [
+      192119, 202371, 254262, 257278, 251479, 263620, 192985, 216393, 231416, 192505, 246420, 71305,
+      276048, 242664, 200155, 265774, 222501, 258378, 254803, 262071, 212204, 270821, 257057,
+      239810, 270039, 251470
+    ],
+    "squadBuilder": {
+      "formation": "433-4",
+      "formationShape": "4-3-3",
+      "formationCandidates": ["433-4"],
+      "formationMethod": "Exact position-multiset match against FIFACM squad-builder definitions; null if ambiguous or unmatched.",
+      "rating": 81,
+      "ratingMethod": "FIFACM team profile Rating; not a calculated community-squad rating.",
+      "valueEur": 659500000,
+      "wageEur": 1635000,
+      "financialScope": "All source-displayed playerIds, including substitutes/reserves; excludes loaned-out players. National rosters may be partial.",
+      "financialMethod": "Sum of players.json valueEur/wageEur; source player amounts may be rounded.",
+      "wagePeriod": "week",
+      "startingXI": [
+        {
+          "playerId": 246420,
+          "position": "LW",
+          "overallRating": 84,
+          "sourcePositionId": 27
+        },
+        {
+          "playerId": 192505,
+          "position": "ST",
+          "overallRating": 82,
+          "sourcePositionId": 25
+        },
+        {
+          "playerId": 231416,
+          "position": "RW",
+          "overallRating": 80,
+          "sourcePositionId": 23
+        },
+        {
+          "playerId": 216393,
+          "position": "LCM",
+          "overallRating": 85,
+          "sourcePositionId": 15
+        },
+        {
+          "playerId": 192985,
+          "position": "RCM",
+          "overallRating": 85,
+          "sourcePositionId": 13
+        },
+        {
+          "playerId": 263620,
+          "position": "CDM",
+          "overallRating": 78,
+          "sourcePositionId": 10
+        },
+        {
+          "playerId": 251479,
+          "position": "LB",
+          "overallRating": 78,
+          "sourcePositionId": 7
+        },
+        {
+          "playerId": 257278,
+          "position": "LCB",
+          "overallRating": 78,
+          "sourcePositionId": 6
+        },
+        {
+          "playerId": 254262,
+          "position": "RCB",
+          "overallRating": 78,
+          "sourcePositionId": 4
+        },
+        {
+          "playerId": 202371,
+          "position": "RB",
+          "overallRating": 78,
+          "sourcePositionId": 3
+        },
+        {
+          "playerId": 192119,
+          "position": "GK",
+          "overallRating": 90,
+          "sourcePositionId": 0
+        }
+      ],
+      "startingXIComplete": true,
+      "missingStartingPlayerCount": 0,
+      "snapshotDate": "2026-10-06",
+      "sourceUrl": "https://www.fifacm.com/27/team/1325/belgium",
+      "retrievedAt": "2026-10-22T03:02:21.289Z"
+    },
+    "nationId": 7
+  },
+  {
+    "id": 1328,
+    "label": "Croatia",
+    "fifaVersion": 27,
+    "imageUrl": "https://www.fifacm.com/content/media/imgs/fc27/teams/256/l1328.png",
+    "overallRating": 80,
+    "attack": 81,
+    "midfield": 79,
+    "defense": 79,
+    "worthEur": 0,
+    "budgetEur": 0,
+    "foundationYear": 1912,
+    "stadiumCapacity": 34198,
+    "averageAge": 28,
+    "youthDevelopment": 0,
+    "profitability": 0,
+    "internationalPrestige": 8,
+    "colors": {
+      "background": "rgb(255, 255, 255)",
+      "text": "rgb(228, 24, 21)"
+    },
+    "sourceUrl": "https://www.fifacm.com/27/team/1328/croatia",
+    "sourceAttributes": {
+      "name": "Croatia",
+      "worth": "0",
+      "budget": "0",
+      "foundation": "1912",
+      "capacity": "34198",
+      "ovr": "80",
+      "att": "81",
+      "mid": "79",
+      "def": "79",
+      "youth": "0",
+      "profitability": "0",
+      "international": "8",
+      "age": "28"
+    },
+    "gender": {
+      "id": 0,
+      "label": "Male"
+    },
+    "teamType": "national",
+    "playerIds": [
+      241671, 250955, 256325, 225263, 251517, 207410, 177003, 262740, 262842, 223273, 188335,
+      275192, 238370, 259750, 244456, 276278, 241095, 181458, 77673, 258775, 244270, 216354, 244797,
+      258585
+    ],
+    "squadBuilder": {
+      "formation": "4231-2",
+      "formationShape": "4-2-3-1",
+      "formationCandidates": ["4231-2"],
+      "formationMethod": "Exact position-multiset match against FIFACM squad-builder definitions; null if ambiguous or unmatched.",
+      "rating": 80,
+      "ratingMethod": "FIFACM team profile Rating; not a calculated community-squad rating.",
+      "valueEur": 437800000,
+      "wageEur": 1059800,
+      "financialScope": "All source-displayed playerIds, including substitutes/reserves; excludes loaned-out players. National rosters may be partial.",
+      "financialMethod": "Sum of players.json valueEur/wageEur; source player amounts may be rounded.",
+      "wagePeriod": "week",
+      "startingXI": [
+        {
+          "playerId": 188335,
+          "position": "ST",
+          "overallRating": 82,
+          "sourcePositionId": 25
+        },
+        {
+          "playerId": 223273,
+          "position": "CAM",
+          "overallRating": 79,
+          "sourcePositionId": 18
+        },
+        {
+          "playerId": 262842,
+          "position": "LM",
+          "overallRating": 79,
+          "sourcePositionId": 16
+        },
+        {
+          "playerId": 262740,
+          "position": "RM",
+          "overallRating": 72,
+          "sourcePositionId": 12
+        },
+        {
+          "playerId": 177003,
+          "position": "LDM",
+          "overallRating": 85,
+          "sourcePositionId": 11
+        },
+        {
+          "playerId": 207410,
+          "position": "RDM",
+          "overallRating": 81,
+          "sourcePositionId": 9
+        },
+        {
+          "playerId": 251517,
+          "position": "LB",
+          "overallRating": 85,
+          "sourcePositionId": 7
+        },
+        {
+          "playerId": 225263,
+          "position": "LCB",
+          "overallRating": 74,
+          "sourcePositionId": 6
+        },
+        {
+          "playerId": 256325,
+          "position": "RCB",
+          "overallRating": 76,
+          "sourcePositionId": 4
+        },
+        {
+          "playerId": 250955,
+          "position": "RB",
+          "overallRating": 80,
+          "sourcePositionId": 3
+        },
+        {
+          "playerId": 241671,
+          "position": "GK",
+          "overallRating": 78,
+          "sourcePositionId": 0
+        }
+      ],
+      "startingXIComplete": true,
+      "missingStartingPlayerCount": 0,
+      "snapshotDate": "2026-10-06",
+      "sourceUrl": "https://www.fifacm.com/27/team/1328/croatia",
+      "retrievedAt": "2026-10-22T03:02:40.501Z"
+    },
+    "nationId": 10
+  },
+  {
+    "id": 1330,
+    "label": "Czech Republic",
+    "fifaVersion": 27,
+    "imageUrl": "https://www.fifacm.com/content/media/imgs/fc27/teams/256/l1330.png",
+    "overallRating": 76,
+    "attack": 75,
+    "midfield": 76,
+    "defense": 76,
+    "worthEur": 0,
+    "budgetEur": 0,
+    "foundationYear": 1901,
+    "stadiumCapacity": 21000,
+    "averageAge": 27,
+    "youthDevelopment": 0,
+    "profitability": 0,
+    "internationalPrestige": 4,
+    "colors": {
+      "background": "rgb(225, 27, 34)",
+      "text": "rgb(255, 255, 255)"
+    },
+    "sourceUrl": "https://www.fifacm.com/27/team/1330/czech-republic",
+    "sourceAttributes": {
+      "name": "Czech Republic",
+      "worth": "0",
+      "budget": "0",
+      "foundation": "1901",
+      "capacity": "21000",
+      "ovr": "76",
+      "att": "75",
+      "mid": "76",
+      "def": "76",
+      "youth": "0",
+      "profitability": "0",
+      "international": "4",
+      "age": "27"
+    },
+    "gender": {
+      "id": 0,
+      "label": "Male"
+    },
+    "teamType": "national",
+    "playerIds": [
+      242948, 276646, 252064, 244470, 236792, 247050, 246618, 258936, 269509, 244788, 257536, 221909
+    ],
+    "squadBuilder": {
+      "formation": null,
+      "formationShape": null,
+      "formationCandidates": [],
+      "formationMethod": "Exact position-multiset match against FIFACM squad-builder definitions; null if ambiguous or unmatched.",
+      "rating": 76,
+      "ratingMethod": "FIFACM team profile Rating; not a calculated community-squad rating.",
+      "valueEur": 127200000,
+      "wageEur": 292300,
+      "financialScope": "All source-displayed playerIds, including substitutes/reserves; excludes loaned-out players. National rosters may be partial.",
+      "financialMethod": "Sum of players.json valueEur/wageEur; source player amounts may be rounded.",
+      "wagePeriod": "week",
+      "startingXI": [
+        {
+          "playerId": 246618,
+          "position": "ST",
+          "overallRating": 76,
+          "sourcePositionId": 25
+        },
+        {
+          "playerId": 247050,
+          "position": "RAM",
+          "overallRating": 79,
+          "sourcePositionId": 17
+        },
+        {
+          "playerId": 236792,
+          "position": "LCM",
+          "overallRating": 76,
+          "sourcePositionId": 15
+        },
+        {
+          "playerId": 244470,
+          "position": "RM",
+          "overallRating": 80,
+          "sourcePositionId": 12
+        },
+        {
+          "playerId": 252064,
+          "position": "LCB",
+          "overallRating": 78,
+          "sourcePositionId": 6
+        },
+        {
+          "playerId": 276646,
+          "position": "CB",
+          "overallRating": 76,
+          "sourcePositionId": 5
+        },
+        {
+          "playerId": 242948,
+          "position": "GK",
+          "overallRating": 77,
+          "sourcePositionId": 0
+        }
+      ],
+      "startingXIComplete": false,
+      "missingStartingPlayerCount": 4,
+      "snapshotDate": "2026-10-06",
+      "sourceUrl": "https://www.fifacm.com/27/team/1330/czech-republic",
+      "retrievedAt": "2026-10-22T03:02:31.633Z"
+    },
+    "nationId": 12
+  },
+  {
+    "id": 1331,
+    "label": "Denmark",
+    "fifaVersion": 27,
+    "imageUrl": "https://www.fifacm.com/content/media/imgs/fc27/teams/256/l1331.png",
+    "overallRating": 78,
+    "attack": 77,
+    "midfield": 79,
+    "defense": 77,
+    "worthEur": 0,
+    "budgetEur": 0,
+    "foundationYear": 1889,
+    "stadiumCapacity": 38065,
+    "averageAge": 25,
+    "youthDevelopment": 0,
+    "profitability": 0,
+    "internationalPrestige": 5,
+    "colors": {
+      "background": "rgb(154, 4, 8)",
+      "text": "rgb(255, 255, 255)"
+    },
+    "sourceUrl": "https://www.fifacm.com/27/team/1331/denmark",
+    "sourceAttributes": {
+      "name": "Denmark",
+      "worth": "0",
+      "budget": "0",
+      "foundation": "1889",
+      "capacity": "38065",
+      "ovr": "78",
+      "att": "77",
+      "mid": "79",
+      "def": "77",
+      "youth": "0",
+      "profitability": "0",
+      "international": "5",
+      "age": "25"
+    },
+    "gender": {
+      "id": 0,
+      "label": "Male"
+    },
+    "teamType": "national",
+    "playerIds": [
+      258485, 233301, 224221, 266123, 234678, 244669, 213648, 248729, 241508, 279015, 259399,
+      243203, 270519, 246402, 71174, 228687, 245235, 273047, 256949, 213661, 268504, 246158, 277432,
+      270534, 235658, 232711
+    ],
+    "squadBuilder": {
+      "formation": "4231-2",
+      "formationShape": "4-2-3-1",
+      "formationCandidates": ["4231-2"],
+      "formationMethod": "Exact position-multiset match against FIFACM squad-builder definitions; null if ambiguous or unmatched.",
+      "rating": 78,
+      "ratingMethod": "FIFACM team profile Rating; not a calculated community-squad rating.",
+      "valueEur": 380400000,
+      "wageEur": 957200,
+      "financialScope": "All source-displayed playerIds, including substitutes/reserves; excludes loaned-out players. National rosters may be partial.",
+      "financialMethod": "Sum of players.json valueEur/wageEur; source player amounts may be rounded.",
+      "wagePeriod": "week",
+      "startingXI": [
+        {
+          "playerId": 259399,
+          "position": "ST",
+          "overallRating": 78,
+          "sourcePositionId": 25
+        },
+        {
+          "playerId": 279015,
+          "position": "CAM",
+          "overallRating": 82,
+          "sourcePositionId": 18
+        },
+        {
+          "playerId": 241508,
+          "position": "LM",
+          "overallRating": 80,
+          "sourcePositionId": 16
+        },
+        {
+          "playerId": 248729,
+          "position": "RM",
+          "overallRating": 76,
+          "sourcePositionId": 12
+        },
+        {
+          "playerId": 213648,
+          "position": "LDM",
+          "overallRating": 80,
+          "sourcePositionId": 11
+        },
+        {
+          "playerId": 244669,
+          "position": "RDM",
+          "overallRating": 83,
+          "sourcePositionId": 9
+        },
+        {
+          "playerId": 234678,
+          "position": "LB",
+          "overallRating": 76,
+          "sourcePositionId": 7
+        },
+        {
+          "playerId": 266123,
+          "position": "LCB",
+          "overallRating": 71,
+          "sourcePositionId": 6
+        },
+        {
+          "playerId": 224221,
+          "position": "RCB",
+          "overallRating": 79,
+          "sourcePositionId": 4
+        },
+        {
+          "playerId": 233301,
+          "position": "RB",
+          "overallRating": 79,
+          "sourcePositionId": 3
+        },
+        {
+          "playerId": 258485,
+          "position": "GK",
+          "overallRating": 77,
+          "sourcePositionId": 0
+        }
+      ],
+      "startingXIComplete": true,
+      "missingStartingPlayerCount": 0,
+      "snapshotDate": "2026-10-06",
+      "sourceUrl": "https://www.fifacm.com/27/team/1331/denmark",
+      "retrievedAt": "2026-10-22T03:02:26.313Z"
+    },
+    "nationId": 13
+  },
+  {
+    "id": 1334,
+    "label": "Finland",
+    "fifaVersion": 27,
+    "imageUrl": "https://www.fifacm.com/content/media/imgs/fc27/teams/256/l1334.png",
+    "overallRating": 72,
+    "attack": 72,
+    "midfield": 71,
+    "defense": 66,
+    "worthEur": 0,
+    "budgetEur": 0,
+    "foundationYear": 1907,
+    "stadiumCapacity": 36200,
+    "averageAge": 26,
+    "youthDevelopment": 0,
+    "profitability": 0,
+    "internationalPrestige": 2,
+    "colors": {
+      "background": "rgb(255, 255, 255)",
+      "text": "rgb(0, 102, 204)"
+    },
+    "sourceUrl": "https://www.fifacm.com/27/team/1334/finland",
+    "sourceAttributes": {
+      "name": "Finland",
+      "worth": "0",
+      "budget": "0",
+      "foundation": "1907",
+      "capacity": "36200",
+      "ovr": "72",
+      "att": "72",
+      "mid": "71",
+      "def": "66",
+      "youth": "0",
+      "profitability": "0",
+      "international": "2",
+      "age": "26"
+    },
+    "gender": {
+      "id": 0,
+      "label": "Male"
+    },
+    "teamType": "national",
+    "playerIds": [
+      258928, 242055, 81776, 84614, 77520, 81326, 263364, 228312, 220165, 79525, 263310, 245582,
+      84615, 70918, 256215, 245685, 190941, 81784, 271326, 246757, 261375, 272648, 199904, 254994,
+      213654
+    ],
+    "squadBuilder": {
+      "formation": null,
+      "formationShape": null,
+      "formationCandidates": [],
+      "formationMethod": "Exact position-multiset match against FIFACM squad-builder definitions; null if ambiguous or unmatched.",
+      "rating": 72,
+      "ratingMethod": "FIFACM team profile Rating; not a calculated community-squad rating.",
+      "valueEur": 57725000,
+      "wageEur": 158100,
+      "financialScope": "All source-displayed playerIds, including substitutes/reserves; excludes loaned-out players. National rosters may be partial.",
+      "financialMethod": "Sum of players.json valueEur/wageEur; source player amounts may be rounded.",
+      "wagePeriod": "week",
+      "startingXI": [
+        {
+          "playerId": 79525,
+          "position": "LW",
+          "overallRating": 67,
+          "sourcePositionId": 27
+        },
+        {
+          "playerId": 220165,
+          "position": "ST",
+          "overallRating": 76,
+          "sourcePositionId": 25
+        },
+        {
+          "playerId": 228312,
+          "position": "RW",
+          "overallRating": 73,
+          "sourcePositionId": 23
+        },
+        {
+          "playerId": 263364,
+          "position": "LCM",
+          "overallRating": 71,
+          "sourcePositionId": 15
+        },
+        {
+          "playerId": 81326,
+          "position": "CDM",
+          "overallRating": 71,
+          "sourcePositionId": 10
+        },
+        {
+          "playerId": 77520,
+          "position": "LB",
+          "overallRating": 67,
+          "sourcePositionId": 7
+        },
+        {
+          "playerId": 84614,
+          "position": "LCB",
+          "overallRating": 60,
+          "sourcePositionId": 6
+        },
+        {
+          "playerId": 81776,
+          "position": "RCB",
+          "overallRating": 70,
+          "sourcePositionId": 4
+        },
+        {
+          "playerId": 242055,
+          "position": "RB",
+          "overallRating": 67,
+          "sourcePositionId": 3
+        },
+        {
+          "playerId": 258928,
+          "position": "GK",
+          "overallRating": 71,
+          "sourcePositionId": 0
+        }
+      ],
+      "startingXIComplete": false,
+      "missingStartingPlayerCount": 1,
+      "snapshotDate": "2026-10-06",
+      "sourceUrl": "https://www.fifacm.com/27/team/1334/finland",
+      "retrievedAt": "2026-10-22T03:02:16.386Z"
+    },
+    "nationId": 17
+  },
+  {
+    "id": 1335,
+    "label": "France",
+    "fifaVersion": 27,
+    "imageUrl": "https://www.fifacm.com/content/media/imgs/fc27/teams/256/l1335.png",
+    "overallRating": 85,
+    "attack": 88,
+    "midfield": 84,
+    "defense": 84,
+    "worthEur": 0,
+    "budgetEur": 0,
+    "foundationYear": 1904,
+    "stadiumCapacity": 80000,
+    "averageAge": 25,
+    "youthDevelopment": 0,
+    "profitability": 0,
+    "internationalPrestige": 10,
+    "colors": {
+      "background": "rgb(16, 73, 128)",
+      "text": "rgb(255, 255, 255)"
+    },
+    "sourceUrl": "https://www.fifacm.com/27/team/1335/france",
+    "sourceAttributes": {
+      "name": "France",
+      "worth": "0",
+      "budget": "0",
+      "foundation": "1904",
+      "capacity": "80000",
+      "ovr": "85",
+      "att": "88",
+      "mid": "84",
+      "def": "84",
+      "youth": "0",
+      "profitability": "0",
+      "international": "10",
+      "age": "25"
+    },
+    "gender": {
+      "id": 0,
+      "label": "Male"
+    },
+    "teamType": "national",
+    "playerIds": [
+      215698, 255654, 229558, 243715, 256769, 251570, 241637, 210008, 247827, 231443, 231747,
+      265526, 250723, 237678, 271918, 244067, 268534, 70415, 278903, 264652, 270673, 248243, 271421,
+      241486, 254579, 264862
+    ],
+    "squadBuilder": {
+      "formation": "433-5",
+      "formationShape": "4-3-3",
+      "formationCandidates": ["433-5"],
+      "formationMethod": "Exact position-multiset match against FIFACM squad-builder definitions; null if ambiguous or unmatched.",
+      "rating": 85,
+      "ratingMethod": "FIFACM team profile Rating; not a calculated community-squad rating.",
+      "valueEur": 1581000000,
+      "wageEur": 3009200,
+      "financialScope": "All source-displayed playerIds, including substitutes/reserves; excludes loaned-out players. National rosters may be partial.",
+      "financialMethod": "Sum of players.json valueEur/wageEur; source player amounts may be rounded.",
+      "wagePeriod": "week",
+      "startingXI": [
+        {
+          "playerId": 231747,
+          "position": "LW",
+          "overallRating": 91,
+          "sourcePositionId": 27
+        },
+        {
+          "playerId": 231443,
+          "position": "ST",
+          "overallRating": 90,
+          "sourcePositionId": 25
+        },
+        {
+          "playerId": 247827,
+          "position": "RW",
+          "overallRating": 90,
+          "sourcePositionId": 23
+        },
+        {
+          "playerId": 210008,
+          "position": "LCM",
+          "overallRating": 85,
+          "sourcePositionId": 15
+        },
+        {
+          "playerId": 241637,
+          "position": "CM",
+          "overallRating": 84,
+          "sourcePositionId": 14
+        },
+        {
+          "playerId": 251570,
+          "position": "RCM",
+          "overallRating": 86,
+          "sourcePositionId": 13
+        },
+        {
+          "playerId": 256769,
+          "position": "LB",
+          "overallRating": 80,
+          "sourcePositionId": 7
+        },
+        {
+          "playerId": 243715,
+          "position": "LCB",
+          "overallRating": 88,
+          "sourcePositionId": 6
+        },
+        {
+          "playerId": 229558,
+          "position": "RCB",
+          "overallRating": 87,
+          "sourcePositionId": 4
+        },
+        {
+          "playerId": 255654,
+          "position": "RB",
+          "overallRating": 81,
+          "sourcePositionId": 3
+        },
+        {
+          "playerId": 215698,
+          "position": "GK",
+          "overallRating": 87,
+          "sourcePositionId": 0
+        }
+      ],
+      "startingXIComplete": true,
+      "missingStartingPlayerCount": 0,
+      "snapshotDate": "2026-10-06",
+      "sourceUrl": "https://www.fifacm.com/27/team/1335/france",
+      "retrievedAt": "2026-10-22T03:02:36.596Z"
+    },
+    "nationId": 18
+  },
+  {
+    "id": 1337,
+    "label": "Germany",
+    "fifaVersion": 27,
+    "imageUrl": "https://www.fifacm.com/content/media/imgs/fc27/teams/256/l1337.png",
+    "overallRating": 83,
+    "attack": 79,
+    "midfield": 85,
+    "defense": 83,
+    "worthEur": 0,
+    "budgetEur": 0,
+    "foundationYear": 1900,
+    "stadiumCapacity": 47800,
+    "averageAge": 26,
+    "youthDevelopment": 0,
+    "profitability": 0,
+    "internationalPrestige": 9,
+    "colors": {
+      "background": "rgb(255, 255, 255)",
+      "text": "rgb(1, 1, 1)"
+    },
+    "sourceUrl": "https://www.fifacm.com/27/team/1337/germany",
+    "sourceAttributes": {
+      "name": "Germany",
+      "worth": "0",
+      "budget": "0",
+      "foundation": "1900",
+      "capacity": "47800",
+      "ovr": "83",
+      "att": "79",
+      "mid": "85",
+      "def": "83",
+      "youth": "0",
+      "profitability": "0",
+      "international": "9",
+      "age": "26"
+    },
+    "gender": {
+      "id": 0,
+      "label": "Male"
+    },
+    "teamType": "national",
+    "playerIds": [
+      192448, 262666, 213331, 247819, 236703, 212622, 246863, 256630, 78063, 244257, 260926, 241925,
+      206113, 252448, 227647, 71178, 275298, 256790, 263765, 254022, 229476, 263887, 256261, 223885,
+      269705, 257191
+    ],
+    "squadBuilder": {
+      "formation": "433-4",
+      "formationShape": "4-3-3",
+      "formationCandidates": ["433-4"],
+      "formationMethod": "Exact position-multiset match against FIFACM squad-builder definitions; null if ambiguous or unmatched.",
+      "rating": 83,
+      "ratingMethod": "FIFACM team profile Rating; not a calculated community-squad rating.",
+      "valueEur": 1085000000,
+      "wageEur": 1686000,
+      "financialScope": "All source-displayed playerIds, including substitutes/reserves; excludes loaned-out players. National rosters may be partial.",
+      "financialMethod": "Sum of players.json valueEur/wageEur; source player amounts may be rounded.",
+      "wagePeriod": "week",
+      "startingXI": [
+        {
+          "playerId": 260926,
+          "position": "LW",
+          "overallRating": 79,
+          "sourcePositionId": 27
+        },
+        {
+          "playerId": 244257,
+          "position": "ST",
+          "overallRating": 82,
+          "sourcePositionId": 25
+        },
+        {
+          "playerId": 78063,
+          "position": "RW",
+          "overallRating": 77,
+          "sourcePositionId": 23
+        },
+        {
+          "playerId": 256630,
+          "position": "LCM",
+          "overallRating": 86,
+          "sourcePositionId": 15
+        },
+        {
+          "playerId": 246863,
+          "position": "RCM",
+          "overallRating": 85,
+          "sourcePositionId": 13
+        },
+        {
+          "playerId": 212622,
+          "position": "CDM",
+          "overallRating": 88,
+          "sourcePositionId": 10
+        },
+        {
+          "playerId": 236703,
+          "position": "LB",
+          "overallRating": 83,
+          "sourcePositionId": 7
+        },
+        {
+          "playerId": 247819,
+          "position": "LCB",
+          "overallRating": 87,
+          "sourcePositionId": 6
+        },
+        {
+          "playerId": 213331,
+          "position": "RCB",
+          "overallRating": 87,
+          "sourcePositionId": 4
+        },
+        {
+          "playerId": 262666,
+          "position": "RB",
+          "overallRating": 76,
+          "sourcePositionId": 3
+        },
+        {
+          "playerId": 192448,
+          "position": "GK",
+          "overallRating": 82,
+          "sourcePositionId": 0
+        }
+      ],
+      "startingXIComplete": true,
+      "missingStartingPlayerCount": 0,
+      "snapshotDate": "2026-10-06",
+      "sourceUrl": "https://www.fifacm.com/27/team/1337/germany",
+      "retrievedAt": "2026-10-22T03:02:29.343Z"
+    },
+    "nationId": 21
+  },
+  {
+    "id": 1338,
+    "label": "Greece",
+    "fifaVersion": 27,
+    "imageUrl": "https://www.fifacm.com/content/media/imgs/fc27/teams/256/l1338.png",
+    "overallRating": 77,
+    "attack": 77,
+    "midfield": 76,
+    "defense": 76,
+    "worthEur": 0,
+    "budgetEur": 0,
+    "foundationYear": 1926,
+    "stadiumCapacity": 33505,
+    "averageAge": 25,
+    "youthDevelopment": 0,
+    "profitability": 0,
+    "internationalPrestige": 4,
+    "colors": {
+      "background": "rgb(51, 92, 180)",
+      "text": "rgb(255, 255, 255)"
+    },
+    "sourceUrl": "https://www.fifacm.com/27/team/1338/greece",
+    "sourceAttributes": {
+      "name": "Greece",
+      "worth": "0",
+      "budget": "0",
+      "foundation": "1926",
+      "capacity": "33505",
+      "ovr": "77",
+      "att": "77",
+      "mid": "76",
+      "def": "76",
+      "youth": "0",
+      "profitability": "0",
+      "international": "4",
+      "age": "25"
+    },
+    "gender": {
+      "id": 0,
+      "label": "Male"
+    },
+    "teamType": "national",
+    "playerIds": [
+      211990, 242000, 232223, 208260, 70497, 256948, 229188, 252552, 278032, 255634, 270077, 73884,
+      270887, 246708, 73885, 258015, 276211, 261478, 234987
+    ],
+    "squadBuilder": {
+      "formation": null,
+      "formationShape": null,
+      "formationCandidates": [],
+      "formationMethod": "Exact position-multiset match against FIFACM squad-builder definitions; null if ambiguous or unmatched.",
+      "rating": 77,
+      "ratingMethod": "FIFACM team profile Rating; not a calculated community-squad rating.",
+      "valueEur": 257100000,
+      "wageEur": 645700,
+      "financialScope": "All source-displayed playerIds, including substitutes/reserves; excludes loaned-out players. National rosters may be partial.",
+      "financialMethod": "Sum of players.json valueEur/wageEur; source player amounts may be rounded.",
+      "wagePeriod": "week",
+      "startingXI": [
+        {
+          "playerId": 229188,
+          "position": "RS",
+          "overallRating": 82,
+          "sourcePositionId": 24
+        },
+        {
+          "playerId": 256948,
+          "position": "LM",
+          "overallRating": 82,
+          "sourcePositionId": 16
+        },
+        {
+          "playerId": 70497,
+          "position": "RM",
+          "overallRating": 76,
+          "sourcePositionId": 12
+        },
+        {
+          "playerId": 208260,
+          "position": "RDM",
+          "overallRating": 72,
+          "sourcePositionId": 9
+        },
+        {
+          "playerId": 232223,
+          "position": "LB",
+          "overallRating": 76,
+          "sourcePositionId": 7
+        },
+        {
+          "playerId": 242000,
+          "position": "LCB",
+          "overallRating": 78,
+          "sourcePositionId": 6
+        },
+        {
+          "playerId": 211990,
+          "position": "GK",
+          "overallRating": 79,
+          "sourcePositionId": 0
+        }
+      ],
+      "startingXIComplete": false,
+      "missingStartingPlayerCount": 4,
+      "snapshotDate": "2026-10-06",
+      "sourceUrl": "https://www.fifacm.com/27/team/1338/greece",
+      "retrievedAt": "2026-10-22T03:02:20.834Z"
+    },
+    "nationId": 22
+  },
+  {
+    "id": 1341,
+    "label": "Iceland",
+    "fifaVersion": 27,
+    "imageUrl": "https://www.fifacm.com/content/media/imgs/fc27/teams/256/l1341.png",
+    "overallRating": 71,
+    "attack": 71,
+    "midfield": 72,
+    "defense": 68,
+    "worthEur": 0,
+    "budgetEur": 0,
+    "foundationYear": 1947,
+    "stadiumCapacity": 15000,
+    "averageAge": 27,
+    "youthDevelopment": 0,
+    "profitability": 0,
+    "internationalPrestige": 2,
+    "colors": {
+      "background": "rgb(36, 91, 167)",
+      "text": "rgb(255, 255, 255)"
+    },
+    "sourceUrl": "https://www.fifacm.com/27/team/1341/iceland",
+    "sourceAttributes": {
+      "name": "Iceland",
+      "worth": "0",
+      "budget": "0",
+      "foundation": "1947",
+      "capacity": "15000",
+      "ovr": "71",
+      "att": "71",
+      "mid": "72",
+      "def": "68",
+      "youth": "0",
+      "profitability": "0",
+      "international": "2",
+      "age": "27"
+    },
+    "gender": {
+      "id": 0,
+      "label": "Male"
+    },
+    "teamType": "national",
+    "playerIds": [
+      264133, 190640, 208522, 226510, 264436, 241474, 262088, 246814, 238004, 270787, 269186,
+      256036, 236883, 277902, 262551, 246704, 184484, 222562, 271156, 261457, 238196, 189167,
+      248749, 76294, 258533, 274927
+    ],
+    "squadBuilder": {
+      "formation": null,
+      "formationShape": "4-4-2",
+      "formationCandidates": ["442", "442-2"],
+      "formationMethod": "Exact position-multiset match against FIFACM squad-builder definitions; null if ambiguous or unmatched.",
+      "rating": 71,
+      "ratingMethod": "FIFACM team profile Rating; not a calculated community-squad rating.",
+      "valueEur": 87325000,
+      "wageEur": 277000,
+      "financialScope": "All source-displayed playerIds, including substitutes/reserves; excludes loaned-out players. National rosters may be partial.",
+      "financialMethod": "Sum of players.json valueEur/wageEur; source player amounts may be rounded.",
+      "wagePeriod": "week",
+      "startingXI": [
+        {
+          "playerId": 269186,
+          "position": "LS",
+          "overallRating": 74,
+          "sourcePositionId": 26
+        },
+        {
+          "playerId": 270787,
+          "position": "RS",
+          "overallRating": 69,
+          "sourcePositionId": 24
+        },
+        {
+          "playerId": 238004,
+          "position": "LM",
+          "overallRating": 77,
+          "sourcePositionId": 16
+        },
+        {
+          "playerId": 246814,
+          "position": "LCM",
+          "overallRating": 74,
+          "sourcePositionId": 15
+        },
+        {
+          "playerId": 262088,
+          "position": "RCM",
+          "overallRating": 78,
+          "sourcePositionId": 13
+        },
+        {
+          "playerId": 241474,
+          "position": "RM",
+          "overallRating": 70,
+          "sourcePositionId": 12
+        },
+        {
+          "playerId": 264436,
+          "position": "LB",
+          "overallRating": 71,
+          "sourcePositionId": 7
+        },
+        {
+          "playerId": 226510,
+          "position": "LCB",
+          "overallRating": 67,
+          "sourcePositionId": 6
+        },
+        {
+          "playerId": 208522,
+          "position": "RCB",
+          "overallRating": 69,
+          "sourcePositionId": 4
+        },
+        {
+          "playerId": 190640,
+          "position": "RB",
+          "overallRating": 66,
+          "sourcePositionId": 3
+        },
+        {
+          "playerId": 264133,
+          "position": "GK",
+          "overallRating": 69,
+          "sourcePositionId": 0
+        }
+      ],
+      "startingXIComplete": true,
+      "missingStartingPlayerCount": 0,
+      "snapshotDate": "2026-10-06",
+      "sourceUrl": "https://www.fifacm.com/27/team/1341/iceland",
+      "retrievedAt": "2026-10-22T03:02:41.601Z"
+    },
+    "nationId": 24
+  },
+  {
+    "id": 1343,
+    "label": "Italy",
+    "fifaVersion": 27,
+    "imageUrl": "https://www.fifacm.com/content/media/imgs/fc27/teams/256/l1343.png",
+    "overallRating": 82,
+    "attack": 79,
+    "midfield": 81,
+    "defense": 82,
+    "worthEur": 0,
+    "budgetEur": 0,
+    "foundationYear": 1898,
+    "stadiumCapacity": 73261,
+    "averageAge": 25,
+    "youthDevelopment": 0,
+    "profitability": 0,
+    "internationalPrestige": 8,
+    "colors": {
+      "background": "rgb(0, 107, 187)",
+      "text": "rgb(255, 255, 255)"
+    },
+    "sourceUrl": "https://www.fifacm.com/27/team/1343/italy",
+    "sourceAttributes": {
+      "name": "Italy",
+      "worth": "0",
+      "budget": "0",
+      "foundation": "1898",
+      "capacity": "73261",
+      "ovr": "82",
+      "att": "79",
+      "mid": "81",
+      "def": "82",
+      "youth": "0",
+      "profitability": "0",
+      "international": "8",
+      "age": "25"
+    },
+    "gender": {
+      "id": 0,
+      "label": "Male"
+    },
+    "teamType": "national",
+    "playerIds": [
+      230621, 217870, 229582, 237383, 257711, 224232, 260823, 241096, 239807, 253002, 277327,
+      265188, 277869, 238067, 268703, 247888, 259584, 225439, 269181, 252154, 236610, 76431, 226710,
+      73379, 74483, 240091
+    ],
+    "squadBuilder": {
+      "formation": null,
+      "formationShape": null,
+      "formationCandidates": [],
+      "formationMethod": "Exact position-multiset match against FIFACM squad-builder definitions; null if ambiguous or unmatched.",
+      "rating": 82,
+      "ratingMethod": "FIFACM team profile Rating; not a calculated community-squad rating.",
+      "valueEur": 777800000,
+      "wageEur": 1533600,
+      "financialScope": "All source-displayed playerIds, including substitutes/reserves; excludes loaned-out players. National rosters may be partial.",
+      "financialMethod": "Sum of players.json valueEur/wageEur; source player amounts may be rounded.",
+      "wagePeriod": "week",
+      "startingXI": [
+        {
+          "playerId": 277327,
+          "position": "ST",
+          "overallRating": 77,
+          "sourcePositionId": 25
+        },
+        {
+          "playerId": 253002,
+          "position": "LAM",
+          "overallRating": 78,
+          "sourcePositionId": 19
+        },
+        {
+          "playerId": 239807,
+          "position": "RAM",
+          "overallRating": 80,
+          "sourcePositionId": 17
+        },
+        {
+          "playerId": 241096,
+          "position": "LCM",
+          "overallRating": 85,
+          "sourcePositionId": 15
+        },
+        {
+          "playerId": 260823,
+          "position": "CM",
+          "overallRating": 76,
+          "sourcePositionId": 14
+        },
+        {
+          "playerId": 224232,
+          "position": "RCM",
+          "overallRating": 87,
+          "sourcePositionId": 13
+        },
+        {
+          "playerId": 257711,
+          "position": "LB",
+          "overallRating": 82,
+          "sourcePositionId": 7
+        },
+        {
+          "playerId": 237383,
+          "position": "LCB",
+          "overallRating": 86,
+          "sourcePositionId": 6
+        },
+        {
+          "playerId": 229582,
+          "position": "RCB",
+          "overallRating": 84,
+          "sourcePositionId": 4
+        },
+        {
+          "playerId": 217870,
+          "position": "RB",
+          "overallRating": 82,
+          "sourcePositionId": 3
+        },
+        {
+          "playerId": 230621,
+          "position": "GK",
+          "overallRating": 89,
+          "sourcePositionId": 0
+        }
+      ],
+      "startingXIComplete": true,
+      "missingStartingPlayerCount": 0,
+      "snapshotDate": "2026-10-06",
+      "sourceUrl": "https://www.fifacm.com/27/team/1343/italy",
+      "retrievedAt": "2026-10-22T03:02:33.854Z"
+    },
+    "nationId": 27
+  },
+  {
+    "id": 1352,
+    "label": "Norway",
+    "fifaVersion": 27,
+    "imageUrl": "https://www.fifacm.com/content/media/imgs/fc27/teams/256/l1352.png",
+    "overallRating": 79,
+    "attack": 80,
+    "midfield": 81,
+    "defense": 76,
+    "worthEur": 0,
+    "budgetEur": 0,
+    "foundationYear": 1902,
+    "stadiumCapacity": 27200,
+    "averageAge": 26,
+    "youthDevelopment": 0,
+    "profitability": 0,
+    "internationalPrestige": 5,
+    "colors": {
+      "background": "rgb(164, 5, 1)",
+      "text": "rgb(255, 255, 255)"
+    },
+    "sourceUrl": "https://www.fifacm.com/27/team/1352/norway",
+    "sourceAttributes": {
+      "name": "Norway",
+      "worth": "0",
+      "budget": "0",
+      "foundation": "1902",
+      "capacity": "27200",
+      "ovr": "79",
+      "att": "80",
+      "mid": "81",
+      "def": "76",
+      "youth": "0",
+      "profitability": "0",
+      "international": "5",
+      "age": "26"
+    },
+    "gender": {
+      "id": 0,
+      "label": "Male"
+    },
+    "teamType": "national",
+    "playerIds": [
+      185427, 229891, 224258, 248342, 262135, 228092, 222665, 222227, 277295, 239085, 262863,
+      238516, 216549, 260952, 257568, 238756, 242725, 258892, 247611, 231913, 239125, 268375,
+      242623, 277305, 259185
+    ],
+    "squadBuilder": {
+      "formation": "433-4",
+      "formationShape": "4-3-3",
+      "formationCandidates": ["433-4"],
+      "formationMethod": "Exact position-multiset match against FIFACM squad-builder definitions; null if ambiguous or unmatched.",
+      "rating": 79,
+      "ratingMethod": "FIFACM team profile Rating; not a calculated community-squad rating.",
+      "valueEur": 538000000,
+      "wageEur": 1245000,
+      "financialScope": "All source-displayed playerIds, including substitutes/reserves; excludes loaned-out players. National rosters may be partial.",
+      "financialMethod": "Sum of players.json valueEur/wageEur; source player amounts may be rounded.",
+      "wagePeriod": "week",
+      "startingXI": [
+        {
+          "playerId": 262863,
+          "position": "LW",
+          "overallRating": 78,
+          "sourcePositionId": 27
+        },
+        {
+          "playerId": 239085,
+          "position": "ST",
+          "overallRating": 91,
+          "sourcePositionId": 25
+        },
+        {
+          "playerId": 277295,
+          "position": "RW",
+          "overallRating": 76,
+          "sourcePositionId": 23
+        },
+        {
+          "playerId": 222227,
+          "position": "LCM",
+          "overallRating": 79,
+          "sourcePositionId": 15
+        },
+        {
+          "playerId": 222665,
+          "position": "RCM",
+          "overallRating": 86,
+          "sourcePositionId": 13
+        },
+        {
+          "playerId": 228092,
+          "position": "CDM",
+          "overallRating": 79,
+          "sourcePositionId": 10
+        },
+        {
+          "playerId": 262135,
+          "position": "LB",
+          "overallRating": 73,
+          "sourcePositionId": 7
+        },
+        {
+          "playerId": 248342,
+          "position": "LCB",
+          "overallRating": 75,
+          "sourcePositionId": 6
+        },
+        {
+          "playerId": 224258,
+          "position": "RCB",
+          "overallRating": 77,
+          "sourcePositionId": 4
+        },
+        {
+          "playerId": 229891,
+          "position": "RB",
+          "overallRating": 82,
+          "sourcePositionId": 3
+        },
+        {
+          "playerId": 185427,
+          "position": "GK",
+          "overallRating": 74,
+          "sourcePositionId": 0
+        }
+      ],
+      "startingXIComplete": true,
+      "missingStartingPlayerCount": 0,
+      "snapshotDate": "2026-10-06",
+      "sourceUrl": "https://www.fifacm.com/27/team/1352/norway",
+      "retrievedAt": "2026-10-22T03:02:24.873Z"
+    },
+    "nationId": 36
+  },
+  {
+    "id": 1353,
+    "label": "Poland",
+    "fifaVersion": 27,
+    "imageUrl": "https://www.fifacm.com/content/media/imgs/fc27/teams/256/l1353.png",
+    "overallRating": 77,
+    "attack": 84,
+    "midfield": 76,
+    "defense": 77,
+    "worthEur": 0,
+    "budgetEur": 0,
+    "foundationYear": 1919,
+    "stadiumCapacity": 58580,
+    "averageAge": 25,
+    "youthDevelopment": 0,
+    "profitability": 0,
+    "internationalPrestige": 5,
+    "colors": {
+      "background": "rgb(255, 2, 2)",
+      "text": "rgb(255, 255, 255)"
+    },
+    "sourceUrl": "https://www.fifacm.com/27/team/1353/poland",
+    "sourceAttributes": {
+      "name": "Poland",
+      "worth": "0",
+      "budget": "0",
+      "foundation": "1919",
+      "capacity": "58580",
+      "ovr": "77",
+      "att": "84",
+      "mid": "76",
+      "def": "77",
+      "youth": "0",
+      "profitability": "0",
+      "international": "5",
+      "age": "25"
+    },
+    "gender": {
+      "id": 0,
+      "label": "Male"
+    },
+    "teamType": "national",
+    "playerIds": [
+      238186, 227174, 81427, 220570, 265693, 262113, 210406, 243222, 252495, 235973, 188545, 254819,
+      243949, 224301, 258239, 238662, 251633, 75754, 243185, 212138, 72095, 73903, 267994, 258604
+    ],
+    "squadBuilder": {
+      "formation": "4411",
+      "formationShape": "4-4-1-1",
+      "formationCandidates": ["4411"],
+      "formationMethod": "Exact position-multiset match against FIFACM squad-builder definitions; null if ambiguous or unmatched.",
+      "rating": 77,
+      "ratingMethod": "FIFACM team profile Rating; not a calculated community-squad rating.",
+      "valueEur": 291000000,
+      "wageEur": 474800,
+      "financialScope": "All source-displayed playerIds, including substitutes/reserves; excludes loaned-out players. National rosters may be partial.",
+      "financialMethod": "Sum of players.json valueEur/wageEur; source player amounts may be rounded.",
+      "wagePeriod": "week",
+      "startingXI": [
+        {
+          "playerId": 188545,
+          "position": "ST",
+          "overallRating": 84,
+          "sourcePositionId": 25
+        },
+        {
+          "playerId": 235973,
+          "position": "CAM",
+          "overallRating": 77,
+          "sourcePositionId": 18
+        },
+        {
+          "playerId": 252495,
+          "position": "LM",
+          "overallRating": 77,
+          "sourcePositionId": 16
+        },
+        {
+          "playerId": 243222,
+          "position": "LCM",
+          "overallRating": 72,
+          "sourcePositionId": 15
+        },
+        {
+          "playerId": 210406,
+          "position": "RCM",
+          "overallRating": 82,
+          "sourcePositionId": 13
+        },
+        {
+          "playerId": 262113,
+          "position": "RM",
+          "overallRating": 78,
+          "sourcePositionId": 12
+        },
+        {
+          "playerId": 265693,
+          "position": "LB",
+          "overallRating": 82,
+          "sourcePositionId": 7
+        },
+        {
+          "playerId": 220570,
+          "position": "LCB",
+          "overallRating": 82,
+          "sourcePositionId": 6
+        },
+        {
+          "playerId": 81427,
+          "position": "RCB",
+          "overallRating": 71,
+          "sourcePositionId": 4
+        },
+        {
+          "playerId": 227174,
+          "position": "RB",
+          "overallRating": 81,
+          "sourcePositionId": 3
+        },
+        {
+          "playerId": 238186,
+          "position": "GK",
+          "overallRating": 77,
+          "sourcePositionId": 0
+        }
+      ],
+      "startingXIComplete": true,
+      "missingStartingPlayerCount": 0,
+      "snapshotDate": "2026-10-06",
+      "sourceUrl": "https://www.fifacm.com/27/team/1353/poland",
+      "retrievedAt": "2026-10-22T03:02:18.034Z"
+    },
+    "nationId": 37
+  },
+  {
+    "id": 1354,
+    "label": "Portugal",
+    "fifaVersion": 27,
+    "imageUrl": "https://www.fifacm.com/content/media/imgs/fc27/teams/256/l1354.png",
+    "overallRating": 85,
+    "attack": 83,
+    "midfield": 85,
+    "defense": 84,
+    "worthEur": 0,
+    "budgetEur": 0,
+    "foundationYear": 1914,
+    "stadiumCapacity": 68100,
+    "averageAge": 27,
+    "youthDevelopment": 0,
+    "profitability": 0,
+    "internationalPrestige": 8,
+    "colors": {
+      "background": "rgb(210, 10, 15)",
+      "text": "rgb(255, 255, 255)"
+    },
+    "sourceUrl": "https://www.fifacm.com/27/team/1354/portugal",
+    "sourceAttributes": {
+      "name": "Portugal",
+      "worth": "0",
+      "budget": "0",
+      "foundation": "1914",
+      "capacity": "68100",
+      "ovr": "85",
+      "att": "83",
+      "mid": "85",
+      "def": "84",
+      "youth": "0",
+      "profitability": "0",
+      "international": "8",
+      "age": "27"
+    },
+    "gender": {
+      "id": 0,
+      "label": "Male"
+    },
+    "teamType": "national",
+    "playerIds": [
+      234577, 210514, 239818, 273906, 252145, 272834, 224293, 255253, 212198, 20801, 242444, 251530,
+      234574, 241721, 218667, 266096, 210385, 256903, 270060, 238616, 257179, 244778, 229391,
+      252037, 253124, 261050
+    ],
+    "squadBuilder": {
+      "formation": "4312",
+      "formationShape": "4-3-1-2",
+      "formationCandidates": ["4312"],
+      "formationMethod": "Exact position-multiset match against FIFACM squad-builder definitions; null if ambiguous or unmatched.",
+      "rating": 85,
+      "ratingMethod": "FIFACM team profile Rating; not a calculated community-squad rating.",
+      "valueEur": 1276000000,
+      "wageEur": 2097600,
+      "financialScope": "All source-displayed playerIds, including substitutes/reserves; excludes loaned-out players. National rosters may be partial.",
+      "financialMethod": "Sum of players.json valueEur/wageEur; source player amounts may be rounded.",
+      "wagePeriod": "week",
+      "startingXI": [
+        {
+          "playerId": 242444,
+          "position": "LS",
+          "overallRating": 83,
+          "sourcePositionId": 26
+        },
+        {
+          "playerId": 20801,
+          "position": "RS",
+          "overallRating": 84,
+          "sourcePositionId": 24
+        },
+        {
+          "playerId": 212198,
+          "position": "CAM",
+          "overallRating": 89,
+          "sourcePositionId": 18
+        },
+        {
+          "playerId": 255253,
+          "position": "LCM",
+          "overallRating": 90,
+          "sourcePositionId": 15
+        },
+        {
+          "playerId": 224293,
+          "position": "CM",
+          "overallRating": 85,
+          "sourcePositionId": 14
+        },
+        {
+          "playerId": 272834,
+          "position": "RCM",
+          "overallRating": 88,
+          "sourcePositionId": 13
+        },
+        {
+          "playerId": 252145,
+          "position": "LB",
+          "overallRating": 89,
+          "sourcePositionId": 7
+        },
+        {
+          "playerId": 273906,
+          "position": "LCB",
+          "overallRating": 78,
+          "sourcePositionId": 6
+        },
+        {
+          "playerId": 239818,
+          "position": "RCB",
+          "overallRating": 87,
+          "sourcePositionId": 4
+        },
+        {
+          "playerId": 210514,
+          "position": "RB",
+          "overallRating": 83,
+          "sourcePositionId": 3
+        },
+        {
+          "playerId": 234577,
+          "position": "GK",
+          "overallRating": 86,
+          "sourcePositionId": 0
+        }
+      ],
+      "startingXIComplete": true,
+      "missingStartingPlayerCount": 0,
+      "snapshotDate": "2026-10-06",
+      "sourceUrl": "https://www.fifacm.com/27/team/1354/portugal",
+      "retrievedAt": "2026-10-22T03:02:39.803Z"
+    },
+    "nationId": 38
+  },
+  {
+    "id": 1355,
+    "label": "Republic of Ireland",
+    "fifaVersion": 27,
+    "imageUrl": "https://www.fifacm.com/content/media/imgs/fc27/teams/256/l1355.png",
+    "overallRating": 74,
+    "attack": 76,
+    "midfield": 73,
+    "defense": 74,
+    "worthEur": 0,
+    "budgetEur": 0,
+    "foundationYear": 1921,
+    "stadiumCapacity": 51700,
+    "averageAge": 27,
+    "youthDevelopment": 0,
+    "profitability": 0,
+    "internationalPrestige": 4,
+    "colors": {
+      "background": "rgb(0, 153, 76)",
+      "text": "rgb(255, 255, 255)"
+    },
+    "sourceUrl": "https://www.fifacm.com/27/team/1355/republic-of-ireland",
+    "sourceAttributes": {
+      "name": "Republic of Ireland",
+      "worth": "0",
+      "budget": "0",
+      "foundation": "1921",
+      "capacity": "51700",
+      "ovr": "74",
+      "att": "76",
+      "mid": "73",
+      "def": "74",
+      "youth": "0",
+      "profitability": "0",
+      "international": "4",
+      "age": "27"
+    },
+    "gender": {
+      "id": 0,
+      "label": "Male"
+    },
+    "teamType": "national",
+    "playerIds": [
+      240913, 180216, 253510, 248484, 235405, 226012, 231005, 228151, 233851, 252066, 245902,
+      259608, 244288, 204936, 264509, 235156, 216464, 252376, 265412, 246991, 220139, 232284,
+      201884, 236344, 238505, 243585
+    ],
+    "squadBuilder": {
+      "formation": null,
+      "formationShape": null,
+      "formationCandidates": [],
+      "formationMethod": "Exact position-multiset match against FIFACM squad-builder definitions; null if ambiguous or unmatched.",
+      "rating": 74,
+      "ratingMethod": "FIFACM team profile Rating; not a calculated community-squad rating.",
+      "valueEur": 149500000,
+      "wageEur": 767600,
+      "financialScope": "All source-displayed playerIds, including substitutes/reserves; excludes loaned-out players. National rosters may be partial.",
+      "financialMethod": "Sum of players.json valueEur/wageEur; source player amounts may be rounded.",
+      "wagePeriod": "week",
+      "startingXI": [
+        {
+          "playerId": 245902,
+          "position": "ST",
+          "overallRating": 78,
+          "sourcePositionId": 25
+        },
+        {
+          "playerId": 252066,
+          "position": "LM",
+          "overallRating": 74,
+          "sourcePositionId": 16
+        },
+        {
+          "playerId": 233851,
+          "position": "LCM",
+          "overallRating": 72,
+          "sourcePositionId": 15
+        },
+        {
+          "playerId": 228151,
+          "position": "RCM",
+          "overallRating": 77,
+          "sourcePositionId": 13
+        },
+        {
+          "playerId": 231005,
+          "position": "RM",
+          "overallRating": 70,
+          "sourcePositionId": 12
+        },
+        {
+          "playerId": 226012,
+          "position": "LB",
+          "overallRating": 74,
+          "sourcePositionId": 7
+        },
+        {
+          "playerId": 235405,
+          "position": "LCB",
+          "overallRating": 75,
+          "sourcePositionId": 6
+        },
+        {
+          "playerId": 248484,
+          "position": "CB",
+          "overallRating": 79,
+          "sourcePositionId": 5
+        },
+        {
+          "playerId": 253510,
+          "position": "RCB",
+          "overallRating": 76,
+          "sourcePositionId": 4
+        },
+        {
+          "playerId": 180216,
+          "position": "RB",
+          "overallRating": 69,
+          "sourcePositionId": 3
+        },
+        {
+          "playerId": 240913,
+          "position": "GK",
+          "overallRating": 80,
+          "sourcePositionId": 0
+        }
+      ],
+      "startingXIComplete": true,
+      "missingStartingPlayerCount": 0,
+      "snapshotDate": "2026-10-06",
+      "sourceUrl": "https://www.fifacm.com/27/team/1355/republic-of-ireland",
+      "retrievedAt": "2026-10-22T03:02:30.798Z"
+    },
+    "nationId": 25
+  },
+  {
+    "id": 1356,
+    "label": "Romania",
+    "fifaVersion": 27,
+    "imageUrl": "https://www.fifacm.com/content/media/imgs/fc27/teams/256/l1356.png",
+    "overallRating": 73,
+    "attack": 73,
+    "midfield": 73,
+    "defense": 71,
+    "worthEur": 0,
+    "budgetEur": 0,
+    "foundationYear": 1909,
+    "stadiumCapacity": 55634,
+    "averageAge": 26,
+    "youthDevelopment": 0,
+    "profitability": 0,
+    "internationalPrestige": 5,
+    "colors": {
+      "background": "rgb(255, 204, 1)",
+      "text": "rgb(255, 1, 1)"
+    },
+    "sourceUrl": "https://www.fifacm.com/27/team/1356/romania",
+    "sourceAttributes": {
+      "name": "Romania",
+      "worth": "0",
+      "budget": "0",
+      "foundation": "1909",
+      "capacity": "55634",
+      "ovr": "73",
+      "att": "73",
+      "mid": "73",
+      "def": "71",
+      "youth": "0",
+      "profitability": "0",
+      "international": "5",
+      "age": "26"
+    },
+    "gender": {
+      "id": 0,
+      "label": "Male"
+    },
+    "teamType": "national",
+    "playerIds": [
+      234102, 81262, 260105, 248105, 248165, 212207, 243000, 226568, 266728, 248674, 248060, 239978,
+      243023, 87052, 247972, 278087, 260141, 248003, 237324, 248586, 243019, 270863, 241278, 236330
+    ],
+    "squadBuilder": {
+      "formation": null,
+      "formationShape": null,
+      "formationCandidates": [],
+      "formationMethod": "Exact position-multiset match against FIFACM squad-builder definitions; null if ambiguous or unmatched.",
+      "rating": 73,
+      "ratingMethod": "FIFACM team profile Rating; not a calculated community-squad rating.",
+      "valueEur": 101700000,
+      "wageEur": 248600,
+      "financialScope": "All source-displayed playerIds, including substitutes/reserves; excludes loaned-out players. National rosters may be partial.",
+      "financialMethod": "Sum of players.json valueEur/wageEur; source player amounts may be rounded.",
+      "wagePeriod": "week",
+      "startingXI": [
+        {
+          "playerId": 248674,
+          "position": "LS",
+          "overallRating": 72,
+          "sourcePositionId": 26
+        },
+        {
+          "playerId": 266728,
+          "position": "RS",
+          "overallRating": 72,
+          "sourcePositionId": 24
+        },
+        {
+          "playerId": 226568,
+          "position": "CAM",
+          "overallRating": 72,
+          "sourcePositionId": 18
+        },
+        {
+          "playerId": 243000,
+          "position": "LM",
+          "overallRating": 69,
+          "sourcePositionId": 16
+        },
+        {
+          "playerId": 212207,
+          "position": "RCM",
+          "overallRating": 75,
+          "sourcePositionId": 13
+        },
+        {
+          "playerId": 248165,
+          "position": "RM",
+          "overallRating": 80,
+          "sourcePositionId": 12
+        },
+        {
+          "playerId": 248105,
+          "position": "LCB",
+          "overallRating": 70,
+          "sourcePositionId": 6
+        },
+        {
+          "playerId": 260105,
+          "position": "CB",
+          "overallRating": 74,
+          "sourcePositionId": 5
+        },
+        {
+          "playerId": 81262,
+          "position": "RCB",
+          "overallRating": 70,
+          "sourcePositionId": 4
+        },
+        {
+          "playerId": 234102,
+          "position": "GK",
+          "overallRating": 79,
+          "sourcePositionId": 0
+        }
+      ],
+      "startingXIComplete": false,
+      "missingStartingPlayerCount": 1,
+      "snapshotDate": "2026-10-06",
+      "sourceUrl": "https://www.fifacm.com/27/team/1356/romania",
+      "retrievedAt": "2026-10-22T03:02:23.636Z"
+    },
+    "nationId": 39
+  },
+  {
+    "id": 1359,
+    "label": "Scotland",
+    "fifaVersion": 27,
+    "imageUrl": "https://www.fifacm.com/content/media/imgs/fc27/teams/256/l1359.png",
+    "overallRating": 76,
+    "attack": 77,
+    "midfield": 77,
+    "defense": 75,
+    "worthEur": 0,
+    "budgetEur": 0,
+    "foundationYear": 1873,
+    "stadiumCapacity": 52063,
+    "averageAge": 29,
+    "youthDevelopment": 0,
+    "profitability": 0,
+    "internationalPrestige": 4,
+    "colors": {
+      "background": "rgb(20, 55, 150)",
+      "text": "rgb(255, 255, 255)"
+    },
+    "sourceUrl": "https://www.fifacm.com/27/team/1359/scotland",
+    "sourceAttributes": {
+      "name": "Scotland",
+      "worth": "0",
+      "budget": "0",
+      "foundation": "1873",
+      "capacity": "52063",
+      "ovr": "76",
+      "att": "77",
+      "mid": "77",
+      "def": "75",
+      "youth": "0",
+      "profitability": "0",
+      "international": "4",
+      "age": "29"
+    },
+    "gender": {
+      "id": 0,
+      "label": "Male"
+    },
+    "teamType": "national",
+    "playerIds": [
+      216325, 248808, 198904, 216267, 242280, 213884, 266815, 210881, 237238, 226093, 233602,
+      198625, 225316, 212516, 257896, 234072, 245992, 201368, 247279, 226491, 216218, 225203,
+      244319, 221281, 76784
+    ],
+    "squadBuilder": {
+      "formation": null,
+      "formationShape": null,
+      "formationCandidates": [],
+      "formationMethod": "Exact position-multiset match against FIFACM squad-builder definitions; null if ambiguous or unmatched.",
+      "rating": 76,
+      "ratingMethod": "FIFACM team profile Rating; not a calculated community-squad rating.",
+      "valueEur": 232425000,
+      "wageEur": 1069600,
+      "financialScope": "All source-displayed playerIds, including substitutes/reserves; excludes loaned-out players. National rosters may be partial.",
+      "financialMethod": "Sum of players.json valueEur/wageEur; source player amounts may be rounded.",
+      "wagePeriod": "week",
+      "startingXI": [
+        {
+          "playerId": 226093,
+          "position": "ST",
+          "overallRating": 77,
+          "sourcePositionId": 25
+        },
+        {
+          "playerId": 237238,
+          "position": "CAM",
+          "overallRating": 86,
+          "sourcePositionId": 18
+        },
+        {
+          "playerId": 210881,
+          "position": "LM",
+          "overallRating": 83,
+          "sourcePositionId": 16
+        },
+        {
+          "playerId": 266815,
+          "position": "RM",
+          "overallRating": 71,
+          "sourcePositionId": 12
+        },
+        {
+          "playerId": 213884,
+          "position": "LDM",
+          "overallRating": 78,
+          "sourcePositionId": 11
+        },
+        {
+          "playerId": 242280,
+          "position": "RDM",
+          "overallRating": 77,
+          "sourcePositionId": 9
+        },
+        {
+          "playerId": 216267,
+          "position": "LB",
+          "overallRating": 80,
+          "sourcePositionId": 7
+        },
+        {
+          "playerId": 198904,
+          "position": "RCB",
+          "overallRating": 70,
+          "sourcePositionId": 4
+        },
+        {
+          "playerId": 248808,
+          "position": "RB",
+          "overallRating": 75,
+          "sourcePositionId": 3
+        },
+        {
+          "playerId": 216325,
+          "position": "GK",
+          "overallRating": 71,
+          "sourcePositionId": 0
+        }
+      ],
+      "startingXIComplete": false,
+      "missingStartingPlayerCount": 1,
+      "snapshotDate": "2026-10-06",
+      "sourceUrl": "https://www.fifacm.com/27/team/1359/scotland",
+      "retrievedAt": "2026-10-22T03:02:43.748Z"
+    },
+    "nationId": 42
+  },
+  {
+    "id": 1362,
+    "label": "Spain",
+    "fifaVersion": 27,
+    "imageUrl": "https://www.fifacm.com/content/media/imgs/fc27/teams/256/l1362.png",
+    "overallRating": 86,
+    "attack": 85,
+    "midfield": 86,
+    "defense": 84,
+    "worthEur": 0,
+    "budgetEur": 0,
+    "foundationYear": 1909,
+    "stadiumCapacity": 68456,
+    "averageAge": 26,
+    "youthDevelopment": 0,
+    "profitability": 0,
+    "internationalPrestige": 10,
+    "colors": {
+      "background": "rgb(181, 8, 16)",
+      "text": "rgb(255, 173, 25)"
+    },
+    "sourceUrl": "https://www.fifacm.com/27/team/1362/spain",
+    "sourceAttributes": {
+      "name": "Spain",
+      "worth": "0",
+      "budget": "0",
+      "foundation": "1909",
+      "capacity": "68456",
+      "ovr": "86",
+      "att": "85",
+      "mid": "86",
+      "def": "84",
+      "youth": "0",
+      "profitability": "0",
+      "international": "10",
+      "age": "26"
+    },
+    "gender": {
+      "id": 0,
+      "label": "Male"
+    },
+    "teamType": "national",
+    "playerIds": [
+      230869, 243576, 278046, 212218, 239231, 231866, 251854, 244260, 277643, 230142, 257279,
+      226271, 256516, 220901, 264240, 245037, 76042, 241461, 266039, 248148, 210035, 225193, 277179,
+      259532, 224179, 259377
+    ],
+    "squadBuilder": {
+      "formation": null,
+      "formationShape": null,
+      "formationCandidates": [],
+      "formationMethod": "Exact position-multiset match against FIFACM squad-builder definitions; null if ambiguous or unmatched.",
+      "rating": 86,
+      "ratingMethod": "FIFACM team profile Rating; not a calculated community-squad rating.",
+      "valueEur": 1608000000,
+      "wageEur": 3318500,
+      "financialScope": "All source-displayed playerIds, including substitutes/reserves; excludes loaned-out players. National rosters may be partial.",
+      "financialMethod": "Sum of players.json valueEur/wageEur; source player amounts may be rounded.",
+      "wagePeriod": "week",
+      "startingXI": [
+        {
+          "playerId": 257279,
+          "position": "LW",
+          "overallRating": 83,
+          "sourcePositionId": 27
+        },
+        {
+          "playerId": 230142,
+          "position": "ST",
+          "overallRating": 84,
+          "sourcePositionId": 25
+        },
+        {
+          "playerId": 277643,
+          "position": "RW",
+          "overallRating": 90,
+          "sourcePositionId": 23
+        },
+        {
+          "playerId": 244260,
+          "position": "CAM",
+          "overallRating": 84,
+          "sourcePositionId": 18
+        },
+        {
+          "playerId": 251854,
+          "position": "LDM",
+          "overallRating": 90,
+          "sourcePositionId": 11
+        },
+        {
+          "playerId": 231866,
+          "position": "RDM",
+          "overallRating": 90,
+          "sourcePositionId": 9
+        },
+        {
+          "playerId": 239231,
+          "position": "LB",
+          "overallRating": 86,
+          "sourcePositionId": 7
+        },
+        {
+          "playerId": 212218,
+          "position": "LCB",
+          "overallRating": 84,
+          "sourcePositionId": 6
+        },
+        {
+          "playerId": 278046,
+          "position": "RCB",
+          "overallRating": 86,
+          "sourcePositionId": 4
+        },
+        {
+          "playerId": 243576,
+          "position": "RB",
+          "overallRating": 83,
+          "sourcePositionId": 3
+        },
+        {
+          "playerId": 230869,
+          "position": "GK",
+          "overallRating": 85,
+          "sourcePositionId": 0
+        }
+      ],
+      "startingXIComplete": true,
+      "missingStartingPlayerCount": 0,
+      "snapshotDate": "2026-10-06",
+      "sourceUrl": "https://www.fifacm.com/27/team/1362/spain",
+      "retrievedAt": "2026-10-22T03:02:35.295Z"
+    },
+    "nationId": 45
+  },
+  {
+    "id": 1363,
+    "label": "Sweden",
+    "fifaVersion": 27,
+    "imageUrl": "https://www.fifacm.com/content/media/imgs/fc27/teams/256/l1363.png",
+    "overallRating": 77,
+    "attack": 83,
+    "midfield": 76,
+    "defense": 76,
+    "worthEur": 0,
+    "budgetEur": 0,
+    "foundationYear": 1904,
+    "stadiumCapacity": 50000,
+    "averageAge": 26,
+    "youthDevelopment": 0,
+    "profitability": 0,
+    "internationalPrestige": 4,
+    "colors": {
+      "background": "rgb(253, 221, 26)",
+      "text": "rgb(1, 106, 180)"
+    },
+    "sourceUrl": "https://www.fifacm.com/27/team/1363/sweden",
+    "sourceAttributes": {
+      "name": "Sweden",
+      "worth": "0",
+      "budget": "0",
+      "foundation": "1904",
+      "capacity": "50000",
+      "ovr": "77",
+      "att": "83",
+      "mid": "76",
+      "def": "76",
+      "youth": "0",
+      "profitability": "0",
+      "international": "4",
+      "age": "26"
+    },
+    "gender": {
+      "id": 0,
+      "label": "Male"
+    },
+    "teamType": "national",
+    "playerIds": [
+      241643, 246656, 220821, 221660, 272712, 243646, 272926, 257400, 256782, 241651, 233731,
+      247022, 255900, 259716, 264191, 254148, 236822, 71727, 223933, 270919, 255459, 257470, 228946,
+      252316, 214658
+    ],
+    "squadBuilder": {
+      "formation": null,
+      "formationShape": "4-4-2",
+      "formationCandidates": ["442", "442-2"],
+      "formationMethod": "Exact position-multiset match against FIFACM squad-builder definitions; null if ambiguous or unmatched.",
+      "rating": 77,
+      "ratingMethod": "FIFACM team profile Rating; not a calculated community-squad rating.",
+      "valueEur": 383600000,
+      "wageEur": 1221800,
+      "financialScope": "All source-displayed playerIds, including substitutes/reserves; excludes loaned-out players. National rosters may be partial.",
+      "financialMethod": "Sum of players.json valueEur/wageEur; source player amounts may be rounded.",
+      "wagePeriod": "week",
+      "startingXI": [
+        {
+          "playerId": 233731,
+          "position": "LS",
+          "overallRating": 86,
+          "sourcePositionId": 26
+        },
+        {
+          "playerId": 241651,
+          "position": "RS",
+          "overallRating": 86,
+          "sourcePositionId": 24
+        },
+        {
+          "playerId": 256782,
+          "position": "LM",
+          "overallRating": 75,
+          "sourcePositionId": 16
+        },
+        {
+          "playerId": 257400,
+          "position": "LCM",
+          "overallRating": 79,
+          "sourcePositionId": 15
+        },
+        {
+          "playerId": 272926,
+          "position": "RCM",
+          "overallRating": 78,
+          "sourcePositionId": 13
+        },
+        {
+          "playerId": 243646,
+          "position": "RM",
+          "overallRating": 75,
+          "sourcePositionId": 12
+        },
+        {
+          "playerId": 272712,
+          "position": "LB",
+          "overallRating": 74,
+          "sourcePositionId": 7
+        },
+        {
+          "playerId": 221660,
+          "position": "LCB",
+          "overallRating": 77,
+          "sourcePositionId": 6
+        },
+        {
+          "playerId": 220821,
+          "position": "RCB",
+          "overallRating": 78,
+          "sourcePositionId": 4
+        },
+        {
+          "playerId": 246656,
+          "position": "RB",
+          "overallRating": 75,
+          "sourcePositionId": 3
+        },
+        {
+          "playerId": 241643,
+          "position": "GK",
+          "overallRating": 74,
+          "sourcePositionId": 0
+        }
+      ],
+      "startingXIComplete": true,
+      "missingStartingPlayerCount": 0,
+      "snapshotDate": "2026-10-06",
+      "sourceUrl": "https://www.fifacm.com/27/team/1363/sweden",
+      "retrievedAt": "2026-10-22T03:02:28.548Z"
+    },
+    "nationId": 46
+  },
+  {
+    "id": 1364,
+    "label": "Switzerland",
+    "fifaVersion": 27,
+    "imageUrl": "https://www.fifacm.com/content/media/imgs/fc27/teams/256/l1364.png",
+    "overallRating": 77,
+    "attack": 74,
+    "midfield": 76,
+    "defense": 75,
+    "worthEur": 0,
+    "budgetEur": 0,
+    "foundationYear": 1895,
+    "stadiumCapacity": 38512,
+    "averageAge": 26,
+    "youthDevelopment": 0,
+    "profitability": 0,
+    "internationalPrestige": 7,
+    "colors": {
+      "background": "rgb(228, 23, 6)",
+      "text": "rgb(255, 255, 255)"
+    },
+    "sourceUrl": "https://www.fifacm.com/27/team/1364/switzerland",
+    "sourceAttributes": {
+      "name": "Switzerland",
+      "worth": "0",
+      "budget": "0",
+      "foundation": "1895",
+      "capacity": "38512",
+      "ovr": "77",
+      "att": "74",
+      "mid": "76",
+      "def": "75",
+      "youth": "0",
+      "profitability": "0",
+      "international": "7",
+      "age": "26"
+    },
+    "gender": {
+      "id": 0,
+      "label": "Male"
+    },
+    "teamType": "national",
+    "playerIds": [
+      235073, 279782, 229237, 221491, 193352, 257186, 259306, 257980, 276694, 262642, 229752,
+      260272, 236898, 233139, 256726, 228593, 279896, 258924, 233885, 206003, 270846, 75647, 79663,
+      222357, 256776
+    ],
+    "squadBuilder": {
+      "formation": null,
+      "formationShape": null,
+      "formationCandidates": [],
+      "formationMethod": "Exact position-multiset match against FIFACM squad-builder definitions; null if ambiguous or unmatched.",
+      "rating": 77,
+      "ratingMethod": "FIFACM team profile Rating; not a calculated community-squad rating.",
+      "valueEur": 273600000,
+      "wageEur": 737000,
+      "financialScope": "All source-displayed playerIds, including substitutes/reserves; excludes loaned-out players. National rosters may be partial.",
+      "financialMethod": "Sum of players.json valueEur/wageEur; source player amounts may be rounded.",
+      "wagePeriod": "week",
+      "startingXI": [
+        {
+          "playerId": 262642,
+          "position": "ST",
+          "overallRating": 74,
+          "sourcePositionId": 25
+        },
+        {
+          "playerId": 276694,
+          "position": "CAM",
+          "overallRating": 80,
+          "sourcePositionId": 18
+        },
+        {
+          "playerId": 257980,
+          "position": "LM",
+          "overallRating": 77,
+          "sourcePositionId": 16
+        },
+        {
+          "playerId": 259306,
+          "position": "RM",
+          "overallRating": 76,
+          "sourcePositionId": 12
+        },
+        {
+          "playerId": 257186,
+          "position": "RDM",
+          "overallRating": 76,
+          "sourcePositionId": 9
+        },
+        {
+          "playerId": 193352,
+          "position": "LB",
+          "overallRating": 72,
+          "sourcePositionId": 7
+        },
+        {
+          "playerId": 221491,
+          "position": "LCB",
+          "overallRating": 78,
+          "sourcePositionId": 6
+        },
+        {
+          "playerId": 229237,
+          "position": "RCB",
+          "overallRating": 83,
+          "sourcePositionId": 4
+        },
+        {
+          "playerId": 279782,
+          "position": "RB",
+          "overallRating": 72,
+          "sourcePositionId": 3
+        },
+        {
+          "playerId": 235073,
+          "position": "GK",
+          "overallRating": 87,
+          "sourcePositionId": 0
+        }
+      ],
+      "startingXIComplete": false,
+      "missingStartingPlayerCount": 1,
+      "snapshotDate": "2026-10-06",
+      "sourceUrl": "https://www.fifacm.com/27/team/1364/switzerland",
+      "retrievedAt": "2026-10-22T03:02:18.617Z"
+    },
+    "nationId": 47
+  },
+  {
+    "id": 1365,
+    "label": "Türkiye",
+    "fifaVersion": 27,
+    "imageUrl": "https://www.fifacm.com/content/media/imgs/fc27/teams/256/l1365.png",
+    "overallRating": 78,
+    "attack": 78,
+    "midfield": 76,
+    "defense": 79,
+    "worthEur": 0,
+    "budgetEur": 0,
+    "foundationYear": 1923,
+    "stadiumCapacity": 76761,
+    "averageAge": 26,
+    "youthDevelopment": 0,
+    "profitability": 0,
+    "internationalPrestige": 6,
+    "colors": {
+      "background": "rgb(213, 17, 27)",
+      "text": "rgb(255, 255, 255)"
+    },
+    "sourceUrl": "https://www.fifacm.com/27/team/1365/turkiye",
+    "sourceAttributes": {
+      "name": "Türkiye",
+      "worth": "0",
+      "budget": "0",
+      "foundation": "1923",
+      "capacity": "76761",
+      "ovr": "78",
+      "att": "78",
+      "mid": "76",
+      "def": "79",
+      "youth": "0",
+      "profitability": "0",
+      "international": "6",
+      "age": "26"
+    },
+    "gender": {
+      "id": 0,
+      "label": "Male"
+    },
+    "teamType": "national",
+    "playerIds": [
+      226300, 224490, 238160, 229905, 235152, 260638, 260466, 264001, 258580, 264309, 263205,
+      256033, 235407, 239892, 256933, 235931, 278587, 279000, 244486, 275328, 259754, 239890,
+      225403, 277871, 243647, 263021
+    ],
+    "squadBuilder": {
+      "formation": "4231-2",
+      "formationShape": "4-2-3-1",
+      "formationCandidates": ["4231-2"],
+      "formationMethod": "Exact position-multiset match against FIFACM squad-builder definitions; null if ambiguous or unmatched.",
+      "rating": 78,
+      "ratingMethod": "FIFACM team profile Rating; not a calculated community-squad rating.",
+      "valueEur": 346400000,
+      "wageEur": 1006900,
+      "financialScope": "All source-displayed playerIds, including substitutes/reserves; excludes loaned-out players. National rosters may be partial.",
+      "financialMethod": "Sum of players.json valueEur/wageEur; source player amounts may be rounded.",
+      "wagePeriod": "week",
+      "startingXI": [
+        {
+          "playerId": 263205,
+          "position": "ST",
+          "overallRating": 80,
+          "sourcePositionId": 25
+        },
+        {
+          "playerId": 264309,
+          "position": "CAM",
+          "overallRating": 84,
+          "sourcePositionId": 18
+        },
+        {
+          "playerId": 258580,
+          "position": "LM",
+          "overallRating": 79,
+          "sourcePositionId": 16
+        },
+        {
+          "playerId": 264001,
+          "position": "RM",
+          "overallRating": 74,
+          "sourcePositionId": 12
+        },
+        {
+          "playerId": 260466,
+          "position": "LDM",
+          "overallRating": 77,
+          "sourcePositionId": 11
+        },
+        {
+          "playerId": 260638,
+          "position": "RDM",
+          "overallRating": 66,
+          "sourcePositionId": 9
+        },
+        {
+          "playerId": 235152,
+          "position": "LB",
+          "overallRating": 80,
+          "sourcePositionId": 7
+        },
+        {
+          "playerId": 229905,
+          "position": "LCB",
+          "overallRating": 79,
+          "sourcePositionId": 6
+        },
+        {
+          "playerId": 238160,
+          "position": "RCB",
+          "overallRating": 80,
+          "sourcePositionId": 4
+        },
+        {
+          "playerId": 224490,
+          "position": "RB",
+          "overallRating": 79,
+          "sourcePositionId": 3
+        },
+        {
+          "playerId": 226300,
+          "position": "GK",
+          "overallRating": 80,
+          "sourcePositionId": 0
+        }
+      ],
+      "startingXIComplete": true,
+      "missingStartingPlayerCount": 0,
+      "snapshotDate": "2026-10-06",
+      "sourceUrl": "https://www.fifacm.com/27/team/1365/turkiye",
+      "retrievedAt": "2026-10-22T03:02:39.351Z"
+    },
+    "nationId": 48
+  },
+  {
+    "id": 1366,
+    "label": "Ukraine",
+    "fifaVersion": 27,
+    "imageUrl": "https://www.fifacm.com/content/media/imgs/fc27/teams/256/l1366.png",
+    "overallRating": 77,
+    "attack": 76,
+    "midfield": 76,
+    "defense": 76,
+    "worthEur": 0,
+    "budgetEur": 0,
+    "foundationYear": 1991,
+    "stadiumCapacity": 70050,
+    "averageAge": 27,
+    "youthDevelopment": 0,
+    "profitability": 0,
+    "internationalPrestige": 5,
+    "colors": {
+      "background": "rgb(252, 207, 27)",
+      "text": "rgb(28, 90, 196)"
+    },
+    "sourceUrl": "https://www.fifacm.com/27/team/1366/ukraine",
+    "sourceAttributes": {
+      "name": "Ukraine",
+      "worth": "0",
+      "budget": "0",
+      "foundation": "1991",
+      "capacity": "70050",
+      "ovr": "77",
+      "att": "76",
+      "mid": "76",
+      "def": "76",
+      "youth": "0",
+      "profitability": "0",
+      "international": "5",
+      "age": "27"
+    },
+    "gender": {
+      "id": 0,
+      "label": "Male"
+    },
+    "teamType": "national",
+    "playerIds": [
+      250753, 263804, 258781, 244380, 270731, 244369, 231969, 259913, 271541, 235414, 270608,
+      244385, 244428, 255074, 242458
+    ],
+    "squadBuilder": {
+      "formation": null,
+      "formationShape": null,
+      "formationCandidates": [],
+      "formationMethod": "Exact position-multiset match against FIFACM squad-builder definitions; null if ambiguous or unmatched.",
+      "rating": 77,
+      "ratingMethod": "FIFACM team profile Rating; not a calculated community-squad rating.",
+      "valueEur": 209300000,
+      "wageEur": 412100,
+      "financialScope": "All source-displayed playerIds, including substitutes/reserves; excludes loaned-out players. National rosters may be partial.",
+      "financialMethod": "Sum of players.json valueEur/wageEur; source player amounts may be rounded.",
+      "wagePeriod": "week",
+      "startingXI": [
+        {
+          "playerId": 271541,
+          "position": "ST",
+          "overallRating": 77,
+          "sourcePositionId": 25
+        },
+        {
+          "playerId": 259913,
+          "position": "LM",
+          "overallRating": 78,
+          "sourcePositionId": 16
+        },
+        {
+          "playerId": 231969,
+          "position": "LCM",
+          "overallRating": 75,
+          "sourcePositionId": 15
+        },
+        {
+          "playerId": 244369,
+          "position": "RM",
+          "overallRating": 78,
+          "sourcePositionId": 12
+        },
+        {
+          "playerId": 270731,
+          "position": "CDM",
+          "overallRating": 71,
+          "sourcePositionId": 10
+        },
+        {
+          "playerId": 244380,
+          "position": "LB",
+          "overallRating": 77,
+          "sourcePositionId": 7
+        },
+        {
+          "playerId": 258781,
+          "position": "RCB",
+          "overallRating": 80,
+          "sourcePositionId": 4
+        },
+        {
+          "playerId": 263804,
+          "position": "RB",
+          "overallRating": 73,
+          "sourcePositionId": 3
+        },
+        {
+          "playerId": 250753,
+          "position": "GK",
+          "overallRating": 80,
+          "sourcePositionId": 0
+        }
+      ],
+      "startingXIComplete": false,
+      "missingStartingPlayerCount": 2,
+      "snapshotDate": "2026-10-06",
+      "sourceUrl": "https://www.fifacm.com/27/team/1366/ukraine",
+      "retrievedAt": "2026-10-22T03:02:32.055Z"
+    },
+    "nationId": 49
+  },
+  {
+    "id": 1367,
+    "label": "Wales",
+    "fifaVersion": 27,
+    "imageUrl": "https://www.fifacm.com/content/media/imgs/fc27/teams/256/l1367.png",
+    "overallRating": 75,
+    "attack": 73,
+    "midfield": 74,
+    "defense": 74,
+    "worthEur": 0,
+    "budgetEur": 0,
+    "foundationYear": 1876,
+    "stadiumCapacity": 33280,
+    "averageAge": 27,
+    "youthDevelopment": 0,
+    "profitability": 0,
+    "internationalPrestige": 3,
+    "colors": {
+      "background": "rgb(218, 15, 4)",
+      "text": "rgb(255, 255, 255)"
+    },
+    "sourceUrl": "https://www.fifacm.com/27/team/1367/wales",
+    "sourceAttributes": {
+      "name": "Wales",
+      "worth": "0",
+      "budget": "0",
+      "foundation": "1876",
+      "capacity": "33280",
+      "ovr": "75",
+      "att": "73",
+      "mid": "74",
+      "def": "74",
+      "youth": "0",
+      "profitability": "0",
+      "international": "3",
+      "age": "27"
+    },
+    "gender": {
+      "id": 0,
+      "label": "Male"
+    },
+    "teamType": "national",
+    "playerIds": [
+      207998, 243057, 248687, 205923, 232755, 235735, 265514, 251421, 260478, 233941, 216627,
+      212366, 70994, 277584, 237833, 200715, 257437, 233201, 72046, 232104, 220196, 75296, 232545,
+      220710, 193331, 229266
+    ],
+    "squadBuilder": {
+      "formation": "4231-2",
+      "formationShape": "4-2-3-1",
+      "formationCandidates": ["4231-2"],
+      "formationMethod": "Exact position-multiset match against FIFACM squad-builder definitions; null if ambiguous or unmatched.",
+      "rating": 75,
+      "ratingMethod": "FIFACM team profile Rating; not a calculated community-squad rating.",
+      "valueEur": 164425000,
+      "wageEur": 1002700,
+      "financialScope": "All source-displayed playerIds, including substitutes/reserves; excludes loaned-out players. National rosters may be partial.",
+      "financialMethod": "Sum of players.json valueEur/wageEur; source player amounts may be rounded.",
+      "wagePeriod": "week",
+      "startingXI": [
+        {
+          "playerId": 216627,
+          "position": "ST",
+          "overallRating": 72,
+          "sourcePositionId": 25
+        },
+        {
+          "playerId": 233941,
+          "position": "CAM",
+          "overallRating": 69,
+          "sourcePositionId": 18
+        },
+        {
+          "playerId": 260478,
+          "position": "LM",
+          "overallRating": 75,
+          "sourcePositionId": 16
+        },
+        {
+          "playerId": 251421,
+          "position": "RM",
+          "overallRating": 78,
+          "sourcePositionId": 12
+        },
+        {
+          "playerId": 265514,
+          "position": "LDM",
+          "overallRating": 73,
+          "sourcePositionId": 11
+        },
+        {
+          "playerId": 235735,
+          "position": "RDM",
+          "overallRating": 80,
+          "sourcePositionId": 9
+        },
+        {
+          "playerId": 232755,
+          "position": "LB",
+          "overallRating": 73,
+          "sourcePositionId": 7
+        },
+        {
+          "playerId": 205923,
+          "position": "LCB",
+          "overallRating": 74,
+          "sourcePositionId": 6
+        },
+        {
+          "playerId": 248687,
+          "position": "RCB",
+          "overallRating": 72,
+          "sourcePositionId": 4
+        },
+        {
+          "playerId": 243057,
+          "position": "RB",
+          "overallRating": 80,
+          "sourcePositionId": 3
+        },
+        {
+          "playerId": 207998,
+          "position": "GK",
+          "overallRating": 70,
+          "sourcePositionId": 0
+        }
+      ],
+      "startingXIComplete": true,
+      "missingStartingPlayerCount": 0,
+      "snapshotDate": "2026-10-06",
+      "sourceUrl": "https://www.fifacm.com/27/team/1367/wales",
+      "retrievedAt": "2026-10-22T03:02:23.064Z"
+    },
+    "nationId": 50
+  },
+  {
+    "id": 1369,
+    "label": "Argentina",
+    "fifaVersion": 27,
+    "imageUrl": "https://www.fifacm.com/content/media/imgs/fc27/teams/256/l1369.png",
+    "overallRating": 82,
+    "attack": 86,
+    "midfield": 83,
+    "defense": 80,
+    "worthEur": 0,
+    "budgetEur": 0,
+    "foundationYear": 1893,
+    "stadiumCapacity": 84567,
+    "averageAge": 28,
+    "youthDevelopment": 0,
+    "profitability": 0,
+    "internationalPrestige": 10,
+    "colors": {
+      "background": "rgb(125, 200, 255)",
+      "text": "rgb(255, 255, 255)"
+    },
+    "sourceUrl": "https://www.fifacm.com/27/team/1369/argentina",
+    "sourceAttributes": {
+      "name": "Argentina",
+      "worth": "0",
+      "budget": "0",
+      "foundation": "1893",
+      "capacity": "84567",
+      "ovr": "82",
+      "att": "86",
+      "mid": "83",
+      "def": "80",
+      "youth": "0",
+      "profitability": "0",
+      "international": "10",
+      "age": "28"
+    },
+    "gender": {
+      "id": 0,
+      "label": "Male"
+    },
+    "teamType": "national",
+    "playerIds": [
+      202811, 231340, 232488, 239301, 211256, 212616, 247090, 239837, 240690, 231478, 246191,
+      226226, 277846, 245371, 192366, 236506, 214979, 263370, 236804, 215316, 242835, 231521,
+      253396, 261176, 279173, 267991
+    ],
+    "squadBuilder": {
+      "formation": null,
+      "formationShape": "4-4-2",
+      "formationCandidates": ["442", "442-2"],
+      "formationMethod": "Exact position-multiset match against FIFACM squad-builder definitions; null if ambiguous or unmatched.",
+      "rating": 82,
+      "ratingMethod": "FIFACM team profile Rating; not a calculated community-squad rating.",
+      "valueEur": 876000000,
+      "wageEur": 1752500,
+      "financialScope": "All source-displayed playerIds, including substitutes/reserves; excludes loaned-out players. National rosters may be partial.",
+      "financialMethod": "Sum of players.json valueEur/wageEur; source player amounts may be rounded.",
+      "wagePeriod": "week",
+      "startingXI": [
+        {
+          "playerId": 246191,
+          "position": "LS",
+          "overallRating": 86,
+          "sourcePositionId": 26
+        },
+        {
+          "playerId": 231478,
+          "position": "RS",
+          "overallRating": 87,
+          "sourcePositionId": 24
+        },
+        {
+          "playerId": 240690,
+          "position": "LM",
+          "overallRating": 79,
+          "sourcePositionId": 16
+        },
+        {
+          "playerId": 239837,
+          "position": "LCM",
+          "overallRating": 84,
+          "sourcePositionId": 15
+        },
+        {
+          "playerId": 247090,
+          "position": "RCM",
+          "overallRating": 86,
+          "sourcePositionId": 13
+        },
+        {
+          "playerId": 212616,
+          "position": "RM",
+          "overallRating": 83,
+          "sourcePositionId": 12
+        },
+        {
+          "playerId": 211256,
+          "position": "LB",
+          "overallRating": 78,
+          "sourcePositionId": 7
+        },
+        {
+          "playerId": 239301,
+          "position": "LCB",
+          "overallRating": 82,
+          "sourcePositionId": 6
+        },
+        {
+          "playerId": 232488,
+          "position": "RCB",
+          "overallRating": 82,
+          "sourcePositionId": 4
+        },
+        {
+          "playerId": 231340,
+          "position": "RB",
+          "overallRating": 77,
+          "sourcePositionId": 3
+        },
+        {
+          "playerId": 202811,
+          "position": "GK",
+          "overallRating": 85,
+          "sourcePositionId": 0
+        }
+      ],
+      "startingXIComplete": true,
+      "missingStartingPlayerCount": 0,
+      "snapshotDate": "2026-10-06",
+      "sourceUrl": "https://www.fifacm.com/27/team/1369/argentina",
+      "retrievedAt": "2026-10-22T03:02:44.310Z"
+    },
+    "nationId": 52
+  },
+  {
+    "id": 1370,
+    "label": "Brazil",
+    "fifaVersion": 27,
+    "imageUrl": "https://www.fifacm.com/content/media/imgs/fc27/teams/256/l1370.png",
+    "overallRating": 84,
+    "attack": 85,
+    "midfield": 82,
+    "defense": 83,
+    "worthEur": 0,
+    "budgetEur": 0,
+    "foundationYear": 1914,
+    "stadiumCapacity": 74738,
+    "averageAge": 27,
+    "youthDevelopment": 0,
+    "profitability": 0,
+    "internationalPrestige": 10,
+    "colors": {
+      "background": "rgb(255, 240, 1)",
+      "text": "rgb(0, 118, 68)"
+    },
+    "sourceUrl": "https://www.fifacm.com/27/team/1370/brazil",
+    "sourceAttributes": {
+      "name": "Brazil",
+      "worth": "0",
+      "budget": "0",
+      "foundation": "1914",
+      "capacity": "74738",
+      "ovr": "84",
+      "att": "85",
+      "mid": "82",
+      "def": "83",
+      "youth": "0",
+      "profitability": "0",
+      "international": "10",
+      "age": "27"
+    },
+    "gender": {
+      "id": 0,
+      "label": "Male"
+    },
+    "teamType": "national",
+    "playerIds": [
+      212831, 80170, 207865, 232580, 210822, 273018, 247851, 273106, 83494, 233419, 238794, 240243,
+      276570, 252042, 233927, 247257, 264698, 266866, 239580, 275771, 251566, 200145, 272505,
+      222895, 210257, 191043
+    ],
+    "squadBuilder": {
+      "formation": "433-4",
+      "formationShape": "4-3-3",
+      "formationCandidates": ["433-4"],
+      "formationMethod": "Exact position-multiset match against FIFACM squad-builder definitions; null if ambiguous or unmatched.",
+      "rating": 84,
+      "ratingMethod": "FIFACM team profile Rating; not a calculated community-squad rating.",
+      "valueEur": 1144000000,
+      "wageEur": 2420000,
+      "financialScope": "All source-displayed playerIds, including substitutes/reserves; excludes loaned-out players. National rosters may be partial.",
+      "financialMethod": "Sum of players.json valueEur/wageEur; source player amounts may be rounded.",
+      "wagePeriod": "week",
+      "startingXI": [
+        {
+          "playerId": 238794,
+          "position": "LW",
+          "overallRating": 89,
+          "sourcePositionId": 27
+        },
+        {
+          "playerId": 233419,
+          "position": "ST",
+          "overallRating": 89,
+          "sourcePositionId": 25
+        },
+        {
+          "playerId": 83494,
+          "position": "RW",
+          "overallRating": 79,
+          "sourcePositionId": 23
+        },
+        {
+          "playerId": 273106,
+          "position": "LCM",
+          "overallRating": 78,
+          "sourcePositionId": 15
+        },
+        {
+          "playerId": 247851,
+          "position": "RCM",
+          "overallRating": 86,
+          "sourcePositionId": 13
+        },
+        {
+          "playerId": 273018,
+          "position": "CDM",
+          "overallRating": 80,
+          "sourcePositionId": 10
+        },
+        {
+          "playerId": 210822,
+          "position": "LB",
+          "overallRating": 77,
+          "sourcePositionId": 7
+        },
+        {
+          "playerId": 232580,
+          "position": "LCB",
+          "overallRating": 89,
+          "sourcePositionId": 6
+        },
+        {
+          "playerId": 207865,
+          "position": "RCB",
+          "overallRating": 87,
+          "sourcePositionId": 4
+        },
+        {
+          "playerId": 80170,
+          "position": "RB",
+          "overallRating": 80,
+          "sourcePositionId": 3
+        },
+        {
+          "playerId": 212831,
+          "position": "GK",
+          "overallRating": 87,
+          "sourcePositionId": 0
+        }
+      ],
+      "startingXIComplete": true,
+      "missingStartingPlayerCount": 0,
+      "snapshotDate": "2026-10-06",
+      "sourceUrl": "https://www.fifacm.com/27/team/1370/brazil",
+      "retrievedAt": "2026-10-22T03:02:37.078Z"
+    },
+    "nationId": 54
+  },
+  {
+    "id": 1375,
+    "label": "Paraguay",
+    "fifaVersion": 27,
+    "imageUrl": "https://www.fifacm.com/content/media/imgs/fc27/teams/256/l1375.png",
+    "overallRating": 76,
+    "attack": 76,
+    "midfield": 76,
+    "defense": 76,
+    "worthEur": 0,
+    "budgetEur": 0,
+    "foundationYear": 1906,
+    "stadiumCapacity": 40759,
+    "averageAge": 29,
+    "youthDevelopment": 0,
+    "profitability": 0,
+    "internationalPrestige": 4,
+    "colors": {
+      "background": "rgb(230, 17, 23)",
+      "text": "rgb(255, 255, 255)"
+    },
+    "sourceUrl": "https://www.fifacm.com/27/team/1375/paraguay",
+    "sourceAttributes": {
+      "name": "Paraguay",
+      "worth": "0",
+      "budget": "0",
+      "foundation": "1906",
+      "capacity": "40759",
+      "ovr": "76",
+      "att": "76",
+      "mid": "76",
+      "def": "76",
+      "youth": "0",
+      "profitability": "0",
+      "international": "4",
+      "age": "29"
+    },
+    "gender": {
+      "id": 0,
+      "label": "Male"
+    },
+    "teamType": "national",
+    "playerIds": [
+      75260, 251613, 218191, 240359, 220337, 83924, 269278, 222429, 230977, 273843, 255434, 268482,
+      248870, 278020, 254952, 270844, 253238, 226286, 255718, 246696, 219932, 254601, 193241, 77972,
+      228229
+    ],
+    "squadBuilder": {
+      "formation": null,
+      "formationShape": "4-4-2",
+      "formationCandidates": ["442", "442-2"],
+      "formationMethod": "Exact position-multiset match against FIFACM squad-builder definitions; null if ambiguous or unmatched.",
+      "rating": 76,
+      "ratingMethod": "FIFACM team profile Rating; not a calculated community-squad rating.",
+      "valueEur": 161500000,
+      "wageEur": 490200,
+      "financialScope": "All source-displayed playerIds, including substitutes/reserves; excludes loaned-out players. National rosters may be partial.",
+      "financialMethod": "Sum of players.json valueEur/wageEur; source player amounts may be rounded.",
+      "wagePeriod": "week",
+      "startingXI": [
+        {
+          "playerId": 255434,
+          "position": "LS",
+          "overallRating": 78,
+          "sourcePositionId": 26
+        },
+        {
+          "playerId": 273843,
+          "position": "RS",
+          "overallRating": 76,
+          "sourcePositionId": 24
+        },
+        {
+          "playerId": 230977,
+          "position": "LM",
+          "overallRating": 75,
+          "sourcePositionId": 16
+        },
+        {
+          "playerId": 222429,
+          "position": "LCM",
+          "overallRating": 75,
+          "sourcePositionId": 15
+        },
+        {
+          "playerId": 269278,
+          "position": "RCM",
+          "overallRating": 78,
+          "sourcePositionId": 13
+        },
+        {
+          "playerId": 83924,
+          "position": "RM",
+          "overallRating": 76,
+          "sourcePositionId": 12
+        },
+        {
+          "playerId": 220337,
+          "position": "LB",
+          "overallRating": 74,
+          "sourcePositionId": 7
+        },
+        {
+          "playerId": 240359,
+          "position": "LCB",
+          "overallRating": 81,
+          "sourcePositionId": 6
+        },
+        {
+          "playerId": 218191,
+          "position": "RCB",
+          "overallRating": 78,
+          "sourcePositionId": 4
+        },
+        {
+          "playerId": 251613,
+          "position": "RB",
+          "overallRating": 73,
+          "sourcePositionId": 3
+        },
+        {
+          "playerId": 75260,
+          "position": "GK",
+          "overallRating": 72,
+          "sourcePositionId": 0
+        }
+      ],
+      "startingXIComplete": true,
+      "missingStartingPlayerCount": 0,
+      "snapshotDate": "2026-10-06",
+      "sourceUrl": "https://www.fifacm.com/27/team/1375/paraguay",
+      "retrievedAt": "2026-10-22T03:02:28.048Z"
+    },
+    "nationId": 58
+  },
+  {
+    "id": 1377,
+    "label": "Uruguay",
+    "fifaVersion": 27,
+    "imageUrl": "https://www.fifacm.com/content/media/imgs/fc27/teams/256/l1377.png",
+    "overallRating": 79,
+    "attack": 76,
+    "midfield": 80,
+    "defense": 77,
+    "worthEur": 0,
+    "budgetEur": 0,
+    "foundationYear": 1900,
+    "stadiumCapacity": 65235,
+    "averageAge": 29,
+    "youthDevelopment": 0,
+    "profitability": 0,
+    "internationalPrestige": 6,
+    "colors": {
+      "background": "rgb(135, 206, 235)",
+      "text": "rgb(250, 250, 250)"
+    },
+    "sourceUrl": "https://www.fifacm.com/27/team/1377/uruguay",
+    "sourceAttributes": {
+      "name": "Uruguay",
+      "worth": "0",
+      "budget": "0",
+      "foundation": "1900",
+      "capacity": "65235",
+      "ovr": "79",
+      "att": "76",
+      "mid": "80",
+      "def": "77",
+      "youth": "0",
+      "profitability": "0",
+      "international": "6",
+      "age": "29"
+    },
+    "gender": {
+      "id": 0,
+      "label": "Male"
+    },
+    "teamType": "national",
+    "playerIds": [
+      182494, 219914, 253257, 240716, 252326, 253306, 253281, 227535, 239053, 254817, 253385,
+      254623, 253072, 253290, 251377, 224201, 253163, 216460, 225645, 240699, 253061, 223690,
+      237658, 255340, 259259
+    ],
+    "squadBuilder": {
+      "formation": "4141",
+      "formationShape": "4-1-4-1",
+      "formationCandidates": ["4141"],
+      "formationMethod": "Exact position-multiset match against FIFACM squad-builder definitions; null if ambiguous or unmatched.",
+      "rating": 79,
+      "ratingMethod": "FIFACM team profile Rating; not a calculated community-squad rating.",
+      "valueEur": 407800000,
+      "wageEur": 989700,
+      "financialScope": "All source-displayed playerIds, including substitutes/reserves; excludes loaned-out players. National rosters may be partial.",
+      "financialMethod": "Sum of players.json valueEur/wageEur; source player amounts may be rounded.",
+      "wagePeriod": "week",
+      "startingXI": [
+        {
+          "playerId": 253385,
+          "position": "ST",
+          "overallRating": 76,
+          "sourcePositionId": 25
+        },
+        {
+          "playerId": 254817,
+          "position": "LM",
+          "overallRating": 81,
+          "sourcePositionId": 16
+        },
+        {
+          "playerId": 239053,
+          "position": "LCM",
+          "overallRating": 87,
+          "sourcePositionId": 15
+        },
+        {
+          "playerId": 227535,
+          "position": "RCM",
+          "overallRating": 79,
+          "sourcePositionId": 13
+        },
+        {
+          "playerId": 253281,
+          "position": "RM",
+          "overallRating": 74,
+          "sourcePositionId": 12
+        },
+        {
+          "playerId": 253306,
+          "position": "CDM",
+          "overallRating": 77,
+          "sourcePositionId": 10
+        },
+        {
+          "playerId": 252326,
+          "position": "LB",
+          "overallRating": 75,
+          "sourcePositionId": 7
+        },
+        {
+          "playerId": 240716,
+          "position": "LCB",
+          "overallRating": 77,
+          "sourcePositionId": 6
+        },
+        {
+          "playerId": 253257,
+          "position": "RCB",
+          "overallRating": 75,
+          "sourcePositionId": 4
+        },
+        {
+          "playerId": 219914,
+          "position": "RB",
+          "overallRating": 76,
+          "sourcePositionId": 3
+        },
+        {
+          "playerId": 182494,
+          "position": "GK",
+          "overallRating": 77,
+          "sourcePositionId": 0
+        }
+      ],
+      "startingXIComplete": true,
+      "missingStartingPlayerCount": 0,
+      "snapshotDate": "2026-10-06",
+      "sourceUrl": "https://www.fifacm.com/27/team/1377/uruguay",
+      "retrievedAt": "2026-10-22T03:02:20.259Z"
+    },
+    "nationId": 60
+  },
+  {
+    "id": 1386,
+    "label": "Mexico",
+    "fifaVersion": 27,
+    "imageUrl": "https://www.fifacm.com/content/media/imgs/fc27/teams/256/l1386.png",
+    "overallRating": 77,
+    "attack": 79,
+    "midfield": 76,
+    "defense": 75,
+    "worthEur": 0,
+    "budgetEur": 0,
+    "foundationYear": 1927,
+    "stadiumCapacity": 80824,
+    "averageAge": 26,
+    "youthDevelopment": 0,
+    "profitability": 0,
+    "internationalPrestige": 7,
+    "colors": {
+      "background": "rgb(12, 124, 68)",
+      "text": "rgb(250, 250, 250)"
+    },
+    "sourceUrl": "https://www.fifacm.com/27/team/1386/mexico",
+    "sourceAttributes": {
+      "name": "Mexico",
+      "worth": "0",
+      "budget": "0",
+      "foundation": "1927",
+      "capacity": "80824",
+      "ovr": "77",
+      "att": "79",
+      "mid": "76",
+      "def": "75",
+      "youth": "0",
+      "profitability": "0",
+      "international": "7",
+      "age": "26"
+    },
+    "gender": {
+      "id": 0,
+      "label": "Male"
+    },
+    "teamType": "national",
+    "playerIds": [
+      73325, 233493, 229980, 244349, 226045, 257784, 243015, 79399, 237043, 204838, 234579, 224574,
+      252008, 78784, 255111, 221992, 263701, 245152, 237248, 222382, 246608, 85860, 259341, 255218,
+      271034
+    ],
+    "squadBuilder": {
+      "formation": "433-2",
+      "formationShape": "4-3-3",
+      "formationCandidates": ["433-2"],
+      "formationMethod": "Exact position-multiset match against FIFACM squad-builder definitions; null if ambiguous or unmatched.",
+      "rating": 77,
+      "ratingMethod": "FIFACM team profile Rating; not a calculated community-squad rating.",
+      "valueEur": 252200000,
+      "wageEur": 479900,
+      "financialScope": "All source-displayed playerIds, including substitutes/reserves; excludes loaned-out players. National rosters may be partial.",
+      "financialMethod": "Sum of players.json valueEur/wageEur; source player amounts may be rounded.",
+      "wagePeriod": "week",
+      "startingXI": [
+        {
+          "playerId": 234579,
+          "position": "LW",
+          "overallRating": 84,
+          "sourcePositionId": 27
+        },
+        {
+          "playerId": 204838,
+          "position": "ST",
+          "overallRating": 78,
+          "sourcePositionId": 25
+        },
+        {
+          "playerId": 237043,
+          "position": "RW",
+          "overallRating": 78,
+          "sourcePositionId": 23
+        },
+        {
+          "playerId": 79399,
+          "position": "CAM",
+          "overallRating": 74,
+          "sourcePositionId": 18
+        },
+        {
+          "playerId": 243015,
+          "position": "LCM",
+          "overallRating": 76,
+          "sourcePositionId": 15
+        },
+        {
+          "playerId": 257784,
+          "position": "RCM",
+          "overallRating": 77,
+          "sourcePositionId": 13
+        },
+        {
+          "playerId": 226045,
+          "position": "LB",
+          "overallRating": 77,
+          "sourcePositionId": 7
+        },
+        {
+          "playerId": 244349,
+          "position": "LCB",
+          "overallRating": 75,
+          "sourcePositionId": 6
+        },
+        {
+          "playerId": 229980,
+          "position": "RCB",
+          "overallRating": 76,
+          "sourcePositionId": 4
+        },
+        {
+          "playerId": 233493,
+          "position": "RB",
+          "overallRating": 73,
+          "sourcePositionId": 3
+        },
+        {
+          "playerId": 73325,
+          "position": "GK",
+          "overallRating": 77,
+          "sourcePositionId": 0
+        }
+      ],
+      "startingXIComplete": true,
+      "missingStartingPlayerCount": 0,
+      "snapshotDate": "2026-10-06",
+      "sourceUrl": "https://www.fifacm.com/27/team/1386/mexico",
+      "retrievedAt": "2026-10-22T03:02:42.015Z"
+    },
+    "nationId": 83
+  },
+  {
+    "id": 1387,
+    "label": "United States",
+    "fifaVersion": 27,
+    "imageUrl": "https://www.fifacm.com/content/media/imgs/fc27/teams/256/l1387.png",
+    "overallRating": 78,
+    "attack": 78,
+    "midfield": 78,
+    "defense": 78,
+    "worthEur": 0,
+    "budgetEur": 0,
+    "foundationYear": 1913,
+    "stadiumCapacity": 27000,
+    "averageAge": 27,
+    "youthDevelopment": 0,
+    "profitability": 0,
+    "internationalPrestige": 6,
+    "colors": {
+      "background": "rgb(241, 7, 16)",
+      "text": "rgb(0, 37, 92)"
+    },
+    "sourceUrl": "https://www.fifacm.com/27/team/1387/united-states",
+    "sourceAttributes": {
+      "name": "United States",
+      "worth": "0",
+      "budget": "0",
+      "foundation": "1913",
+      "capacity": "27000",
+      "ovr": "78",
+      "att": "78",
+      "mid": "78",
+      "def": "78",
+      "youth": "0",
+      "profitability": "0",
+      "international": "6",
+      "age": "27"
+    },
+    "gender": {
+      "id": 0,
+      "label": "Male"
+    },
+    "teamType": "national",
+    "playerIds": [
+      247506, 251804, 250954, 198261, 229348, 227796, 238744, 232999, 238743, 256853, 247463,
+      247361, 237255, 251223, 242195, 226807, 243133, 233267, 267920, 255205, 245541, 235755,
+      241496, 226579, 260982, 274535
+    ],
+    "squadBuilder": {
+      "formation": "4411",
+      "formationShape": "4-4-1-1",
+      "formationCandidates": ["4411"],
+      "formationMethod": "Exact position-multiset match against FIFACM squad-builder definitions; null if ambiguous or unmatched.",
+      "rating": 78,
+      "ratingMethod": "FIFACM team profile Rating; not a calculated community-squad rating.",
+      "valueEur": 351850000,
+      "wageEur": 848300,
+      "financialScope": "All source-displayed playerIds, including substitutes/reserves; excludes loaned-out players. National rosters may be partial.",
+      "financialMethod": "Sum of players.json valueEur/wageEur; source player amounts may be rounded.",
+      "wagePeriod": "week",
+      "startingXI": [
+        {
+          "playerId": 247463,
+          "position": "ST",
+          "overallRating": 80,
+          "sourcePositionId": 25
+        },
+        {
+          "playerId": 256853,
+          "position": "CAM",
+          "overallRating": 79,
+          "sourcePositionId": 18
+        },
+        {
+          "playerId": 238743,
+          "position": "LM",
+          "overallRating": 74,
+          "sourcePositionId": 16
+        },
+        {
+          "playerId": 232999,
+          "position": "LCM",
+          "overallRating": 79,
+          "sourcePositionId": 15
+        },
+        {
+          "playerId": 238744,
+          "position": "RCM",
+          "overallRating": 80,
+          "sourcePositionId": 13
+        },
+        {
+          "playerId": 227796,
+          "position": "RM",
+          "overallRating": 83,
+          "sourcePositionId": 12
+        },
+        {
+          "playerId": 229348,
+          "position": "LB",
+          "overallRating": 80,
+          "sourcePositionId": 7
+        },
+        {
+          "playerId": 198261,
+          "position": "LCB",
+          "overallRating": 73,
+          "sourcePositionId": 6
+        },
+        {
+          "playerId": 250954,
+          "position": "RCB",
+          "overallRating": 80,
+          "sourcePositionId": 4
+        },
+        {
+          "playerId": 251804,
+          "position": "RB",
+          "overallRating": 79,
+          "sourcePositionId": 3
+        },
+        {
+          "playerId": 247506,
+          "position": "GK",
+          "overallRating": 74,
+          "sourcePositionId": 0
+        }
+      ],
+      "startingXIComplete": true,
+      "missingStartingPlayerCount": 0,
+      "snapshotDate": "2026-10-06",
+      "sourceUrl": "https://www.fifacm.com/27/team/1387/united-states",
+      "retrievedAt": "2026-10-22T03:02:33.064Z"
+    },
+    "nationId": 95
+  },
+  {
+    "id": 1395,
+    "label": "Cameroon",
+    "fifaVersion": 27,
+    "imageUrl": "https://www.fifacm.com/content/media/imgs/fc27/teams/256/l1395.png",
+    "overallRating": 71,
+    "attack": 75,
+    "midfield": 68,
+    "defense": 70,
+    "worthEur": 0,
+    "budgetEur": 0,
+    "foundationYear": 1959,
+    "stadiumCapacity": 38509,
+    "averageAge": 23,
+    "youthDevelopment": 0,
+    "profitability": 0,
+    "internationalPrestige": 5,
+    "colors": {
+      "background": "rgb(0, 128, 0)",
+      "text": "rgb(255, 233, 0)"
+    },
+    "sourceUrl": "https://www.fifacm.com/27/team/1395/cameroon",
+    "sourceAttributes": {
+      "name": "Cameroon",
+      "worth": "0",
+      "budget": "0",
+      "foundation": "1959",
+      "capacity": "38509",
+      "ovr": "71",
+      "att": "75",
+      "mid": "68",
+      "def": "70",
+      "youth": "0",
+      "profitability": "0",
+      "international": "5",
+      "age": "23"
+    },
+    "gender": {
+      "id": 0,
+      "label": "Male"
+    },
+    "teamType": "national",
+    "playerIds": [
+      255151, 262937, 240728, 272930, 253490, 69997, 72972, 89963, 243014, 76416, 239631, 86429,
+      259869, 82172, 86431, 275056, 86432, 271414, 83760, 279557, 257138, 89962, 271983, 73846,
+      82985, 81849
+    ],
+    "squadBuilder": {
+      "formation": "433-4",
+      "formationShape": "4-3-3",
+      "formationCandidates": ["433-4"],
+      "formationMethod": "Exact position-multiset match against FIFACM squad-builder definitions; null if ambiguous or unmatched.",
+      "rating": 71,
+      "ratingMethod": "FIFACM team profile Rating; not a calculated community-squad rating.",
+      "valueEur": 139415000,
+      "wageEur": 386100,
+      "financialScope": "All source-displayed playerIds, including substitutes/reserves; excludes loaned-out players. National rosters may be partial.",
+      "financialMethod": "Sum of players.json valueEur/wageEur; source player amounts may be rounded.",
+      "wagePeriod": "week",
+      "startingXI": [
+        {
+          "playerId": 239631,
+          "position": "LW",
+          "overallRating": 73,
+          "sourcePositionId": 27
+        },
+        {
+          "playerId": 76416,
+          "position": "ST",
+          "overallRating": 77,
+          "sourcePositionId": 25
+        },
+        {
+          "playerId": 243014,
+          "position": "RW",
+          "overallRating": 84,
+          "sourcePositionId": 23
+        },
+        {
+          "playerId": 89963,
+          "position": "LCM",
+          "overallRating": 63,
+          "sourcePositionId": 15
+        },
+        {
+          "playerId": 72972,
+          "position": "RCM",
+          "overallRating": 68,
+          "sourcePositionId": 13
+        },
+        {
+          "playerId": 69997,
+          "position": "CDM",
+          "overallRating": 75,
+          "sourcePositionId": 10
+        },
+        {
+          "playerId": 253490,
+          "position": "LB",
+          "overallRating": 72,
+          "sourcePositionId": 7
+        },
+        {
+          "playerId": 272930,
+          "position": "LCB",
+          "overallRating": 67,
+          "sourcePositionId": 6
+        },
+        {
+          "playerId": 240728,
+          "position": "RCB",
+          "overallRating": 71,
+          "sourcePositionId": 4
+        },
+        {
+          "playerId": 262937,
+          "position": "RB",
+          "overallRating": 72,
+          "sourcePositionId": 3
+        },
+        {
+          "playerId": 255151,
+          "position": "GK",
+          "overallRating": 69,
+          "sourcePositionId": 0
+        }
+      ],
+      "startingXIComplete": true,
+      "missingStartingPlayerCount": 0,
+      "snapshotDate": "2026-10-06",
+      "sourceUrl": "https://www.fifacm.com/27/team/1395/cameroon",
+      "retrievedAt": "2026-10-22T03:02:25.874Z"
+    },
+    "nationId": 103
+  },
+  {
+    "id": 1411,
+    "label": "Japan",
+    "fifaVersion": 27,
+    "imageUrl": "https://www.fifacm.com/content/media/imgs/fc27/teams/256/l1411.png",
+    "overallRating": 77,
+    "attack": 78,
+    "midfield": 78,
+    "defense": 77,
+    "worthEur": 0,
+    "budgetEur": 0,
+    "foundationYear": 1921,
+    "stadiumCapacity": 49970,
+    "averageAge": 27,
+    "youthDevelopment": 0,
+    "profitability": 0,
+    "internationalPrestige": 5,
+    "colors": {
+      "background": "rgb(1, 1, 204)",
+      "text": "rgb(255, 255, 255)"
+    },
+    "sourceUrl": "https://www.fifacm.com/27/team/1411/japan",
+    "sourceAttributes": {
+      "name": "Japan",
+      "worth": "0",
+      "budget": "0",
+      "foundation": "1921",
+      "capacity": "49970",
+      "ovr": "77",
+      "att": "78",
+      "mid": "78",
+      "def": "77",
+      "youth": "0",
+      "profitability": "0",
+      "international": "5",
+      "age": "27"
+    },
+    "gender": {
+      "id": 0,
+      "label": "Male"
+    },
+    "teamType": "national",
+    "playerIds": [
+      255981, 233152, 246826, 234205, 232639, 73078, 232730, 242914, 237681, 252162, 232905, 232829,
+      260847, 245622, 233225, 266260, 246321, 255185, 242916, 232938, 236764, 76570, 247264, 194359,
+      74879, 244654
+    ],
+    "squadBuilder": {
+      "formation": "343",
+      "formationShape": "3-4-3",
+      "formationCandidates": ["343"],
+      "formationMethod": "Exact position-multiset match against FIFACM squad-builder definitions; null if ambiguous or unmatched.",
+      "rating": 77,
+      "ratingMethod": "FIFACM team profile Rating; not a calculated community-squad rating.",
+      "valueEur": 267600000,
+      "wageEur": 791500,
+      "financialScope": "All source-displayed playerIds, including substitutes/reserves; excludes loaned-out players. National rosters may be partial.",
+      "financialMethod": "Sum of players.json valueEur/wageEur; source player amounts may be rounded.",
+      "wagePeriod": "week",
+      "startingXI": [
+        {
+          "playerId": 232905,
+          "position": "LW",
+          "overallRating": 76,
+          "sourcePositionId": 27
+        },
+        {
+          "playerId": 252162,
+          "position": "ST",
+          "overallRating": 78,
+          "sourcePositionId": 25
+        },
+        {
+          "playerId": 237681,
+          "position": "RW",
+          "overallRating": 80,
+          "sourcePositionId": 23
+        },
+        {
+          "playerId": 242914,
+          "position": "LM",
+          "overallRating": 76,
+          "sourcePositionId": 16
+        },
+        {
+          "playerId": 232730,
+          "position": "LCM",
+          "overallRating": 79,
+          "sourcePositionId": 15
+        },
+        {
+          "playerId": 73078,
+          "position": "RCM",
+          "overallRating": 81,
+          "sourcePositionId": 13
+        },
+        {
+          "playerId": 232639,
+          "position": "RM",
+          "overallRating": 80,
+          "sourcePositionId": 12
+        },
+        {
+          "playerId": 234205,
+          "position": "LCB",
+          "overallRating": 78,
+          "sourcePositionId": 6
+        },
+        {
+          "playerId": 246826,
+          "position": "CB",
+          "overallRating": 78,
+          "sourcePositionId": 5
+        },
+        {
+          "playerId": 233152,
+          "position": "RCB",
+          "overallRating": 76,
+          "sourcePositionId": 4
+        },
+        {
+          "playerId": 255981,
+          "position": "GK",
+          "overallRating": 77,
+          "sourcePositionId": 0
+        }
+      ],
+      "startingXIComplete": true,
+      "missingStartingPlayerCount": 0,
+      "snapshotDate": "2026-10-06",
+      "sourceUrl": "https://www.fifacm.com/27/team/1411/japan",
+      "retrievedAt": "2026-10-22T03:02:45.556Z"
+    },
+    "nationId": 163
+  },
+  {
+    "id": 1415,
+    "label": "Australia",
+    "fifaVersion": 27,
+    "imageUrl": "https://www.fifacm.com/content/media/imgs/fc27/teams/256/l1415.png",
+    "overallRating": 69,
+    "attack": 62,
+    "midfield": 69,
+    "defense": 69,
+    "worthEur": 0,
+    "budgetEur": 0,
+    "foundationYear": 1922,
+    "stadiumCapacity": 83500,
+    "averageAge": 25,
+    "youthDevelopment": 0,
+    "profitability": 0,
+    "internationalPrestige": 5,
+    "colors": {
+      "background": "rgb(255, 221, 0)",
+      "text": "rgb(12, 79, 59)"
+    },
+    "sourceUrl": "https://www.fifacm.com/27/team/1415/australia",
+    "sourceAttributes": {
+      "name": "Australia",
+      "worth": "0",
+      "budget": "0",
+      "foundation": "1922",
+      "capacity": "83500",
+      "ovr": "69",
+      "att": "62",
+      "mid": "69",
+      "def": "69",
+      "youth": "0",
+      "profitability": "0",
+      "international": "5",
+      "age": "25"
+    },
+    "gender": {
+      "id": 0,
+      "label": "Male"
+    },
+    "teamType": "national",
+    "playerIds": [
+      267599, 241552, 268913, 229901, 75145, 202157, 240648, 211378, 80236, 266245, 260386, 247889,
+      279543, 261875, 233487, 212511, 70909, 262039, 256474, 73098, 273530, 230888, 255767, 263982,
+      204424
+    ],
+    "squadBuilder": {
+      "formation": null,
+      "formationShape": null,
+      "formationCandidates": [],
+      "formationMethod": "Exact position-multiset match against FIFACM squad-builder definitions; null if ambiguous or unmatched.",
+      "rating": 69,
+      "ratingMethod": "FIFACM team profile Rating; not a calculated community-squad rating.",
+      "valueEur": 46625000,
+      "wageEur": 160250,
+      "financialScope": "All source-displayed playerIds, including substitutes/reserves; excludes loaned-out players. National rosters may be partial.",
+      "financialMethod": "Sum of players.json valueEur/wageEur; source player amounts may be rounded.",
+      "wagePeriod": "week",
+      "startingXI": [
+        {
+          "playerId": 260386,
+          "position": "ST",
+          "overallRating": 62,
+          "sourcePositionId": 25
+        },
+        {
+          "playerId": 266245,
+          "position": "LM",
+          "overallRating": 70,
+          "sourcePositionId": 16
+        },
+        {
+          "playerId": 80236,
+          "position": "LCM",
+          "overallRating": 65,
+          "sourcePositionId": 15
+        },
+        {
+          "playerId": 211378,
+          "position": "RCM",
+          "overallRating": 73,
+          "sourcePositionId": 13
+        },
+        {
+          "playerId": 240648,
+          "position": "RM",
+          "overallRating": 68,
+          "sourcePositionId": 12
+        },
+        {
+          "playerId": 202157,
+          "position": "LB",
+          "overallRating": 67,
+          "sourcePositionId": 7
+        },
+        {
+          "playerId": 75145,
+          "position": "LCB",
+          "overallRating": 66,
+          "sourcePositionId": 6
+        },
+        {
+          "playerId": 229901,
+          "position": "CB",
+          "overallRating": 72,
+          "sourcePositionId": 5
+        },
+        {
+          "playerId": 268913,
+          "position": "RCB",
+          "overallRating": 74,
+          "sourcePositionId": 4
+        },
+        {
+          "playerId": 241552,
+          "position": "RB",
+          "overallRating": 67,
+          "sourcePositionId": 3
+        },
+        {
+          "playerId": 267599,
+          "position": "GK",
+          "overallRating": 71,
+          "sourcePositionId": 0
+        }
+      ],
+      "startingXIComplete": true,
+      "missingStartingPlayerCount": 0,
+      "snapshotDate": "2026-10-06",
+      "sourceUrl": "https://www.fifacm.com/27/team/1415/australia",
+      "retrievedAt": "2026-10-22T03:02:37.557Z"
+    },
+    "nationId": 195
+  },
+  {
+    "id": 1886,
+    "label": "Hungary",
+    "fifaVersion": 27,
+    "imageUrl": "https://www.fifacm.com/content/media/imgs/fc27/teams/256/l1886.png",
+    "overallRating": 74,
+    "attack": 77,
+    "midfield": 74,
+    "defense": 74,
+    "worthEur": 0,
+    "budgetEur": 0,
+    "foundationYear": 1901,
+    "stadiumCapacity": 67889,
+    "averageAge": 27,
+    "youthDevelopment": 0,
+    "profitability": 0,
+    "internationalPrestige": 4,
+    "colors": {
+      "background": "rgb(205, 1, 1)",
+      "text": "rgb(255, 255, 255)"
+    },
+    "sourceUrl": "https://www.fifacm.com/27/team/1886/hungary",
+    "sourceAttributes": {
+      "name": "Hungary",
+      "worth": "0",
+      "budget": "0",
+      "foundation": "1901",
+      "capacity": "67889",
+      "ovr": "74",
+      "att": "77",
+      "mid": "74",
+      "def": "74",
+      "youth": "0",
+      "profitability": "0",
+      "international": "4",
+      "age": "27"
+    },
+    "gender": {
+      "id": 0,
+      "label": "Male"
+    },
+    "teamType": "national",
+    "playerIds": [
+      263233, 204638, 256780, 260908, 247026, 254159, 236772, 234087, 70903, 258708, 234171, 268099,
+      253170, 73598, 276232, 272566, 245710, 274968, 276214, 261210
+    ],
+    "squadBuilder": {
+      "formation": null,
+      "formationShape": null,
+      "formationCandidates": [],
+      "formationMethod": "Exact position-multiset match against FIFACM squad-builder definitions; null if ambiguous or unmatched.",
+      "rating": 74,
+      "ratingMethod": "FIFACM team profile Rating; not a calculated community-squad rating.",
+      "valueEur": 192500000,
+      "wageEur": 603300,
+      "financialScope": "All source-displayed playerIds, including substitutes/reserves; excludes loaned-out players. National rosters may be partial.",
+      "financialMethod": "Sum of players.json valueEur/wageEur; source player amounts may be rounded.",
+      "wagePeriod": "week",
+      "startingXI": [
+        {
+          "playerId": 236772,
+          "position": "CAM",
+          "overallRating": 86,
+          "sourcePositionId": 18
+        },
+        {
+          "playerId": 254159,
+          "position": "LM",
+          "overallRating": 72,
+          "sourcePositionId": 16
+        },
+        {
+          "playerId": 247026,
+          "position": "LCM",
+          "overallRating": 74,
+          "sourcePositionId": 15
+        },
+        {
+          "playerId": 260908,
+          "position": "LB",
+          "overallRating": 81,
+          "sourcePositionId": 7
+        },
+        {
+          "playerId": 256780,
+          "position": "LCB",
+          "overallRating": 70,
+          "sourcePositionId": 6
+        },
+        {
+          "playerId": 204638,
+          "position": "RCB",
+          "overallRating": 83,
+          "sourcePositionId": 4
+        },
+        {
+          "playerId": 263233,
+          "position": "RB",
+          "overallRating": 70,
+          "sourcePositionId": 3
+        }
+      ],
+      "startingXIComplete": false,
+      "missingStartingPlayerCount": 4,
+      "snapshotDate": "2026-10-06",
+      "sourceUrl": "https://www.fifacm.com/27/team/1886/hungary",
+      "retrievedAt": "2026-10-22T03:02:29.836Z"
+    },
+    "nationId": 23
+  },
+  {
+    "id": 105035,
+    "label": "Netherlands",
+    "fifaVersion": 27,
+    "imageUrl": "https://www.fifacm.com/content/media/imgs/fc27/teams/256/l105035.png",
+    "overallRating": 82,
+    "attack": 80,
+    "midfield": 84,
+    "defense": 82,
+    "worthEur": 0,
+    "budgetEur": 0,
+    "foundationYear": 1889,
+    "stadiumCapacity": 55885,
+    "averageAge": 26,
+    "youthDevelopment": 0,
+    "profitability": 0,
+    "internationalPrestige": 8,
+    "colors": {
+      "background": "rgb(248, 87, 23)",
+      "text": "rgb(255, 255, 255)"
+    },
+    "sourceUrl": "https://www.fifacm.com/27/team/105035/netherlands",
+    "sourceAttributes": {
+      "name": "Netherlands",
+      "worth": "0",
+      "budget": "0",
+      "foundation": "1889",
+      "capacity": "55885",
+      "ovr": "82",
+      "att": "80",
+      "mid": "84",
+      "def": "82",
+      "youth": "0",
+      "profitability": "0",
+      "international": "8",
+      "age": "26"
+    },
+    "gender": {
+      "id": 0,
+      "label": "Male"
+    },
+    "teamType": "national",
+    "playerIds": [
+      258498, 233096, 258908, 203376, 264453, 246104, 228702, 240638, 251954, 251810, 242516,
+      272978, 240679, 251805, 236920, 253109, 241187, 231447, 251806, 239380, 208920, 267974,
+      211738, 263798, 275592, 235663
+    ],
+    "squadBuilder": {
+      "formation": null,
+      "formationShape": null,
+      "formationCandidates": [],
+      "formationMethod": "Exact position-multiset match against FIFACM squad-builder definitions; null if ambiguous or unmatched.",
+      "rating": 82,
+      "ratingMethod": "FIFACM team profile Rating; not a calculated community-squad rating.",
+      "valueEur": 814500000,
+      "wageEur": 2196000,
+      "financialScope": "All source-displayed playerIds, including substitutes/reserves; excludes loaned-out players. National rosters may be partial.",
+      "financialMethod": "Sum of players.json valueEur/wageEur; source player amounts may be rounded.",
+      "wagePeriod": "week",
+      "startingXI": [
+        {
+          "playerId": 242516,
+          "position": "LW",
+          "overallRating": 82,
+          "sourcePositionId": 27
+        },
+        {
+          "playerId": 251810,
+          "position": "ST",
+          "overallRating": 78,
+          "sourcePositionId": 25
+        },
+        {
+          "playerId": 251954,
+          "position": "RW",
+          "overallRating": 78,
+          "sourcePositionId": 23
+        },
+        {
+          "playerId": 240638,
+          "position": "CAM",
+          "overallRating": 84,
+          "sourcePositionId": 18
+        },
+        {
+          "playerId": 228702,
+          "position": "LDM",
+          "overallRating": 86,
+          "sourcePositionId": 11
+        },
+        {
+          "playerId": 246104,
+          "position": "RDM",
+          "overallRating": 85,
+          "sourcePositionId": 9
+        },
+        {
+          "playerId": 264453,
+          "position": "LB",
+          "overallRating": 81,
+          "sourcePositionId": 7
+        },
+        {
+          "playerId": 203376,
+          "position": "LCB",
+          "overallRating": 88,
+          "sourcePositionId": 6
+        },
+        {
+          "playerId": 258908,
+          "position": "RCB",
+          "overallRating": 81,
+          "sourcePositionId": 4
+        },
+        {
+          "playerId": 233096,
+          "position": "RB",
+          "overallRating": 83,
+          "sourcePositionId": 3
+        },
+        {
+          "playerId": 258498,
+          "position": "GK",
+          "overallRating": 81,
+          "sourcePositionId": 0
+        }
+      ],
+      "startingXIComplete": true,
+      "missingStartingPlayerCount": 0,
+      "snapshotDate": "2026-10-06",
+      "sourceUrl": "https://www.fifacm.com/27/team/105035/netherlands",
+      "retrievedAt": "2026-10-22T03:02:21.843Z"
+    },
+    "nationId": 34
+  },
+  {
+    "id": 110081,
+    "label": "Northern Ireland",
+    "fifaVersion": 27,
+    "imageUrl": "https://www.fifacm.com/content/media/imgs/fc27/teams/256/l110081.png",
+    "overallRating": 71,
+    "attack": 66,
+    "midfield": 71,
+    "defense": 72,
+    "worthEur": 0,
+    "budgetEur": 0,
+    "foundationYear": 1880,
+    "stadiumCapacity": 18000,
+    "averageAge": 26,
+    "youthDevelopment": 0,
+    "profitability": 0,
+    "internationalPrestige": 2,
+    "colors": {
+      "background": "rgb(37, 132, 50)",
+      "text": "rgb(255, 255, 255)"
+    },
+    "sourceUrl": "https://www.fifacm.com/27/team/110081/northern-ireland",
+    "sourceAttributes": {
+      "name": "Northern Ireland",
+      "worth": "0",
+      "budget": "0",
+      "foundation": "1880",
+      "capacity": "18000",
+      "ovr": "71",
+      "att": "66",
+      "mid": "71",
+      "def": "72",
+      "youth": "0",
+      "profitability": "0",
+      "international": "2",
+      "age": "26"
+    },
+    "gender": {
+      "id": 0,
+      "label": "Male"
+    },
+    "teamType": "national",
+    "playerIds": [
+      273839, 266400, 213697, 243908, 75768, 270637, 268630, 276695, 243640, 73895, 278101, 229091,
+      278557, 242541, 205255, 276070, 243520, 241075, 186562, 272542, 220039, 242289, 204412,
+      246846, 239540, 264298
+    ],
+    "squadBuilder": {
+      "formation": null,
+      "formationShape": null,
+      "formationCandidates": [],
+      "formationMethod": "Exact position-multiset match against FIFACM squad-builder definitions; null if ambiguous or unmatched.",
+      "rating": 71,
+      "ratingMethod": "FIFACM team profile Rating; not a calculated community-squad rating.",
+      "valueEur": 109150000,
+      "wageEur": 424700,
+      "financialScope": "All source-displayed playerIds, including substitutes/reserves; excludes loaned-out players. National rosters may be partial.",
+      "financialMethod": "Sum of players.json valueEur/wageEur; source player amounts may be rounded.",
+      "wagePeriod": "week",
+      "startingXI": [
+        {
+          "playerId": 278101,
+          "position": "ST",
+          "overallRating": 66,
+          "sourcePositionId": 25
+        },
+        {
+          "playerId": 73895,
+          "position": "LM",
+          "overallRating": 72,
+          "sourcePositionId": 16
+        },
+        {
+          "playerId": 243640,
+          "position": "LCM",
+          "overallRating": 72,
+          "sourcePositionId": 15
+        },
+        {
+          "playerId": 276695,
+          "position": "RCM",
+          "overallRating": 73,
+          "sourcePositionId": 13
+        },
+        {
+          "playerId": 268630,
+          "position": "RM",
+          "overallRating": 71,
+          "sourcePositionId": 12
+        },
+        {
+          "playerId": 270637,
+          "position": "LB",
+          "overallRating": 68,
+          "sourcePositionId": 7
+        },
+        {
+          "playerId": 75768,
+          "position": "LCB",
+          "overallRating": 70,
+          "sourcePositionId": 6
+        },
+        {
+          "playerId": 243908,
+          "position": "CB",
+          "overallRating": 78,
+          "sourcePositionId": 5
+        },
+        {
+          "playerId": 213697,
+          "position": "RCB",
+          "overallRating": 72,
+          "sourcePositionId": 4
+        },
+        {
+          "playerId": 266400,
+          "position": "RB",
+          "overallRating": 78,
+          "sourcePositionId": 3
+        },
+        {
+          "playerId": 273839,
+          "position": "GK",
+          "overallRating": 69,
+          "sourcePositionId": 0
+        }
+      ],
+      "startingXIComplete": true,
+      "missingStartingPlayerCount": 0,
+      "snapshotDate": "2026-10-06",
+      "sourceUrl": "https://www.fifacm.com/27/team/110081/northern-ireland",
+      "retrievedAt": "2026-10-22T03:02:41.100Z"
+    },
+    "nationId": 35
+  },
+  {
+    "id": 111108,
+    "label": "Peru",
+    "fifaVersion": 27,
+    "imageUrl": "https://www.fifacm.com/content/media/imgs/fc27/teams/256/l111108.png",
+    "overallRating": 71,
+    "attack": 70,
+    "midfield": 72,
+    "defense": 70,
+    "worthEur": 0,
+    "budgetEur": 0,
+    "foundationYear": 1922,
+    "stadiumCapacity": 50000,
+    "averageAge": 28,
+    "youthDevelopment": 0,
+    "profitability": 0,
+    "internationalPrestige": 3,
+    "colors": {
+      "background": "rgb(250, 250, 250)",
+      "text": "rgb(255, 1, 1)"
+    },
+    "sourceUrl": "https://www.fifacm.com/27/team/111108/peru",
+    "sourceAttributes": {
+      "name": "Peru",
+      "worth": "0",
+      "budget": "0",
+      "foundation": "1922",
+      "capacity": "50000",
+      "ovr": "71",
+      "att": "70",
+      "mid": "72",
+      "def": "70",
+      "youth": "0",
+      "profitability": "0",
+      "international": "3",
+      "age": "28"
+    },
+    "gender": {
+      "id": 0,
+      "label": "Male"
+    },
+    "teamType": "national",
+    "playerIds": [
+      225701, 262794, 226002, 259657, 246014, 255184, 250839, 204542, 224983, 211302, 222065,
+      261563, 253557, 268565, 259251, 203299, 279076, 259606, 264796, 280174, 265725, 259184, 83755,
+      221664, 256086, 77675
+    ],
+    "squadBuilder": {
+      "formation": "433-4",
+      "formationShape": "4-3-3",
+      "formationCandidates": ["433-4"],
+      "formationMethod": "Exact position-multiset match against FIFACM squad-builder definitions; null if ambiguous or unmatched.",
+      "rating": 71,
+      "ratingMethod": "FIFACM team profile Rating; not a calculated community-squad rating.",
+      "valueEur": 47050000,
+      "wageEur": 261100,
+      "financialScope": "All source-displayed playerIds, including substitutes/reserves; excludes loaned-out players. National rosters may be partial.",
+      "financialMethod": "Sum of players.json valueEur/wageEur; source player amounts may be rounded.",
+      "wagePeriod": "week",
+      "startingXI": [
+        {
+          "playerId": 222065,
+          "position": "LW",
+          "overallRating": 70,
+          "sourcePositionId": 27
+        },
+        {
+          "playerId": 211302,
+          "position": "ST",
+          "overallRating": 71,
+          "sourcePositionId": 25
+        },
+        {
+          "playerId": 224983,
+          "position": "RW",
+          "overallRating": 70,
+          "sourcePositionId": 23
+        },
+        {
+          "playerId": 204542,
+          "position": "LCM",
+          "overallRating": 72,
+          "sourcePositionId": 15
+        },
+        {
+          "playerId": 250839,
+          "position": "RCM",
+          "overallRating": 70,
+          "sourcePositionId": 13
+        },
+        {
+          "playerId": 255184,
+          "position": "CDM",
+          "overallRating": 70,
+          "sourcePositionId": 10
+        },
+        {
+          "playerId": 246014,
+          "position": "LB",
+          "overallRating": 70,
+          "sourcePositionId": 7
+        },
+        {
+          "playerId": 259657,
+          "position": "LCB",
+          "overallRating": 71,
+          "sourcePositionId": 6
+        },
+        {
+          "playerId": 226002,
+          "position": "RCB",
+          "overallRating": 68,
+          "sourcePositionId": 4
+        },
+        {
+          "playerId": 262794,
+          "position": "RB",
+          "overallRating": 72,
+          "sourcePositionId": 3
+        },
+        {
+          "playerId": 225701,
+          "position": "GK",
+          "overallRating": 71,
+          "sourcePositionId": 0
+        }
+      ],
+      "startingXIComplete": true,
+      "missingStartingPlayerCount": 0,
+      "snapshotDate": "2026-10-06",
+      "sourceUrl": "https://www.fifacm.com/27/team/111108/peru",
+      "retrievedAt": "2026-10-22T03:02:34.430Z"
+    },
+    "nationId": 59
+  },
+  {
+    "id": 111109,
+    "label": "Colombia",
+    "fifaVersion": 27,
+    "imageUrl": "https://www.fifacm.com/content/media/imgs/fc27/teams/256/l111109.png",
+    "overallRating": 78,
+    "attack": 80,
+    "midfield": 79,
+    "defense": 78,
+    "worthEur": 0,
+    "budgetEur": 0,
+    "foundationYear": 1924,
+    "stadiumCapacity": 46788,
+    "averageAge": 30,
+    "youthDevelopment": 0,
+    "profitability": 0,
+    "internationalPrestige": 6,
+    "colors": {
+      "background": "rgb(252, 225, 22)",
+      "text": "rgb(0, 75, 225)"
+    },
+    "sourceUrl": "https://www.fifacm.com/27/team/111109/colombia",
+    "sourceAttributes": {
+      "name": "Colombia",
+      "worth": "0",
+      "budget": "0",
+      "foundation": "1924",
+      "capacity": "46788",
+      "ovr": "78",
+      "att": "80",
+      "mid": "79",
+      "def": "78",
+      "youth": "0",
+      "profitability": "0",
+      "international": "6",
+      "age": "30"
+    },
+    "gender": {
+      "id": 0,
+      "label": "Male"
+    },
+    "teamType": "national",
+    "playerIds": [
+      212067, 237646, 220793, 231207, 214026, 262881, 213991, 241602, 241084, 245158, 272951,
+      220837, 210287, 225964, 210513, 220523, 176550, 229541, 266674, 238230, 204259, 248191,
+      237034, 245810
+    ],
+    "squadBuilder": {
+      "formation": null,
+      "formationShape": null,
+      "formationCandidates": [],
+      "formationMethod": "Exact position-multiset match against FIFACM squad-builder definitions; null if ambiguous or unmatched.",
+      "rating": 78,
+      "ratingMethod": "FIFACM team profile Rating; not a calculated community-squad rating.",
+      "valueEur": 330400000,
+      "wageEur": 750800,
+      "financialScope": "All source-displayed playerIds, including substitutes/reserves; excludes loaned-out players. National rosters may be partial.",
+      "financialMethod": "Sum of players.json valueEur/wageEur; source player amounts may be rounded.",
+      "wagePeriod": "week",
+      "startingXI": [
+        {
+          "playerId": 245158,
+          "position": "ST",
+          "overallRating": 82,
+          "sourcePositionId": 25
+        },
+        {
+          "playerId": 241084,
+          "position": "LM",
+          "overallRating": 88,
+          "sourcePositionId": 16
+        },
+        {
+          "playerId": 241602,
+          "position": "RM",
+          "overallRating": 77,
+          "sourcePositionId": 12
+        },
+        {
+          "playerId": 213991,
+          "position": "LDM",
+          "overallRating": 76,
+          "sourcePositionId": 11
+        },
+        {
+          "playerId": 262881,
+          "position": "RDM",
+          "overallRating": 78,
+          "sourcePositionId": 9
+        },
+        {
+          "playerId": 214026,
+          "position": "LB",
+          "overallRating": 76,
+          "sourcePositionId": 7
+        },
+        {
+          "playerId": 231207,
+          "position": "LCB",
+          "overallRating": 76,
+          "sourcePositionId": 6
+        },
+        {
+          "playerId": 220793,
+          "position": "RCB",
+          "overallRating": 80,
+          "sourcePositionId": 4
+        },
+        {
+          "playerId": 237646,
+          "position": "RB",
+          "overallRating": 82,
+          "sourcePositionId": 3
+        },
+        {
+          "playerId": 212067,
+          "position": "GK",
+          "overallRating": 76,
+          "sourcePositionId": 0
+        }
+      ],
+      "startingXIComplete": false,
+      "missingStartingPlayerCount": 1,
+      "snapshotDate": "2026-10-06",
+      "sourceUrl": "https://www.fifacm.com/27/team/111109/colombia",
+      "retrievedAt": "2026-10-22T03:02:25.288Z"
+    },
+    "nationId": 56
+  },
+  {
+    "id": 111111,
+    "label": "Morocco",
+    "fifaVersion": 27,
+    "imageUrl": "https://www.fifacm.com/content/media/imgs/fc27/teams/256/l111111.png",
+    "overallRating": 79,
+    "attack": 80,
+    "midfield": 79,
+    "defense": 79,
+    "worthEur": 0,
+    "budgetEur": 0,
+    "foundationYear": 1928,
+    "stadiumCapacity": 67000,
+    "averageAge": 26,
+    "youthDevelopment": 0,
+    "profitability": 0,
+    "internationalPrestige": 6,
+    "colors": {
+      "background": "rgb(193, 39, 45)",
+      "text": "rgb(255, 255, 255)"
+    },
+    "sourceUrl": "https://www.fifacm.com/27/team/111111/morocco",
+    "sourceAttributes": {
+      "name": "Morocco",
+      "worth": "0",
+      "budget": "0",
+      "foundation": "1928",
+      "capacity": "67000",
+      "ovr": "79",
+      "att": "80",
+      "mid": "79",
+      "def": "79",
+      "youth": "0",
+      "profitability": "0",
+      "international": "6",
+      "age": "26"
+    },
+    "gender": {
+      "id": 0,
+      "label": "Male"
+    },
+    "teamType": "national",
+    "playerIds": [
+      209981, 235212, 231633, 244749, 262745, 278901, 231410, 264432, 259480, 74698, 275048, 223573,
+      235890, 75658, 275353, 257504, 263603, 236401, 241777, 262936, 82789, 70017
+    ],
+    "squadBuilder": {
+      "formation": null,
+      "formationShape": null,
+      "formationCandidates": [],
+      "formationMethod": "Exact position-multiset match against FIFACM squad-builder definitions; null if ambiguous or unmatched.",
+      "rating": 79,
+      "ratingMethod": "FIFACM team profile Rating; not a calculated community-squad rating.",
+      "valueEur": 441850000,
+      "wageEur": 925800,
+      "financialScope": "All source-displayed playerIds, including substitutes/reserves; excludes loaned-out players. National rosters may be partial.",
+      "financialMethod": "Sum of players.json valueEur/wageEur; source player amounts may be rounded.",
+      "wagePeriod": "week",
+      "startingXI": [
+        {
+          "playerId": 259480,
+          "position": "ST",
+          "overallRating": 83,
+          "sourcePositionId": 25
+        },
+        {
+          "playerId": 264432,
+          "position": "LM",
+          "overallRating": 81,
+          "sourcePositionId": 16
+        },
+        {
+          "playerId": 231410,
+          "position": "RM",
+          "overallRating": 81,
+          "sourcePositionId": 12
+        },
+        {
+          "playerId": 278901,
+          "position": "LDM",
+          "overallRating": 80,
+          "sourcePositionId": 11
+        },
+        {
+          "playerId": 262745,
+          "position": "RDM",
+          "overallRating": 77,
+          "sourcePositionId": 9
+        },
+        {
+          "playerId": 244749,
+          "position": "LCB",
+          "overallRating": 79,
+          "sourcePositionId": 6
+        },
+        {
+          "playerId": 231633,
+          "position": "RCB",
+          "overallRating": 75,
+          "sourcePositionId": 4
+        },
+        {
+          "playerId": 235212,
+          "position": "RB",
+          "overallRating": 88,
+          "sourcePositionId": 3
+        },
+        {
+          "playerId": 209981,
+          "position": "GK",
+          "overallRating": 82,
+          "sourcePositionId": 0
+        }
+      ],
+      "startingXIComplete": false,
+      "missingStartingPlayerCount": 2,
+      "snapshotDate": "2026-10-06",
+      "sourceUrl": "https://www.fifacm.com/27/team/111111/morocco",
+      "retrievedAt": "2026-10-22T03:02:19.159Z"
+    },
+    "nationId": 129
+  },
+  {
+    "id": 111114,
+    "label": "Saudi Arabia",
+    "fifaVersion": 27,
+    "imageUrl": "https://www.fifacm.com/content/media/imgs/fc27/teams/256/l111114.png",
+    "overallRating": 70,
+    "attack": 73,
+    "midfield": 68,
+    "defense": 71,
+    "worthEur": 0,
+    "budgetEur": 0,
+    "foundationYear": 1956,
+    "stadiumCapacity": 62345,
+    "averageAge": 27,
+    "youthDevelopment": 0,
+    "profitability": 0,
+    "internationalPrestige": 3,
+    "colors": {
+      "background": "rgb(1, 128, 1)",
+      "text": "rgb(255, 255, 255)"
+    },
+    "sourceUrl": "https://www.fifacm.com/27/team/111114/saudi-arabia",
+    "sourceAttributes": {
+      "name": "Saudi Arabia",
+      "worth": "0",
+      "budget": "0",
+      "foundation": "1956",
+      "capacity": "62345",
+      "ovr": "70",
+      "att": "73",
+      "mid": "68",
+      "def": "71",
+      "youth": "0",
+      "profitability": "0",
+      "international": "3",
+      "age": "27"
+    },
+    "gender": {
+      "id": 0,
+      "label": "Male"
+    },
+    "teamType": "national",
+    "playerIds": [
+      210923, 74436, 74699, 241197, 256331, 241938, 220075, 225976, 71832, 262272, 238545, 211395,
+      270331, 245751, 263182, 277233, 254685, 237721, 210843, 242223, 71851, 242352, 231801, 232901,
+      264203, 265407
+    ],
+    "squadBuilder": {
+      "formation": "4231-2",
+      "formationShape": "4-2-3-1",
+      "formationCandidates": ["4231-2"],
+      "formationMethod": "Exact position-multiset match against FIFACM squad-builder definitions; null if ambiguous or unmatched.",
+      "rating": 70,
+      "ratingMethod": "FIFACM team profile Rating; not a calculated community-squad rating.",
+      "valueEur": 49700000,
+      "wageEur": 422250,
+      "financialScope": "All source-displayed playerIds, including substitutes/reserves; excludes loaned-out players. National rosters may be partial.",
+      "financialMethod": "Sum of players.json valueEur/wageEur; source player amounts may be rounded.",
+      "wagePeriod": "week",
+      "startingXI": [
+        {
+          "playerId": 238545,
+          "position": "ST",
+          "overallRating": 73,
+          "sourcePositionId": 25
+        },
+        {
+          "playerId": 262272,
+          "position": "CAM",
+          "overallRating": 66,
+          "sourcePositionId": 18
+        },
+        {
+          "playerId": 71832,
+          "position": "LM",
+          "overallRating": 64,
+          "sourcePositionId": 16
+        },
+        {
+          "playerId": 225976,
+          "position": "RM",
+          "overallRating": 70,
+          "sourcePositionId": 12
+        },
+        {
+          "playerId": 220075,
+          "position": "LDM",
+          "overallRating": 74,
+          "sourcePositionId": 11
+        },
+        {
+          "playerId": 241938,
+          "position": "RDM",
+          "overallRating": 69,
+          "sourcePositionId": 9
+        },
+        {
+          "playerId": 256331,
+          "position": "LB",
+          "overallRating": 68,
+          "sourcePositionId": 7
+        },
+        {
+          "playerId": 241197,
+          "position": "LCB",
+          "overallRating": 73,
+          "sourcePositionId": 6
+        },
+        {
+          "playerId": 74699,
+          "position": "RCB",
+          "overallRating": 69,
+          "sourcePositionId": 4
+        },
+        {
+          "playerId": 74436,
+          "position": "RB",
+          "overallRating": 73,
+          "sourcePositionId": 3
+        },
+        {
+          "playerId": 210923,
+          "position": "GK",
+          "overallRating": 69,
+          "sourcePositionId": 0
+        }
+      ],
+      "startingXIComplete": true,
+      "missingStartingPlayerCount": 0,
+      "snapshotDate": "2026-10-06",
+      "sourceUrl": "https://www.fifacm.com/27/team/111114/saudi-arabia",
+      "retrievedAt": "2026-10-22T03:02:38.274Z"
+    },
+    "nationId": 183
+  },
+  {
+    "id": 111130,
+    "label": "Egypt",
+    "fifaVersion": 27,
+    "imageUrl": "https://www.fifacm.com/content/media/imgs/fc27/teams/256/l111130.png",
+    "overallRating": 74,
+    "attack": 76,
+    "midfield": 75,
+    "defense": 72,
+    "worthEur": 0,
+    "budgetEur": 0,
+    "foundationYear": 1921,
+    "stadiumCapacity": 75000,
+    "averageAge": 28,
+    "youthDevelopment": 0,
+    "profitability": 0,
+    "internationalPrestige": 4,
+    "colors": {
+      "background": "rgb(210, 0, 0)",
+      "text": "rgb(255, 255, 255)"
+    },
+    "sourceUrl": "https://www.fifacm.com/27/team/111130/egypt",
+    "sourceAttributes": {
+      "name": "Egypt",
+      "worth": "0",
+      "budget": "0",
+      "foundation": "1921",
+      "capacity": "75000",
+      "ovr": "74",
+      "att": "76",
+      "mid": "75",
+      "def": "72",
+      "youth": "0",
+      "profitability": "0",
+      "international": "4",
+      "age": "28"
+    },
+    "gender": {
+      "id": 0,
+      "label": "Male"
+    },
+    "teamType": "national",
+    "playerIds": [
+      269161, 254252, 261624, 82400, 81918, 82329, 86105, 261742, 209331, 256675, 254254, 228182,
+      222537, 269164, 245870, 81958, 224198, 280065, 86106, 82318, 226078, 85642, 85643, 85641
+    ],
+    "squadBuilder": {
+      "formation": null,
+      "formationShape": null,
+      "formationCandidates": [],
+      "formationMethod": "Exact position-multiset match against FIFACM squad-builder definitions; null if ambiguous or unmatched.",
+      "rating": 74,
+      "ratingMethod": "FIFACM team profile Rating; not a calculated community-squad rating.",
+      "valueEur": 157605000,
+      "wageEur": 496700,
+      "financialScope": "All source-displayed playerIds, including substitutes/reserves; excludes loaned-out players. National rosters may be partial.",
+      "financialMethod": "Sum of players.json valueEur/wageEur; source player amounts may be rounded.",
+      "wagePeriod": "week",
+      "startingXI": [
+        {
+          "playerId": 256675,
+          "position": "ST",
+          "overallRating": 82,
+          "sourcePositionId": 25
+        },
+        {
+          "playerId": 209331,
+          "position": "CAM",
+          "overallRating": 87,
+          "sourcePositionId": 18
+        },
+        {
+          "playerId": 261742,
+          "position": "LM",
+          "overallRating": 75,
+          "sourcePositionId": 16
+        },
+        {
+          "playerId": 86105,
+          "position": "RM",
+          "overallRating": 71,
+          "sourcePositionId": 12
+        },
+        {
+          "playerId": 82329,
+          "position": "LDM",
+          "overallRating": 70,
+          "sourcePositionId": 11
+        },
+        {
+          "playerId": 81918,
+          "position": "RDM",
+          "overallRating": 74,
+          "sourcePositionId": 9
+        },
+        {
+          "playerId": 82400,
+          "position": "LB",
+          "overallRating": 70,
+          "sourcePositionId": 7
+        },
+        {
+          "playerId": 261624,
+          "position": "RCB",
+          "overallRating": 72,
+          "sourcePositionId": 4
+        },
+        {
+          "playerId": 254252,
+          "position": "RB",
+          "overallRating": 74,
+          "sourcePositionId": 3
+        },
+        {
+          "playerId": 269161,
+          "position": "GK",
+          "overallRating": 73,
+          "sourcePositionId": 0
+        }
+      ],
+      "startingXIComplete": false,
+      "missingStartingPlayerCount": 1,
+      "snapshotDate": "2026-10-06",
+      "sourceUrl": "https://www.fifacm.com/27/team/111130/egypt",
+      "retrievedAt": "2026-10-22T03:02:30.339Z"
+    },
+    "nationId": 111
+  },
+  {
+    "id": 111459,
+    "label": "Chile",
+    "fifaVersion": 27,
+    "imageUrl": "https://www.fifacm.com/content/media/imgs/fc27/teams/256/l111459.png",
+    "overallRating": 71,
+    "attack": 71,
+    "midfield": 71,
+    "defense": 69,
+    "worthEur": 0,
+    "budgetEur": 0,
+    "foundationYear": 1933,
+    "stadiumCapacity": 48665,
+    "averageAge": 25,
+    "youthDevelopment": 0,
+    "profitability": 0,
+    "internationalPrestige": 7,
+    "colors": {
+      "background": "rgb(255, 0, 0)",
+      "text": "rgb(255, 255, 255)"
+    },
+    "sourceUrl": "https://www.fifacm.com/27/team/111459/chile",
+    "sourceAttributes": {
+      "name": "Chile",
+      "worth": "0",
+      "budget": "0",
+      "foundation": "1933",
+      "capacity": "48665",
+      "ovr": "71",
+      "att": "71",
+      "mid": "71",
+      "def": "69",
+      "youth": "0",
+      "profitability": "0",
+      "international": "7",
+      "age": "25"
+    },
+    "gender": {
+      "id": 0,
+      "label": "Male"
+    },
+    "teamType": "national",
+    "playerIds": [
+      213413, 84430, 257003, 278776, 229649, 256441, 267931, 256051, 278012, 256532, 71013, 238320,
+      70342, 71740, 240252, 214436, 215086, 71230, 259862, 233795, 221413, 71443, 263062, 225236,
+      78925, 268394
+    ],
+    "squadBuilder": {
+      "formation": "433-4",
+      "formationShape": "4-3-3",
+      "formationCandidates": ["433-4"],
+      "formationMethod": "Exact position-multiset match against FIFACM squad-builder definitions; null if ambiguous or unmatched.",
+      "rating": 71,
+      "ratingMethod": "FIFACM team profile Rating; not a calculated community-squad rating.",
+      "valueEur": 70600000,
+      "wageEur": 283000,
+      "financialScope": "All source-displayed playerIds, including substitutes/reserves; excludes loaned-out players. National rosters may be partial.",
+      "financialMethod": "Sum of players.json valueEur/wageEur; source player amounts may be rounded.",
+      "wagePeriod": "week",
+      "startingXI": [
+        {
+          "playerId": 71013,
+          "position": "LW",
+          "overallRating": 71,
+          "sourcePositionId": 27
+        },
+        {
+          "playerId": 256532,
+          "position": "ST",
+          "overallRating": 69,
+          "sourcePositionId": 25
+        },
+        {
+          "playerId": 278012,
+          "position": "RW",
+          "overallRating": 74,
+          "sourcePositionId": 23
+        },
+        {
+          "playerId": 256051,
+          "position": "LCM",
+          "overallRating": 73,
+          "sourcePositionId": 15
+        },
+        {
+          "playerId": 267931,
+          "position": "RCM",
+          "overallRating": 69,
+          "sourcePositionId": 13
+        },
+        {
+          "playerId": 256441,
+          "position": "CDM",
+          "overallRating": 73,
+          "sourcePositionId": 10
+        },
+        {
+          "playerId": 229649,
+          "position": "LB",
+          "overallRating": 74,
+          "sourcePositionId": 7
+        },
+        {
+          "playerId": 278776,
+          "position": "LCB",
+          "overallRating": 66,
+          "sourcePositionId": 6
+        },
+        {
+          "playerId": 257003,
+          "position": "RCB",
+          "overallRating": 68,
+          "sourcePositionId": 4
+        },
+        {
+          "playerId": 84430,
+          "position": "RB",
+          "overallRating": 66,
+          "sourcePositionId": 3
+        },
+        {
+          "playerId": 213413,
+          "position": "GK",
+          "overallRating": 73,
+          "sourcePositionId": 0
+        }
+      ],
+      "startingXIComplete": true,
+      "missingStartingPlayerCount": 0,
+      "snapshotDate": "2026-10-06",
+      "sourceUrl": "https://www.fifacm.com/27/team/111459/chile",
+      "retrievedAt": "2026-10-22T03:02:24.083Z"
+    },
+    "nationId": 55
+  },
+  {
+    "id": 111462,
+    "label": "Ghana",
+    "fifaVersion": 27,
+    "imageUrl": "https://www.fifacm.com/content/media/imgs/fc27/teams/256/l111462.png",
+    "overallRating": 75,
+    "attack": 70,
+    "midfield": 76,
+    "defense": 73,
+    "worthEur": 0,
+    "budgetEur": 0,
+    "foundationYear": 1957,
+    "stadiumCapacity": 40000,
+    "averageAge": 26,
+    "youthDevelopment": 0,
+    "profitability": 0,
+    "internationalPrestige": 5,
+    "colors": {
+      "background": "rgb(255, 255, 0)",
+      "text": "rgb(255, 0, 0)"
+    },
+    "sourceUrl": "https://www.fifacm.com/27/team/111462/ghana",
+    "sourceAttributes": {
+      "name": "Ghana",
+      "worth": "0",
+      "budget": "0",
+      "foundation": "1957",
+      "capacity": "40000",
+      "ovr": "75",
+      "att": "70",
+      "mid": "76",
+      "def": "73",
+      "youth": "0",
+      "profitability": "0",
+      "international": "5",
+      "age": "26"
+    },
+    "gender": {
+      "id": 0,
+      "label": "Male"
+    },
+    "teamType": "national",
+    "playerIds": [
+      229956, 263112, 212219, 241710, 247124, 245155, 253114, 73638, 241236, 197756, 235744, 273948,
+      268763, 209989, 274913, 264441, 270905, 275294, 83520, 271577, 276634, 267680, 244191, 80486,
+      265187
+    ],
+    "squadBuilder": {
+      "formation": null,
+      "formationShape": "4-4-2",
+      "formationCandidates": ["442", "442-2"],
+      "formationMethod": "Exact position-multiset match against FIFACM squad-builder definitions; null if ambiguous or unmatched.",
+      "rating": 75,
+      "ratingMethod": "FIFACM team profile Rating; not a calculated community-squad rating.",
+      "valueEur": 216400000,
+      "wageEur": 732300,
+      "financialScope": "All source-displayed playerIds, including substitutes/reserves; excludes loaned-out players. National rosters may be partial.",
+      "financialMethod": "Sum of players.json valueEur/wageEur; source player amounts may be rounded.",
+      "wagePeriod": "week",
+      "startingXI": [
+        {
+          "playerId": 235744,
+          "position": "LS",
+          "overallRating": 73,
+          "sourcePositionId": 26
+        },
+        {
+          "playerId": 197756,
+          "position": "RS",
+          "overallRating": 68,
+          "sourcePositionId": 24
+        },
+        {
+          "playerId": 241236,
+          "position": "LM",
+          "overallRating": 85,
+          "sourcePositionId": 16
+        },
+        {
+          "playerId": 73638,
+          "position": "LCM",
+          "overallRating": 73,
+          "sourcePositionId": 15
+        },
+        {
+          "playerId": 253114,
+          "position": "RCM",
+          "overallRating": 71,
+          "sourcePositionId": 13
+        },
+        {
+          "playerId": 245155,
+          "position": "RM",
+          "overallRating": 81,
+          "sourcePositionId": 12
+        },
+        {
+          "playerId": 247124,
+          "position": "LB",
+          "overallRating": 74,
+          "sourcePositionId": 7
+        },
+        {
+          "playerId": 241710,
+          "position": "LCB",
+          "overallRating": 72,
+          "sourcePositionId": 6
+        },
+        {
+          "playerId": 212219,
+          "position": "RCB",
+          "overallRating": 77,
+          "sourcePositionId": 4
+        },
+        {
+          "playerId": 263112,
+          "position": "RB",
+          "overallRating": 72,
+          "sourcePositionId": 3
+        },
+        {
+          "playerId": 229956,
+          "position": "GK",
+          "overallRating": 73,
+          "sourcePositionId": 0
+        }
+      ],
+      "startingXIComplete": true,
+      "missingStartingPlayerCount": 0,
+      "snapshotDate": "2026-10-06",
+      "sourceUrl": "https://www.fifacm.com/27/team/111462/ghana",
+      "retrievedAt": "2026-10-22T03:02:42.808Z"
+    },
+    "nationId": 117
+  },
+  {
+    "id": 111466,
+    "label": "India",
+    "fifaVersion": 27,
+    "imageUrl": "https://www.fifacm.com/content/media/imgs/fc27/teams/256/l111466.png",
+    "overallRating": 63,
+    "attack": 62,
+    "midfield": 60,
+    "defense": 62,
+    "worthEur": 0,
+    "budgetEur": 0,
+    "foundationYear": 1937,
+    "stadiumCapacity": 60000,
+    "averageAge": 27,
+    "youthDevelopment": 0,
+    "profitability": 0,
+    "internationalPrestige": 1,
+    "colors": {
+      "background": "rgb(1, 1, 255)",
+      "text": "rgb(255, 255, 255)"
+    },
+    "sourceUrl": "https://www.fifacm.com/27/team/111466/india",
+    "sourceAttributes": {
+      "name": "India",
+      "worth": "0",
+      "budget": "0",
+      "foundation": "1937",
+      "capacity": "60000",
+      "ovr": "63",
+      "att": "62",
+      "mid": "60",
+      "def": "62",
+      "youth": "0",
+      "profitability": "0",
+      "international": "1",
+      "age": "27"
+    },
+    "gender": {
+      "id": 0,
+      "label": "Male"
+    },
+    "teamType": "national",
+    "playerIds": [
+      225213, 248265, 265458, 223763, 245165, 253476, 231932, 278197, 245170, 278674, 253478,
+      265659, 260147, 248310, 266720, 253508, 204882, 248319, 233524, 272312, 265460, 259340,
+      248284, 73999, 253704, 248272
+    ],
+    "squadBuilder": {
+      "formation": "4141",
+      "formationShape": "4-1-4-1",
+      "formationCandidates": ["4141"],
+      "formationMethod": "Exact position-multiset match against FIFACM squad-builder definitions; null if ambiguous or unmatched.",
+      "rating": 63,
+      "ratingMethod": "FIFACM team profile Rating; not a calculated community-squad rating.",
+      "valueEur": 10610000,
+      "wageEur": 35450,
+      "financialScope": "All source-displayed playerIds, including substitutes/reserves; excludes loaned-out players. National rosters may be partial.",
+      "financialMethod": "Sum of players.json valueEur/wageEur; source player amounts may be rounded.",
+      "wagePeriod": "week",
+      "startingXI": [
+        {
+          "playerId": 253478,
+          "position": "ST",
+          "overallRating": 56,
+          "sourcePositionId": 25
+        },
+        {
+          "playerId": 278674,
+          "position": "LM",
+          "overallRating": 52,
+          "sourcePositionId": 16
+        },
+        {
+          "playerId": 245170,
+          "position": "LCM",
+          "overallRating": 59,
+          "sourcePositionId": 15
+        },
+        {
+          "playerId": 278197,
+          "position": "RCM",
+          "overallRating": 66,
+          "sourcePositionId": 13
+        },
+        {
+          "playerId": 231932,
+          "position": "RM",
+          "overallRating": 67,
+          "sourcePositionId": 12
+        },
+        {
+          "playerId": 253476,
+          "position": "CDM",
+          "overallRating": 58,
+          "sourcePositionId": 10
+        },
+        {
+          "playerId": 245165,
+          "position": "LB",
+          "overallRating": 69,
+          "sourcePositionId": 7
+        },
+        {
+          "playerId": 223763,
+          "position": "LCB",
+          "overallRating": 65,
+          "sourcePositionId": 6
+        },
+        {
+          "playerId": 265458,
+          "position": "RCB",
+          "overallRating": 54,
+          "sourcePositionId": 4
+        },
+        {
+          "playerId": 248265,
+          "position": "RB",
+          "overallRating": 68,
+          "sourcePositionId": 3
+        },
+        {
+          "playerId": 225213,
+          "position": "GK",
+          "overallRating": 60,
+          "sourcePositionId": 0
+        }
+      ],
+      "startingXIComplete": true,
+      "missingStartingPlayerCount": 0,
+      "snapshotDate": "2026-10-06",
+      "sourceUrl": "https://www.fifacm.com/27/team/111466/india",
+      "retrievedAt": "2026-10-22T03:02:34.843Z"
+    },
+    "nationId": 159
+  },
+  {
+    "id": 111473,
+    "label": "New Zealand",
+    "fifaVersion": 27,
+    "imageUrl": "https://www.fifacm.com/content/media/imgs/fc27/teams/256/l111473.png",
+    "overallRating": 68,
+    "attack": 74,
+    "midfield": 67,
+    "defense": 68,
+    "worthEur": 0,
+    "budgetEur": 0,
+    "foundationYear": 1891,
+    "stadiumCapacity": 34500,
+    "averageAge": 26,
+    "youthDevelopment": 0,
+    "profitability": 0,
+    "internationalPrestige": 2,
+    "colors": {
+      "background": "rgb(255, 255, 255)",
+      "text": "rgb(1, 1, 1)"
+    },
+    "sourceUrl": "https://www.fifacm.com/27/team/111473/new-zealand",
+    "sourceAttributes": {
+      "name": "New Zealand",
+      "worth": "0",
+      "budget": "0",
+      "foundation": "1891",
+      "capacity": "34500",
+      "ovr": "68",
+      "att": "74",
+      "mid": "67",
+      "def": "68",
+      "youth": "0",
+      "profitability": "0",
+      "international": "2",
+      "age": "26"
+    },
+    "gender": {
+      "id": 0,
+      "label": "Male"
+    },
+    "teamType": "national",
+    "playerIds": [
+      263851, 253024, 254143, 277552, 237714, 259680, 219392, 262289, 276249, 254136, 192123,
+      253153, 235860, 73092, 280066, 245539, 266151, 82458, 246195, 264691, 231065, 243666, 266150,
+      220763, 220886, 242429
+    ],
+    "squadBuilder": {
+      "formation": null,
+      "formationShape": null,
+      "formationCandidates": [],
+      "formationMethod": "Exact position-multiset match against FIFACM squad-builder definitions; null if ambiguous or unmatched.",
+      "rating": 68,
+      "ratingMethod": "FIFACM team profile Rating; not a calculated community-squad rating.",
+      "valueEur": 49625000,
+      "wageEur": 234800,
+      "financialScope": "All source-displayed playerIds, including substitutes/reserves; excludes loaned-out players. National rosters may be partial.",
+      "financialMethod": "Sum of players.json valueEur/wageEur; source player amounts may be rounded.",
+      "wagePeriod": "week",
+      "startingXI": [
+        {
+          "playerId": 192123,
+          "position": "ST",
+          "overallRating": 81,
+          "sourcePositionId": 25
+        },
+        {
+          "playerId": 254136,
+          "position": "LAM",
+          "overallRating": 72,
+          "sourcePositionId": 19
+        },
+        {
+          "playerId": 276249,
+          "position": "RAM",
+          "overallRating": 64,
+          "sourcePositionId": 17
+        },
+        {
+          "playerId": 262289,
+          "position": "LM",
+          "overallRating": 69,
+          "sourcePositionId": 16
+        },
+        {
+          "playerId": 219392,
+          "position": "LCM",
+          "overallRating": 67,
+          "sourcePositionId": 15
+        },
+        {
+          "playerId": 259680,
+          "position": "RCM",
+          "overallRating": 71,
+          "sourcePositionId": 13
+        },
+        {
+          "playerId": 237714,
+          "position": "RM",
+          "overallRating": 61,
+          "sourcePositionId": 12
+        },
+        {
+          "playerId": 277552,
+          "position": "LCB",
+          "overallRating": 70,
+          "sourcePositionId": 6
+        },
+        {
+          "playerId": 254143,
+          "position": "CB",
+          "overallRating": 67,
+          "sourcePositionId": 5
+        },
+        {
+          "playerId": 253024,
+          "position": "RCB",
+          "overallRating": 64,
+          "sourcePositionId": 4
+        },
+        {
+          "playerId": 263851,
+          "position": "GK",
+          "overallRating": 66,
+          "sourcePositionId": 0
+        }
+      ],
+      "startingXIComplete": true,
+      "missingStartingPlayerCount": 0,
+      "snapshotDate": "2026-10-06",
+      "sourceUrl": "https://www.fifacm.com/27/team/111473/new-zealand",
+      "retrievedAt": "2026-10-22T03:02:27.123Z"
+    },
+    "nationId": 198
+  },
+  {
+    "id": 111487,
+    "label": "Venezuela",
+    "fifaVersion": 27,
+    "imageUrl": "https://www.fifacm.com/content/media/imgs/fc27/teams/256/l111487.png",
+    "overallRating": 71,
+    "attack": 72,
+    "midfield": 73,
+    "defense": 70,
+    "worthEur": 0,
+    "budgetEur": 0,
+    "foundationYear": 1926,
+    "stadiumCapacity": 37485,
+    "averageAge": 25,
+    "youthDevelopment": 0,
+    "profitability": 0,
+    "internationalPrestige": 2,
+    "colors": {
+      "background": "rgb(94, 14, 12)",
+      "text": "rgb(255, 255, 255)"
+    },
+    "sourceUrl": "https://www.fifacm.com/27/team/111487/venezuela",
+    "sourceAttributes": {
+      "name": "Venezuela",
+      "worth": "0",
+      "budget": "0",
+      "foundation": "1926",
+      "capacity": "37485",
+      "ovr": "71",
+      "att": "72",
+      "mid": "73",
+      "def": "70",
+      "youth": "0",
+      "profitability": "0",
+      "international": "2",
+      "age": "25"
+    },
+    "gender": {
+      "id": 0,
+      "label": "Male"
+    },
+    "teamType": "national",
+    "playerIds": [
+      231596, 259848, 237297, 246388, 254129, 73012, 234060, 242534, 261245, 252164, 229319, 268300,
+      83223, 260065, 253579, 259858, 86473, 260772, 260045, 250842, 255750, 260056, 268564, 272317,
+      228736
+    ],
+    "squadBuilder": {
+      "formation": null,
+      "formationShape": null,
+      "formationCandidates": [],
+      "formationMethod": "Exact position-multiset match against FIFACM squad-builder definitions; null if ambiguous or unmatched.",
+      "rating": 71,
+      "ratingMethod": "FIFACM team profile Rating; not a calculated community-squad rating.",
+      "valueEur": 97025000,
+      "wageEur": 269600,
+      "financialScope": "All source-displayed playerIds, including substitutes/reserves; excludes loaned-out players. National rosters may be partial.",
+      "financialMethod": "Sum of players.json valueEur/wageEur; source player amounts may be rounded.",
+      "wagePeriod": "week",
+      "startingXI": [
+        {
+          "playerId": 229319,
+          "position": "LS",
+          "overallRating": 74,
+          "sourcePositionId": 26
+        },
+        {
+          "playerId": 252164,
+          "position": "RS",
+          "overallRating": 74,
+          "sourcePositionId": 24
+        },
+        {
+          "playerId": 261245,
+          "position": "LCM",
+          "overallRating": 67,
+          "sourcePositionId": 15
+        },
+        {
+          "playerId": 242534,
+          "position": "RCM",
+          "overallRating": 77,
+          "sourcePositionId": 13
+        },
+        {
+          "playerId": 234060,
+          "position": "CDM",
+          "overallRating": 78,
+          "sourcePositionId": 10
+        },
+        {
+          "playerId": 73012,
+          "position": "LB",
+          "overallRating": 69,
+          "sourcePositionId": 7
+        },
+        {
+          "playerId": 254129,
+          "position": "LCB",
+          "overallRating": 66,
+          "sourcePositionId": 6
+        },
+        {
+          "playerId": 246388,
+          "position": "CB",
+          "overallRating": 71,
+          "sourcePositionId": 5
+        },
+        {
+          "playerId": 237297,
+          "position": "RCB",
+          "overallRating": 69,
+          "sourcePositionId": 4
+        },
+        {
+          "playerId": 259848,
+          "position": "RB",
+          "overallRating": 77,
+          "sourcePositionId": 3
+        },
+        {
+          "playerId": 231596,
+          "position": "GK",
+          "overallRating": 73,
+          "sourcePositionId": 0
+        }
+      ],
+      "startingXIComplete": true,
+      "missingStartingPlayerCount": 0,
+      "snapshotDate": "2026-10-06",
+      "sourceUrl": "https://www.fifacm.com/27/team/111487/venezuela",
+      "retrievedAt": "2026-10-22T03:02:19.535Z"
+    },
+    "nationId": 61
+  },
+  {
+    "id": 111488,
+    "label": "Vietnam",
+    "fifaVersion": 27,
+    "imageUrl": "https://www.fifacm.com/content/media/imgs/fc27/teams/256/l111488.png",
+    "overallRating": 63,
+    "attack": 62,
+    "midfield": 64,
+    "defense": 60,
+    "worthEur": 0,
+    "budgetEur": 0,
+    "foundationYear": 1962,
+    "stadiumCapacity": 40192,
+    "averageAge": 27,
+    "youthDevelopment": 0,
+    "profitability": 0,
+    "internationalPrestige": 1,
+    "colors": {
+      "background": "rgb(218, 37, 29)",
+      "text": "rgb(255, 255, 255)"
+    },
+    "sourceUrl": "https://www.fifacm.com/27/team/111488/vietnam",
+    "sourceAttributes": {
+      "name": "Vietnam",
+      "worth": "0",
+      "budget": "0",
+      "foundation": "1962",
+      "capacity": "40192",
+      "ovr": "63",
+      "att": "62",
+      "mid": "64",
+      "def": "60",
+      "youth": "0",
+      "profitability": "0",
+      "international": "1",
+      "age": "27"
+    },
+    "gender": {
+      "id": 0,
+      "label": "Male"
+    },
+    "teamType": "national",
+    "playerIds": [
+      280153, 280155, 269580, 76468, 83736, 83739, 238144, 238269, 280157, 234135, 224779, 269583,
+      70913, 84559, 83863, 71988, 84560, 83738, 83865, 86203, 280156, 84029, 83730, 83861, 238149,
+      238148
+    ],
+    "squadBuilder": {
+      "formation": "343",
+      "formationShape": "3-4-3",
+      "formationCandidates": ["343"],
+      "formationMethod": "Exact position-multiset match against FIFACM squad-builder definitions; null if ambiguous or unmatched.",
+      "rating": 63,
+      "ratingMethod": "FIFACM team profile Rating; not a calculated community-squad rating.",
+      "valueEur": 12395000,
+      "wageEur": 97800,
+      "financialScope": "All source-displayed playerIds, including substitutes/reserves; excludes loaned-out players. National rosters may be partial.",
+      "financialMethod": "Sum of players.json valueEur/wageEur; source player amounts may be rounded.",
+      "wagePeriod": "week",
+      "startingXI": [
+        {
+          "playerId": 224779,
+          "position": "LW",
+          "overallRating": 66,
+          "sourcePositionId": 27
+        },
+        {
+          "playerId": 234135,
+          "position": "ST",
+          "overallRating": 69,
+          "sourcePositionId": 25
+        },
+        {
+          "playerId": 280157,
+          "position": "RW",
+          "overallRating": 57,
+          "sourcePositionId": 23
+        },
+        {
+          "playerId": 238269,
+          "position": "LM",
+          "overallRating": 68,
+          "sourcePositionId": 16
+        },
+        {
+          "playerId": 238144,
+          "position": "LCM",
+          "overallRating": 65,
+          "sourcePositionId": 15
+        },
+        {
+          "playerId": 83739,
+          "position": "RCM",
+          "overallRating": 63,
+          "sourcePositionId": 13
+        },
+        {
+          "playerId": 83736,
+          "position": "RM",
+          "overallRating": 59,
+          "sourcePositionId": 12
+        },
+        {
+          "playerId": 76468,
+          "position": "LCB",
+          "overallRating": 62,
+          "sourcePositionId": 6
+        },
+        {
+          "playerId": 269580,
+          "position": "CB",
+          "overallRating": 60,
+          "sourcePositionId": 5
+        },
+        {
+          "playerId": 280155,
+          "position": "RCB",
+          "overallRating": 58,
+          "sourcePositionId": 4
+        },
+        {
+          "playerId": 280153,
+          "position": "GK",
+          "overallRating": 59,
+          "sourcePositionId": 0
+        }
+      ],
+      "startingXIComplete": true,
+      "missingStartingPlayerCount": 0,
+      "snapshotDate": "2026-10-06",
+      "sourceUrl": "https://www.fifacm.com/27/team/111488/vietnam",
+      "retrievedAt": "2026-10-22T03:02:38.889Z"
+    },
+    "nationId": 192
+  },
+  {
+    "id": 111510,
+    "label": "Indonesia",
+    "fifaVersion": 27,
+    "imageUrl": "https://www.fifacm.com/content/media/imgs/fc27/teams/256/l111510.png",
+    "overallRating": 69,
+    "attack": 64,
+    "midfield": 67,
+    "defense": 70,
+    "worthEur": 0,
+    "budgetEur": 0,
+    "foundationYear": 1958,
+    "stadiumCapacity": 77193,
+    "averageAge": 27,
+    "youthDevelopment": 0,
+    "profitability": 0,
+    "internationalPrestige": 1,
+    "colors": {
+      "background": "rgb(213, 4, 33)",
+      "text": "rgb(255, 255, 254)"
+    },
+    "sourceUrl": "https://www.fifacm.com/27/team/111510/indonesia",
+    "sourceAttributes": {
+      "name": "Indonesia",
+      "worth": "0",
+      "budget": "0",
+      "foundation": "1958",
+      "capacity": "77193",
+      "ovr": "69",
+      "att": "64",
+      "mid": "67",
+      "def": "70",
+      "youth": "0",
+      "profitability": "0",
+      "international": "1",
+      "age": "27"
+    },
+    "gender": {
+      "id": 0,
+      "label": "Male"
+    },
+    "teamType": "national",
+    "playerIds": [
+      236571, 205618, 262396, 224841, 84122, 227794, 259114, 209316, 262267, 246231, 84125, 268727,
+      74579, 262098, 269247, 258926, 209701, 228413, 198198, 269467, 71161, 280257, 259163, 84272,
+      84631, 216225
+    ],
+    "squadBuilder": {
+      "formation": null,
+      "formationShape": null,
+      "formationCandidates": [],
+      "formationMethod": "Exact position-multiset match against FIFACM squad-builder definitions; null if ambiguous or unmatched.",
+      "rating": 69,
+      "ratingMethod": "FIFACM team profile Rating; not a calculated community-squad rating.",
+      "valueEur": 55830000,
+      "wageEur": 197700,
+      "financialScope": "All source-displayed playerIds, including substitutes/reserves; excludes loaned-out players. National rosters may be partial.",
+      "financialMethod": "Sum of players.json valueEur/wageEur; source player amounts may be rounded.",
+      "wagePeriod": "week",
+      "startingXI": [
+        {
+          "playerId": 84125,
+          "position": "ST",
+          "overallRating": 64,
+          "sourcePositionId": 25
+        },
+        {
+          "playerId": 246231,
+          "position": "LM",
+          "overallRating": 65,
+          "sourcePositionId": 16
+        },
+        {
+          "playerId": 262267,
+          "position": "LCM",
+          "overallRating": 65,
+          "sourcePositionId": 15
+        },
+        {
+          "playerId": 209316,
+          "position": "RCM",
+          "overallRating": 71,
+          "sourcePositionId": 13
+        },
+        {
+          "playerId": 259114,
+          "position": "RM",
+          "overallRating": 67,
+          "sourcePositionId": 12
+        },
+        {
+          "playerId": 227794,
+          "position": "LB",
+          "overallRating": 73,
+          "sourcePositionId": 7
+        },
+        {
+          "playerId": 84122,
+          "position": "LCB",
+          "overallRating": 63,
+          "sourcePositionId": 6
+        },
+        {
+          "playerId": 224841,
+          "position": "CB",
+          "overallRating": 77,
+          "sourcePositionId": 5
+        },
+        {
+          "playerId": 262396,
+          "position": "RCB",
+          "overallRating": 75,
+          "sourcePositionId": 4
+        },
+        {
+          "playerId": 205618,
+          "position": "RB",
+          "overallRating": 68,
+          "sourcePositionId": 3
+        },
+        {
+          "playerId": 236571,
+          "position": "GK",
+          "overallRating": 71,
+          "sourcePositionId": 0
+        }
+      ],
+      "startingXIComplete": true,
+      "missingStartingPlayerCount": 0,
+      "snapshotDate": "2026-10-06",
+      "sourceUrl": "https://www.fifacm.com/27/team/111510/indonesia",
+      "retrievedAt": "2026-10-22T03:02:32.685Z"
+    },
+    "nationId": 160
+  },
+  {
+    "id": 111527,
+    "label": "Qatar",
+    "fifaVersion": 27,
+    "imageUrl": "https://www.fifacm.com/content/media/imgs/fc27/teams/256/l111527.png",
+    "overallRating": 69,
+    "attack": 76,
+    "midfield": 69,
+    "defense": 67,
+    "worthEur": 0,
+    "budgetEur": 0,
+    "foundationYear": 1960,
+    "stadiumCapacity": 45416,
+    "averageAge": 29,
+    "youthDevelopment": 0,
+    "profitability": 0,
+    "internationalPrestige": 3,
+    "colors": {
+      "background": "rgb(255, 255, 255)",
+      "text": "rgb(138, 21, 56)"
+    },
+    "sourceUrl": "https://www.fifacm.com/27/team/111527/qatar",
+    "sourceAttributes": {
+      "name": "Qatar",
+      "worth": "0",
+      "budget": "0",
+      "foundation": "1960",
+      "capacity": "45416",
+      "ovr": "69",
+      "att": "76",
+      "mid": "69",
+      "def": "67",
+      "youth": "0",
+      "profitability": "0",
+      "international": "3",
+      "age": "29"
+    },
+    "gender": {
+      "id": 0,
+      "label": "Male"
+    },
+    "teamType": "national",
+    "playerIds": [
+      268979, 81834, 268781, 268771, 268776, 268778, 84621, 268877, 228352, 180561, 234051, 268982,
+      268779, 80131, 268772, 268985, 268879, 203244, 74236, 272472, 239878, 215911, 76232, 268780,
+      81956, 268783
+    ],
+    "squadBuilder": {
+      "formation": "4231-2",
+      "formationShape": "4-2-3-1",
+      "formationCandidates": ["4231-2"],
+      "formationMethod": "Exact position-multiset match against FIFACM squad-builder definitions; null if ambiguous or unmatched.",
+      "rating": 69,
+      "ratingMethod": "FIFACM team profile Rating; not a calculated community-squad rating.",
+      "valueEur": 44375000,
+      "wageEur": 186700,
+      "financialScope": "All source-displayed playerIds, including substitutes/reserves; excludes loaned-out players. National rosters may be partial.",
+      "financialMethod": "Sum of players.json valueEur/wageEur; source player amounts may be rounded.",
+      "wagePeriod": "week",
+      "startingXI": [
+        {
+          "playerId": 234051,
+          "position": "ST",
+          "overallRating": 79,
+          "sourcePositionId": 25
+        },
+        {
+          "playerId": 180561,
+          "position": "CAM",
+          "overallRating": 70,
+          "sourcePositionId": 18
+        },
+        {
+          "playerId": 228352,
+          "position": "LM",
+          "overallRating": 75,
+          "sourcePositionId": 16
+        },
+        {
+          "playerId": 268877,
+          "position": "RM",
+          "overallRating": 65,
+          "sourcePositionId": 12
+        },
+        {
+          "playerId": 84621,
+          "position": "LDM",
+          "overallRating": 68,
+          "sourcePositionId": 11
+        },
+        {
+          "playerId": 268778,
+          "position": "RDM",
+          "overallRating": 71,
+          "sourcePositionId": 9
+        },
+        {
+          "playerId": 268776,
+          "position": "LB",
+          "overallRating": 66,
+          "sourcePositionId": 7
+        },
+        {
+          "playerId": 268771,
+          "position": "LCB",
+          "overallRating": 71,
+          "sourcePositionId": 6
+        },
+        {
+          "playerId": 268781,
+          "position": "RCB",
+          "overallRating": 68,
+          "sourcePositionId": 4
+        },
+        {
+          "playerId": 81834,
+          "position": "RB",
+          "overallRating": 63,
+          "sourcePositionId": 3
+        },
+        {
+          "playerId": 268979,
+          "position": "GK",
+          "overallRating": 67,
+          "sourcePositionId": 0
+        }
+      ],
+      "startingXIComplete": true,
+      "missingStartingPlayerCount": 0,
+      "snapshotDate": "2026-10-06",
+      "sourceUrl": "https://www.fifacm.com/27/team/111527/qatar",
+      "retrievedAt": "2026-10-22T03:02:22.641Z"
+    },
+    "nationId": 182
+  },
+  {
+    "id": 111545,
+    "label": "Congo DR",
+    "fifaVersion": 27,
+    "imageUrl": "https://www.fifacm.com/content/media/imgs/fc27/teams/256/l111545.png",
+    "overallRating": 75,
+    "attack": 76,
+    "midfield": 73,
+    "defense": 74,
+    "worthEur": 0,
+    "budgetEur": 0,
+    "foundationYear": 1948,
+    "stadiumCapacity": 80000,
+    "averageAge": 29,
+    "youthDevelopment": 0,
+    "profitability": 0,
+    "internationalPrestige": 2,
+    "colors": {
+      "background": "rgb(0, 0, 255)",
+      "text": "rgb(255, 0, 0)"
+    },
+    "sourceUrl": "https://www.fifacm.com/27/team/111545/congo-dr",
+    "sourceAttributes": {
+      "name": "Congo DR",
+      "worth": "0",
+      "budget": "0",
+      "foundation": "1948",
+      "capacity": "80000",
+      "ovr": "75",
+      "att": "76",
+      "mid": "73",
+      "def": "74",
+      "youth": "0",
+      "profitability": "0",
+      "international": "2",
+      "age": "29"
+    },
+    "gender": {
+      "id": 0,
+      "label": "Male"
+    },
+    "teamType": "national",
+    "playerIds": [
+      223150, 229880, 210897, 231485, 269507, 212491, 274447, 242217, 240351, 234824, 198951,
+      222875, 82523, 251532, 233884, 186197, 262265, 238391, 217877, 73317, 269230, 239814, 253036,
+      216485, 248858
+    ],
+    "squadBuilder": {
+      "formation": null,
+      "formationShape": null,
+      "formationCandidates": [],
+      "formationMethod": "Exact position-multiset match against FIFACM squad-builder definitions; null if ambiguous or unmatched.",
+      "rating": 75,
+      "ratingMethod": "FIFACM team profile Rating; not a calculated community-squad rating.",
+      "valueEur": 146600000,
+      "wageEur": 514600,
+      "financialScope": "All source-displayed playerIds, including substitutes/reserves; excludes loaned-out players. National rosters may be partial.",
+      "financialMethod": "Sum of players.json valueEur/wageEur; source player amounts may be rounded.",
+      "wagePeriod": "week",
+      "startingXI": [
+        {
+          "playerId": 198951,
+          "position": "LS",
+          "overallRating": 75,
+          "sourcePositionId": 26
+        },
+        {
+          "playerId": 234824,
+          "position": "RS",
+          "overallRating": 80,
+          "sourcePositionId": 24
+        },
+        {
+          "playerId": 240351,
+          "position": "LCM",
+          "overallRating": 70,
+          "sourcePositionId": 15
+        },
+        {
+          "playerId": 242217,
+          "position": "RCM",
+          "overallRating": 70,
+          "sourcePositionId": 13
+        },
+        {
+          "playerId": 274447,
+          "position": "CDM",
+          "overallRating": 73,
+          "sourcePositionId": 10
+        },
+        {
+          "playerId": 212491,
+          "position": "LB",
+          "overallRating": 75,
+          "sourcePositionId": 7
+        },
+        {
+          "playerId": 269507,
+          "position": "LCB",
+          "overallRating": 72,
+          "sourcePositionId": 6
+        },
+        {
+          "playerId": 231485,
+          "position": "CB",
+          "overallRating": 73,
+          "sourcePositionId": 5
+        },
+        {
+          "playerId": 210897,
+          "position": "RCB",
+          "overallRating": 75,
+          "sourcePositionId": 4
+        },
+        {
+          "playerId": 229880,
+          "position": "RB",
+          "overallRating": 78,
+          "sourcePositionId": 3
+        },
+        {
+          "playerId": 223150,
+          "position": "GK",
+          "overallRating": 73,
+          "sourcePositionId": 0
+        }
+      ],
+      "startingXIComplete": true,
+      "missingStartingPlayerCount": 0,
+      "snapshotDate": "2026-10-06",
+      "sourceUrl": "https://www.fifacm.com/27/team/111545/congo-dr",
+      "retrievedAt": "2026-10-22T03:02:43.238Z"
+    },
+    "nationId": 110
+  }
+]

@@ -5,6 +5,7 @@ import { gameState, setState } from "@/engine/state";
 import type { DataRow } from "@/engine/types";
 import { newGameReal, type RealStart } from "@/engine/world";
 import { loadMockData } from "@/lib/mockData";
+import { loadPack } from "@/lib/data";
 import { clearGame, loadGame, saveGame } from "@/lib/persist";
 
 type Status = "loading" | "none" | "ready";
@@ -37,6 +38,7 @@ export const useGame = create<GameStore>((set, get) => ({
   boot: async () => {
     await loadMockData();
     const state = await loadGame();
+    if (state?.dataProvider === "fifacm") await loadPack("fifacm");
     if (state && !state.leagueNames) state.leagueNames = {};
     setState(state);
     set({ status: state ? "ready" : "none", version: get().version + 1 });

@@ -44,6 +44,15 @@ Luôn trả lời người dùng bằng tiếng Việt. Toàn bộ chữ trong g
 
 ## Dữ liệu
 
+- Sự nghiệp mới dùng `data/fifacm/` (FC27 nam, snapshot 06/10/2026). `src/lib/data.ts` tải players/clubs/leagues/nations/manifest; `src/engine/fifacm.ts` nối ID và tạo DataRow trong bộ nhớ. Không ghép tuổi, tiềm năng, hợp đồng hoặc tài chính FC26 vào nguồn này.
+- `plugins/fifacmData.ts` phục vụ JSON tại `data/fifacm/*.json` khi dev, xuất nguyên bản vào `dist/data/fifacm/` khi build. Không tạo bản sao thủ công trong public. `formations.json` cũng được engine dùng để dựng 22 sơ đồ; các tuyến giữa gộp thành MF cho logic GK/DF/MF/FW hiện có.
+- ID game của cầu thủ nguồn là `f<sourceId>`, CLB là `fc<sourceId>`; trường `sourceId` giữ ID số để truy nguồn. Cầu thủ tự do có `club = null`, `contract = null`. Lương/giá trị/điều khoản đổi từ EUR sang nghìn EUR; không làm tròn lương thấp thành 1k. `nationId` tham chiếu nations.json.
+- Mọi CLB/cầu thủ của bộ FIFACM được nạp. Phạm vi mô phỏng và cân bằng giải vẫn theo cấu hình public/data/leagues.json; các giải mới còn lại chỉ là nguồn thị trường. Khởi tạo giữ đúng danh sách cầu thủ FIFACM, không bù cầu thủ giả; học viện và phát triển trong quá trình chơi vẫn theo luật game.
+- Budget nguồn hiện toàn 0 và chưa xác minh: tiếp tục dùng công thức ngân sách game, không dùng Worth làm tiền chuyển nhượng. Quỹ lương tính trên lương cầu thủ nguồn × hệ số trần lương hiện có.
+- Bản lưu cũ vẫn dùng dữ liệu đã lưu; FIFACM áp dụng khi tạo sự nghiệp mới. `saveVersion` giữ tương thích, trường `dataProvider: "fifacm"` nhận diện nguồn mới.
+
+### Định dạng cũ (lưu trữ, không còn được giao diện tải để tạo sự nghiệp)
+
 - `public/data/fc27.json`: mảng dòng `[league_id, club, short, long, positions, ovr, pot, value_eur, wage_eur, age, contract_year, release_clause_eur, nationality, fifa_version, prevClub?]` (kiểu `DataRow`).
 - Dòng có `league_id = 0` và CLB rỗng là cầu thủ tự do (hết hợp đồng): vào `gameState.free`, người chơi và CLB AI đều ký được (`aiFreeAgentsTick` trong transfers.ts).
 - Giải mô phỏng: 13 EPL, 53 LaLiga, 19 Bundesliga, 31 Serie A, 16 Ligue 1. Giải nguồn (không đá): 14 Championship, 308 Bồ Đào Nha, 10 Hà Lan, 999 đội mới xuống hạng.

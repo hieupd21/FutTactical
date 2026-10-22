@@ -32,13 +32,21 @@ describe("đàm phán có độ trễ", () => {
     return negotiation;
   }
 
-  it("phản giá khi bán: chờ ít nhất 1 ngày mới có trả lời và thông báo", () => {
+  it("phản giá trong mức trần của CLB mua: bán ngay, không phải chờ", () => {
     const negotiation = sellOffer(1000, 1500);
     const playerId = negotiation.playerId;
     expect(respondSell(negotiation, "counter", 1200)).toEqual({});
+    expect(negotiation.waiting).toBeFalsy();
+    expect(negotiation.stage).toBe("done");
+    expect(gameState.players[playerId].club).toBe(negotiation.buyer);
+  });
+
+  it("phản giá vượt mức trần: chờ ít nhất 1 ngày mới có trả lời và thông báo", () => {
+    const negotiation = sellOffer(1000, 1000);
+    const playerId = negotiation.playerId;
+    expect(respondSell(negotiation, "counter", 1100)).toEqual({});
     expect(negotiation.waiting).toBe(true);
     expect(negotiation.readyAt).toBe(tick() + 24);
-    expect(gameState.players[playerId].club).toBe(gameState.myClubId); // chưa bán ngay
     gameState.hour += 23;
     processNegos();
     expect(negotiation.waiting).toBe(true); // 23 giờ chưa đủ
@@ -46,8 +54,8 @@ describe("đàm phán có độ trễ", () => {
     gameState.hour += 1;
     processNegos();
     expect(negotiation.waiting).toBe(false);
-    expect(negotiation.stage).toBe("done"); // 1200 trong mức trần 1500: đồng ý
-    expect(gameState.players[playerId].club).toBe(negotiation.buyer);
+    expect(negotiation.stage).toBe("offer"); // 1100 vượt trần: họ giữ mức cuối
+    expect(gameState.players[playerId].club).toBe(gameState.myClubId);
     expect(gameState.inbox.length).toBeGreaterThan(msgs);
   });
 

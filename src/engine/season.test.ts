@@ -1,5 +1,3 @@
-import { readFileSync } from "node:fs";
-import { resolve } from "node:path";
 import { describe, expect, it } from "vitest";
 import { myWages } from "./board";
 import { playMyMatch } from "./match";
@@ -7,12 +5,7 @@ import { advance } from "./season";
 import { clubPlayers, table } from "./squad";
 import { myClub, myLeagueId, gameState, simLeagues } from "./state";
 import { completeBuy, enquire, submitClubOffer } from "./transfers";
-import type { DataRow } from "./types";
-import { newGameReal } from "./world";
 import { startTestGame } from "@/test/helpers";
-
-const pack = (fileName: string): DataRow[] =>
-  JSON.parse(readFileSync(resolve(__dirname, "../../public/data", fileName), "utf8"));
 
 function playSeason(): void {
   const startYear = gameState.year;
@@ -37,9 +30,8 @@ describe("engine", () => {
     }
   });
 
-  it("dữ liệu FC 27 khởi tạo đúng và chạy trọn một mùa", () => {
-    const rows = pack("fc27.json");
-    newGameReal(rows, "EN", "Arsenal", "FC 27");
+  it("dữ liệu FIFACM FC27 khởi tạo đúng và chạy trọn một mùa", () => {
+    startTestGame();
     expect(gameState.year).toBe(2026);
     expect(myClub().name).toBe("Arsenal");
     simLeagues().forEach((league) =>
@@ -56,11 +48,11 @@ describe("engine", () => {
   });
 
   it("cầu thủ hết hợp đồng trong dữ liệu là cầu thủ tự do và CLB AI ký được", () => {
-    newGameReal(pack("fc27.json"), "EN", "Arsenal", "FC 27");
+    startTestGame();
     const free = gameState.free.map((id) => gameState.players[id]);
     expect(free.length).toBeGreaterThan(100);
     expect(free.every((player) => player.club == null)).toBe(true);
-    expect(free.some((player) => player.name === "Carvajal")).toBe(true);
+    expect(free.some((player) => player.name === "Giorgian de Arrascaeta")).toBe(true);
     const before = gameState.free.length;
     for (let i = 0; i < 30; i++) advance("day");
     expect(gameState.free.length).toBeLessThan(before);
@@ -74,7 +66,7 @@ describe("engine", () => {
   });
 
   it("thương vụ mua qua điều khoản đàm phán hoàn tất được", () => {
-    newGameReal(pack("fc27.json"), "EN", "Arsenal", "FC 27");
+    startTestGame();
     myClub().budget = 500000;
     gameState.wageCap = 99999;
     const target = Object.values(gameState.players).find(

@@ -79,7 +79,7 @@ export function valueOf(player: Player): number {
   value *= 0.85 + (0.3 * player.form) / 100;
   const club = player.club != null ? getClub(player.club) : null;
   if (club) value *= 0.8 + 0.1 * getLeague(club.leagueId).level;
-  if (player.valueAnchor) value *= player.valueAnchor;
+  if (player.valueAnchor !== undefined) value *= player.valueAnchor;
   return roundToTen(value);
 }
 /** Mức lương cơ bản (nghìn € / tuần) */

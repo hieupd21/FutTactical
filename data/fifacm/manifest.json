@@ -1,0 +1,3599 @@
+{
+  "provider": "FIFACM",
+  "baseUrl": "https://www.fifacm.com",
+  "sourceUrl": "https://www.fifacm.com/players",
+  "sport": "football",
+  "gender": {
+    "id": 0,
+    "label": "Male"
+  },
+  "fifaVersion": 27,
+  "snapshotLabel": "6th of Oct 2026",
+  "retrievalMethod": "Orca browser / male cookie / HTML listing",
+  "downloadStartedAt": "2026-10-21T18:21:23.781090+00:00",
+  "downloadCompletedAt": "2026-10-22T01:30:37.178798+00:00",
+  "complete": true,
+  "reportedPageCount": 626,
+  "downloadedPageCount": 626,
+  "downloadedPlayerCount": 18763,
+  "uniquePlayerIds": 18763,
+  "missingPages": [],
+  "error": null,
+  "financialUnit": {
+    "currency": "EUR",
+    "wagePeriod": "week"
+  },
+  "limitations": [
+    "Source is the FC27 Career Mode HTML listing, not a raw EA game database export.",
+    "Financial values are converted from displayed K/M figures and may be rounded by the website; original strings are retained.",
+    "Individual profile attributes and birthdates are not collected by the player listing crawl; league IDs are stored in clubs.json and leagues.json.",
+    "The ordinary listing does not identify every loan. isOnLoan is null unless explicitly displayed.",
+    "Snapshot date is checked on every downloaded page; the website does not expose the active snapshot ID in these links.",
+    "No FC26 rows, EA dataset, financial estimates, or local FC27 file are used to fill missing values."
+  ],
+  "pages": [
+    {
+      "page": 1,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players"
+    },
+    {
+      "page": 2,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=2"
+    },
+    {
+      "page": 3,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=3"
+    },
+    {
+      "page": 4,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=4"
+    },
+    {
+      "page": 5,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=5"
+    },
+    {
+      "page": 6,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=6"
+    },
+    {
+      "page": 7,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=7"
+    },
+    {
+      "page": 8,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=8"
+    },
+    {
+      "page": 9,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=9"
+    },
+    {
+      "page": 10,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=10"
+    },
+    {
+      "page": 11,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=11"
+    },
+    {
+      "page": 12,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=12"
+    },
+    {
+      "page": 13,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=13"
+    },
+    {
+      "page": 14,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=14"
+    },
+    {
+      "page": 15,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=15"
+    },
+    {
+      "page": 16,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=16"
+    },
+    {
+      "page": 17,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=17"
+    },
+    {
+      "page": 18,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=18"
+    },
+    {
+      "page": 19,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=19"
+    },
+    {
+      "page": 20,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=20"
+    },
+    {
+      "page": 21,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=21"
+    },
+    {
+      "page": 22,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=22"
+    },
+    {
+      "page": 23,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=23"
+    },
+    {
+      "page": 24,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=24"
+    },
+    {
+      "page": 25,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=25"
+    },
+    {
+      "page": 26,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=26"
+    },
+    {
+      "page": 27,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=27"
+    },
+    {
+      "page": 28,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=28"
+    },
+    {
+      "page": 29,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=29"
+    },
+    {
+      "page": 30,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=30"
+    },
+    {
+      "page": 31,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=31"
+    },
+    {
+      "page": 32,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=32"
+    },
+    {
+      "page": 33,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=33"
+    },
+    {
+      "page": 34,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=34"
+    },
+    {
+      "page": 35,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=35"
+    },
+    {
+      "page": 36,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=36"
+    },
+    {
+      "page": 37,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=37"
+    },
+    {
+      "page": 38,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=38"
+    },
+    {
+      "page": 39,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=39"
+    },
+    {
+      "page": 40,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=40"
+    },
+    {
+      "page": 41,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=41"
+    },
+    {
+      "page": 42,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=42"
+    },
+    {
+      "page": 43,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=43"
+    },
+    {
+      "page": 44,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=44"
+    },
+    {
+      "page": 45,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=45"
+    },
+    {
+      "page": 46,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=46"
+    },
+    {
+      "page": 47,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=47"
+    },
+    {
+      "page": 48,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=48"
+    },
+    {
+      "page": 49,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=49"
+    },
+    {
+      "page": 50,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=50"
+    },
+    {
+      "page": 51,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=51"
+    },
+    {
+      "page": 52,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=52"
+    },
+    {
+      "page": 53,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=53"
+    },
+    {
+      "page": 54,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=54"
+    },
+    {
+      "page": 55,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=55"
+    },
+    {
+      "page": 56,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=56"
+    },
+    {
+      "page": 57,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=57"
+    },
+    {
+      "page": 58,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=58"
+    },
+    {
+      "page": 59,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=59"
+    },
+    {
+      "page": 60,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=60"
+    },
+    {
+      "page": 61,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=61"
+    },
+    {
+      "page": 62,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=62"
+    },
+    {
+      "page": 63,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=63"
+    },
+    {
+      "page": 64,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=64"
+    },
+    {
+      "page": 65,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=65"
+    },
+    {
+      "page": 66,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=66"
+    },
+    {
+      "page": 67,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=67"
+    },
+    {
+      "page": 68,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=68"
+    },
+    {
+      "page": 69,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=69"
+    },
+    {
+      "page": 70,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=70"
+    },
+    {
+      "page": 71,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=71"
+    },
+    {
+      "page": 72,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=72"
+    },
+    {
+      "page": 73,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=73"
+    },
+    {
+      "page": 74,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=74"
+    },
+    {
+      "page": 75,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=75"
+    },
+    {
+      "page": 76,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=76"
+    },
+    {
+      "page": 77,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=77"
+    },
+    {
+      "page": 78,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=78"
+    },
+    {
+      "page": 79,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=79"
+    },
+    {
+      "page": 80,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=80"
+    },
+    {
+      "page": 81,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=81"
+    },
+    {
+      "page": 82,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=82"
+    },
+    {
+      "page": 83,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=83"
+    },
+    {
+      "page": 84,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=84"
+    },
+    {
+      "page": 85,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=85"
+    },
+    {
+      "page": 86,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=86"
+    },
+    {
+      "page": 87,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=87"
+    },
+    {
+      "page": 88,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=88"
+    },
+    {
+      "page": 89,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=89"
+    },
+    {
+      "page": 90,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=90"
+    },
+    {
+      "page": 91,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=91"
+    },
+    {
+      "page": 92,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=92"
+    },
+    {
+      "page": 93,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=93"
+    },
+    {
+      "page": 94,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=94"
+    },
+    {
+      "page": 95,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=95"
+    },
+    {
+      "page": 96,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=96"
+    },
+    {
+      "page": 97,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=97"
+    },
+    {
+      "page": 98,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=98"
+    },
+    {
+      "page": 99,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=99"
+    },
+    {
+      "page": 100,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=100"
+    },
+    {
+      "page": 101,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=101"
+    },
+    {
+      "page": 102,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=102"
+    },
+    {
+      "page": 103,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=103"
+    },
+    {
+      "page": 104,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=104"
+    },
+    {
+      "page": 105,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=105"
+    },
+    {
+      "page": 106,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=106"
+    },
+    {
+      "page": 107,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=107"
+    },
+    {
+      "page": 108,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=108"
+    },
+    {
+      "page": 109,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=109"
+    },
+    {
+      "page": 110,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=110"
+    },
+    {
+      "page": 111,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=111"
+    },
+    {
+      "page": 112,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=112"
+    },
+    {
+      "page": 113,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=113"
+    },
+    {
+      "page": 114,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=114"
+    },
+    {
+      "page": 115,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=115"
+    },
+    {
+      "page": 116,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=116"
+    },
+    {
+      "page": 117,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=117"
+    },
+    {
+      "page": 118,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=118"
+    },
+    {
+      "page": 119,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=119"
+    },
+    {
+      "page": 120,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=120"
+    },
+    {
+      "page": 121,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=121"
+    },
+    {
+      "page": 122,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=122"
+    },
+    {
+      "page": 123,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=123"
+    },
+    {
+      "page": 124,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=124"
+    },
+    {
+      "page": 125,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=125"
+    },
+    {
+      "page": 126,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=126"
+    },
+    {
+      "page": 127,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=127"
+    },
+    {
+      "page": 128,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=128"
+    },
+    {
+      "page": 129,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=129"
+    },
+    {
+      "page": 130,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=130"
+    },
+    {
+      "page": 131,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=131"
+    },
+    {
+      "page": 132,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=132"
+    },
+    {
+      "page": 133,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=133"
+    },
+    {
+      "page": 134,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=134"
+    },
+    {
+      "page": 135,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=135"
+    },
+    {
+      "page": 136,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=136"
+    },
+    {
+      "page": 137,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=137"
+    },
+    {
+      "page": 138,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=138"
+    },
+    {
+      "page": 139,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=139"
+    },
+    {
+      "page": 140,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=140"
+    },
+    {
+      "page": 141,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=141"
+    },
+    {
+      "page": 142,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=142"
+    },
+    {
+      "page": 143,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=143"
+    },
+    {
+      "page": 144,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=144"
+    },
+    {
+      "page": 145,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=145"
+    },
+    {
+      "page": 146,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=146"
+    },
+    {
+      "page": 147,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=147"
+    },
+    {
+      "page": 148,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=148"
+    },
+    {
+      "page": 149,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=149"
+    },
+    {
+      "page": 150,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=150"
+    },
+    {
+      "page": 151,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=151"
+    },
+    {
+      "page": 152,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=152"
+    },
+    {
+      "page": 153,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=153"
+    },
+    {
+      "page": 154,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=154"
+    },
+    {
+      "page": 155,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=155"
+    },
+    {
+      "page": 156,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=156"
+    },
+    {
+      "page": 157,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=157"
+    },
+    {
+      "page": 158,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=158"
+    },
+    {
+      "page": 159,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=159"
+    },
+    {
+      "page": 160,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=160"
+    },
+    {
+      "page": 161,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=161"
+    },
+    {
+      "page": 162,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=162"
+    },
+    {
+      "page": 163,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=163"
+    },
+    {
+      "page": 164,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=164"
+    },
+    {
+      "page": 165,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=165"
+    },
+    {
+      "page": 166,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=166"
+    },
+    {
+      "page": 167,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=167"
+    },
+    {
+      "page": 168,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=168"
+    },
+    {
+      "page": 169,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=169"
+    },
+    {
+      "page": 170,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=170"
+    },
+    {
+      "page": 171,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=171"
+    },
+    {
+      "page": 172,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=172"
+    },
+    {
+      "page": 173,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=173"
+    },
+    {
+      "page": 174,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=174"
+    },
+    {
+      "page": 175,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=175"
+    },
+    {
+      "page": 176,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=176"
+    },
+    {
+      "page": 177,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=177"
+    },
+    {
+      "page": 178,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=178"
+    },
+    {
+      "page": 179,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=179"
+    },
+    {
+      "page": 180,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=180"
+    },
+    {
+      "page": 181,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=181"
+    },
+    {
+      "page": 182,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=182"
+    },
+    {
+      "page": 183,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=183"
+    },
+    {
+      "page": 184,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=184"
+    },
+    {
+      "page": 185,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=185"
+    },
+    {
+      "page": 186,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=186"
+    },
+    {
+      "page": 187,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=187"
+    },
+    {
+      "page": 188,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=188"
+    },
+    {
+      "page": 189,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=189"
+    },
+    {
+      "page": 190,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=190"
+    },
+    {
+      "page": 191,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=191"
+    },
+    {
+      "page": 192,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=192"
+    },
+    {
+      "page": 193,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=193"
+    },
+    {
+      "page": 194,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=194"
+    },
+    {
+      "page": 195,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=195"
+    },
+    {
+      "page": 196,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=196"
+    },
+    {
+      "page": 197,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=197"
+    },
+    {
+      "page": 198,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=198"
+    },
+    {
+      "page": 199,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=199"
+    },
+    {
+      "page": 200,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=200"
+    },
+    {
+      "page": 201,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=201"
+    },
+    {
+      "page": 202,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=202"
+    },
+    {
+      "page": 203,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=203"
+    },
+    {
+      "page": 204,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=204"
+    },
+    {
+      "page": 205,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=205"
+    },
+    {
+      "page": 206,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=206"
+    },
+    {
+      "page": 207,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=207"
+    },
+    {
+      "page": 208,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=208"
+    },
+    {
+      "page": 209,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=209"
+    },
+    {
+      "page": 210,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=210"
+    },
+    {
+      "page": 211,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=211"
+    },
+    {
+      "page": 212,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=212"
+    },
+    {
+      "page": 213,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=213"
+    },
+    {
+      "page": 214,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=214"
+    },
+    {
+      "page": 215,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=215"
+    },
+    {
+      "page": 216,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=216"
+    },
+    {
+      "page": 217,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=217"
+    },
+    {
+      "page": 218,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=218"
+    },
+    {
+      "page": 219,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=219"
+    },
+    {
+      "page": 220,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=220"
+    },
+    {
+      "page": 221,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=221"
+    },
+    {
+      "page": 222,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=222"
+    },
+    {
+      "page": 223,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=223"
+    },
+    {
+      "page": 224,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=224"
+    },
+    {
+      "page": 225,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=225"
+    },
+    {
+      "page": 226,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=226"
+    },
+    {
+      "page": 227,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=227"
+    },
+    {
+      "page": 228,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=228"
+    },
+    {
+      "page": 229,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=229"
+    },
+    {
+      "page": 230,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=230"
+    },
+    {
+      "page": 231,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=231"
+    },
+    {
+      "page": 232,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=232"
+    },
+    {
+      "page": 233,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=233"
+    },
+    {
+      "page": 234,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=234"
+    },
+    {
+      "page": 235,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=235"
+    },
+    {
+      "page": 236,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=236"
+    },
+    {
+      "page": 237,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=237"
+    },
+    {
+      "page": 238,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=238"
+    },
+    {
+      "page": 239,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=239"
+    },
+    {
+      "page": 240,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=240"
+    },
+    {
+      "page": 241,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=241"
+    },
+    {
+      "page": 242,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=242"
+    },
+    {
+      "page": 243,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=243"
+    },
+    {
+      "page": 244,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=244"
+    },
+    {
+      "page": 245,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=245"
+    },
+    {
+      "page": 246,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=246"
+    },
+    {
+      "page": 247,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=247"
+    },
+    {
+      "page": 248,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=248"
+    },
+    {
+      "page": 249,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=249"
+    },
+    {
+      "page": 250,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=250"
+    },
+    {
+      "page": 251,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=251"
+    },
+    {
+      "page": 252,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=252"
+    },
+    {
+      "page": 253,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=253"
+    },
+    {
+      "page": 254,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=254"
+    },
+    {
+      "page": 255,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=255"
+    },
+    {
+      "page": 256,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=256"
+    },
+    {
+      "page": 257,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=257"
+    },
+    {
+      "page": 258,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=258"
+    },
+    {
+      "page": 259,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=259"
+    },
+    {
+      "page": 260,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=260"
+    },
+    {
+      "page": 261,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=261"
+    },
+    {
+      "page": 262,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=262"
+    },
+    {
+      "page": 263,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=263"
+    },
+    {
+      "page": 264,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=264"
+    },
+    {
+      "page": 265,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=265"
+    },
+    {
+      "page": 266,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=266"
+    },
+    {
+      "page": 267,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=267"
+    },
+    {
+      "page": 268,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=268"
+    },
+    {
+      "page": 269,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=269"
+    },
+    {
+      "page": 270,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=270"
+    },
+    {
+      "page": 271,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=271"
+    },
+    {
+      "page": 272,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=272"
+    },
+    {
+      "page": 273,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=273"
+    },
+    {
+      "page": 274,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=274"
+    },
+    {
+      "page": 275,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=275"
+    },
+    {
+      "page": 276,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=276"
+    },
+    {
+      "page": 277,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=277"
+    },
+    {
+      "page": 278,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=278"
+    },
+    {
+      "page": 279,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=279"
+    },
+    {
+      "page": 280,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=280"
+    },
+    {
+      "page": 281,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=281"
+    },
+    {
+      "page": 282,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=282"
+    },
+    {
+      "page": 283,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=283"
+    },
+    {
+      "page": 284,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=284"
+    },
+    {
+      "page": 285,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=285"
+    },
+    {
+      "page": 286,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=286"
+    },
+    {
+      "page": 287,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=287"
+    },
+    {
+      "page": 288,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=288"
+    },
+    {
+      "page": 289,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=289"
+    },
+    {
+      "page": 290,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=290"
+    },
+    {
+      "page": 291,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=291"
+    },
+    {
+      "page": 292,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=292"
+    },
+    {
+      "page": 293,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=293"
+    },
+    {
+      "page": 294,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=294"
+    },
+    {
+      "page": 295,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=295"
+    },
+    {
+      "page": 296,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=296"
+    },
+    {
+      "page": 297,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=297"
+    },
+    {
+      "page": 298,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=298"
+    },
+    {
+      "page": 299,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=299"
+    },
+    {
+      "page": 300,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=300"
+    },
+    {
+      "page": 301,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=301"
+    },
+    {
+      "page": 302,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=302"
+    },
+    {
+      "page": 303,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=303"
+    },
+    {
+      "page": 304,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=304"
+    },
+    {
+      "page": 305,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=305"
+    },
+    {
+      "page": 306,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=306"
+    },
+    {
+      "page": 307,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=307"
+    },
+    {
+      "page": 308,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=308"
+    },
+    {
+      "page": 309,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=309"
+    },
+    {
+      "page": 310,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=310"
+    },
+    {
+      "page": 311,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=311"
+    },
+    {
+      "page": 312,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=312"
+    },
+    {
+      "page": 313,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=313"
+    },
+    {
+      "page": 314,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=314"
+    },
+    {
+      "page": 315,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=315"
+    },
+    {
+      "page": 316,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=316"
+    },
+    {
+      "page": 317,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=317"
+    },
+    {
+      "page": 318,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=318"
+    },
+    {
+      "page": 319,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=319"
+    },
+    {
+      "page": 320,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=320"
+    },
+    {
+      "page": 321,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=321"
+    },
+    {
+      "page": 322,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=322"
+    },
+    {
+      "page": 323,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=323"
+    },
+    {
+      "page": 324,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=324"
+    },
+    {
+      "page": 325,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=325"
+    },
+    {
+      "page": 326,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=326"
+    },
+    {
+      "page": 327,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=327"
+    },
+    {
+      "page": 328,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=328"
+    },
+    {
+      "page": 329,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=329"
+    },
+    {
+      "page": 330,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=330"
+    },
+    {
+      "page": 331,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=331"
+    },
+    {
+      "page": 332,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=332"
+    },
+    {
+      "page": 333,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=333"
+    },
+    {
+      "page": 334,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=334"
+    },
+    {
+      "page": 335,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=335"
+    },
+    {
+      "page": 336,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=336"
+    },
+    {
+      "page": 337,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=337"
+    },
+    {
+      "page": 338,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=338"
+    },
+    {
+      "page": 339,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=339"
+    },
+    {
+      "page": 340,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=340"
+    },
+    {
+      "page": 341,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=341"
+    },
+    {
+      "page": 342,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=342"
+    },
+    {
+      "page": 343,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=343"
+    },
+    {
+      "page": 344,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=344"
+    },
+    {
+      "page": 345,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=345"
+    },
+    {
+      "page": 346,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=346"
+    },
+    {
+      "page": 347,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=347"
+    },
+    {
+      "page": 348,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=348"
+    },
+    {
+      "page": 349,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=349"
+    },
+    {
+      "page": 350,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=350"
+    },
+    {
+      "page": 351,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=351"
+    },
+    {
+      "page": 352,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=352"
+    },
+    {
+      "page": 353,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=353"
+    },
+    {
+      "page": 354,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=354"
+    },
+    {
+      "page": 355,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=355"
+    },
+    {
+      "page": 356,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=356"
+    },
+    {
+      "page": 357,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=357"
+    },
+    {
+      "page": 358,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=358"
+    },
+    {
+      "page": 359,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=359"
+    },
+    {
+      "page": 360,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=360"
+    },
+    {
+      "page": 361,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=361"
+    },
+    {
+      "page": 362,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=362"
+    },
+    {
+      "page": 363,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=363"
+    },
+    {
+      "page": 364,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=364"
+    },
+    {
+      "page": 365,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=365"
+    },
+    {
+      "page": 366,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=366"
+    },
+    {
+      "page": 367,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=367"
+    },
+    {
+      "page": 368,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=368"
+    },
+    {
+      "page": 369,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=369"
+    },
+    {
+      "page": 370,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=370"
+    },
+    {
+      "page": 371,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=371"
+    },
+    {
+      "page": 372,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=372"
+    },
+    {
+      "page": 373,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=373"
+    },
+    {
+      "page": 374,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=374"
+    },
+    {
+      "page": 375,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=375"
+    },
+    {
+      "page": 376,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=376"
+    },
+    {
+      "page": 377,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=377"
+    },
+    {
+      "page": 378,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=378"
+    },
+    {
+      "page": 379,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=379"
+    },
+    {
+      "page": 380,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=380"
+    },
+    {
+      "page": 381,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=381"
+    },
+    {
+      "page": 382,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=382"
+    },
+    {
+      "page": 383,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=383"
+    },
+    {
+      "page": 384,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=384"
+    },
+    {
+      "page": 385,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=385"
+    },
+    {
+      "page": 386,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=386"
+    },
+    {
+      "page": 387,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=387"
+    },
+    {
+      "page": 388,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=388"
+    },
+    {
+      "page": 389,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=389"
+    },
+    {
+      "page": 390,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=390"
+    },
+    {
+      "page": 391,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=391"
+    },
+    {
+      "page": 392,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=392"
+    },
+    {
+      "page": 393,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=393"
+    },
+    {
+      "page": 394,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=394"
+    },
+    {
+      "page": 395,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=395"
+    },
+    {
+      "page": 396,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=396"
+    },
+    {
+      "page": 397,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=397"
+    },
+    {
+      "page": 398,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=398"
+    },
+    {
+      "page": 399,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=399"
+    },
+    {
+      "page": 400,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=400"
+    },
+    {
+      "page": 401,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=401"
+    },
+    {
+      "page": 402,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=402"
+    },
+    {
+      "page": 403,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=403"
+    },
+    {
+      "page": 404,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=404"
+    },
+    {
+      "page": 405,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=405"
+    },
+    {
+      "page": 406,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=406"
+    },
+    {
+      "page": 407,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=407"
+    },
+    {
+      "page": 408,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=408"
+    },
+    {
+      "page": 409,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=409"
+    },
+    {
+      "page": 410,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=410"
+    },
+    {
+      "page": 411,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=411"
+    },
+    {
+      "page": 412,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=412"
+    },
+    {
+      "page": 413,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=413"
+    },
+    {
+      "page": 414,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=414"
+    },
+    {
+      "page": 415,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=415"
+    },
+    {
+      "page": 416,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=416"
+    },
+    {
+      "page": 417,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=417"
+    },
+    {
+      "page": 418,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=418"
+    },
+    {
+      "page": 419,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=419"
+    },
+    {
+      "page": 420,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=420"
+    },
+    {
+      "page": 421,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=421"
+    },
+    {
+      "page": 422,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=422"
+    },
+    {
+      "page": 423,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=423"
+    },
+    {
+      "page": 424,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=424"
+    },
+    {
+      "page": 425,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=425"
+    },
+    {
+      "page": 426,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=426"
+    },
+    {
+      "page": 427,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=427"
+    },
+    {
+      "page": 428,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=428"
+    },
+    {
+      "page": 429,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=429"
+    },
+    {
+      "page": 430,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=430"
+    },
+    {
+      "page": 431,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=431"
+    },
+    {
+      "page": 432,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=432"
+    },
+    {
+      "page": 433,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=433"
+    },
+    {
+      "page": 434,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=434"
+    },
+    {
+      "page": 435,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=435"
+    },
+    {
+      "page": 436,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=436"
+    },
+    {
+      "page": 437,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=437"
+    },
+    {
+      "page": 438,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=438"
+    },
+    {
+      "page": 439,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=439"
+    },
+    {
+      "page": 440,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=440"
+    },
+    {
+      "page": 441,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=441"
+    },
+    {
+      "page": 442,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=442"
+    },
+    {
+      "page": 443,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=443"
+    },
+    {
+      "page": 444,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=444"
+    },
+    {
+      "page": 445,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=445"
+    },
+    {
+      "page": 446,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=446"
+    },
+    {
+      "page": 447,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=447"
+    },
+    {
+      "page": 448,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=448"
+    },
+    {
+      "page": 449,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=449"
+    },
+    {
+      "page": 450,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=450"
+    },
+    {
+      "page": 451,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=451"
+    },
+    {
+      "page": 452,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=452"
+    },
+    {
+      "page": 453,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=453"
+    },
+    {
+      "page": 454,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=454"
+    },
+    {
+      "page": 455,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=455"
+    },
+    {
+      "page": 456,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=456"
+    },
+    {
+      "page": 457,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=457"
+    },
+    {
+      "page": 458,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=458"
+    },
+    {
+      "page": 459,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=459"
+    },
+    {
+      "page": 460,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=460"
+    },
+    {
+      "page": 461,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=461"
+    },
+    {
+      "page": 462,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=462"
+    },
+    {
+      "page": 463,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=463"
+    },
+    {
+      "page": 464,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=464"
+    },
+    {
+      "page": 465,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=465"
+    },
+    {
+      "page": 466,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=466"
+    },
+    {
+      "page": 467,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=467"
+    },
+    {
+      "page": 468,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=468"
+    },
+    {
+      "page": 469,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=469"
+    },
+    {
+      "page": 470,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=470"
+    },
+    {
+      "page": 471,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=471"
+    },
+    {
+      "page": 472,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=472"
+    },
+    {
+      "page": 473,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=473"
+    },
+    {
+      "page": 474,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=474"
+    },
+    {
+      "page": 475,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=475"
+    },
+    {
+      "page": 476,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=476"
+    },
+    {
+      "page": 477,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=477"
+    },
+    {
+      "page": 478,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=478"
+    },
+    {
+      "page": 479,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=479"
+    },
+    {
+      "page": 480,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=480"
+    },
+    {
+      "page": 481,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=481"
+    },
+    {
+      "page": 482,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=482"
+    },
+    {
+      "page": 483,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=483"
+    },
+    {
+      "page": 484,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=484"
+    },
+    {
+      "page": 485,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=485"
+    },
+    {
+      "page": 486,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=486"
+    },
+    {
+      "page": 487,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=487"
+    },
+    {
+      "page": 488,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=488"
+    },
+    {
+      "page": 489,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=489"
+    },
+    {
+      "page": 490,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=490"
+    },
+    {
+      "page": 491,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=491"
+    },
+    {
+      "page": 492,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=492"
+    },
+    {
+      "page": 493,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=493"
+    },
+    {
+      "page": 494,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=494"
+    },
+    {
+      "page": 495,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=495"
+    },
+    {
+      "page": 496,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=496"
+    },
+    {
+      "page": 497,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=497"
+    },
+    {
+      "page": 498,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=498"
+    },
+    {
+      "page": 499,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=499"
+    },
+    {
+      "page": 500,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=500"
+    },
+    {
+      "page": 501,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=501"
+    },
+    {
+      "page": 502,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=502"
+    },
+    {
+      "page": 503,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=503"
+    },
+    {
+      "page": 504,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=504"
+    },
+    {
+      "page": 505,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=505"
+    },
+    {
+      "page": 506,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=506"
+    },
+    {
+      "page": 507,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=507"
+    },
+    {
+      "page": 508,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=508"
+    },
+    {
+      "page": 509,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=509"
+    },
+    {
+      "page": 510,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=510"
+    },
+    {
+      "page": 511,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=511"
+    },
+    {
+      "page": 512,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=512"
+    },
+    {
+      "page": 513,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=513"
+    },
+    {
+      "page": 514,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=514"
+    },
+    {
+      "page": 515,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=515"
+    },
+    {
+      "page": 516,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=516"
+    },
+    {
+      "page": 517,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=517"
+    },
+    {
+      "page": 518,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=518"
+    },
+    {
+      "page": 519,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=519"
+    },
+    {
+      "page": 520,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=520"
+    },
+    {
+      "page": 521,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=521"
+    },
+    {
+      "page": 522,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=522"
+    },
+    {
+      "page": 523,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=523"
+    },
+    {
+      "page": 524,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=524"
+    },
+    {
+      "page": 525,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=525"
+    },
+    {
+      "page": 526,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=526"
+    },
+    {
+      "page": 527,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=527"
+    },
+    {
+      "page": 528,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=528"
+    },
+    {
+      "page": 529,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=529"
+    },
+    {
+      "page": 530,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=530"
+    },
+    {
+      "page": 531,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=531"
+    },
+    {
+      "page": 532,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=532"
+    },
+    {
+      "page": 533,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=533"
+    },
+    {
+      "page": 534,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=534"
+    },
+    {
+      "page": 535,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=535"
+    },
+    {
+      "page": 536,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=536"
+    },
+    {
+      "page": 537,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=537"
+    },
+    {
+      "page": 538,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=538"
+    },
+    {
+      "page": 539,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=539"
+    },
+    {
+      "page": 540,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=540"
+    },
+    {
+      "page": 541,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=541"
+    },
+    {
+      "page": 542,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=542"
+    },
+    {
+      "page": 543,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=543"
+    },
+    {
+      "page": 544,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=544"
+    },
+    {
+      "page": 545,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=545"
+    },
+    {
+      "page": 546,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=546"
+    },
+    {
+      "page": 547,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=547"
+    },
+    {
+      "page": 548,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=548"
+    },
+    {
+      "page": 549,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=549"
+    },
+    {
+      "page": 550,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=550"
+    },
+    {
+      "page": 551,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=551"
+    },
+    {
+      "page": 552,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=552"
+    },
+    {
+      "page": 553,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=553"
+    },
+    {
+      "page": 554,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=554"
+    },
+    {
+      "page": 555,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=555"
+    },
+    {
+      "page": 556,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=556"
+    },
+    {
+      "page": 557,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=557"
+    },
+    {
+      "page": 558,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=558"
+    },
+    {
+      "page": 559,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=559"
+    },
+    {
+      "page": 560,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=560"
+    },
+    {
+      "page": 561,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=561"
+    },
+    {
+      "page": 562,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=562"
+    },
+    {
+      "page": 563,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=563"
+    },
+    {
+      "page": 564,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=564"
+    },
+    {
+      "page": 565,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=565"
+    },
+    {
+      "page": 566,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=566"
+    },
+    {
+      "page": 567,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=567"
+    },
+    {
+      "page": 568,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=568"
+    },
+    {
+      "page": 569,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=569"
+    },
+    {
+      "page": 570,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=570"
+    },
+    {
+      "page": 571,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=571"
+    },
+    {
+      "page": 572,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=572"
+    },
+    {
+      "page": 573,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=573"
+    },
+    {
+      "page": 574,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=574"
+    },
+    {
+      "page": 575,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=575"
+    },
+    {
+      "page": 576,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=576"
+    },
+    {
+      "page": 577,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=577"
+    },
+    {
+      "page": 578,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=578"
+    },
+    {
+      "page": 579,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=579"
+    },
+    {
+      "page": 580,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=580"
+    },
+    {
+      "page": 581,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=581"
+    },
+    {
+      "page": 582,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=582"
+    },
+    {
+      "page": 583,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=583"
+    },
+    {
+      "page": 584,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=584"
+    },
+    {
+      "page": 585,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=585"
+    },
+    {
+      "page": 586,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=586"
+    },
+    {
+      "page": 587,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=587"
+    },
+    {
+      "page": 588,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=588"
+    },
+    {
+      "page": 589,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=589"
+    },
+    {
+      "page": 590,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=590"
+    },
+    {
+      "page": 591,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=591"
+    },
+    {
+      "page": 592,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=592"
+    },
+    {
+      "page": 593,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=593"
+    },
+    {
+      "page": 594,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=594"
+    },
+    {
+      "page": 595,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=595"
+    },
+    {
+      "page": 596,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=596"
+    },
+    {
+      "page": 597,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=597"
+    },
+    {
+      "page": 598,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=598"
+    },
+    {
+      "page": 599,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=599"
+    },
+    {
+      "page": 600,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=600"
+    },
+    {
+      "page": 601,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=601"
+    },
+    {
+      "page": 602,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=602"
+    },
+    {
+      "page": 603,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=603"
+    },
+    {
+      "page": 604,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=604"
+    },
+    {
+      "page": 605,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=605"
+    },
+    {
+      "page": 606,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=606"
+    },
+    {
+      "page": 607,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=607"
+    },
+    {
+      "page": 608,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=608"
+    },
+    {
+      "page": 609,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=609"
+    },
+    {
+      "page": 610,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=610"
+    },
+    {
+      "page": 611,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=611"
+    },
+    {
+      "page": 612,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=612"
+    },
+    {
+      "page": 613,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=613"
+    },
+    {
+      "page": 614,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=614"
+    },
+    {
+      "page": 615,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=615"
+    },
+    {
+      "page": 616,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=616"
+    },
+    {
+      "page": 617,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=617"
+    },
+    {
+      "page": 618,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=618"
+    },
+    {
+      "page": 619,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=619"
+    },
+    {
+      "page": 620,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=620"
+    },
+    {
+      "page": 621,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=621"
+    },
+    {
+      "page": 622,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=622"
+    },
+    {
+      "page": 623,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=623"
+    },
+    {
+      "page": 624,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=624"
+    },
+    {
+      "page": 625,
+      "itemCount": 30,
+      "sourceUrl": "https://www.fifacm.com/players?page=625"
+    },
+    {
+      "page": 626,
+      "itemCount": 13,
+      "sourceUrl": "https://www.fifacm.com/players?page=626"
+    }
+  ],
+  "sha256": {
+    "players.json": "af837e32d159a1d81ab211baf42bc0b4666ce03ab10095e8565bb248d3ecfcb1",
+    "clubs.json": "9a20713cc3f65eea3a6877e9f49d0ce14a7fe87d3c1d4a9b1f6537b862fe0bfb",
+    "leagues.json": "85f0afe4b0abf2edd9bdcec9bdfda084e4ad2c900905696824c16d11b0f78c43",
+    "national-teams.json": "f5828c9b87d97b9e2d5ec55e8f4daa676929972b74687b44d2370825603a6816",
+    "nations.json": "3fa2512a3974fadeb40c7e535755be3e40a8d2e4dcb2531bd561007487ac8ba5",
+    "formations.json": "53f05a99fbc38799b9f25649a8904235763a81ec2640afe7b65f2a26f54bb488"
+  },
+  "lastRunStartedAt": "2026-10-22T01:25:47.865738+00:00",
+  "cacheResumed": true,
+  "snapshotDate": "2026-10-06",
+  "completeScope": "All male players in the selected FIFACM listing snapshot; individual profile attributes are outside this crawl.",
+  "validation": {
+    "allPlayersMale": true,
+    "allPlayerIdsUnique": true,
+    "allPagesDownloaded": true,
+    "allPageSnapshotDatesMatch": true,
+    "firstPageUnchangedAtCompletion": true,
+    "beyondLastPageEmpty": true,
+    "lastPageItemCount": 13,
+    "freeAgentsMatchDedicatedListing": true,
+    "confirmedFreeAgents": 219,
+    "freeAgentsSource": "https://www.fifacm.com/players/free-agents",
+    "freeAgentsSourcePages": 8,
+    "originalEaAndFc27FilesUnchanged": true,
+    "missingAvatarUrls": 12060,
+    "unknownLoanStatus": 18763,
+    "missingFinancialFields": {
+      "potential": 0,
+      "valueEur": 0,
+      "wageEur": 0,
+      "contractYear": 0,
+      "releaseClauseEur": 0
+    },
+    "allPlayerClubReferencesValid": true,
+    "clubPlayerLinksValidBothDirections": true,
+    "clubLeagueLinksValidBothDirections": true,
+    "allClubsHaveSourceConfirmedLeague": true,
+    "sourceFreeAgentTeamIdentityStoredInManifest": true,
+    "originalPlayerIdsAndOrderPreserved": true,
+    "allOtherPlayerFieldsPreserved": true,
+    "allNationalPlayerReferencesValid": true,
+    "allTeamStartingXIsComplete": false,
+    "allClubStartingXIsComplete": true,
+    "allTeamProfileSnapshotDatesMatch": true,
+    "clubRosterMatchesProfile": true,
+    "allPlayerNationalityReferencesValid": true,
+    "nationalTeamNationLinksValid": true,
+    "clubFinancialTotalsVerified": true,
+    "clubsHaveNoSquadBuilderGroup": true,
+    "allClubFormationsInferred": true,
+    "clubFormationReferencesValid": true
+  },
+  "datasets": {
+    "clubs": {
+      "file": "clubs.json",
+      "sourceUrl": "https://www.fifacm.com/teams",
+      "fifaVersion": 27,
+      "retrievedAt": "2026-10-22T01:50:34.471751+00:00",
+      "catalogueTeamCount": 789,
+      "clubCount": 663,
+      "linkedPlayerCount": 18544,
+      "selection": "Only club IDs referenced by the existing male players.json; other catalogue teams are excluded.",
+      "completeForPlayerClubReferences": true,
+      "missingPlayerClubIds": [],
+      "snapshotDate": null,
+      "limitations": [
+        "The team catalogue does not display a squad snapshot date. Player and club retrieval dates are recorded separately.",
+        "Clubs without players in the male dataset are outside this selection; national teams are stored separately in national-teams.json.",
+        "Financial numbers are copied from HTML data-worth/data-budget attributes, not inferred from rounded card labels.",
+        "Source-zero budgets are preserved as zero and are unverified; zero should not be interpreted as a confirmed usable budget.",
+        "League IDs are source-linked; default club lineups are stored in startingXI. Manager and stadium names are not collected."
+      ],
+      "sourceZeroBudgetCount": 663
+    },
+    "leagues": {
+      "file": "leagues.json",
+      "sourceUrl": "https://www.fifacm.com/leagues",
+      "fifaVersion": 27,
+      "retrievedAt": "2026-10-22T01:56:12.619619+00:00",
+      "snapshotDate": null,
+      "catalogueGroupCount": 43,
+      "leagueCount": 36,
+      "linkedClubCount": 663,
+      "relationshipCount": 663,
+      "recoveredGroupIds": [],
+      "clubsWithoutLeague": [],
+      "excludedGroups": [
+        {
+          "id": 2216,
+          "label": "England WSL (1)"
+        },
+        {
+          "id": 2218,
+          "label": "France 1 Women's League (1)"
+        },
+        {
+          "id": 382,
+          "label": "Free Agents League"
+        },
+        {
+          "id": 2215,
+          "label": "Germany Frauen-Bundesliga (1)"
+        },
+        {
+          "id": 78,
+          "label": "International"
+        },
+        {
+          "id": 2222,
+          "label": "Spain Liga F Femenina (1)"
+        },
+        {
+          "id": 2221,
+          "label": "USA NWSL (1)"
+        }
+      ],
+      "completeForExistingClubs": true,
+      "selection": "Only groups with source-confirmed memberships among the existing male clubs; groups without selected clubs are excluded.",
+      "limitations": [
+        "Source pages do not display a snapshot date.",
+        "teamIds contains only clubs in clubs.json; sourceTeamCount may be larger.",
+        "Group membership follows FIFACM, including continental competitions and any provider-specific group names."
+      ]
+    },
+    "nationalTeams": {
+      "file": "national-teams.json",
+      "sourceUrl": "https://www.fifacm.com/27/league/78/international",
+      "fifaVersion": 27,
+      "snapshotDate": "2026-10-06",
+      "retrievedAt": "2026-10-22T03:03:59.736072+00:00",
+      "teamCount": 51,
+      "rosterLinkCount": 1261,
+      "selection": "All teams in the FC27 International group with the Male database selected.",
+      "completeForSourceGroup": true,
+      "limitations": [
+        "National playerIds are the source-selected squad, not every eligible player of that nationality.",
+        "Some source rosters and pitch lineups omit players; financial totals cover only the displayed playerIds, not a verified complete national squad.",
+        "International is a source group; it is not added to the club-only leagues.json relationships."
+      ]
+    },
+    "formations": {
+      "file": "formations.json",
+      "sourceUrl": "https://cdn.fifacm.com/static/site/js/pages/builder/main/builder.js?v=101125121611",
+      "labelSourceUrl": "https://www.fifacm.com/squad-builder",
+      "count": 22,
+      "retrievedAt": "2026-10-22T03:03:59.736072+00:00",
+      "schemaVersion": 2,
+      "variantCount": 33,
+      "clubReference": "clubs[].formation -> formations[].id",
+      "normalization": "Basic shape IDs with id/label/lines; original source builder definitions retained in variants.",
+      "normalizedAt": "2026-10-22T06:26:17.674149+00:00"
+    },
+    "nations": {
+      "file": "nations.json",
+      "source": "Distinct players.json nationality objects, grouped by original ID.",
+      "nationCount": 169,
+      "linkedPlayerCount": 18763,
+      "nationalTeamNationMethod": "National team nationId is the single nationality.id shared by every player in its source-selected roster.",
+      "limitations": [
+        "This is the nationality catalogue represented by the existing players; it is not a complete list of countries worldwide.",
+        "References are stored on players and national teams; the nationality catalogue does not store reverse membership lists."
+      ],
+      "fields": ["id", "label", "imageUrl"],
+      "playerReference": "players[].nationality.id -> nations[].id",
+      "nationalTeamReference": "national-teams[].nationId -> nations[].id"
+    },
+    "teamProfiles": {
+      "clubCount": 663,
+      "nationalTeamCount": 51,
+      "retrievedAt": "2026-10-22T03:03:59.736072+00:00",
+      "snapshotDate": "2026-10-06",
+      "financialScope": "Full source roster; derived sum of player value/wage.",
+      "ratingSource": "Team profile Rating",
+      "formationMethod": "National-team definitions only: exact starting-position multiset match. Clubs do not use builder definitions.",
+      "unresolvedFormations": [
+        {
+          "id": 1334,
+          "label": "Finland",
+          "candidates": []
+        },
+        {
+          "id": 111111,
+          "label": "Morocco",
+          "candidates": []
+        },
+        {
+          "id": 111487,
+          "label": "Venezuela",
+          "candidates": []
+        },
+        {
+          "id": 1364,
+          "label": "Switzerland",
+          "candidates": []
+        },
+        {
+          "id": 105035,
+          "label": "Netherlands",
+          "candidates": []
+        },
+        {
+          "id": 1338,
+          "label": "Greece",
+          "candidates": []
+        },
+        {
+          "id": 1356,
+          "label": "Romania",
+          "candidates": []
+        },
+        {
+          "id": 111109,
+          "label": "Colombia",
+          "candidates": []
+        },
+        {
+          "id": 111473,
+          "label": "New Zealand",
+          "candidates": []
+        },
+        {
+          "id": 1363,
+          "label": "Sweden",
+          "candidates": ["442", "442-2"]
+        },
+        {
+          "id": 1375,
+          "label": "Paraguay",
+          "candidates": ["442", "442-2"]
+        },
+        {
+          "id": 1886,
+          "label": "Hungary",
+          "candidates": []
+        },
+        {
+          "id": 111130,
+          "label": "Egypt",
+          "candidates": []
+        },
+        {
+          "id": 1355,
+          "label": "Republic of Ireland",
+          "candidates": []
+        },
+        {
+          "id": 111510,
+          "label": "Indonesia",
+          "candidates": []
+        },
+        {
+          "id": 1366,
+          "label": "Ukraine",
+          "candidates": []
+        },
+        {
+          "id": 1330,
+          "label": "Czech Republic",
+          "candidates": []
+        },
+        {
+          "id": 1343,
+          "label": "Italy",
+          "candidates": []
+        },
+        {
+          "id": 1362,
+          "label": "Spain",
+          "candidates": []
+        },
+        {
+          "id": 1415,
+          "label": "Australia",
+          "candidates": []
+        },
+        {
+          "id": 110081,
+          "label": "Northern Ireland",
+          "candidates": []
+        },
+        {
+          "id": 1341,
+          "label": "Iceland",
+          "candidates": ["442", "442-2"]
+        },
+        {
+          "id": 111462,
+          "label": "Ghana",
+          "candidates": ["442", "442-2"]
+        },
+        {
+          "id": 1359,
+          "label": "Scotland",
+          "candidates": []
+        },
+        {
+          "id": 111545,
+          "label": "Congo DR",
+          "candidates": []
+        },
+        {
+          "id": 1369,
+          "label": "Argentina",
+          "candidates": ["442", "442-2"]
+        },
+        {
+          "id": 974,
+          "label": "Korea Republic",
+          "candidates": ["442", "442-2"]
+        }
+      ],
+      "communitySquadsImported": false,
+      "incompleteNationalStartingXIs": [
+        {
+          "id": 1330,
+          "label": "Czech Republic",
+          "displayedPlayers": 7
+        },
+        {
+          "id": 1334,
+          "label": "Finland",
+          "displayedPlayers": 10
+        },
+        {
+          "id": 1338,
+          "label": "Greece",
+          "displayedPlayers": 7
+        },
+        {
+          "id": 1356,
+          "label": "Romania",
+          "displayedPlayers": 10
+        },
+        {
+          "id": 1359,
+          "label": "Scotland",
+          "displayedPlayers": 10
+        },
+        {
+          "id": 1364,
+          "label": "Switzerland",
+          "displayedPlayers": 10
+        },
+        {
+          "id": 1366,
+          "label": "Ukraine",
+          "displayedPlayers": 9
+        },
+        {
+          "id": 1886,
+          "label": "Hungary",
+          "displayedPlayers": 7
+        },
+        {
+          "id": 111109,
+          "label": "Colombia",
+          "displayedPlayers": 10
+        },
+        {
+          "id": 111111,
+          "label": "Morocco",
+          "displayedPlayers": 9
+        },
+        {
+          "id": 111130,
+          "label": "Egypt",
+          "displayedPlayers": 10
+        }
+      ],
+      "clubFormationStatus": "Inferred basic shape from startingXI positions; null for incomplete or unrecognized lineups."
+    },
+    "clubMetrics": {
+      "verifiedAt": "2026-10-22T03:48:26.023023+00:00",
+      "snapshotDate": "2026-10-06",
+      "clubCount": 663,
+      "linkedPlayerCount": 18544,
+      "rostersMatchCachedSourceProfiles": true,
+      "squadValueEur": "Sum players[].valueEur for the current club.playerIds.",
+      "weeklyWageEur": "Sum players[].wageEur for the current club.playerIds; EUR per week.",
+      "worthEur": "Preserved source HTML data-worth value; distinct from total player value.",
+      "financialScope": "Current playing roster, including substitutes and reserves. Loaned-in players count at the playing club; salary sharing, loan fees, bonuses, staff wages and loaned-out wages are not known.",
+      "limitations": [
+        "Player financial amounts may already be rounded by FIFACM.",
+        "weeklyWageEur is the listed player wage total, not a verified club accounting payroll or spending limit.",
+        "Formation is an inferred basic shape, not a source-confirmed tactical variant. startingXI preserves original positions. Unknown or incomplete patterns remain null."
+      ],
+      "formationMethod": "inferred_from_starting_xi",
+      "financialTotalsChangedFromPreviousGroup": [],
+      "clubsWithoutSourceConfirmedFormation": 663,
+      "inferredFormationCount": 663,
+      "unresolvedFormationClubIds": []
+    }
+  },
+  "schemaVersion": 2,
+  "playerClubReference": {
+    "field": "clubId",
+    "target": "clubs.json:id",
+    "freeAgentValue": null
+  },
+  "sourceConventions": {
+    "freeAgentTeam": {
+      "id": 111592,
+      "label": "NG - FA"
+    }
+  },
+  "optimization": {
+    "appliedAt": "2026-10-22T02:32:08.731708+00:00",
+    "originalBytes": 24888299,
+    "currentBytes": 15205318,
+    "savedBytes": 9682981,
+    "savedPercent": 38.91,
+    "removedPlayerFields": ["team", "sourceTeam"],
+    "newPlayerFields": ["clubId"],
+    "format": "JSON array, one compact player object per line",
+    "originalSha256": "c42c741aa9b3b980779da99781a7023b478da95552b9c44f34b3e1e3a7191189"
+  },
+  "clubFormationReference": {
+    "field": "formation",
+    "target": "formations.json:id",
+    "nullable": true
+  },
+  "avatarRecheck": {
+    "verifiedAt": "2026-10-22T07:48:23.872004+00:00",
+    "snapshotDate": "2026-10-06",
+    "source": "Male FC27 listing HTML: .player-img-info data-lazy-src or src, joined by player ID.",
+    "pageCount": 626,
+    "playerCount": 18763,
+    "missingBefore": 12060,
+    "updatedCount": 12060,
+    "missingAfter": 0,
+    "scope": "Source-declared image URLs; CDN availability and unique real portraits are not guaranteed."
+  }
+}

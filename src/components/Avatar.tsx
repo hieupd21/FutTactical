@@ -3,10 +3,31 @@ import type { Player } from "@/engine/types";
 import { clubColors } from "@/lib/clubVisual";
 import { playerImgKey, useImg } from "@/lib/images";
 
-/** Ảnh cầu thủ: ảnh người dùng thêm, hoặc hình người cách điệu mặc áo CLB */
+/** Chân dung FIFACM theo ID nguồn; ưu tiên ảnh tự thêm, dự phòng bằng hình người mặc áo CLB. */
 export function Avatar({ player, size = 36 }: { player: Player; size?: number }) {
-  const custom = useImg(playerImgKey(player));
-  if (custom) return <img className="av" src={custom} width={size} height={size} alt="" />;
+  const customImage = useImg(playerImgKey(player));
+  const sourceImage =
+    player.sourceId === undefined
+      ? undefined
+      : mockData().playerImageUrlBySourceId?.[player.sourceId];
+  const [failedImageUrls, setFailedImageUrls] = useState<string[]>([]);
+  const imageUrl = [customImage, sourceImage].find(
+    (candidate) => candidate && !failedImageUrls.includes(candidate),
+  );
+  if (imageUrl)
+    return (
+      <img
+        key={imageUrl}
+        className="av"
+        src={imageUrl}
+        width={size}
+        height={size}
+        loading="lazy"
+        style={{ objectFit: "contain" }}
+        alt=""
+        onError={() => setFailedImageUrls((failedUrls) => [...failedUrls, imageUrl])}
+      />
+    );
   const club =
     player.club != null && gameState.clubs[player.club] ? gameState.clubs[player.club].name : "";
   let [primaryColor, secondaryColor] = clubColors(club || "x");
@@ -28,3 +49,5 @@ export function Avatar({ player, size = 36 }: { player: Player; size?: number })
     </svg>
   );
 }
+import { useState } from "react";
+import { mockData } from "@/engine/mockData";

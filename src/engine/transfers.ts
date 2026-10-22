@@ -389,14 +389,21 @@ export function submitClubOffer(
   negotiation.offer = clubOffer;
   negotiation.tone = reply?.tone;
   if (reply) logNegotiation(negotiation, "me", reply.text);
-  negotiation.waiting = true;
-  negotiation.readyAt = tick() + responseWait();
   negotiation.round++;
+  const isMeetingAsk = offerValue(negotiation, clubOffer) >= (negotiation.askingFee || 1);
   logNegotiation(
     negotiation,
     "me",
     `Đề nghị ${formatMoney(clubOffer.fee)}${clubOffer.installments > 1 ? ` (trả góp ${clubOffer.installments} mùa)` : ""}${clubOffer.addon ? `, thưởng ${formatMoney(clubOffer.addon)}` : ""}${clubOffer.sellOnPercent ? `, ${clubOffer.sellOnPercent}% bán lại` : ""}${clubOffer.swapPlayerId ? `, + ${getPlayer(clubOffer.swapPlayerId).name}` : ""}${clubOffer.loanback ? ", cho mượn lại" : ""}${clubOffer.timing === "next" ? ", chuyển vào kỳ sau" : ""}`,
   );
+  if (isMeetingAsk) {
+    // Đã đạt mức CLB đòi: chốt ngay, không phải chờ phản hồi
+    negotiation.tone = undefined;
+    processClubOffer(negotiation);
+  } else {
+    negotiation.waiting = true;
+    negotiation.readyAt = tick() + responseWait();
+  }
   return {};
 }
 export function triggerReleaseClause(negotiation: Negotiation): Res {
@@ -469,6 +476,19 @@ function processClubOffer(negotiation: Negotiation): void {
 }
 
 // ---------- hợp đồng cá nhân ----------
+/** Điểm hài lòng của cầu thủ với đề nghị (≥ 1 là chấp nhận), chưa tính lời nói */
+function scoreContractOffer(contractAsk: ContractOffer, currentOffer: ContractOffer): number {
+  let score =
+    0.62 * Math.min(1.3, currentOffer.wage / contractAsk.wage) +
+    0.2 * Math.min(1.3, (currentOffer.signingBonus + 1) / (contractAsk.signingBonus + 1)) +
+    0.18 * (Math.abs(currentOffer.years - contractAsk.years) <= 1 ? 1 : 0.75);
+  const gap = roleIdx(currentOffer.role) - roleIdx(contractAsk.role);
+  if (gap >= 2) score *= 0.82;
+  else if (gap === 1) score *= 0.95;
+  else if (gap < 0) score *= 1.03;
+  if (currentOffer.releaseClause) score += 0.03;
+  return score;
+}
 export function submitContract(
   negotiation: Negotiation,
   contractOffer: ContractOffer,
@@ -498,14 +518,20 @@ export function submitContract(
   negotiation.contractOffer = contractOffer;
   negotiation.tone = reply?.tone;
   if (reply) logNegotiation(negotiation, "me", reply.text);
-  negotiation.waiting = true;
-  negotiation.readyAt = tick() + responseWait();
   negotiation.round++;
   logNegotiation(
     negotiation,
     "me",
     `Đề nghị lương ${formatWage(contractOffer.wage)}, ${contractOffer.years} năm, lót tay ${formatMoney(contractOffer.signingBonus)}, vai trò ${contractOffer.role}${contractOffer.releaseClause ? `, điều khoản giải phóng ${formatMoney(contractOffer.releaseClause)}` : ""}`,
   );
+  if (scoreContractOffer(negotiation.contractAsk!, contractOffer) >= 1) {
+    // Đã đạt đủ điều kiện: chốt ngay, không phải chờ phản hồi
+    negotiation.tone = undefined;
+    processContract(negotiation);
+  } else {
+    negotiation.waiting = true;
+    negotiation.readyAt = tick() + responseWait();
+  }
   return {};
 }
 function processContract(negotiation: Negotiation): void {
@@ -531,17 +557,9 @@ function processContract(negotiation: Negotiation): void {
   const effect = toneEffect(negotiation.tone),
     tensionBefore = negotiation.tension;
   negotiation.tone = undefined;
-  let score =
-    0.62 * Math.min(1.3, currentOffer.wage / contractOffer.wage) +
-    0.2 * Math.min(1.3, (currentOffer.signingBonus + 1) / (contractOffer.signingBonus + 1)) +
-    0.18 * (Math.abs(currentOffer.years - contractOffer.years) <= 1 ? 1 : 0.75);
   const gap = roleIdx(currentOffer.role) - roleIdx(contractOffer.role);
-  if (gap >= 2) score *= 0.82;
-  else if (gap === 1) score *= 0.95;
-  else if (gap < 0) score *= 1.03;
-  if (currentOffer.releaseClause) score += 0.03;
-  score += effect.bonus;
-  if (score >= 1) {
+  const score = scoreContractOffer(contractOffer, currentOffer) + effect.bonus;
+  const acceptTerms = (): void => {
     negotiation.stage = "final";
     negotiation.message = `Người đại diện gập tập hồ sơ lại và mỉm cười. ${player.name} đồng ý các điều khoản cá nhân!`;
     if (
@@ -562,6 +580,9 @@ function processContract(negotiation: Negotiation): void {
         negotiation.message += ` Nhưng ngay khi bút sắp chạm giấy, điện thoại rung lên: ${club.name} cũng vừa nhảy vào cuộc đua!`;
       }
     }
+  };
+  if (score >= 1) {
+    acceptTerms();
   } else if (currentOffer.wage >= contractOffer.wage && gap <= 0) {
     // Đã đạt lương và vai trò: chỉ còn vướng lót tay, họ có thể nhượng bộ hoặc giữ nguyên, không đòi thêm lương.
     negotiation.tension += 8 + (1 - score) * 40;
@@ -585,6 +606,12 @@ function processContract(negotiation: Negotiation): void {
     negotiation.tension += 22 + (1 - score) * 80;
     negotiation.message = `Người đại diện cười nhạt, đẩy bản đề nghị trở lại. Họ vẫn đòi ${formatWage(contractOffer.wage)}, ${contractOffer.years} năm, lót tay ${formatMoney(contractOffer.signingBonus)}.`;
   }
+  // Họ vừa hạ yêu cầu xuống mức bạn đã đưa: coi như đã thỏa thuận, không bắt gửi lại
+  if (
+    negotiation.stage !== "final" &&
+    scoreContractOffer(contractOffer, currentOffer) + effect.bonus >= 1
+  )
+    acceptTerms();
   applyToneTension(negotiation, tensionBefore, effect);
   negotiation.tension = Math.round(Math.min(100, negotiation.tension));
   if (negotiation.tension >= 100)
@@ -898,6 +925,12 @@ export function respondSell(
     return {};
   }
   if (action === "counter") {
+    if (counter <= (negotiation.maxFee || 0)) {
+      // Mức phản giá nằm trong khả năng của CLB mua: chốt ngay
+      negotiation.fee = counter;
+      logNegotiation(negotiation, "me", `Phản giá ${formatMoney(counter)}`);
+      return completeSale(negotiation);
+    }
     // CLB mua cần thời gian cân nhắc: câu trả lời đến sau respWait() (xem processSellCounter)
     negotiation.myCounter = counter;
     negotiation.tone = reply?.tone;
