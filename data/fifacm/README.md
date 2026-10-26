@@ -6,9 +6,9 @@
 
 `players.json` là mảng object lấy từ bảng HTML FIFACM. `id` giữ ID của website; `sourceUrl` và `sourcePage` truy lại từng bản ghi. `clubId` tham chiếu `clubs[].id`; cầu thủ tự do có `clubId: null`. Quy ước đội nguồn NG - FA (ID 111592) được lưu một lần trong `manifest.sourceConventions.freeAgentTeam`.
 
-`valueEur`, `wageEur`, `releaseClauseEur` quy đổi từ chuỗi EUR hiển thị; lương theo tuần. Các số K/M trên website có thể đã làm tròn; `financialDisplay` giữ chuỗi nguồn. `contractText` giữ cách hiển thị hợp đồng gốc; website vẫn có thể hiển thị năm hợp đồng cho NG - FA. `isOnLoan: null` nghĩa bảng thường không xác nhận tình trạng cho mượn. Trường không đọc được để null, không bổ sung hoặc ước lượng từ FC26/EA.
+`valueEur`, `wageEur`, `releaseClauseEur` quy đổi từ chuỗi EUR hiển thị; lương theo tuần. Các số K/M trên website có thể đã làm tròn. `contractText` giữ cách hiển thị hợp đồng gốc; website vẫn có thể hiển thị năm hợp đồng cho NG - FA. `isOnLoan: null` nghĩa bảng thường không xác nhận tình trạng cho mượn. Trường không đọc được để null, không bổ sung hoặc ước lượng từ FC26/EA.
 
-Nguồn: https://www.fifacm.com/players. Đây là dữ liệu Career Mode được website công bố, không xác minh lương/giá ngoài đời. Không tải ảnh, chỉ lưu URL. Chưa thu thập thuộc tính ẩn của hồ sơ. Giải đấu được tra qua `clubId` → `clubs[].leagueIds` → `leagues[].id`.
+Nguồn: https://www.fifacm.com/players. Đây là dữ liệu Career Mode được website công bố, không xác minh lương/giá ngoài đời. Không tải ảnh, chỉ lưu URL. Giải đấu được tra qua `clubId` → `clubs[].leagueIds` → `leagues[].id`.
 
 Tải lại bằng `python3 -B scripts/crawl_fifacm.py --page-id <orca-page-id> --output <thư-mục-trống>`. Tab cần mở `/players`, chọn Male trước khi chạy.
 
@@ -61,7 +61,7 @@ Phần dưới chỉ mô tả `national-teams[].squadBuilder`; CLB dùng các tr
 - `valueEur`, `wageEur`: tổng các trường tương ứng trong `players.json` của toàn bộ `playerIds`, gồm đá chính, dự bị và dự trữ được nguồn hiển thị; không gồm cầu thủ đã cho mượn đi. Lương theo tuần. Danh sách đội tuyển có thể thiếu người, nên không coi tổng đó là giá trị/lương của đội tuyển đầy đủ đã được xác minh. Đây là số tổng hợp; các số cầu thủ nguồn có thể đã được làm tròn. Không dùng `worthEur` thay tổng giá trị cầu thủ.
 - `formation`: mã Squad Builder khi tập hợp vị trí của XI khớp duy nhất một định nghĩa. `formationCandidates` giữ các mã khớp; `formationShape` giữ dạng cơ bản khi các mã cùng sơ đồ. Nếu không khớp hoặc không xác định duy nhất, giữ null; không tự gán biến thể.
 
-`formations.json` là danh mục dùng chung gồm **22 sơ đồ cơ bản**, mỗi mục có `id`, `label`, `lines` và `variants`. `clubs[].formation` tham chiếu `formations[].id`, ví dụ `4-2-3-1`. **33 định nghĩa gốc** từ Squad Builder được giữ trong `variants` với `code`, `label`, `positions`; mã `national-teams[].squadBuilder.formation` thuộc `variants[].code`. Vị trí mẫu có thể khác hồ sơ đội; các trường null của đội tuyển được liệt kê trong `manifest.datasets.teamProfiles.unresolvedFormations`. Không nhập đội hình cộng đồng từ `/squads`. Snapshot hồ sơ đội và cầu thủ đều **6/10/2026**.
+`formations.json` là danh mục dùng chung gồm **22 sơ đồ cơ bản**, mỗi mục có `id`, `label`, `lines` và `variants`. `clubs[].formation` tham chiếu `formations[].id`, ví dụ `4-2-3-1`. **33 định nghĩa gốc** từ Squad Builder được giữ trong `variants` với `code`, `label`, `positions` và `slotCoordinates` (tọa độ `leftPercent`/`topPercent` của từng ô trên sân Squad Builder, phần tử i ứng với `positions[i]`, `leftPercent` là mép trái thẻ; lấy bằng `scripts/crawl_fifacm_formation_slots.py`); mã `national-teams[].squadBuilder.formation` thuộc `variants[].code`. Vị trí mẫu có thể khác hồ sơ đội; các trường null của đội tuyển được liệt kê trong `manifest.datasets.teamProfiles.unresolvedFormations`. Không nhập đội hình cộng đồng từ `/squads`. Snapshot hồ sơ đội và cầu thủ đều **6/10/2026**.
 
 Tải lại: `python3 -B scripts/crawl_fifacm_team_profiles.py --page-id <orca-page-id> --formations data/fifacm/formations.json --cache <thư-mục-cache>`. Dùng cache mới khi tải snapshot mới. Các tham chiếu cầu thủ, danh sách CLB và ngày snapshot được kiểm tra trước khi xuất.
 
@@ -78,3 +78,26 @@ Tải lại: `python3 -B scripts/crawl_fifacm_team_profiles.py --page-id <orca-p
 Đã đối chiếu toàn bộ 663 danh sách CLB với hồ sơ cùng snapshot 6/10/2026 và tính lại các tổng từ players.json. Cầu thủ cho mượn đến được tính ở CLB đang thi đấu; cầu thủ cho mượn đi không thuộc playerIds hiện tại. Các số nguồn K/M có thể đã được làm tròn. Các file đội tuyển/quốc tịch, cầu thủ và giải đấu được giữ nguyên. Chi tiết xác minh: `manifest.datasets.clubMetrics`.
 
 Kiểm tra lại bằng `python3 -B scripts/verify_fifacm_clubs.py --cache <thư-mục-cache-hồ-sơ>`.
+
+## Thuộc tính chi tiết cầu thủ
+
+`players.json` có thêm 5 trường lấy từ hồ sơ từng cầu thủ (chế độ Category, FC27, snapshot 6th of Oct 2026) cho **18763/18763** cầu thủ:
+
+- `attributes`: 34 chỉ số gốc 0–99 (crossing, finishing, headingAccuracy, shortPassing, volleys, dribbling, curve, freeKickAccuracy, longPassing, ballControl, shotPower, jumping, stamina, strength, longShots, acceleration, sprintSpeed, agility, reactions, balance, aggression, interceptions, attackingPosition, vision, penalties, composure, defensiveAwareness, standingTackle, slidingTackle và 5 chỉ số thủ môn `goalkeeper*`). Chỉ số thủ môn của cầu thủ ngoài sân vẫn được nguồn công bố.
+- `positionRatings`: điểm theo vị trí (RPP) hiển thị trên hồ sơ, ví dụ `{"ST": 90, "RW": 90}`.
+- `roles`: vai trò theo vị trí, ví dụ `[{"position": "ST", "roles": ["Advanced Forward++", "False 9+"]}]`.
+- `playStyles`: `[{"name", "isPlus"}]`; `isPlus` đúng khi biểu tượng nguồn thuộc nhóm PlayStyle+.
+- `specialities`: danh sách Specialities của nguồn.
+
+`skillMoves`, `weakFootAbility`, `preferredFoot` đã có từ trang danh sách và được đối chiếu với hồ sơ. Mỗi hồ sơ được đối chiếu với `players.json` theo ID, overall, potential, skillMoves, weakFootAbility và ngày snapshot trước khi ghi; không ước lượng chỉ số thiếu.
+
+Tải lại: mở một trang bất kỳ của fifacm.com trong Orca browser, rồi chạy `python3 -B scripts/crawl_fifacm_player_attributes.py --page-id <orca-page-id> --cache <thư-mục-cache>` (có thể ngắt và chạy lại, đã tải sẽ được bỏ qua), sau đó `--apply` để ghi vào `players.json`.
+
+## Vị trí trên sân (`pitch-positions.json`)
+
+`pitch-positions.json` cho biết trang CLB của FIFACM vẽ từng vị trí của `clubs[].startingXI` ở đâu: `sourcePositionId` khớp `startingXI[].sourcePositionId`, `position` là tên vị trí, `leftPercent` là mép trái thẻ và `bottomPercent` tính từ đáy sân (rule `.site-teams-page .pht<id>` trong site.min.css). Chỉ có 22 id mà startingXI của các CLB dùng. Tải lại: `python3 -B scripts/crawl_fifacm_pitch_positions.py --page-id <orca-page-id>` (tab đang mở một trang CLB của fifacm.com).
+
+## Biểu tượng PlayStyle (`playstyles.json`)
+
+`playstyles.json` gán địa chỉ biểu tượng của FIFACM cho từng cặp (`name`, `isPlus`) trong `players[].playStyles` (74 cặp, 38 PlayStyle). Ảnh tải từ CDN của FIFACM giống ảnh cầu thủ. Tải lại: `python3 -B scripts/crawl_fifacm_playstyles.py --page-id <orca-page-id>` (tab đang mở một trang fifacm.com).
+

@@ -72,7 +72,7 @@ function Subs({ liveMatch }: { liveMatch: LiveMatch }) {
       </h3>
       {liveSim.injuryAlert && (
         <div
-          className="flex flex-col items-start gap-2 rounded-lg border border-(--loss) p-2.5 text-[13px]"
+          className="flex flex-col items-start gap-2 rounded-lg border border-destructive p-2.5 text-[13px]"
           role="alert"
         >
           <b>{getPlayer(liveSim.injuryAlert.playerId).name} chấn thương.</b>{" "}
@@ -96,7 +96,7 @@ function Subs({ liveMatch }: { liveMatch: LiveMatch }) {
               disabled={side.subsLeft <= 0}
               aria-pressed={liveMatch.outgoingId === id}
               className={classNames(
-                "flex min-h-11 w-full items-center justify-between gap-2 border-b border-(--line) py-1.5 text-left disabled:opacity-50 aria-pressed:bg-secondary",
+                "flex min-h-11 w-full items-center justify-between gap-2 border-b border-border py-1.5 text-left disabled:opacity-50 aria-pressed:bg-secondary",
                 gone && "line-through opacity-60",
               )}
               onClick={() => pickOut(liveMatch.outgoingId === id ? null : id)}
@@ -127,7 +127,7 @@ function Subs({ liveMatch }: { liveMatch: LiveMatch }) {
               key={id}
               type="button"
               disabled={!liveMatch.outgoingId}
-              className="flex min-h-11 w-full items-center justify-between gap-2 border-b border-(--line) py-1.5 text-left disabled:opacity-50 enabled:hover:bg-secondary"
+              className="flex min-h-11 w-full items-center justify-between gap-2 border-b border-border py-1.5 text-left disabled:opacity-50 enabled:hover:bg-secondary"
               onClick={() => substitutePlayer(id)}
             >
               <span>

@@ -6,6 +6,10 @@ const loaders = {
     import("@/features/market/MarketPage").then((loadedModule) => ({
       default: loadedModule.MarketPage,
     })),
+  calendar: () =>
+    import("@/features/calendar/CalendarPage").then((loadedModule) => ({
+      default: loadedModule.CalendarPage,
+    })),
   league: () =>
     import("@/features/league/LeaguePage").then((loadedModule) => ({
       default: loadedModule.LeaguePage,
@@ -23,6 +27,7 @@ const loaders = {
 };
 
 export const MarketPage = lazy(loaders.market);
+export const CalendarPage = lazy(loaders.calendar);
 export const LeaguePage = lazy(loaders.league);
 export const ClubPage = lazy(loaders.club);
 export const NegoSheet = lazy(loaders.nego);

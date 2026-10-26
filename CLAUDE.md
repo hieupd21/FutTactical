@@ -40,7 +40,7 @@ Luôn trả lời người dùng bằng tiếng Việt. Toàn bộ chữ trong g
 - Đội tối thiểu 18 người khi bán; học viện bù đủ 20 đầu mùa.
 - Sau mỗi lượt đàm phán/phản giá, đối phương trả lời sau tối thiểu 24 giờ game (`responseWait`); Deadline Day là 1 giờ.
 - Trận của bạn: `engine/liveMatch.ts` mô phỏng từng tick (phút + bù giờ), tối đa 5 lượt thay người, tâm lý đội + pressing ảnh hưởng xG và thể lực; đường nhanh `simMatch` dùng cho trận AI và phải giữ số bàn trung bình tương đương.
-- Hộp thư: mỗi thông báo có `InboxKind`, hành động khi bấm khai báo ở `features/home/inboxKinds.ts`; thư người đại diện (`agentLetters`) hiện ở tab Chuyển nhượng.
+- Hộp thư: mỗi thông báo có `InboxKind`, hành động khi bấm khai báo ở `features/club/inboxKinds.ts`; thư người đại diện (`agentLetters`) hiện ở tab Chuyển nhượng.
 - Save có `saveVersion`; `lib/persist.ts` bỏ bản lưu không có trường này. Đổi tên field của `GameState` cần cân nhắc tương thích save.
 
 ## Dữ liệu

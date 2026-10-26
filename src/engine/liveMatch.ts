@@ -74,7 +74,7 @@ function aiTactic(ownPower: number, opponent: number): Tactic {
   };
 }
 
-function pickBench(clubId: string, lineup: (string | null)[]): string[] {
+export function pickBench(clubId: string, lineup: (string | null)[]): string[] {
   const used = new Set(lineup);
   const pool = clubPlayers(clubId)
     .filter((player) => available(player) && !used.has(player.id))

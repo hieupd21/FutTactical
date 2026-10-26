@@ -10,6 +10,8 @@ const filenames = [
   "nations.json",
   "national-teams.json",
   "formations.json",
+  "pitch-positions.json",
+  "playstyles.json",
   "manifest.json",
 ];
 

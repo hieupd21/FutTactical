@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1503" height="813" viewBox="5 105 1503 813" preserveAspectRatio="none" fill="none">
+  <title>Đường sân từ ảnh gốc, nét vector đồng đều</title>
+  <g stroke="#8d9ba4" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+    <path id="touchlines" d="M255 112H1257L1500 910H12Z" />
+    <path id="halfway-line" d="M149.3 459H1362.7" />
+    <ellipse id="center-circle" cx="756.5" cy="462.5" rx="150" ry="99" />
+    <path id="far-penalty-area" d="M464 112L451 210H1062L1049 112" />
+    <path id="far-goal-area" d="M622 112L619 155H894L891 112" />
+    <path id="near-penalty-area" d="M350 910L376 753H1137L1163 910" />
+    <path id="near-goal-area" d="M580 910L585 845H928L933 910" />
+    <path id="far-penalty-arc" d="M640 210C698 256 815 256 873 210" />
+    <path id="near-penalty-arc" d="M628 753C698 693 815 693 885 753" />
+    <path id="far-left-corner" d="M286 112C280 122 266 127 250.1 128" />
+    <path id="far-right-corner" d="M1226 112C1232 122 1246 127 1261.9 128" />
+    <path id="near-left-corner" d="M21.1 880C38 882 51 893 51 910" />
+    <path id="near-right-corner" d="M1490.9 880C1474 882 1461 893 1461 910" />
+  </g>
+  <g fill="#8d9ba4">
+    <circle id="center-spot" cx="756.5" cy="459" r="4.5" />
+    <circle id="far-penalty-spot" cx="756.5" cy="183" r="4.5" />
+    <circle id="near-penalty-spot" cx="756.5" cy="798" r="4.5" />
+  </g>
+</svg>

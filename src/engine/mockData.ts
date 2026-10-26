@@ -14,8 +14,20 @@ interface CountryInfo {
   leagues: LeagueInfo[];
 }
 
+/** Thông tin hiển thị từ FIFACM mà cầu thủ trong game không lưu (không nằm trong bản lưu) */
+export interface PlayerProfile {
+  skillMoves: number | null;
+  weakFoot: number | null;
+  preferredFoot: string | null;
+  heightCm: number | null;
+  /** 34 chỉ số chi tiết của FIFACM (tên camelCase như trong players.json) */
+  attributes: Record<string, number> | null;
+  playStyles: { name: string; isPlus: boolean }[];
+}
+
 export interface MockData {
   playerImageUrlBySourceId: Record<number, string>;
+  playerProfileBySourceId: Record<number, PlayerProfile>;
   nationalities: {
     shortNameByCode: Record<string, string>;
     codeByDataName: Record<string, string>;

@@ -1,10 +1,8 @@
 import { useState } from "react";
 import { readAll, readMessage } from "@/engine/actions";
 import { gameState } from "@/engine/state";
-import type { NewsItem } from "@/engine/types";
 import { Button } from "@/components/shadcn/button";
 import { Card } from "@/components/shadcn/card";
-import { SegmentedControl } from "@/components/ui";
 import { commit } from "@/stores/gameStore";
 import { useUi } from "@/stores/uiStore";
 import { formatShortDate } from "@/utils/display";
@@ -12,24 +10,6 @@ import { INBOX_KINDS, kindOfMsg } from "./inboxKinds";
 
 const PREVIEW = 5;
 const FULL = 25;
-const KIND: Record<NewsItem["kind"], string> = {
-  gen: "Chung",
-  club: "CLB",
-  transfer: "Chuyển nhượng",
-  deal: "Đàm phán",
-  flirt: "Thả thính",
-  rebel: "Nổi loạn",
-  match: "Trận đấu",
-};
-const FILTERS: [NewsItem["kind"] | "all", string][] = [
-  ["all", "Tất cả"],
-  ["deal", "Đàm phán"],
-  ["transfer", "Chuyển nhượng"],
-  ["flirt", "Thả thính"],
-  ["rebel", "Nổi loạn"],
-  ["match", "Trận đấu"],
-  ["club", "CLB"],
-];
 
 function More({
   shown,
@@ -110,40 +90,6 @@ export function InboxCard() {
       <More
         shown={list.length}
         total={gameState.inbox.length}
-        open={showAll}
-        onToggle={() => setAll((isOpen) => !isOpen)}
-      />
-    </Card>
-  );
-}
-
-/** Tin tức: chuyện xảy ra trong thế giới game, chỉ để đọc */
-export function NewsCard() {
-  const [showAll, setAll] = useState(false);
-  const [kind, setKind] = useState<NewsItem["kind"] | "all">("all");
-  const pool =
-    kind === "all" ? gameState.news : gameState.news.filter((newsItem) => newsItem.kind === kind);
-  const list = pool.slice(0, showAll ? FULL : PREVIEW);
-  return (
-    <Card className="panel min-w-0 gap-0 rounded-xl p-4 shadow-none">
-      <h3>Tin tức</h3>
-      <SegmentedControl items={FILTERS} value={kind} onChange={setKind} />
-      {list.length ? (
-        <ul className="nws">
-          {list.map((newsItem, i) => (
-            <li key={i}>
-              <span className="nk">{KIND[newsItem.kind]}</span>
-              <span>{newsItem.text}</span>
-              <span className="when">{formatShortDate(newsItem.day)}</span>
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p className="hint">Chưa có tin.</p>
-      )}
-      <More
-        shown={list.length}
-        total={pool.length}
         open={showAll}
         onToggle={() => setAll((isOpen) => !isOpen)}
       />

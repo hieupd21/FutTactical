@@ -292,7 +292,7 @@ export interface Negotiation {
   myCounter?: number; // giá bạn phản lại, đang chờ CLB mua trả lời
 }
 
-/** Loại thông báo: mỗi loại có hành vi riêng khi bấm vào (xem features/home/inboxKinds.ts) */
+/** Loại thông báo: mỗi loại có hành vi riêng khi bấm vào (xem features/club/inboxKinds.ts) */
 export type InboxKind =
   | "offer" // CLB khác muốn mua / mượn cầu thủ của bạn
   | "reply" // phản hồi trong một cuộc đàm phán
@@ -392,6 +392,10 @@ export interface GameState {
   dataSource?: string;
   dataProvider?: "fifacm";
   form: Formation;
+  /** Mã biến thể Squad Builder của sơ đồ (vị trí từng ô); thiếu thì dùng biến thể đầu tiên */
+  formVariant?: string;
+  /** 11 vị trí gốc (startingXI) của CLB bạn theo thứ tự ô; còn thì sân dùng đúng các vị trí này cho tới khi bạn đổi sơ đồ/biến thể */
+  sourceSlotPositions?: string[];
   tactic?: Tactic;
   lineup: (string | null)[];
   scout: number;

@@ -31,3 +31,31 @@
   --color-input: var(--line);
   --color-ring: var(--info);
 }
+
+/* Preloader: vòng tròn tự vẽ + vạch ngang co giãn, dùng khi chuyển màn hình */
+@theme inline {
+  --animate-preloader-ring: preloader-ring 1.6s ease-in-out infinite;
+  --animate-preloader-bar: preloader-bar 1.6s ease-in-out infinite;
+  @keyframes preloader-ring {
+    0% {
+      stroke-dashoffset: 176;
+      transform: rotate(-90deg);
+    }
+    60%,
+    100% {
+      stroke-dashoffset: 0;
+      transform: rotate(270deg);
+    }
+  }
+  @keyframes preloader-bar {
+    0%,
+    100% {
+      transform: scaleX(0.15);
+      opacity: 0.4;
+    }
+    50% {
+      transform: scaleX(1);
+      opacity: 1;
+    }
+  }
+}

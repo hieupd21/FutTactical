@@ -11,7 +11,8 @@ const buttonVariants = cva(
         default: "border-foreground bg-foreground text-background",
         ghost: "border-foreground bg-transparent text-foreground",
         hot: "border-(--accent) bg-(--accent) text-(--on-fill)",
-        onInk: "border-[color-mix(in_srgb,var(--bg)_50%,transparent)] bg-transparent text-(--bg)",
+        onInk:
+          "border-[color-mix(in_srgb,var(--bg)_50%,transparent)] bg-transparent text-background",
         onAccent: "border-(--on-fill) bg-(--on-fill) text-(--accent)",
         destructive: "border-destructive bg-destructive text-(--on-fill)",
         link: "border-transparent bg-transparent text-foreground normal-case underline underline-offset-4",

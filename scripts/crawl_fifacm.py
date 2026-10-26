@@ -82,7 +82,6 @@ function parseListing(doc, page, sourceUrl) {
       contractYear: years ? Number(years[2]) : null, contractText,
       isOnLoan: /loan/i.test(contractText) ? true : null,
       valueEur: money(amounts[0]), wageEur: money(amounts[1]), releaseClauseEur: money(release),
-      financialDisplay: {value: amounts[0], wage: amounts[1], releaseClause: release},
       skillMoves: integer(text(cells[8])), weakFootAbility: integer(text(cells[9])),
       workRates: text(cells[10]), preferredFoot: foot === 'L' ? 'Left' : 'Right',
       heightCm: height ? Number(height[1]) : null, weightKg: weight ? Number(weight[1]) : null,
@@ -283,7 +282,7 @@ def run(args):
         '`clubId: null` biểu thị cầu thủ tự do. Quy ước nguồn NG - FA (ID 111592) được lưu '
         'một lần trong `manifest.sourceConventions`. Mỗi cầu thủ được ghi trên một dòng của mảng JSON.\n\n'
         '`valueEur`, `wageEur`, `releaseClauseEur` quy đổi từ chuỗi EUR hiển thị; lương theo tuần. '
-        'Các số K/M trên website có thể đã làm tròn; `financialDisplay` giữ chuỗi nguồn. '
+        'Các số K/M trên website có thể đã làm tròn. '
         '`contractText` giữ cách hiển thị hợp đồng gốc; website vẫn có thể hiển thị năm hợp đồng cho NG - FA. '
         '`isOnLoan: null` nghĩa bảng thường không xác nhận tình trạng cho mượn. '
         'Trường không đọc được để null, không bổ sung hoặc ước lượng từ FC26/EA.\n\n'

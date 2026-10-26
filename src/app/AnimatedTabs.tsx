@@ -2,24 +2,30 @@ import { AnimatePresence, domAnimation, LazyMotion, m, useReducedMotion } from "
 import { type ReactNode, Suspense } from "react";
 import { HomePage } from "@/features/home/HomePage";
 import { SquadPage } from "@/features/squad/SquadPage";
+import { Preloader } from "@/components/Preloader";
 import { type TabKey, useUi } from "@/stores/uiStore";
-import { ClubPage, LeaguePage, MarketPage } from "./lazyPages";
+import { CalendarPage, ClubPage, LeaguePage, MarketPage } from "./lazyPages";
 
 const PAGES: Record<TabKey, ReactNode> = {
   home: <HomePage />,
   squad: <SquadPage />,
   market: (
-    <Suspense fallback={null}>
+    <Suspense fallback={<Preloader />}>
       <MarketPage />
     </Suspense>
   ),
+  calendar: (
+    <Suspense fallback={<Preloader />}>
+      <CalendarPage />
+    </Suspense>
+  ),
   league: (
-    <Suspense fallback={null}>
+    <Suspense fallback={<Preloader />}>
       <LeaguePage />
     </Suspense>
   ),
   club: (
-    <Suspense fallback={null}>
+    <Suspense fallback={<Preloader />}>
       <ClubPage />
     </Suspense>
   ),
@@ -35,8 +41,7 @@ export function AnimatedTabs() {
       <AnimatePresence mode="wait" initial={false}>
         <m.div
           key={currentTab}
-          className="col"
-          style={{ gap: 14 }}
+          className="flex flex-col gap-3.5"
           initial={{ opacity: 0, y: offsetY }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -offsetY }}

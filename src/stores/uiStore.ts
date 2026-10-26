@@ -5,7 +5,7 @@ import type { LiveSim, MatchSim } from "@/engine/types";
 
 type SheetState =
   { type: "player"; id: string } | { type: "nego"; id: string } | { type: "match" } | null;
-export type TabKey = "home" | "squad" | "market" | "league" | "club";
+export type TabKey = "home" | "squad" | "market" | "calendar" | "league" | "club";
 export type MarketSub = "search" | "short" | "nego" | "mine" | "news";
 export interface Filters {
   pos: string;

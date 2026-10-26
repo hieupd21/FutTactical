@@ -7,7 +7,20 @@
       {
         "code": "3142",
         "label": "3-1-4-2",
-        "positions": ["LS", "RS", "LCM", "RCM", "CDM", "LM", "LCB", "CB", "RCB", "RM", "GK"]
+        "positions": ["LS", "RS", "LCM", "RCM", "CDM", "LM", "LCB", "CB", "RCB", "RM", "GK"],
+        "slotCoordinates": [
+          {"leftPercent": 38, "topPercent": 17},
+          {"leftPercent": 57, "topPercent": 17},
+          {"leftPercent": 36, "topPercent": 36},
+          {"leftPercent": 59, "topPercent": 36},
+          {"leftPercent": 47.5, "topPercent": 38},
+          {"leftPercent": 22, "topPercent": 27},
+          {"leftPercent": 28, "topPercent": 55},
+          {"leftPercent": 47.5, "topPercent": 55},
+          {"leftPercent": 64, "topPercent": 55},
+          {"leftPercent": 73, "topPercent": 27},
+          {"leftPercent": 47.5, "topPercent": 68}
+        ]
       }
     ]
   },
@@ -19,7 +32,20 @@
       {
         "code": "3412",
         "label": "3-4-1-2",
-        "positions": ["LS", "RS", "LCM", "RCM", "CAM", "LM", "LCB", "CB", "RCB", "RM", "GK"]
+        "positions": ["LS", "RS", "LCM", "RCM", "CAM", "LM", "LCB", "CB", "RCB", "RM", "GK"],
+        "slotCoordinates": [
+          {"leftPercent": 38, "topPercent": 17},
+          {"leftPercent": 57, "topPercent": 17},
+          {"leftPercent": 36, "topPercent": 36},
+          {"leftPercent": 59, "topPercent": 36},
+          {"leftPercent": 47.5, "topPercent": 27},
+          {"leftPercent": 22, "topPercent": 27},
+          {"leftPercent": 28, "topPercent": 55},
+          {"leftPercent": 47.5, "topPercent": 55},
+          {"leftPercent": 64, "topPercent": 55},
+          {"leftPercent": 73, "topPercent": 27},
+          {"leftPercent": 47.5, "topPercent": 68}
+        ]
       }
     ]
   },
@@ -31,7 +57,20 @@
       {
         "code": "3421",
         "label": "3-4-2-1",
-        "positions": ["ST", "LF", "LCM", "RCM", "RF", "LM", "LCB", "CB", "RCB", "RM", "GK"]
+        "positions": ["ST", "LF", "LCM", "RCM", "RF", "LM", "LCB", "CB", "RCB", "RM", "GK"],
+        "slotCoordinates": [
+          {"leftPercent": 47.5, "topPercent": 17},
+          {"leftPercent": 36, "topPercent": 23},
+          {"leftPercent": 36, "topPercent": 39},
+          {"leftPercent": 59, "topPercent": 39},
+          {"leftPercent": 60, "topPercent": 23},
+          {"leftPercent": 22, "topPercent": 27},
+          {"leftPercent": 28, "topPercent": 55},
+          {"leftPercent": 47.5, "topPercent": 55},
+          {"leftPercent": 64, "topPercent": 55},
+          {"leftPercent": 73, "topPercent": 27},
+          {"leftPercent": 47.5, "topPercent": 68}
+        ]
       }
     ]
   },
@@ -43,12 +82,38 @@
       {
         "code": "343",
         "label": "3-4-3 Flat",
-        "positions": ["ST", "LW", "LCM", "RCM", "RW", "LM", "LCB", "CB", "RCB", "RM", "GK"]
+        "positions": ["ST", "LW", "LCM", "RCM", "RW", "LM", "LCB", "CB", "RCB", "RM", "GK"],
+        "slotCoordinates": [
+          {"leftPercent": 47.5, "topPercent": 17},
+          {"leftPercent": 27, "topPercent": 20},
+          {"leftPercent": 36, "topPercent": 39},
+          {"leftPercent": 59, "topPercent": 39},
+          {"leftPercent": 69, "topPercent": 20},
+          {"leftPercent": 22, "topPercent": 34},
+          {"leftPercent": 28, "topPercent": 55},
+          {"leftPercent": 47.5, "topPercent": 55},
+          {"leftPercent": 64, "topPercent": 55},
+          {"leftPercent": 73, "topPercent": 34},
+          {"leftPercent": 47.5, "topPercent": 68}
+        ]
       },
       {
         "code": "343-2",
         "label": "3-4-3 Diamond",
-        "positions": ["ST", "LW", "CAM", "CDM", "RW", "LM", "LCB", "CB", "RCB", "RM", "GK"]
+        "positions": ["ST", "LW", "CAM", "CDM", "RW", "LM", "LCB", "CB", "RCB", "RM", "GK"],
+        "slotCoordinates": [
+          {"leftPercent": 47.5, "topPercent": 17},
+          {"leftPercent": 27, "topPercent": 20},
+          {"leftPercent": 47.5, "topPercent": 30},
+          {"leftPercent": 47.5, "topPercent": 42},
+          {"leftPercent": 69, "topPercent": 20},
+          {"leftPercent": 22, "topPercent": 34},
+          {"leftPercent": 28, "topPercent": 55},
+          {"leftPercent": 47.5, "topPercent": 55},
+          {"leftPercent": 64, "topPercent": 55},
+          {"leftPercent": 73, "topPercent": 34},
+          {"leftPercent": 47.5, "topPercent": 68}
+        ]
       }
     ]
   },
@@ -60,7 +125,20 @@
       {
         "code": "3511",
         "label": "3-5-1-1",
-        "positions": ["ST", "CF", "LDM", "RDM", "CM", "LM", "LCB", "CB", "RCB", "RM", "GK"]
+        "positions": ["ST", "CF", "LDM", "RDM", "CM", "LM", "LCB", "CB", "RCB", "RM", "GK"],
+        "slotCoordinates": [
+          {"leftPercent": 47.5, "topPercent": 17},
+          {"leftPercent": 47.5, "topPercent": 29},
+          {"leftPercent": 36, "topPercent": 42},
+          {"leftPercent": 59, "topPercent": 42},
+          {"leftPercent": 47.5, "topPercent": 41},
+          {"leftPercent": 22, "topPercent": 27},
+          {"leftPercent": 28, "topPercent": 55},
+          {"leftPercent": 47.5, "topPercent": 55},
+          {"leftPercent": 64, "topPercent": 55},
+          {"leftPercent": 73, "topPercent": 27},
+          {"leftPercent": 47.5, "topPercent": 68}
+        ]
       }
     ]
   },
@@ -72,7 +150,20 @@
       {
         "code": "352",
         "label": "3-5-2",
-        "positions": ["LS", "RS", "LDM", "RDM", "CAM", "LM", "LCB", "CB", "RCB", "RM", "GK"]
+        "positions": ["LS", "RS", "LDM", "RDM", "CAM", "LM", "LCB", "CB", "RCB", "RM", "GK"],
+        "slotCoordinates": [
+          {"leftPercent": 38, "topPercent": 17},
+          {"leftPercent": 57, "topPercent": 17},
+          {"leftPercent": 36, "topPercent": 39},
+          {"leftPercent": 59, "topPercent": 39},
+          {"leftPercent": 47.5, "topPercent": 30},
+          {"leftPercent": 22, "topPercent": 27},
+          {"leftPercent": 28, "topPercent": 55},
+          {"leftPercent": 47.5, "topPercent": 55},
+          {"leftPercent": 64, "topPercent": 55},
+          {"leftPercent": 73, "topPercent": 27},
+          {"leftPercent": 47.5, "topPercent": 68}
+        ]
       }
     ]
   },
@@ -84,12 +175,38 @@
       {
         "code": "41212",
         "label": "4-1-2-1-2 Narrow",
-        "positions": ["LS", "RS", "CAM", "LCM", "CDM", "RCM", "LB", "LCB", "RCB", "RB", "GK"]
+        "positions": ["LS", "RS", "CAM", "LCM", "CDM", "RCM", "LB", "LCB", "RCB", "RB", "GK"],
+        "slotCoordinates": [
+          {"leftPercent": 38, "topPercent": 22},
+          {"leftPercent": 57, "topPercent": 22},
+          {"leftPercent": 47.5, "topPercent": 32},
+          {"leftPercent": 36, "topPercent": 36},
+          {"leftPercent": 47.5, "topPercent": 46},
+          {"leftPercent": 59, "topPercent": 36},
+          {"leftPercent": 17, "topPercent": 55},
+          {"leftPercent": 36, "topPercent": 55},
+          {"leftPercent": 59, "topPercent": 55},
+          {"leftPercent": 78, "topPercent": 55},
+          {"leftPercent": 47.5, "topPercent": 68}
+        ]
       },
       {
         "code": "41212-2",
         "label": "4-1-2-1-2 Wide",
-        "positions": ["LS", "RS", "CAM", "LM", "CDM", "RM", "LB", "LCB", "RCB", "RB", "GK"]
+        "positions": ["LS", "RS", "CAM", "LM", "CDM", "RM", "LB", "LCB", "RCB", "RB", "GK"],
+        "slotCoordinates": [
+          {"leftPercent": 38, "topPercent": 22},
+          {"leftPercent": 57, "topPercent": 22},
+          {"leftPercent": 47.5, "topPercent": 32},
+          {"leftPercent": 21, "topPercent": 36},
+          {"leftPercent": 47.5, "topPercent": 46},
+          {"leftPercent": 74, "topPercent": 36},
+          {"leftPercent": 17, "topPercent": 55},
+          {"leftPercent": 36, "topPercent": 55},
+          {"leftPercent": 59, "topPercent": 55},
+          {"leftPercent": 78, "topPercent": 55},
+          {"leftPercent": 47.5, "topPercent": 68}
+        ]
       }
     ]
   },
@@ -101,7 +218,20 @@
       {
         "code": "4132",
         "label": "4-1-3-2",
-        "positions": ["LS", "RS", "CM", "LM", "CDM", "RM", "LB", "LCB", "RCB", "RB", "GK"]
+        "positions": ["LS", "RS", "CM", "LM", "CDM", "RM", "LB", "LCB", "RCB", "RB", "GK"],
+        "slotCoordinates": [
+          {"leftPercent": 38, "topPercent": 17},
+          {"leftPercent": 57, "topPercent": 17},
+          {"leftPercent": 47.5, "topPercent": 33},
+          {"leftPercent": 19, "topPercent": 33},
+          {"leftPercent": 47.5, "topPercent": 46},
+          {"leftPercent": 76, "topPercent": 33},
+          {"leftPercent": 17, "topPercent": 55},
+          {"leftPercent": 36, "topPercent": 55},
+          {"leftPercent": 59, "topPercent": 55},
+          {"leftPercent": 78, "topPercent": 55},
+          {"leftPercent": 47.5, "topPercent": 68}
+        ]
       }
     ]
   },
@@ -113,7 +243,20 @@
       {
         "code": "4141",
         "label": "4-1-4-1",
-        "positions": ["ST", "LM", "LCM", "CDM", "RCM", "RM", "LB", "LCB", "RCB", "RB", "GK"]
+        "positions": ["ST", "LM", "LCM", "CDM", "RCM", "RM", "LB", "LCB", "RCB", "RB", "GK"],
+        "slotCoordinates": [
+          {"leftPercent": 47.5, "topPercent": 20},
+          {"leftPercent": 22, "topPercent": 30},
+          {"leftPercent": 37, "topPercent": 34},
+          {"leftPercent": 47.5, "topPercent": 40},
+          {"leftPercent": 58, "topPercent": 34},
+          {"leftPercent": 73, "topPercent": 30},
+          {"leftPercent": 17, "topPercent": 55},
+          {"leftPercent": 36, "topPercent": 55},
+          {"leftPercent": 59, "topPercent": 55},
+          {"leftPercent": 78, "topPercent": 55},
+          {"leftPercent": 47.5, "topPercent": 68}
+        ]
       }
     ]
   },
@@ -125,7 +268,20 @@
       {
         "code": "4222",
         "label": "4-2-2-2",
-        "positions": ["LS", "RS", "LAM", "LDM", "RDM", "RAM", "LB", "LCB", "RCB", "RB", "GK"]
+        "positions": ["LS", "RS", "LAM", "LDM", "RDM", "RAM", "LB", "LCB", "RCB", "RB", "GK"],
+        "slotCoordinates": [
+          {"leftPercent": 38, "topPercent": 22},
+          {"leftPercent": 57, "topPercent": 22},
+          {"leftPercent": 24, "topPercent": 28},
+          {"leftPercent": 36, "topPercent": 39},
+          {"leftPercent": 59, "topPercent": 39},
+          {"leftPercent": 71, "topPercent": 28},
+          {"leftPercent": 17, "topPercent": 55},
+          {"leftPercent": 36, "topPercent": 55},
+          {"leftPercent": 59, "topPercent": 55},
+          {"leftPercent": 78, "topPercent": 55},
+          {"leftPercent": 47.5, "topPercent": 68}
+        ]
       }
     ]
   },
@@ -137,12 +293,38 @@
       {
         "code": "4231",
         "label": "4-2-3-1 Narrow",
-        "positions": ["ST", "LAM", "CAM", "RAM", "LDM", "RDM", "LB", "LCB", "RCB", "RB", "GK"]
+        "positions": ["ST", "LAM", "CAM", "RAM", "LDM", "RDM", "LB", "LCB", "RCB", "RB", "GK"],
+        "slotCoordinates": [
+          {"leftPercent": 47.5, "topPercent": 14},
+          {"leftPercent": 27, "topPercent": 26},
+          {"leftPercent": 47.5, "topPercent": 26},
+          {"leftPercent": 68, "topPercent": 26},
+          {"leftPercent": 37, "topPercent": 34},
+          {"leftPercent": 58, "topPercent": 34},
+          {"leftPercent": 17, "topPercent": 55},
+          {"leftPercent": 36, "topPercent": 55},
+          {"leftPercent": 59, "topPercent": 55},
+          {"leftPercent": 78, "topPercent": 55},
+          {"leftPercent": 47.5, "topPercent": 68}
+        ]
       },
       {
         "code": "4231-2",
         "label": "4-2-3-1 Wide",
-        "positions": ["ST", "LM", "CAM", "RM", "LDM", "RDM", "LB", "LCB", "RCB", "RB", "GK"]
+        "positions": ["ST", "LM", "CAM", "RM", "LDM", "RDM", "LB", "LCB", "RCB", "RB", "GK"],
+        "slotCoordinates": [
+          {"leftPercent": 47.5, "topPercent": 14},
+          {"leftPercent": 22, "topPercent": 26},
+          {"leftPercent": 47.5, "topPercent": 26},
+          {"leftPercent": 73, "topPercent": 26},
+          {"leftPercent": 37, "topPercent": 34},
+          {"leftPercent": 58, "topPercent": 34},
+          {"leftPercent": 17, "topPercent": 55},
+          {"leftPercent": 36, "topPercent": 55},
+          {"leftPercent": 59, "topPercent": 55},
+          {"leftPercent": 78, "topPercent": 55},
+          {"leftPercent": 47.5, "topPercent": 68}
+        ]
       }
     ]
   },
@@ -154,7 +336,20 @@
       {
         "code": "424",
         "label": "4-2-4",
-        "positions": ["RS", "LS", "LW", "RCM", "LCM", "RW", "LB", "LCB", "RCB", "RB", "GK"]
+        "positions": ["RS", "LS", "LW", "RCM", "LCM", "RW", "LB", "LCB", "RCB", "RB", "GK"],
+        "slotCoordinates": [
+          {"leftPercent": 38, "topPercent": 22},
+          {"leftPercent": 57, "topPercent": 22},
+          {"leftPercent": 24, "topPercent": 23},
+          {"leftPercent": 36, "topPercent": 39},
+          {"leftPercent": 59, "topPercent": 39},
+          {"leftPercent": 71, "topPercent": 23},
+          {"leftPercent": 17, "topPercent": 55},
+          {"leftPercent": 36, "topPercent": 55},
+          {"leftPercent": 59, "topPercent": 55},
+          {"leftPercent": 78, "topPercent": 55},
+          {"leftPercent": 47.5, "topPercent": 68}
+        ]
       }
     ]
   },
@@ -166,7 +361,20 @@
       {
         "code": "4312",
         "label": "4-3-1-2",
-        "positions": ["LS", "RS", "CAM", "LCM", "CM", "RCM", "LB", "LCB", "RCB", "RB", "GK"]
+        "positions": ["LS", "RS", "CAM", "LCM", "CM", "RCM", "LB", "LCB", "RCB", "RB", "GK"],
+        "slotCoordinates": [
+          {"leftPercent": 38, "topPercent": 17},
+          {"leftPercent": 57, "topPercent": 17},
+          {"leftPercent": 47.5, "topPercent": 26},
+          {"leftPercent": 36, "topPercent": 36},
+          {"leftPercent": 47.5, "topPercent": 38},
+          {"leftPercent": 59, "topPercent": 36},
+          {"leftPercent": 17, "topPercent": 55},
+          {"leftPercent": 36, "topPercent": 55},
+          {"leftPercent": 59, "topPercent": 55},
+          {"leftPercent": 78, "topPercent": 55},
+          {"leftPercent": 47.5, "topPercent": 68}
+        ]
       }
     ]
   },
@@ -178,7 +386,20 @@
       {
         "code": "4321",
         "label": "4-3-2-1",
-        "positions": ["ST", "LF", "CM", "RF", "LCM", "RCM", "LB", "LCB", "RCB", "RB", "GK"]
+        "positions": ["ST", "LF", "CM", "RF", "LCM", "RCM", "LB", "LCB", "RCB", "RB", "GK"],
+        "slotCoordinates": [
+          {"leftPercent": 47.5, "topPercent": 16},
+          {"leftPercent": 30, "topPercent": 21},
+          {"leftPercent": 47.5, "topPercent": 37},
+          {"leftPercent": 65, "topPercent": 21},
+          {"leftPercent": 37, "topPercent": 34},
+          {"leftPercent": 58, "topPercent": 34},
+          {"leftPercent": 17, "topPercent": 55},
+          {"leftPercent": 36, "topPercent": 55},
+          {"leftPercent": 59, "topPercent": 55},
+          {"leftPercent": 78, "topPercent": 55},
+          {"leftPercent": 47.5, "topPercent": 68}
+        ]
       }
     ]
   },
@@ -190,27 +411,92 @@
       {
         "code": "433",
         "label": "4-3-3 False 9",
-        "positions": ["CF", "LW", "CDM", "RW", "LCM", "RCM", "LB", "LCB", "RCB", "RB", "GK"]
+        "positions": ["CF", "LW", "CDM", "RW", "LCM", "RCM", "LB", "LCB", "RCB", "RB", "GK"],
+        "slotCoordinates": [
+          {"leftPercent": 47.5, "topPercent": 25},
+          {"leftPercent": 25, "topPercent": 21},
+          {"leftPercent": 47.5, "topPercent": 43},
+          {"leftPercent": 70, "topPercent": 21},
+          {"leftPercent": 37, "topPercent": 34},
+          {"leftPercent": 58, "topPercent": 34},
+          {"leftPercent": 17, "topPercent": 55},
+          {"leftPercent": 36, "topPercent": 55},
+          {"leftPercent": 59, "topPercent": 55},
+          {"leftPercent": 78, "topPercent": 55},
+          {"leftPercent": 47.5, "topPercent": 68}
+        ]
       },
       {
         "code": "433-2",
         "label": "4-3-3 Attack",
-        "positions": ["ST", "LW", "CAM", "RW", "LCM", "RCM", "LB", "LCB", "RCB", "RB", "GK"]
+        "positions": ["ST", "LW", "CAM", "RW", "LCM", "RCM", "LB", "LCB", "RCB", "RB", "GK"],
+        "slotCoordinates": [
+          {"leftPercent": 47.5, "topPercent": 16},
+          {"leftPercent": 25, "topPercent": 21},
+          {"leftPercent": 47.5, "topPercent": 29},
+          {"leftPercent": 70, "topPercent": 21},
+          {"leftPercent": 37, "topPercent": 34},
+          {"leftPercent": 58, "topPercent": 34},
+          {"leftPercent": 17, "topPercent": 55},
+          {"leftPercent": 36, "topPercent": 55},
+          {"leftPercent": 59, "topPercent": 55},
+          {"leftPercent": 78, "topPercent": 55},
+          {"leftPercent": 47.5, "topPercent": 68}
+        ]
       },
       {
         "code": "433-3",
         "label": "4-3-3 Defend",
-        "positions": ["ST", "LW", "CM", "RW", "LDM", "RDM", "LB", "LCB", "RCB", "RB", "GK"]
+        "positions": ["ST", "LW", "CM", "RW", "LDM", "RDM", "LB", "LCB", "RCB", "RB", "GK"],
+        "slotCoordinates": [
+          {"leftPercent": 47.5, "topPercent": 16},
+          {"leftPercent": 25, "topPercent": 21},
+          {"leftPercent": 47.5, "topPercent": 36},
+          {"leftPercent": 70, "topPercent": 21},
+          {"leftPercent": 37, "topPercent": 40},
+          {"leftPercent": 58, "topPercent": 40},
+          {"leftPercent": 17, "topPercent": 55},
+          {"leftPercent": 36, "topPercent": 55},
+          {"leftPercent": 59, "topPercent": 55},
+          {"leftPercent": 78, "topPercent": 55},
+          {"leftPercent": 47.5, "topPercent": 68}
+        ]
       },
       {
         "code": "433-4",
         "label": "4-3-3 Holding",
-        "positions": ["ST", "LW", "CDM", "RW", "LCM", "RCM", "LB", "LCB", "RCB", "RB", "GK"]
+        "positions": ["ST", "LW", "CDM", "RW", "LCM", "RCM", "LB", "LCB", "RCB", "RB", "GK"],
+        "slotCoordinates": [
+          {"leftPercent": 47.5, "topPercent": 16},
+          {"leftPercent": 25, "topPercent": 21},
+          {"leftPercent": 47.5, "topPercent": 43},
+          {"leftPercent": 70, "topPercent": 21},
+          {"leftPercent": 37, "topPercent": 34},
+          {"leftPercent": 58, "topPercent": 34},
+          {"leftPercent": 17, "topPercent": 55},
+          {"leftPercent": 36, "topPercent": 55},
+          {"leftPercent": 59, "topPercent": 55},
+          {"leftPercent": 78, "topPercent": 55},
+          {"leftPercent": 47.5, "topPercent": 68}
+        ]
       },
       {
         "code": "433-5",
         "label": "4-3-3 Flat",
-        "positions": ["ST", "LW", "CM", "RW", "LCM", "RCM", "LB", "LCB", "RCB", "RB", "GK"]
+        "positions": ["ST", "LW", "CM", "RW", "LCM", "RCM", "LB", "LCB", "RCB", "RB", "GK"],
+        "slotCoordinates": [
+          {"leftPercent": 47.5, "topPercent": 16},
+          {"leftPercent": 25, "topPercent": 21},
+          {"leftPercent": 47.5, "topPercent": 37},
+          {"leftPercent": 70, "topPercent": 21},
+          {"leftPercent": 37, "topPercent": 34},
+          {"leftPercent": 58, "topPercent": 34},
+          {"leftPercent": 17, "topPercent": 55},
+          {"leftPercent": 36, "topPercent": 55},
+          {"leftPercent": 59, "topPercent": 55},
+          {"leftPercent": 78, "topPercent": 55},
+          {"leftPercent": 47.5, "topPercent": 68}
+        ]
       }
     ]
   },
@@ -222,12 +508,38 @@
       {
         "code": "4411",
         "label": "4-4-1-1 Midfield",
-        "positions": ["ST", "LM", "CAM", "RM", "LCM", "RCM", "LB", "LCB", "RCB", "RB", "GK"]
+        "positions": ["ST", "LM", "CAM", "RM", "LCM", "RCM", "LB", "LCB", "RCB", "RB", "GK"],
+        "slotCoordinates": [
+          {"leftPercent": 47.5, "topPercent": 14},
+          {"leftPercent": 22, "topPercent": 26},
+          {"leftPercent": 47.5, "topPercent": 26},
+          {"leftPercent": 73, "topPercent": 26},
+          {"leftPercent": 37, "topPercent": 34},
+          {"leftPercent": 58, "topPercent": 34},
+          {"leftPercent": 17, "topPercent": 55},
+          {"leftPercent": 36, "topPercent": 55},
+          {"leftPercent": 59, "topPercent": 55},
+          {"leftPercent": 78, "topPercent": 55},
+          {"leftPercent": 47.5, "topPercent": 68}
+        ]
       },
       {
         "code": "4411-2",
         "label": "4-4-1-1 Attack",
-        "positions": ["ST", "LM", "CF", "RM", "LCM", "RCM", "LB", "LCB", "RCB", "RB", "GK"]
+        "positions": ["ST", "LM", "CF", "RM", "LCM", "RCM", "LB", "LCB", "RCB", "RB", "GK"],
+        "slotCoordinates": [
+          {"leftPercent": 47.5, "topPercent": 13},
+          {"leftPercent": 22, "topPercent": 26},
+          {"leftPercent": 47.5, "topPercent": 25},
+          {"leftPercent": 73, "topPercent": 26},
+          {"leftPercent": 37, "topPercent": 34},
+          {"leftPercent": 58, "topPercent": 34},
+          {"leftPercent": 17, "topPercent": 55},
+          {"leftPercent": 36, "topPercent": 55},
+          {"leftPercent": 59, "topPercent": 55},
+          {"leftPercent": 78, "topPercent": 55},
+          {"leftPercent": 47.5, "topPercent": 68}
+        ]
       }
     ]
   },
@@ -239,12 +551,38 @@
       {
         "code": "442",
         "label": "4-4-2 Flat",
-        "positions": ["LS", "RS", "LM", "LCM", "RCM", "RM", "LB", "LCB", "RCB", "RB", "GK"]
+        "positions": ["LS", "RS", "LM", "LCM", "RCM", "RM", "LB", "LCB", "RCB", "RB", "GK"],
+        "slotCoordinates": [
+          {"leftPercent": 39, "topPercent": 22},
+          {"leftPercent": 57, "topPercent": 22},
+          {"leftPercent": 22, "topPercent": 36},
+          {"leftPercent": 36, "topPercent": 36},
+          {"leftPercent": 59, "topPercent": 36},
+          {"leftPercent": 73, "topPercent": 36},
+          {"leftPercent": 17, "topPercent": 55},
+          {"leftPercent": 36, "topPercent": 55},
+          {"leftPercent": 59, "topPercent": 55},
+          {"leftPercent": 78, "topPercent": 55},
+          {"leftPercent": 47.5, "topPercent": 68}
+        ]
       },
       {
         "code": "442-2",
         "label": "4-4-2 Holding",
-        "positions": ["LS", "RS", "LM", "LCM", "RCM", "RM", "LB", "LCB", "RCB", "RB", "GK"]
+        "positions": ["LS", "RS", "LM", "LCM", "RCM", "RM", "LB", "LCB", "RCB", "RB", "GK"],
+        "slotCoordinates": [
+          {"leftPercent": 38, "topPercent": 22},
+          {"leftPercent": 57, "topPercent": 22},
+          {"leftPercent": 22, "topPercent": 32},
+          {"leftPercent": 36, "topPercent": 36},
+          {"leftPercent": 59, "topPercent": 36},
+          {"leftPercent": 73, "topPercent": 32},
+          {"leftPercent": 17, "topPercent": 55},
+          {"leftPercent": 36, "topPercent": 55},
+          {"leftPercent": 59, "topPercent": 55},
+          {"leftPercent": 78, "topPercent": 55},
+          {"leftPercent": 47.5, "topPercent": 68}
+        ]
       }
     ]
   },
@@ -256,12 +594,38 @@
       {
         "code": "451",
         "label": "4-5-1 Attack",
-        "positions": ["ST", "LAM", "LM", "CM", "RAM", "RM", "LB", "LCB", "RCB", "RB", "GK"]
+        "positions": ["ST", "LAM", "LM", "CM", "RAM", "RM", "LB", "LCB", "RCB", "RB", "GK"],
+        "slotCoordinates": [
+          {"leftPercent": 47.5, "topPercent": 20},
+          {"leftPercent": 35, "topPercent": 28},
+          {"leftPercent": 21, "topPercent": 34},
+          {"leftPercent": 47.5, "topPercent": 40},
+          {"leftPercent": 59, "topPercent": 28},
+          {"leftPercent": 73, "topPercent": 34},
+          {"leftPercent": 17, "topPercent": 55},
+          {"leftPercent": 36, "topPercent": 55},
+          {"leftPercent": 59, "topPercent": 55},
+          {"leftPercent": 78, "topPercent": 55},
+          {"leftPercent": 47.5, "topPercent": 68}
+        ]
       },
       {
         "code": "451-2",
         "label": "4-5-1 Flat",
-        "positions": ["ST", "LM", "LCM", "CM", "RCM", "RM", "LB", "LCB", "RCB", "RB", "GK"]
+        "positions": ["ST", "LM", "LCM", "CM", "RCM", "RM", "LB", "LCB", "RCB", "RB", "GK"],
+        "slotCoordinates": [
+          {"leftPercent": 47.5, "topPercent": 20},
+          {"leftPercent": 26, "topPercent": 30},
+          {"leftPercent": 37, "topPercent": 38},
+          {"leftPercent": 47.5, "topPercent": 40},
+          {"leftPercent": 58, "topPercent": 38},
+          {"leftPercent": 69, "topPercent": 30},
+          {"leftPercent": 17, "topPercent": 55},
+          {"leftPercent": 36, "topPercent": 55},
+          {"leftPercent": 59, "topPercent": 55},
+          {"leftPercent": 78, "topPercent": 55},
+          {"leftPercent": 47.5, "topPercent": 68}
+        ]
       }
     ]
   },
@@ -273,7 +637,20 @@
       {
         "code": "5212",
         "label": "5-2-1-2",
-        "positions": ["LS", "RS", "RCM", "LCM", "CAM", "LWB", "LCB", "CB", "RCB", "RWB", "GK"]
+        "positions": ["LS", "RS", "RCM", "LCM", "CAM", "LWB", "LCB", "CB", "RCB", "RWB", "GK"],
+        "slotCoordinates": [
+          {"leftPercent": 38, "topPercent": 17},
+          {"leftPercent": 57, "topPercent": 17},
+          {"leftPercent": 36, "topPercent": 36},
+          {"leftPercent": 59, "topPercent": 36},
+          {"leftPercent": 47.5, "topPercent": 27},
+          {"leftPercent": 15, "topPercent": 50},
+          {"leftPercent": 28, "topPercent": 55},
+          {"leftPercent": 47.5, "topPercent": 55},
+          {"leftPercent": 64, "topPercent": 55},
+          {"leftPercent": 80, "topPercent": 50},
+          {"leftPercent": 47.5, "topPercent": 68}
+        ]
       }
     ]
   },
@@ -285,7 +662,20 @@
       {
         "code": "523",
         "label": "5-2-3",
-        "positions": ["LW", "ST", "RW", "LCM", "RCM", "LWB", "LCB", "CB", "RCB", "RWB", "GK"]
+        "positions": ["LW", "ST", "RW", "LCM", "RCM", "LWB", "LCB", "CB", "RCB", "RWB", "GK"],
+        "slotCoordinates": [
+          {"leftPercent": 25, "topPercent": 22},
+          {"leftPercent": 47.5, "topPercent": 17},
+          {"leftPercent": 70, "topPercent": 22},
+          {"leftPercent": 35, "topPercent": 36},
+          {"leftPercent": 60, "topPercent": 36},
+          {"leftPercent": 15, "topPercent": 50},
+          {"leftPercent": 28, "topPercent": 55},
+          {"leftPercent": 47.5, "topPercent": 55},
+          {"leftPercent": 64, "topPercent": 55},
+          {"leftPercent": 80, "topPercent": 50},
+          {"leftPercent": 47.5, "topPercent": 68}
+        ]
       }
     ]
   },
@@ -297,7 +687,20 @@
       {
         "code": "532",
         "label": "5-3-2",
-        "positions": ["LS", "RS", "LCM", "RCM", "CM", "LWB", "LCB", "CB", "RCB", "RWB", "GK"]
+        "positions": ["LS", "RS", "LCM", "RCM", "CM", "LWB", "LCB", "CB", "RCB", "RWB", "GK"],
+        "slotCoordinates": [
+          {"leftPercent": 38, "topPercent": 17},
+          {"leftPercent": 57, "topPercent": 17},
+          {"leftPercent": 36, "topPercent": 36},
+          {"leftPercent": 59, "topPercent": 36},
+          {"leftPercent": 47.5, "topPercent": 38},
+          {"leftPercent": 15, "topPercent": 50},
+          {"leftPercent": 28, "topPercent": 55},
+          {"leftPercent": 47.5, "topPercent": 55},
+          {"leftPercent": 64, "topPercent": 55},
+          {"leftPercent": 80, "topPercent": 50},
+          {"leftPercent": 47.5, "topPercent": 68}
+        ]
       }
     ]
   },
@@ -309,12 +712,38 @@
       {
         "code": "541",
         "label": "5-4-1 Diamond",
-        "positions": ["ST", "LM", "CAM", "RM", "CDM", "LWB", "LCB", "CB", "RCB", "RWB", "GK"]
+        "positions": ["ST", "LM", "CAM", "RM", "CDM", "LWB", "LCB", "CB", "RCB", "RWB", "GK"],
+        "slotCoordinates": [
+          {"leftPercent": 47.5, "topPercent": 16},
+          {"leftPercent": 21, "topPercent": 33},
+          {"leftPercent": 47.5, "topPercent": 28},
+          {"leftPercent": 70, "topPercent": 33},
+          {"leftPercent": 47.5, "topPercent": 41},
+          {"leftPercent": 15, "topPercent": 50},
+          {"leftPercent": 28, "topPercent": 55},
+          {"leftPercent": 47.5, "topPercent": 55},
+          {"leftPercent": 64, "topPercent": 55},
+          {"leftPercent": 80, "topPercent": 50},
+          {"leftPercent": 47.5, "topPercent": 68}
+        ]
       },
       {
         "code": "541-2",
         "label": "5-4-1 Flat",
-        "positions": ["ST", "LM", "LCM", "RCM", "RM", "LWB", "LCB", "CB", "RCB", "RWB", "GK"]
+        "positions": ["ST", "LM", "LCM", "RCM", "RM", "LWB", "LCB", "CB", "RCB", "RWB", "GK"],
+        "slotCoordinates": [
+          {"leftPercent": 47.5, "topPercent": 16},
+          {"leftPercent": 21, "topPercent": 31},
+          {"leftPercent": 36, "topPercent": 36},
+          {"leftPercent": 59, "topPercent": 36},
+          {"leftPercent": 74, "topPercent": 31},
+          {"leftPercent": 15, "topPercent": 50},
+          {"leftPercent": 28, "topPercent": 55},
+          {"leftPercent": 47.5, "topPercent": 55},
+          {"leftPercent": 64, "topPercent": 55},
+          {"leftPercent": 80, "topPercent": 50},
+          {"leftPercent": 47.5, "topPercent": 68}
+        ]
       }
     ]
   }
