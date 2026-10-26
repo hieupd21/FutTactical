@@ -10,6 +10,7 @@ import { toast } from "@/stores/uiStore";
 import { formatShortDate, stars } from "@/utils/display";
 import { Button } from "@/components/shadcn/button";
 import { Card } from "@/components/shadcn/card";
+import { InboxCard } from "./InboxCard";
 
 function Board() {
   const confC =
@@ -71,7 +72,7 @@ function Board() {
           ],
         ]}
       />
-      <div className="col" style={{ gap: 6 }}>
+      <div className="flex flex-col gap-1.5">
         <h3>Điều chỉnh ngân sách</h3>
         <p className="hint">
           {formatMoney(BUDGET_STEP)} ngân sách chuyển nhượng ↔ {formatWage(WAGE_STEP)} quỹ lương.
@@ -191,7 +192,8 @@ export function ClubPage() {
   return (
     <div className="grid2">
       <Board />
-      <div className="col">
+      <div className="flex flex-col gap-2.5">
+        <InboxCard />
         <Staff />
       </div>
     </div>

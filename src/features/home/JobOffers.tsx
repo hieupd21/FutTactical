@@ -10,7 +10,7 @@ import { toast } from "@/stores/uiStore";
 /** Danh sách CLB ngỏ lời dẫn dắt: sau tổng kết mùa hoặc sau khi bị sa thải */
 export function OfferList({ sacked = false }: { sacked?: boolean }) {
   return (
-    <div className="col" style={{ gap: 8 }}>
+    <div className="flex flex-col gap-2">
       {offerClubs().map((club) => {
         const taken = gameState.job === club.id;
         return (

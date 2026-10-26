@@ -15,6 +15,8 @@ export const WAGE_STEP = 19; // 19k €/tuần
 
 export function setFormation(formation: Formation): void {
   gameState.form = formation;
+  gameState.formVariant = undefined;
+  gameState.sourceSlotPositions = undefined;
   gameState.lineup = bestLineup(gameState.myClubId, formation);
 }
 /** Chiến thuật mặc định của bạn khi vào trận */

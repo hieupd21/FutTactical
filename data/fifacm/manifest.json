@@ -26,7 +26,7 @@
   "limitations": [
     "Source is the FC27 Career Mode HTML listing, not a raw EA game database export.",
     "Financial values are converted from displayed K/M figures and may be rounded by the website; original strings are retained.",
-    "Individual profile attributes and birthdates are not collected by the player listing crawl; league IDs are stored in clubs.json and leagues.json.",
+    "Birthdates are not collected; profile attributes come from the separate profile crawl (datasets.playerAttributes); league IDs are stored in clubs.json and leagues.json.",
     "The ordinary listing does not identify every loan. isOnLoan is null unless explicitly displayed.",
     "Snapshot date is checked on every downloaded page; the website does not expose the active snapshot ID in these links.",
     "No FC26 rows, EA dataset, financial estimates, or local FC27 file are used to fill missing values."
@@ -3164,12 +3164,14 @@
     }
   ],
   "sha256": {
-    "players.json": "af837e32d159a1d81ab211baf42bc0b4666ce03ab10095e8565bb248d3ecfcb1",
+    "players.json": "ba9ec65dd482fe84b8f060f3bf4bd908324d7500022c76d2b71b6eb7f58abdc6",
     "clubs.json": "9a20713cc3f65eea3a6877e9f49d0ce14a7fe87d3c1d4a9b1f6537b862fe0bfb",
     "leagues.json": "85f0afe4b0abf2edd9bdcec9bdfda084e4ad2c900905696824c16d11b0f78c43",
     "national-teams.json": "f5828c9b87d97b9e2d5ec55e8f4daa676929972b74687b44d2370825603a6816",
     "nations.json": "3fa2512a3974fadeb40c7e535755be3e40a8d2e4dcb2531bd561007487ac8ba5",
-    "formations.json": "53f05a99fbc38799b9f25649a8904235763a81ec2640afe7b65f2a26f54bb488"
+    "formations.json": "23a052d84dee7abcaf5cbc7771465f6221db19c9317a576c09d316a9ca69b8e2",
+    "pitch-positions.json": "3ec65f72edb7714ebbe3563625a81706070d8ee024ddba4d70b04493e1a27579",
+    "playstyles.json": "87c30a5128e1ccb49291635f8fe64c2ce08c776ccf57d210fe3bab1270cade7f"
   },
   "lastRunStartedAt": "2026-10-22T01:25:47.865738+00:00",
   "cacheResumed": true,
@@ -3310,11 +3312,14 @@
       "labelSourceUrl": "https://www.fifacm.com/squad-builder",
       "count": 22,
       "retrievedAt": "2026-10-22T03:03:59.736072+00:00",
-      "schemaVersion": 2,
+      "schemaVersion": 3,
       "variantCount": 33,
       "clubReference": "clubs[].formation -> formations[].id",
       "normalization": "Basic shape IDs with id/label/lines; original source builder definitions retained in variants.",
-      "normalizedAt": "2026-10-22T06:26:17.674149+00:00"
+      "normalizedAt": "2026-10-22T06:26:17.674149+00:00",
+      "slotCoordinatesSourceUrl": "https://www.fifacm.com/squad-builder",
+      "slotCoordinatesRetrievedAt": "2026-10-25T06:55:58.098184+00:00",
+      "slotCoordinatesNote": "variants[].slotCoordinates[i] is the left/top of ph<i+1> as a percentage of the Squad Builder pitch, for variants[].positions[i]; left is the card edge."
     },
     "nations": {
       "file": "nations.json",
@@ -3326,7 +3331,11 @@
         "This is the nationality catalogue represented by the existing players; it is not a complete list of countries worldwide.",
         "References are stored on players and national teams; the nationality catalogue does not store reverse membership lists."
       ],
-      "fields": ["id", "label", "imageUrl"],
+      "fields": [
+        "id",
+        "label",
+        "imageUrl"
+      ],
       "playerReference": "players[].nationality.id -> nations[].id",
       "nationalTeamReference": "national-teams[].nationId -> nations[].id"
     },
@@ -3387,12 +3396,18 @@
         {
           "id": 1363,
           "label": "Sweden",
-          "candidates": ["442", "442-2"]
+          "candidates": [
+            "442",
+            "442-2"
+          ]
         },
         {
           "id": 1375,
           "label": "Paraguay",
-          "candidates": ["442", "442-2"]
+          "candidates": [
+            "442",
+            "442-2"
+          ]
         },
         {
           "id": 1886,
@@ -3447,12 +3462,18 @@
         {
           "id": 1341,
           "label": "Iceland",
-          "candidates": ["442", "442-2"]
+          "candidates": [
+            "442",
+            "442-2"
+          ]
         },
         {
           "id": 111462,
           "label": "Ghana",
-          "candidates": ["442", "442-2"]
+          "candidates": [
+            "442",
+            "442-2"
+          ]
         },
         {
           "id": 1359,
@@ -3467,12 +3488,18 @@
         {
           "id": 1369,
           "label": "Argentina",
-          "candidates": ["442", "442-2"]
+          "candidates": [
+            "442",
+            "442-2"
+          ]
         },
         {
           "id": 974,
           "label": "Korea Republic",
-          "candidates": ["442", "442-2"]
+          "candidates": [
+            "442",
+            "442-2"
+          ]
         }
       ],
       "communitySquadsImported": false,
@@ -3555,6 +3582,36 @@
       "clubsWithoutSourceConfirmedFormation": 663,
       "inferredFormationCount": 663,
       "unresolvedFormationClubIds": []
+    },
+    "playerAttributes": {
+      "retrievedAt": "2026-10-24T23:28:15.108456+00:00",
+      "snapshotLabel": "6th of Oct 2026",
+      "playerCount": 18763,
+      "complete": true,
+      "source": "https://www.fifacm.com/player/<id>/<slug> (EA FC 27 profile, Category view)",
+      "retrievalMethod": "Orca browser / in-page fetch / HTML profile",
+      "fields": [
+        "attributes",
+        "positionRatings",
+        "roles",
+        "playStyles",
+        "specialities"
+      ],
+      "validation": "Each profile matched players.json on id, overallRating, potential, skillMoves, weakFootAbility and snapshot; 34 attributes per player."
+    },
+    "pitchPositions": {
+      "file": "pitch-positions.json",
+      "sourceUrl": "https://cdn.fifacm.com/static/dist/css/site.min.css",
+      "count": 22,
+      "retrievedAt": "2026-10-25T07:08:33.372984+00:00",
+      "note": "clubs[].startingXI[].sourcePositionId -> pitchPositions[].sourcePositionId; left is the card edge, bottom is measured from the pitch bottom (team page pitch)."
+    },
+    "playStyleIcons": {
+      "file": "playstyles.json",
+      "sourceUrl": "https://www.fifacm.com/player/<id>",
+      "count": 74,
+      "retrievedAt": "2026-10-25T14:33:40.009732+00:00",
+      "note": "players[].playStyles[] (name, isPlus) -> playstyles[] (name, isPlus).imageUrl; icon address as shown on the player profile, loaded from the FIFACM CDN."
     }
   },
   "schemaVersion": 2,
@@ -3575,8 +3632,13 @@
     "currentBytes": 15205318,
     "savedBytes": 9682981,
     "savedPercent": 38.91,
-    "removedPlayerFields": ["team", "sourceTeam"],
-    "newPlayerFields": ["clubId"],
+    "removedPlayerFields": [
+      "team",
+      "sourceTeam"
+    ],
+    "newPlayerFields": [
+      "clubId"
+    ],
     "format": "JSON array, one compact player object per line",
     "originalSha256": "c42c741aa9b3b980779da99781a7023b478da95552b9c44f34b3e1e3a7191189"
   },

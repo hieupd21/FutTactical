@@ -8,6 +8,7 @@ import type { Line } from "@/engine/types";
 import type { FifacmPack } from "@/engine/fifacm";
 import { packClubLineStrengths, packClubs } from "@/engine/world";
 import { ClubBadge } from "@/components/ClubBadge";
+import { Preloader } from "@/components/Preloader";
 import { Sheet } from "@/components/Sheet";
 import { SegmentedControl } from "@/components/ui";
 import { Button } from "@/components/shadcn/button";
@@ -58,14 +59,26 @@ function PickerRow({
   onOpenList: () => void;
   isDisabled: boolean;
 }) {
+  // Hướng lướt của lần bấm gần nhất: giá trị mới trượt vào từ phía mũi tên được bấm
+  const [slideDirection, setSlideDirection] = useState<"previous" | "next" | null>(null);
+  const slideClass =
+    slideDirection === null
+      ? ""
+      : cn(
+          "animate-in fade-in duration-250 ease-out motion-reduce:animate-none",
+          slideDirection === "next" ? "slide-in-from-right-6" : "slide-in-from-left-6",
+        );
   const arrowClass =
-    "grid size-12 shrink-0 place-items-center rounded-lg border border-(--line) bg-(--surface) text-(--ink) transition-colors hover:border-(--accent) focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--accent) disabled:cursor-not-allowed disabled:opacity-40";
+    "grid size-12 shrink-0 place-items-center rounded-lg border border-border bg-card text-foreground transition-colors hover:border-(--accent) focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--accent) disabled:cursor-not-allowed disabled:opacity-40";
   return (
     <div className="flex items-stretch gap-2">
       <button
         type="button"
         className={arrowClass}
-        onClick={onPrevious}
+        onClick={() => {
+          setSlideDirection("previous");
+          onPrevious();
+        }}
         disabled={isDisabled}
         aria-label={`${label}: trước`}
       >
@@ -76,20 +89,29 @@ function PickerRow({
         onClick={onOpenList}
         disabled={isDisabled}
         aria-haspopup="dialog"
-        className="flex min-h-12 min-w-0 flex-1 items-center justify-between gap-2 rounded-lg border border-(--line) bg-(--surface) px-3.5 text-left text-(--ink) transition-colors hover:border-(--accent) focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--accent) disabled:cursor-not-allowed disabled:opacity-40"
+        className="relative flex min-h-12 min-w-0 flex-1 items-center rounded-lg border border-border bg-card px-9 text-center text-foreground transition-colors hover:border-(--accent) focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--accent) disabled:cursor-not-allowed disabled:opacity-40"
       >
-        <span className="flex min-w-0 flex-col gap-0.5">
-          <span className="text-[11px] font-medium tracking-wide text-(--muted) uppercase">
-            {label}
+        <span className="min-w-0 flex-1 overflow-hidden">
+          <span
+            key={value}
+            className={cn("block w-full truncate text-[15px] font-bold", slideClass)}
+          >
+            {value}
           </span>
-          <span className="truncate text-[15px] font-bold">{value}</span>
         </span>
-        <ChevronDown size={18} className="shrink-0 text-(--muted)" aria-hidden="true" />
+        <ChevronDown
+          size={18}
+          className="absolute right-3 text-muted-foreground"
+          aria-hidden="true"
+        />
       </button>
       <button
         type="button"
         className={arrowClass}
-        onClick={onNext}
+        onClick={() => {
+          setSlideDirection("next");
+          onNext();
+        }}
         disabled={isDisabled}
         aria-label={`${label}: sau`}
       >
@@ -186,7 +208,7 @@ export function StartScreen() {
   return (
     <Card className="panel min-w-0 gap-0 rounded-xl p-4 shadow-none">
       <h2>Chọn đội bóng</h2>
-      <div className="col mt-3" style={{ gap: 6 }}>
+      <div className="mt-3 flex flex-col gap-1.5">
         <SegmentedControl<Mode>
           value={mode}
           onChange={setMode}
@@ -234,7 +256,7 @@ export function StartScreen() {
 
       <section
         aria-live="polite"
-        className="mt-5 flex min-h-75 flex-col items-center gap-4 rounded-xl border border-(--line) bg-(--soft) px-4 py-6"
+        className="mt-5 flex min-h-75 flex-col items-center gap-4 rounded-xl border border-border bg-secondary px-4 py-6"
       >
         {selectedClub ? (
           <>
@@ -254,15 +276,17 @@ export function StartScreen() {
               </p>
             </div>
             <dl className="grid w-full max-w-105 grid-cols-5 gap-1.5 text-center">
-              <div className="flex flex-col gap-1 rounded-lg bg-(--surface) px-1 py-2">
-                <dt className="text-[10px] font-medium text-(--muted) uppercase">Sức mạnh</dt>
-                <dd className="text-[20px] font-extrabold text-(--ink) tabular-nums">
+              <div className="flex flex-col gap-1 rounded-lg bg-card px-1 py-2">
+                <dt className="text-[10px] font-medium text-muted-foreground uppercase">
+                  Sức mạnh
+                </dt>
+                <dd className="text-[20px] font-extrabold text-foreground tabular-nums">
                   {selectedClub.strength}
                 </dd>
               </div>
               {LINE_LABELS.map(([line, lineLabel, lineColor]) => (
-                <div key={line} className="flex flex-col gap-1 rounded-lg bg-(--surface) px-1 py-2">
-                  <dt className="truncate text-[10px] font-medium text-(--muted) uppercase">
+                <div key={line} className="flex flex-col gap-1 rounded-lg bg-card px-1 py-2">
+                  <dt className="truncate text-[10px] font-medium text-muted-foreground uppercase">
                     {lineLabel}
                   </dt>
                   <dd
@@ -275,20 +299,20 @@ export function StartScreen() {
               ))}
             </dl>
             {selectedClub.isLocked && (
-              <p className="flex items-center gap-1.5 text-center text-[13px] font-semibold text-(--loss)">
+              <p className="flex items-center gap-1.5 text-center text-[13px] font-semibold text-destructive">
                 <Lock size={14} aria-hidden="true" />
                 Cần uy tín {selectedClub.requiredReputation}, bạn mới có {NEWBIE_REPUTATION}
               </p>
             )}
           </>
+        ) : isLoading ? (
+          <Preloader className="pointer-events-auto static inset-auto z-auto min-h-0 w-full flex-1" />
         ) : (
-          <p className="hint m-auto">
-            {isLoading ? "Đang tải dữ liệu…" : "Dữ liệu không có CLB nào của giải này."}
-          </p>
+          <p className="hint m-auto">Dữ liệu không có CLB nào của giải này.</p>
         )}
       </section>
 
-      <div className="sticky bottom-0 z-10 -mx-4 -mb-4 mt-4 rounded-b-xl border-t border-(--line) bg-(--surface) p-4 pb-[max(1rem,env(safe-area-inset-bottom))]">
+      <div className="sticky bottom-0 z-10 -mx-4 -mb-4 mt-4 rounded-b-xl border-t border-border bg-card p-4 pb-[max(1rem,env(safe-area-inset-bottom))]">
         <Button variant="hot" className="w-full" disabled={!canConfirm} onClick={confirm}>
           {selectedClub?.isLocked ? "Chưa thể chọn đội này" : "Xác nhận"}
         </Button>
@@ -308,10 +332,10 @@ export function StartScreen() {
                 }}
                 aria-current={countryCode === selectedCountryCode}
                 className={cn(
-                  "min-h-12 rounded-lg border px-3.5 text-left text-[15px] font-bold text-(--ink)",
+                  "min-h-12 rounded-lg border px-3.5 text-left text-[15px] font-bold text-foreground",
                   countryCode === selectedCountryCode
-                    ? "border-(--accent) bg-(--soft)"
-                    : "border-(--line) bg-(--surface) hover:border-(--accent)",
+                    ? "border-(--accent) bg-secondary"
+                    : "border-border bg-card hover:border-(--accent)",
                 )}
               >
                 {countryName(countryCode)}
@@ -335,10 +359,10 @@ export function StartScreen() {
                 }}
                 aria-current={league.id === selectedLeague.id}
                 className={cn(
-                  "min-h-12 rounded-lg border px-3.5 text-left text-[15px] font-bold text-(--ink)",
+                  "min-h-12 rounded-lg border px-3.5 text-left text-[15px] font-bold text-foreground",
                   league.id === selectedLeague.id
-                    ? "border-(--accent) bg-(--soft)"
-                    : "border-(--line) bg-(--surface) hover:border-(--accent)",
+                    ? "border-(--accent) bg-secondary"
+                    : "border-border bg-card hover:border-(--accent)",
                 )}
               >
                 {league.name}
@@ -362,10 +386,10 @@ export function StartScreen() {
                 }}
                 aria-current={club.name === selectedClub?.name}
                 className={cn(
-                  "flex min-h-14 items-center gap-3 rounded-lg border px-3 py-2 text-left text-(--ink)",
+                  "flex min-h-14 items-center gap-3 rounded-lg border px-3 py-2 text-left text-foreground",
                   club.name === selectedClub?.name
-                    ? "border-(--accent) bg-(--soft)"
-                    : "border-(--line) bg-(--surface) hover:border-(--accent)",
+                    ? "border-(--accent) bg-secondary"
+                    : "border-border bg-card hover:border-(--accent)",
                   club.isLocked && "opacity-60",
                 )}
               >
@@ -377,7 +401,11 @@ export function StartScreen() {
                   </span>
                 </span>
                 {club.isLocked ? (
-                  <Lock size={16} className="shrink-0 text-(--muted)" aria-label="Chưa mở khóa" />
+                  <Lock
+                    size={16}
+                    className="shrink-0 text-muted-foreground"
+                    aria-label="Chưa mở khóa"
+                  />
                 ) : (
                   <span className="shrink-0 text-[17px] font-extrabold tabular-nums">
                     {club.strength}

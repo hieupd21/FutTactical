@@ -38,6 +38,12 @@ interface FifacmPlayer {
   contractStartYear: number;
   contractYear: number;
   releaseClauseEur: number;
+  skillMoves: number | null;
+  weakFootAbility: number | null;
+  preferredFoot: string | null;
+  heightCm: number | null;
+  attributes?: Record<string, number>;
+  playStyles?: { name: string; isPlus: boolean }[];
 }
 
 interface FifacmClub {
@@ -175,6 +181,19 @@ function buildReferences(
       dataset.players.flatMap((player) =>
         player.avatarUrl ? [[player.id, player.avatarUrl]] : [],
       ),
+    ),
+    playerProfileBySourceId: Object.fromEntries(
+      dataset.players.map((player) => [
+        player.id,
+        {
+          skillMoves: player.skillMoves,
+          weakFoot: player.weakFootAbility,
+          preferredFoot: player.preferredFoot,
+          heightCm: player.heightCm,
+          attributes: player.attributes ?? null,
+          playStyles: player.playStyles ?? [],
+        },
+      ]),
     ),
     nationalities,
     leagues: { countries },

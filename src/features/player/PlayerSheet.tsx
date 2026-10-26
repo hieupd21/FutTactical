@@ -116,7 +116,7 @@ function DemandPanel({ player }: { player: Player }) {
     toast(commit(() => respondDemand(player.id, choice))?.message ?? "");
   return (
     <div
-      className="say bad col"
+      className="say bad flex flex-col gap-2.5"
       role="group"
       aria-label={leave ? "Cầu thủ đòi ra đi" : "Cầu thủ đòi được ra sân"}
     >
@@ -180,7 +180,7 @@ function MineActions({ player }: { player: Player }) {
   const { setSwapIn, closeSheet, openNego, setTab } = useUi();
   const inXI = myLineup().includes(player.id);
   return (
-    <div className="col">
+    <div className="flex flex-col gap-2.5">
       {!inXI && available(player) && (
         <Button
           className="w-full"
@@ -270,7 +270,7 @@ function BuyActions({ player }: { player: Player }) {
     }
   };
   return (
-    <div className="col">
+    <div className="flex flex-col gap-2.5">
       {free ? (
         <Button variant="hot" className="w-full" onClick={() => startNegotiation("free")}>
           Đàm phán hợp đồng (tự do)

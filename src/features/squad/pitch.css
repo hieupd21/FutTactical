@@ -1,0 +1,93 @@
+.squad-pitch,
+.squad-bench {
+  --ink: #f3f7fc;
+  --bg: #182b40;
+  --muted: #cfdeeb;
+  --win: #51ed9c;
+  --loss: #ffb4aa;
+  --accent: #96f4d7;
+  color: var(--ink);
+  border-radius: 16px;
+}
+
+.squad-pitch-card {
+  isolation: isolate;
+  background: transparent;
+  color: var(--ink);
+}
+
+.squad-pitch-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(ellipse 85% 70% at 30% 8%, rgb(125 90 190 / 0.85), transparent 70%),
+    linear-gradient(to bottom, #5c5c68, #3c3a45 60%, #2e2c34);
+  clip-path: polygon(0 5%, 50% 0, 100% 5%, 100% 93%, 50% 100%, 0 93%);
+  transition: filter 160ms ease-out;
+}
+
+.squad-pitch-card::before {
+  inset: 1px;
+}
+
+.squad-pitch-card:hover::before {
+  filter: brightness(1.2);
+}
+
+/* Viền chạy khi chọn: lớp ::after vẽ gradient xoay, ::before (thụt 1px) che phần ruột */
+@property --border-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+.squad-pitch-card[aria-pressed="true"]::after,
+.squad-pitch-card[data-target="true"]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background: conic-gradient(
+    from var(--border-angle),
+    #c9bde6,
+    #a78bfa 25%,
+    #5b4a85 50%,
+    #a78bfa 75%,
+    #c9bde6
+  );
+  clip-path: polygon(0 5%, 50% 0, 100% 5%, 100% 93%, 50% 100%, 0 93%);
+  animation: squad-card-border-spin 2.4s linear infinite;
+}
+
+@keyframes squad-card-border-spin {
+  to {
+    --border-angle: 360deg;
+  }
+}
+
+.squad-pitch-card:focus-visible {
+  outline: 3px solid white;
+  outline-offset: 3px;
+}
+
+.squad-pitch-card .av {
+  max-width: 100%;
+  border-radius: 0;
+  background: transparent;
+}
+
+.squad-pitch-card > span:first-child {
+  max-width: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .squad-pitch-card::before {
+    transition: none;
+  }
+
+  .squad-pitch-card::after {
+    animation: none;
+  }
+}
