@@ -1,11 +1,5 @@
 .squad-pitch,
 .squad-bench {
-  --ink: #f3f7fc;
-  --bg: #182b40;
-  --muted: #cfdeeb;
-  --win: #51ed9c;
-  --loss: #ffb4aa;
-  --accent: #96f4d7;
   color: var(--ink);
   border-radius: 16px;
 }
@@ -51,11 +45,11 @@
   z-index: -2;
   background: conic-gradient(
     from var(--border-angle),
-    #c9bde6,
-    #a78bfa 25%,
-    #5b4a85 50%,
-    #a78bfa 75%,
-    #c9bde6
+    #bbf7d0,
+    #4ade80 25%,
+    #166534 50%,
+    #4ade80 75%,
+    #bbf7d0
   );
   clip-path: polygon(0 5%, 50% 0, 100% 5%, 100% 93%, 50% 100%, 0 93%);
   animation: squad-card-border-spin 2.4s linear infinite;

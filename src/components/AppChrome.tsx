@@ -24,7 +24,7 @@ export function TopNav() {
   return (
     <nav
       aria-label="Điều hướng chính"
-      className="sticky top-[env(safe-area-inset-top,0px)] z-8 flex items-center gap-2 border-b border-foreground/15 bg-background/70 backdrop-blur-xl"
+      className="sticky top-[env(safe-area-inset-top,0px)] z-8 flex items-center gap-2 border-b border-foreground/15"
     >
       <ul className="m-0 flex min-w-0 flex-1 list-none items-center gap-1 overflow-x-auto p-0 scrollbar-none">
         {TABS.map((tabItem) => {

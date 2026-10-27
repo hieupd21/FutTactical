@@ -3,7 +3,15 @@ import type { Player } from "@/engine/types";
 import { clubColors } from "@/lib/clubVisual";
 
 /** Chân dung FIFACM theo ID nguồn; dự phòng bằng hình người mặc áo CLB. */
-export function Avatar({ player, size = 36 }: { player: Player; size?: number }) {
+export function Avatar({
+  player,
+  size = 36,
+  className,
+}: {
+  player: Player;
+  size?: number;
+  className?: string;
+}) {
   const sourceImage =
     player.sourceId === undefined
       ? undefined
@@ -14,7 +22,7 @@ export function Avatar({ player, size = 36 }: { player: Player; size?: number })
     return (
       <img
         key={imageUrl}
-        className="av"
+        className={className ? `av ${className}` : "av"}
         src={imageUrl}
         width={size}
         height={size}
@@ -32,7 +40,13 @@ export function Avatar({ player, size = 36 }: { player: Player; size?: number })
     secondaryColor = "#d7f5c4";
   }
   return (
-    <svg className="av" width={size} height={size} viewBox="0 0 40 40" aria-hidden="true">
+    <svg
+      className={className ? `av ${className}` : "av"}
+      width={size}
+      height={size}
+      viewBox="0 0 40 40"
+      aria-hidden="true"
+    >
       <rect width="40" height="40" rx="20" fill="var(--soft)" />
       <circle cx="20" cy="15" r="7.2" fill="var(--muted)" opacity=".55" />
       <path

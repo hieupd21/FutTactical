@@ -3,15 +3,12 @@ import { TABS, TopNav } from "@/components/AppChrome";
 import { Toaster } from "@/components/shadcn/sonner";
 import { StartScreen } from "@/features/start/StartScreen";
 import { useGame } from "@/stores/gameStore";
-import { type TabKey, useUi } from "@/stores/uiStore";
-import { classNames } from "@/utils/display";
+import { useUi } from "@/stores/uiStore";
 import { AnimatedTabs } from "./AnimatedTabs";
 import { prefetchPages } from "./lazyPages";
 import { SheetHost } from "./SheetHost";
 import { useBackNavigation } from "./useBackNavigation";
 import { Preloader } from "@/components/Preloader";
-
-const GRADIENT_TABS: TabKey[] = ["home", "squad", "calendar"];
 
 export function App() {
   const status = useGame((store) => store.status);
@@ -26,16 +23,10 @@ export function App() {
 
   return (
     <>
-      <div
-        aria-hidden="true"
-        className={classNames(
-          "fixed inset-0 -z-10 bg-[linear-gradient(135deg,color-mix(in_srgb,var(--info)_35%,var(--bg)),var(--bg)_45%,color-mix(in_srgb,var(--pitch)_45%,var(--bg)))] transition-opacity duration-300",
-          GRADIENT_TABS.includes(currentTab) ? "opacity-100" : "opacity-0",
-        )}
-      />
-      <div className="mx-auto flex max-w-270 flex-col gap-6 pt-[env(safe-area-inset-top,0px)]">
+      <div aria-hidden="true" className="career-backdrop" />
+      <div className="relative mx-auto flex h-full max-w-270 flex-col gap-6 overflow-hidden pt-[env(safe-area-inset-top,0px)]">
         {status === "ready" && <TopNav />}
-        <main className="flex flex-col gap-3.5">
+        <main className="flex min-h-0 flex-1 flex-col gap-3.5">
           {status === "loading" && <Preloader />}
           {status === "none" && <StartScreen />}
           {status === "ready" && (

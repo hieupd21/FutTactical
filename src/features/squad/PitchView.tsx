@@ -1,14 +1,43 @@
-import { useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { myPitchLayout } from "@/engine/formationLayout";
 import { getPlayer } from "@/engine/state";
 import type { Player } from "@/engine/types";
-import { EmptySlot, PlayerCard, useCardSize } from "./PlayerCard";
+import { useDndContext, useDroppable } from "@dnd-kit/core";
+import { canSwapInto } from "@/engine/squad";
+import { DraggablePlayerCard } from "./DraggablePlayerCard";
+import { EmptySlot, useCardSize } from "./PlayerCard";
 import { spreadSlots } from "./spreadSlots";
 import { classNames } from "@/utils/display";
 import "./pitch.css";
 
 /** Khoảng cách tối thiểu (px) giữa hai thẻ trên sân */
 const CARD_GAP = 6;
+/** Thời gian (ms) thẻ trượt sang vị trí mới khi đổi sơ đồ */
+const FORMATION_TRANSITION_MS = 100;
+
+/** Ô đội hình nhận thẻ thả vào; chỉ sáng viền khi cầu thủ đang kéo được phép vào ô này */
+function PitchSlot({
+  slotIndex,
+  style,
+  children,
+}: {
+  slotIndex: number;
+  style: React.CSSProperties;
+  children: (isDropTarget: boolean) => React.ReactNode;
+}) {
+  const { setNodeRef, isOver } = useDroppable({ id: `slot-${slotIndex}`, data: { slotIndex } });
+  const { active } = useDndContext();
+  const isValidDrop = isOver && !!active && canSwapInto(String(active.id), slotIndex);
+  return (
+    <div
+      ref={setNodeRef}
+      className={classNames("absolute motion-reduce:transition-none")}
+      style={style}
+    >
+      {children(isValidDrop)}
+    </div>
+  );
+}
 
 function useElementSize<ElementType extends HTMLElement>() {
   const elementRef = useRef<ElementType>(null);
@@ -42,6 +71,14 @@ export function PitchView({
   const [pitchRef, pitchSize] = useElementSize<HTMLDivElement>();
   const cardSize = useCardSize();
   const slots = myPitchLayout();
+  // Chỉ bật chuyển động sau khi sân đã đo xong và vẽ lần đầu, để thẻ không trượt từ góc sân lúc mới mở
+  const [isAnimated, setIsAnimated] = useState(false);
+  const isPitchMeasured = pitchSize.width > 0;
+  useEffect(() => {
+    if (!isPitchMeasured) return;
+    const frame = requestAnimationFrame(() => setIsAnimated(true));
+    return () => cancelAnimationFrame(frame);
+  }, [isPitchMeasured]);
   // Tọa độ FIFACM tính theo %; khi biết cỡ sân thì đổi ra px rồi nới ra để các thẻ không đè lên nhau
   const centers = spreadSlots(
     slots.map((slot) => ({
@@ -69,31 +106,40 @@ export function PitchView({
         const playerId = lineup[slotIndex] ?? null;
         const player = playerId ? getPlayer(playerId) : null;
         return (
-          <div
-            key={slotIndex}
-            className="absolute"
+          <PitchSlot
+            // key theo cầu thủ để cùng một người trượt từ ô cũ sang ô mới khi đổi sơ đồ
+            key={playerId ?? `empty-${slotIndex}`}
+            slotIndex={slotIndex}
             style={{
               left: centers[slotIndex].x,
               top: centers[slotIndex].y,
               transform: "translate(-50%, -50%)",
+              transition: isAnimated
+                ? `left ${FORMATION_TRANSITION_MS}ms ease-out, top ${FORMATION_TRANSITION_MS}ms ease-out`
+                : undefined,
             }}
           >
-            {player ? (
-              <PlayerCard
-                player={player}
-                positionLabel={slot.position}
-                isSelected={player.id === selectedPlayerId}
-                isTarget={isChoosingSlot}
-                onClick={() => onSelectSlot(slotIndex, player)}
-              />
-            ) : (
-              <EmptySlot
-                positionLabel={slot.position}
-                isTarget={isChoosingSlot}
-                onClick={() => onSelectSlot(slotIndex, null)}
-              />
-            )}
-          </div>
+            {(isDropTarget) =>
+              player ? (
+                <DraggablePlayerCard
+                  player={player}
+                  positionLabel={slot.position}
+                  slotPosition={slot.position}
+                  isSelected={player.id === selectedPlayerId}
+                  isTarget={isChoosingSlot}
+                  isDropTarget={isDropTarget}
+                  onClick={() => onSelectSlot(slotIndex, player)}
+                />
+              ) : (
+                <EmptySlot
+                  positionLabel={slot.position}
+                  isTarget={isChoosingSlot}
+                  isDropTarget={isDropTarget}
+                  onClick={() => onSelectSlot(slotIndex, null)}
+                />
+              )
+            }
+          </PitchSlot>
         );
       })}
     </div>

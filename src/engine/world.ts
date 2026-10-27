@@ -1,7 +1,7 @@
 // Khởi tạo thế giới: dữ liệu FIFACM hoặc gói dòng cũ dùng cho tương thích.
 import { allLeagueInfos, findLeagueByPackId, mockData, setMockData } from "./mockData";
 import { fifacmPositionLine, type FifacmPack } from "./fifacm";
-import { findClosestVariantCode, formationLayout, sourceLayout } from "./formationLayout";
+import { findClosestVariantCode, formationLayout } from "./formationLayout";
 import { setBoard } from "./board";
 import { AI_FORMS, PHILOSOPHY_LABEL } from "./constants";
 import { formatMoney, formatWage } from "./format";
@@ -380,15 +380,9 @@ export function newGameReal(
   if (sourceStartingXI?.length === 11) {
     // Mỗi cầu thủ vào đúng ô có vị trí của FIFACM (LB, LCB, LDM...) như startingXI của CLB.
     const sourcePositions = sourceStartingXI.map((slot) => slot.position);
-    const sourceSlots = sourceLayout(gameState.form, sourcePositions);
-    if (sourceSlots) {
-      gameState.formVariant = undefined;
-      gameState.sourceSlotPositions = sourceSlots.map((slot) => slot.position);
-    } else {
-      // startingXI không khớp số người mỗi tuyến của sơ đồ: dùng biến thể Squad Builder gần nhất
-      gameState.formVariant = findClosestVariantCode(gameState.form, sourcePositions);
-    }
-    const layout = sourceSlots ?? formationLayout(gameState.form, gameState.formVariant);
+    // Chọn biến thể Squad Builder có nhiều vị trí trùng startingXI nhất
+    gameState.formVariant = findClosestVariantCode(gameState.form, sourcePositions);
+    const layout = formationLayout(gameState.form, gameState.formVariant);
     const lineup = Array<string | null>(11).fill(null);
     const unplaced = sourceStartingXI.filter((slot) => {
       const slotIndex = layout.findIndex((candidate) => candidate.position === slot.position);

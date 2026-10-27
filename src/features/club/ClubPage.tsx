@@ -23,7 +23,7 @@ function Board() {
     liab = gameState.liabilities.filter((liability) => liability.amount > 0),
     recv = gameState.liabilities.filter((liability) => liability.amount < 0);
   return (
-    <Card className="panel min-w-0 gap-0 rounded-xl p-4 shadow-none">
+    <Card className="panel min-w-0 gap-0 rounded-2xl border-white/20 bg-card/40 p-4 shadow-lg backdrop-blur-xl">
       <h2>Ban lãnh đạo</h2>
       <div>
         <div className="row between">
@@ -123,7 +123,7 @@ function Staff() {
   const reset = useGame((store) => store.reset);
   const [confirm, setConfirm] = useState(false);
   return (
-    <Card className="panel min-w-0 gap-0 rounded-xl p-4 shadow-none">
+    <Card className="panel min-w-0 gap-0 rounded-2xl border-white/20 bg-card/40 p-4 shadow-lg backdrop-blur-xl">
       <h2>Nhân sự</h2>
       <div className="obj">
         <span>

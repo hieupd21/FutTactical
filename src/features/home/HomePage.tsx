@@ -11,7 +11,7 @@ export function HomePage() {
   const reset = useGame((store) => store.reset);
   if (gameState.sacked) {
     return (
-      <Card className="panel min-w-0 gap-0 rounded-xl p-4 shadow-none">
+      <Card className="panel min-w-0 gap-0 rounded-2xl border-white/20 bg-card/40 p-4 shadow-lg backdrop-blur-xl">
         <h2>Bạn đã bị sa thải</h2>
         <p>{gameState.sacked}</p>
         {(gameState.offers ?? []).length > 0 ? (

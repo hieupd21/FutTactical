@@ -48,7 +48,7 @@ export function SearchView() {
   }, [filters, version]);
 
   return (
-    <Card className="panel min-w-0 gap-0 rounded-xl p-4 shadow-none">
+    <Card className="panel min-w-0 gap-0 rounded-2xl border-white/20 bg-card/40 p-4 shadow-lg backdrop-blur-xl">
       <div className="filters">
         <SelectField
           label="Vị trí"

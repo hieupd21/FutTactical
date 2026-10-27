@@ -1,8 +1,6 @@
 import { FORMS } from "./constants";
 import formations from "../../data/fifacm/formations.json";
-import pitchPositions from "../../data/fifacm/pitch-positions.json";
 import { fifacmPositionLine } from "./fifacm";
-import { slotPositions } from "./squad";
 import { gameState } from "./state";
 import type { Formation, Line } from "./types";
 
@@ -27,11 +25,10 @@ export interface FormationVariant {
   positions: string[];
 }
 
-/** Mỗi hệ tọa độ FIFACM có điểm gốc riêng nên được quy đổi riêng về khung sân của mình */
-function normalizeVertical(value: number, min: number, max: number, isFlipped: boolean): number {
+/** Quy đổi toạ độ dọc của Squad Builder (0 = đỉnh sân) về khoảng an toàn của sân */
+function normalizeVertical(value: number, min: number, max: number): number {
   const ratio = (value - min) / (max - min);
-  const fromTop = isFlipped ? 1 - ratio : ratio;
-  return CENTER_TOP_PERCENT + fromTop * (CENTER_BOTTOM_PERCENT - CENTER_TOP_PERCENT);
+  return CENTER_TOP_PERCENT + ratio * (CENTER_BOTTOM_PERCENT - CENTER_TOP_PERCENT);
 }
 
 function variantsOf(formation: Formation) {
@@ -100,44 +97,9 @@ export function formationLayout(formation: Formation, variantCode?: string): Pit
         variant.slotCoordinates[index].topPercent,
         BUILDER_TOP_RANGE.min,
         BUILDER_TOP_RANGE.max,
-        false,
       ),
     })),
   );
-}
-
-const SOURCE_BOTTOM_RANGE = pitchPositions.reduce(
-  (range, slot) => ({
-    min: Math.min(range.min, slot.bottomPercent),
-    max: Math.max(range.max, slot.bottomPercent),
-  }),
-  { min: Infinity, max: -Infinity },
-);
-/** Ô GK trên sân trang CLB ở leftPercent 46 là chính giữa sân (thẻ rộng 8%), nên tâm thẻ = left + 4 */
-const SOURCE_CENTER_OFFSET_PERCENT = 4;
-
-/** Các ô theo đúng 11 vị trí trong startingXI của CLB, đặt ở tọa độ của chúng trên sân ở trang CLB của FIFACM */
-export function sourceLayout(formation: Formation, positions: string[]): PitchSlot[] | undefined {
-  const slots: PitchSlot[] = [];
-  for (const position of positions) {
-    const coordinates = pitchPositions.find((candidate) => candidate.position === position);
-    if (!coordinates) return undefined;
-    slots.push({
-      position,
-      line: fifacmPositionLine(position),
-      centerXPercent: coordinates.leftPercent + SOURCE_CENTER_OFFSET_PERCENT,
-      centerYPercent: normalizeVertical(
-        coordinates.bottomPercent,
-        SOURCE_BOTTOM_RANGE.min,
-        SOURCE_BOTTOM_RANGE.max,
-        true,
-      ),
-    });
-  }
-  const arranged = arrangeSlots(formation, slots);
-  return arranged.map((slot) => slot.line).join() === slotPositions(formation).join()
-    ? arranged
-    : undefined;
 }
 
 const MIRROR_PREFIX: Record<string, string> = { L: "R", R: "L" };
@@ -182,12 +144,39 @@ function balanceSlots(slots: PitchSlot[]): PitchSlot[] {
   });
 }
 
-/** Các ô đội hình của bạn: đúng vị trí gốc của startingXI nếu chưa đổi sơ đồ/biến thể, ngược lại theo biến thể Squad Builder */
+/** Hai ô cách nhau theo chiều dọc ít hơn mức này (% chiều cao sân) thì coi là cùng một hàng ngang */
+const SAME_ROW_TOLERANCE_PERCENT = 7;
+/** Hàng có từ chừng này ô trở lên mới cần dàn đều (hai ô đã tự đối xứng) */
+const MIN_SLOTS_TO_DISTRIBUTE = 3;
+
+/**
+ * Dàn đều khoảng cách ngang trong mỗi hàng ngang: hai ô ngoài cùng giữ nguyên, các ô giữa chia đều
+ * giữa chúng theo thứ tự trái sang phải. Độ cao từng ô không đổi nên dáng lệch hàng của sơ đồ vẫn còn.
+ */
+function distributeRows(slots: PitchSlot[]): PitchSlot[] {
+  const distributed = slots.map((slot) => ({ ...slot }));
+  const rows: PitchSlot[][] = [];
+  [...distributed]
+    .sort((first, second) => first.centerYPercent - second.centerYPercent)
+    .forEach((slot) => {
+      const lastRow = rows[rows.length - 1];
+      const lastSlot = lastRow?.[lastRow.length - 1];
+      if (lastRow && slot.centerYPercent - lastSlot.centerYPercent <= SAME_ROW_TOLERANCE_PERCENT)
+        lastRow.push(slot);
+      else rows.push([slot]);
+    });
+  rows
+    .filter((row) => row.length >= MIN_SLOTS_TO_DISTRIBUTE)
+    .forEach((row) => {
+      const byX = [...row].sort((first, second) => first.centerXPercent - second.centerXPercent);
+      const leftmost = byX[0].centerXPercent;
+      const step = (byX[byX.length - 1].centerXPercent - leftmost) / (byX.length - 1);
+      byX.forEach((slot, position) => (slot.centerXPercent = leftmost + step * position));
+    });
+  return distributed;
+}
+
+/** Các ô đội hình của bạn: đúng biến thể Squad Builder đang chọn của sơ đồ, đặt đối xứng qua trục giữa sân */
 export function myPitchLayout(): PitchSlot[] {
-  const sourcePositions =
-    gameState.formVariant === undefined ? gameState.sourceSlotPositions : undefined;
-  return balanceSlots(
-    (sourcePositions && sourceLayout(gameState.form, sourcePositions)) ||
-      formationLayout(gameState.form, gameState.formVariant),
-  );
+  return distributeRows(balanceSlots(formationLayout(gameState.form, gameState.formVariant)));
 }

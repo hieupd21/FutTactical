@@ -15,6 +15,17 @@ export function fifacmPositionLine(position: string): Line {
   return "MF";
 }
 
+/** Vị trí cầu thủ của FIFACM tương ứng với ô trên sơ đồ: LCB/RCB là CB, LCM/RCM là CM, LS/RS/CF là ST... (L/R chỉ là phía của cặp, không phải vị trí khác); LWB/RWB tính như LB/RB */
+export function fifacmPlayerPositionOfSlot(slotPosition: string): string {
+  if (/^[LR]CB$/.test(slotPosition)) return "CB";
+  if (/^[LR]CM$/.test(slotPosition)) return "CM";
+  if (/^[LR]DM$/.test(slotPosition)) return "CDM";
+  if (/^[LR]AM$/.test(slotPosition)) return "CAM";
+  if (/^(?:[LR]S|[LR]F|CF)$/.test(slotPosition)) return "ST";
+  if (/^[LR]WB$/.test(slotPosition)) return slotPosition[0] + "B";
+  return slotPosition;
+}
+
 interface FifacmNation {
   id: number;
   label: string;
@@ -44,6 +55,9 @@ interface FifacmPlayer {
   heightCm: number | null;
   attributes?: Record<string, number>;
   playStyles?: { name: string; isPlus: boolean }[];
+  positionRatings?: Record<string, number>;
+  workRates?: string | null;
+  specialities?: string[];
 }
 
 interface FifacmClub {
@@ -121,11 +135,16 @@ function buildReferences(
   nations: Map<number, FifacmNation>,
   players: Map<number, FifacmPlayer>,
 ): MockData {
-  const nationalities: MockData["nationalities"] = { shortNameByCode: {}, codeByDataName: {} };
+  const nationalities: MockData["nationalities"] = {
+    shortNameByCode: {},
+    codeByDataName: {},
+    flagUrlByCode: {},
+  };
   dataset.nations.forEach((nation) => {
     const code = nationCodeOf(nation.id);
     nationalities.codeByDataName[nation.label] = code;
     nationalities.shortNameByCode[code] = nation.label;
+    if (nation.imageUrl) nationalities.flagUrlByCode[code] = nation.imageUrl;
   });
 
   const leagueInfos = dataset.leagues.map((league) => {
@@ -192,6 +211,9 @@ function buildReferences(
           heightCm: player.heightCm,
           attributes: player.attributes ?? null,
           playStyles: player.playStyles ?? [],
+          positionRatings: player.positionRatings ?? {},
+          workRates: player.workRates ?? null,
+          specialities: player.specialities ?? [],
         },
       ]),
     ),

@@ -4,7 +4,7 @@ import { acceptOffer, declineOffer, switchClub } from "./career";
 import { ROLES } from "./constants";
 import { formatMoney } from "./format";
 import { applyPending } from "./season";
-import { bestLineup, myLineup } from "./squad";
+import { bestLineup, myLineup, mySlotPositions } from "./squad";
 import { getClub, myClub, getNegotiation, getPlayer, gameState, tick } from "./state";
 import type { Formation, Negotiation, Role, Tactic } from "./types";
 import { clamp } from "./util";
@@ -16,15 +16,14 @@ export const WAGE_STEP = 19; // 19k €/tuần
 export function setFormation(formation: Formation): void {
   gameState.form = formation;
   gameState.formVariant = undefined;
-  gameState.sourceSlotPositions = undefined;
-  gameState.lineup = bestLineup(gameState.myClubId, formation);
+  gameState.lineup = bestLineup(gameState.myClubId, formation, mySlotPositions());
 }
 /** Chiến thuật mặc định của bạn khi vào trận */
 export function setMyTactic(tactic: Tactic): void {
   gameState.tactic = { ...tactic };
 }
 export function autoLineup(): void {
-  gameState.lineup = bestLineup(gameState.myClubId, gameState.form);
+  gameState.lineup = bestLineup(gameState.myClubId, gameState.form, mySlotPositions());
 }
 /** Đưa cầu thủ pid vào vị trí slot; nếu cậu ấy đã đá chính thì hoán đổi hai vị trí */
 export function swapInto(playerId: string, slot: number): void {
@@ -141,7 +140,7 @@ export function takeNewJob(clubId: string): string {
   applyPending();
   switchClub(clubId);
   gameState.review = null;
-  gameState.lineup = bestLineup(gameState.myClubId, gameState.form);
+  gameState.lineup = bestLineup(gameState.myClubId, gameState.form, mySlotPositions());
   setBoard();
   return `Bạn đã nhận ghế HLV trưởng ${getClub(clubId).name}`;
 }
