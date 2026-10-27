@@ -7,7 +7,7 @@
 @import "tailwindcss/utilities.css" layer(utilities);
 @import "tw-animate-css";
 
-/* token màu đã tự đổi theo sáng/tối nên không dùng biến thể dark: */
+/* chỉ có một bộ màu (tối) nên không dùng biến thể dark: */
 @custom-variant dark (&:where(.never-dark, .never-dark *));
 
 @theme inline {

@@ -184,6 +184,8 @@ export interface LiveSide {
   form: Formation;
   startingLineup: (string | null)[];
   lineup: (string | null)[]; // đội hình trên sân theo ô; người đã rời sân (đỏ/chấn thương) vẫn nằm ở đây đến khi có người thay
+  /** Tên vị trí từng ô (LB, CDM...) nếu biết, để phạt cầu thủ trái vị trí; đội AI không có */
+  slotNames?: string[];
   bench: string[];
   subsLeft: number;
   tactic: Tactic;
@@ -392,10 +394,8 @@ export interface GameState {
   dataSource?: string;
   dataProvider?: "fifacm";
   form: Formation;
-  /** Mã biến thể Squad Builder của sơ đồ (vị trí từng ô); thiếu thì dùng biến thể đầu tiên */
+  /** Mã biến thể Squad Builder của sơ đồ (vị trí và tọa độ từng ô); thiếu thì dùng biến thể đầu tiên */
   formVariant?: string;
-  /** 11 vị trí gốc (startingXI) của CLB bạn theo thứ tự ô; còn thì sân dùng đúng các vị trí này cho tới khi bạn đổi sơ đồ/biến thể */
-  sourceSlotPositions?: string[];
   tactic?: Tactic;
   lineup: (string | null)[];
   scout: number;

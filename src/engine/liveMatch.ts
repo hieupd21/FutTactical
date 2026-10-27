@@ -6,8 +6,9 @@ import {
   available,
   bestLineup,
   clubPlayers,
-  fitAt,
+  slotRating,
   myLineup,
+  mySlotPositions,
   slotPositions,
   strength,
 } from "./squad";
@@ -93,6 +94,7 @@ function makeSide(
   tactic: Tactic,
   isAuto: boolean,
 ): LiveSide {
+  const slotNames = clubId === gameState.myClubId ? mySlotPositions() : undefined;
   const bench = pickBench(clubId, lineup);
   const startFitness: Record<string, number> = {};
   const minutesSpan: Record<string, [number, number | null]> = {};
@@ -107,6 +109,7 @@ function makeSide(
     form: formation,
     startingLineup: lineup.slice(),
     lineup: lineup.slice(),
+    slotNames,
     bench,
     subsLeft: MAX_SUBS,
     tactic,
@@ -125,8 +128,10 @@ export function newLive(homeId: string, awayId: string, isAutoBoth: boolean): Li
     awayForm = awayId === gameState.myClubId ? gameState.form : getClub(awayId).form;
   const homeLineup = homeId === gameState.myClubId ? myLineup() : bestLineup(homeId, homeForm),
     awayLineup = awayId === gameState.myClubId ? myLineup() : bestLineup(awayId, awayForm);
-  const homePower = strength(homeId, homeLineup, homeForm).power,
-    awayPower = strength(awayId, awayLineup, awayForm).power;
+  const slotNamesOf = (clubId: string) =>
+    clubId === gameState.myClubId ? mySlotPositions() : undefined;
+  const homePower = strength(homeId, homeLineup, homeForm, slotNamesOf(homeId)).power,
+    awayPower = strength(awayId, awayLineup, awayForm, slotNamesOf(awayId)).power;
   const firstHalfStoppage = randomInt(1, 3),
     secondHalfStoppage = randomInt(2, 6);
   const ticks: [number, number][] = [];
@@ -177,9 +182,18 @@ const tired = (side: LiveSide, id: string): number => {
   const fatigueLoss = side.fatigue[id] ?? 0;
   return fatigueLoss > 15 ? (fatigueLoss - 15) / 4 : 0;
 };
-export const effectiveRating = (side: LiveSide, id: string, pos: Line): number => {
+/** `slotName` là vị trí chi tiết của ô; bỏ trống thì lấy theo ô đang đứng (nếu cầu thủ đang trên sân) */
+export const effectiveRating = (
+  side: LiveSide,
+  id: string,
+  pos: Line,
+  slotName?: string,
+): number => {
   const player = getPlayer(id);
-  return dynamicRating(player) * fitAt(player, pos) - tired(side, id);
+  const lineupIndex = side.lineup.indexOf(id);
+  const resolvedSlotName =
+    slotName ?? (lineupIndex >= 0 ? side.slotNames?.[lineupIndex] : undefined);
+  return slotRating(player, pos, resolvedSlotName) - tired(side, id);
 };
 const onPitch = (side: LiveSide): { id: string; i: number; pos: Line }[] => {
   const lines = slotPositions(side.form);
@@ -526,7 +540,8 @@ function autoFill(liveSim: LiveSim, sideIndex: 0 | 1, outId: string): void {
     .slice()
     .sort(
       (playerIdA, playerIdB) =>
-        effectiveRating(side, playerIdB, pos) - effectiveRating(side, playerIdA, pos),
+        effectiveRating(side, playerIdB, pos, side.slotNames?.[i]) -
+        effectiveRating(side, playerIdA, pos, side.slotNames?.[i]),
     )[0];
   if (best) substitute(liveSim, sideIndex, outId, best);
 }
@@ -662,8 +677,18 @@ export function buildSim(liveSim: LiveSim): MatchSim {
     awayLineup: liveSim.sides[1].startingLineup,
     shots: liveSim.shots,
     power: [
-      strength(liveSim.sides[0].club, liveSim.sides[0].startingLineup, liveSim.sides[0].form).power,
-      strength(liveSim.sides[1].club, liveSim.sides[1].startingLineup, liveSim.sides[1].form).power,
+      strength(
+        liveSim.sides[0].club,
+        liveSim.sides[0].startingLineup,
+        liveSim.sides[0].form,
+        liveSim.sides[0].slotNames,
+      ).power,
+      strength(
+        liveSim.sides[1].club,
+        liveSim.sides[1].startingLineup,
+        liveSim.sides[1].form,
+        liveSim.sides[1].slotNames,
+      ).power,
     ],
     shotsOnTarget: liveSim.shotsOnTarget,
     expectedGoals: [

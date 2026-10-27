@@ -15,7 +15,7 @@ import { formatMoney, formatWage } from "./format";
 import { makePlayer, ovrRange, valueOf, wageBase, yearsLeft } from "./players";
 import { playRound } from "./match";
 import { moodTick } from "./mood";
-import { bestLineup, clubPlayers, clubStrength, myLeaguePosition } from "./squad";
+import { bestLineup, clubPlayers, clubStrength, myLeaguePosition, mySlotPositions } from "./squad";
 import {
   getClub,
   dateOf,
@@ -416,7 +416,7 @@ function newSeason(): void {
     gameState.results[league.id] = [];
   });
   gameState.review = null;
-  gameState.lineup = bestLineup(gameState.myClubId, gameState.form);
+  gameState.lineup = bestLineup(gameState.myClubId, gameState.form, mySlotPositions());
   setBoard();
   inbox({
     kind: "finance",

@@ -68,7 +68,7 @@ export function LeaguePage() {
         items={simLeagues().map((league) => [league.id, leagueName(league.id)] as [string, string])}
       />
       <div className="grid2">
-        <Card className="panel min-w-0 gap-0 rounded-xl p-4 shadow-none">
+        <Card className="panel min-w-0 gap-0 rounded-2xl border-white/20 bg-card/40 p-4 shadow-lg backdrop-blur-xl">
           <h2>{leagueName(leagueId)}</h2>
           <div className="tw">
             <Table>
@@ -124,7 +124,7 @@ export function LeaguePage() {
             </Table>
           </div>
         </Card>
-        <Card className="panel min-w-0 gap-0 rounded-xl p-4 shadow-none">
+        <Card className="panel min-w-0 gap-0 rounded-2xl border-white/20 bg-card/40 p-4 shadow-lg backdrop-blur-xl">
           {leagueId === ownLeagueId && (
             <>
               <h2>Lịch đấu của bạn</h2>

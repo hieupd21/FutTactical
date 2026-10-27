@@ -41,7 +41,7 @@ export function AnimatedTabs() {
       <AnimatePresence mode="wait" initial={false}>
         <m.div
           key={currentTab}
-          className="flex flex-col gap-3.5"
+          className="flex min-h-0 flex-1 flex-col gap-3.5 overflow-y-auto overscroll-contain scrollbar-thin"
           initial={{ opacity: 0, y: offsetY }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -offsetY }}

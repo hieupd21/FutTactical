@@ -23,6 +23,12 @@ export interface PlayerProfile {
   /** 34 chỉ số chi tiết của FIFACM (tên camelCase như trong players.json) */
   attributes: Record<string, number> | null;
   playStyles: { name: string; isPlus: boolean }[];
+  /** chỉ số của cầu thủ ở từng vị trí (ST, CAM, CB...) */
+  positionRatings: Record<string, number>;
+  /** tốc độ công / thủ, ví dụ "M / M" */
+  workRates: string | null;
+  /** danh hiệu năng khiếu (Speedster, Poacher...) */
+  specialities: string[];
 }
 
 export interface MockData {
@@ -31,6 +37,8 @@ export interface MockData {
   nationalities: {
     shortNameByCode: Record<string, string>;
     codeByDataName: Record<string, string>;
+    /** ảnh cờ quốc gia của FIFACM theo mã quốc tịch; quốc gia không có ảnh thì không có khóa */
+    flagUrlByCode: Record<string, string>;
   };
   leagues: {
     /** Giải nhóm theo quốc gia (khóa là mã quốc tịch), từ mạnh xuống yếu */

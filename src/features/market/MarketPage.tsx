@@ -28,7 +28,7 @@ function AgentLetters() {
   const list = agentLetters();
   if (!list.length) return null;
   return (
-    <Card className="panel min-w-0 gap-0 rounded-xl border-(--accent) p-4 shadow-none">
+    <Card className="panel min-w-0 gap-0 rounded-2xl border-(--accent) bg-card/40 p-4 shadow-lg backdrop-blur-xl">
       <h2>Thư từ người đại diện ({list.length})</h2>
       <p className="hint">
         Các cầu thủ này sẵn sàng ngồi xuống nói chuyện với bạn. Mở hồ sơ rồi bấm "Thăm dò" để bắt
@@ -61,7 +61,7 @@ function NegoList() {
     return (
       <>
         <AgentLetters />
-        <Card className="panel min-w-0 gap-0 rounded-xl p-4 shadow-none">
+        <Card className="panel min-w-0 gap-0 rounded-2xl border-white/20 bg-card/40 p-4 shadow-lg backdrop-blur-xl">
           <h2>Các thương vụ</h2>
           <p className="hint">
             Chưa có thương vụ nào. Tìm cầu thủ ở tab Tìm kiếm rồi bấm "Thăm dò".
@@ -72,7 +72,7 @@ function NegoList() {
   return (
     <>
       <AgentLetters />
-      <Card className="panel min-w-0 gap-0 rounded-xl p-4 shadow-none">
+      <Card className="panel min-w-0 gap-0 rounded-2xl border-white/20 bg-card/40 p-4 shadow-lg backdrop-blur-xl">
         <h2>Các thương vụ</h2>
         {gameState.negos.map((negotiation) => {
           const player = getPlayer(negotiation.playerId);
@@ -144,7 +144,7 @@ export function MarketPage() {
   else if (marketSub === "short") {
     const list = gameState.shortlist.map(getPlayer).filter(Boolean);
     body = (
-      <Card className="panel min-w-0 gap-0 rounded-xl p-4 shadow-none">
+      <Card className="panel min-w-0 gap-0 rounded-2xl border-white/20 bg-card/40 p-4 shadow-lg backdrop-blur-xl">
         <h2>Danh sách theo dõi</h2>
         <div className="plist">
           {list.length ? (
@@ -163,7 +163,7 @@ export function MarketPage() {
       .filter((player) => !player.loan)
       .sort((playerA, playerB) => playerB.marketValue - playerA.marketValue);
     body = (
-      <Card className="panel min-w-0 gap-0 rounded-xl p-4 shadow-none">
+      <Card className="panel min-w-0 gap-0 rounded-2xl border-white/20 bg-card/40 p-4 shadow-lg backdrop-blur-xl">
         <h2>Cầu thủ của bạn</h2>
         <p className="hint">
           Rao bán giúp nhận nhiều lời đề nghị hơn nhưng giá thấp hơn. Cầu thủ trẻ trong danh sách
@@ -195,7 +195,7 @@ export function MarketPage() {
   } else {
     const items = gameState.news.filter((newsItem) => newsItem.kind === "transfer").slice(0, 40);
     body = (
-      <Card className="panel min-w-0 gap-0 rounded-xl p-4 shadow-none">
+      <Card className="panel min-w-0 gap-0 rounded-2xl border-white/20 bg-card/40 p-4 shadow-lg backdrop-blur-xl">
         <h2>Tin chuyển nhượng</h2>
         {items.length ? (
           items.map((newsItem, i) => (

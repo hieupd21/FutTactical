@@ -47,7 +47,7 @@ export function InboxCard() {
     INBOX_KINDS[kindOfMsg(message)].perform(message, useUi.getState());
   };
   return (
-    <Card className="panel min-w-0 gap-0 rounded-xl p-4 shadow-none">
+    <Card className="panel min-w-0 gap-0 rounded-2xl border-white/20 bg-card/40 p-4 shadow-lg backdrop-blur-xl">
       <div className="row between">
         <h3>Hộp thư{unread > 0 && ` (${unread} mới)`}</h3>
         {unread > 0 && (

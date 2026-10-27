@@ -64,7 +64,7 @@ const CalendarCell = memo(function CalendarCell({
     return (
       <div
         aria-hidden="true"
-        className="aspect-4/5 rounded-lg bg-card/15 p-1 text-xl font-extrabold leading-none text-muted-foreground/50"
+        className="aspect-4/5 rounded-lg bg-card/15 md:aspect-auto p-1 text-xl font-extrabold leading-none text-muted-foreground/50"
       >
         {dateOf(day).getDate()}
       </div>
@@ -80,7 +80,7 @@ const CalendarCell = memo(function CalendarCell({
       aria-pressed={isSelected}
       aria-label={`${formatDate(day)}${events.length ? ", có sự kiện" : ""}`}
       className={classNames(
-        "relative flex aspect-4/5 flex-col shadow-sm items-start justify-between rounded-lg border p-1 text-left",
+        "relative flex aspect-4/5 min-h-0 flex-col md:aspect-auto shadow-sm items-start justify-between rounded-lg border p-1 text-left",
         match?.kind === "match" &&
           match.home &&
           "border-(--accent) bg-(--accent) text-primary-foreground",
@@ -203,11 +203,21 @@ export function CalendarPage() {
   const firstDayOfMonth = month.gridStartDay + month.leadingBlanks;
 
   return (
-    <section aria-labelledby="calendar-heading" className="flex flex-col gap-3">
+    <section
+      aria-labelledby="calendar-heading"
+      className="flex flex-col gap-3 md:min-h-0 md:flex-1"
+    >
       <h3 id="calendar-heading">Lịch thi đấu · {month.label}</h3>
-      <div className="flex flex-col gap-3 md:grid md:grid-cols-[18rem_minmax(0,1fr)] md:items-start md:gap-5">
-        <div className="md:order-2">
-          <div className="grid grid-cols-7 gap-1">
+      <div className="flex flex-col gap-3 md:grid md:min-h-0 md:flex-1 md:grid-cols-[18rem_minmax(0,1fr)] md:items-start md:gap-5">
+        <div className="md:order-2 md:h-full md:min-h-0">
+          <div
+            className="grid grid-cols-7 gap-1 md:h-full md:grid-rows-(--calendar-rows)"
+            style={
+              {
+                "--calendar-rows": `auto repeat(${rowCount}, minmax(0, 1fr))`,
+              } as React.CSSProperties
+            }
+          >
             {WEEKDAY_HEADERS.map((weekdayLabel) => (
               <span
                 key={weekdayLabel}

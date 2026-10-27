@@ -29,6 +29,8 @@ export const natName = (player: Player): string =>
   player.nationalityName ||
   mockData().nationalities.shortNameByCode[player.nationality] ||
   player.nationality;
+export const natFlagUrl = (player: Player): string | undefined =>
+  mockData().nationalities.flagUrlByCode[player.nationality];
 export const ovrRange = (player: Player): number => Math.round(player.ovr);
 
 function moraleAdj(morale: number): number {

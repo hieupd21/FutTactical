@@ -63,7 +63,10 @@ export function JobOffersCard() {
   if (!(gameState.offers ?? []).length) return null;
   const pendingJobClub = gameState.job && gameState.clubs[gameState.job];
   return (
-    <Card id="job-offers" className="panel min-w-0 gap-0 rounded-xl p-4 shadow-none">
+    <Card
+      id="job-offers"
+      className="panel min-w-0 gap-0 rounded-2xl border-white/20 bg-card/40 p-4 shadow-lg backdrop-blur-xl"
+    >
       <h3>Lời mời làm việc ({gameState.offers!.length})</h3>
       <p className="hint">
         {pendingJobClub

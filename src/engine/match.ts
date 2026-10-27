@@ -1,6 +1,13 @@
 import { ROLE_START } from "./constants";
 import { autoRest, buildSim, newLive, expectedGoalsRate } from "./liveMatch";
-import { bestLineup, clubPlayers, myLineup, slotPositions, strength } from "./squad";
+import {
+  bestLineup,
+  clubPlayers,
+  myLineup,
+  mySlotPositions,
+  slotPositions,
+  strength,
+} from "./squad";
 import { trackPromise } from "./mood";
 import { getClub, inbox, myClub, news, getPlayer, roundOn, gameState, simLeagues } from "./state";
 import type { Formation, Line, LiveSim, MatchEvent, MatchResult, MatchSim } from "./types";
@@ -37,8 +44,10 @@ export function simMatch(homeId: string, awayId: string): MatchSim {
     awayFormation = awayId === gameState.myClubId ? gameState.form : getClub(awayId).form;
   const homeLineup = homeId === gameState.myClubId ? myLineup() : bestLineup(homeId, formation),
     awayLineup = awayId === gameState.myClubId ? myLineup() : bestLineup(awayId, awayFormation);
-  const homeStrength = strength(homeId, homeLineup, formation),
-    awayStrength = strength(awayId, awayLineup, awayFormation);
+  const slotNamesOf = (clubId: string) =>
+    clubId === gameState.myClubId ? mySlotPositions() : undefined;
+  const homeStrength = strength(homeId, homeLineup, formation, slotNamesOf(homeId)),
+    awayStrength = strength(awayId, awayLineup, awayFormation, slotNamesOf(awayId));
   const homeGoals = poisson(expectedGoalsRate(homeStrength.att + 1.5, awayStrength.def)),
     awayGoals = poisson(expectedGoalsRate(awayStrength.att, homeStrength.def + 1.5));
   const events: MatchEvent[] = [];

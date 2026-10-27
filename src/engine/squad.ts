@@ -1,4 +1,6 @@
 import { FORMS } from "./constants";
+import { fifacmPlayerPositionOfSlot, fifacmPositionLine } from "./fifacm";
+import { myPitchLayout } from "./formationLayout";
 import { dynamicRating } from "./players";
 import { getClub, getPlayer, gameState } from "./state";
 import type { Formation, Line, Player, Role, TableRow } from "./types";
@@ -20,19 +22,60 @@ export function fitAt(player: Player, pos: Line): number {
   if (player.pos === "GK" || pos === "GK") return 0.4;
   return 0.85;
 }
+/** Điểm chỉ số bị trừ khi cầu thủ đứng đúng tuyến nhưng ở vị trí chi tiết không nằm trong danh sách vị trí chơi được */
+export const OFF_POSITION_PENALTY = 4;
+/** Các vị trí chi tiết cầu thủ chơi được (vị trí tốt nhất đứng đầu), ví dụ ["CM", "CDM"]; rỗng nếu không có dữ liệu */
+export const playablePositions = (player: Player): string[] =>
+  (player.positionDetail ?? "")
+    .split(",")
+    .map((position) => position.trim())
+    .filter(Boolean);
+/** Điểm bị trừ vì vị trí chi tiết của ô (LB, CDM...); 0 nếu không biết ô, không có dữ liệu hoặc ô nằm trong vị trí chơi được. Khác tuyến đã bị trừ qua `fitAt` nên không trừ thêm */
+export function positionPenalty(player: Player, slotPosition?: string): number {
+  if (!slotPosition) return 0;
+  const playable = playablePositions(player);
+  if (!playable.length || playable.includes(fifacmPlayerPositionOfSlot(slotPosition))) return 0;
+  return fitAt(player, fifacmPositionLine(slotPosition)) === 1 ? OFF_POSITION_PENALTY : 0;
+}
+/** Chỉ số của cầu thủ khi đứng ở một ô của đội hình: đã tính phong độ/thể lực và phạt trái tuyến, trái vị trí */
+export function slotRating(player: Player, line: Line, slotPosition?: string): number {
+  return dynamicRating(player) * fitAt(player, line) - positionPenalty(player, slotPosition);
+}
+/** Chỉ số cầu thủ hiển thị khi đứng ở ô `slotPosition` (đã trừ phạt trái tuyến, trái vị trí) */
+export const ratingAtSlot = (player: Player, slotPosition: string): number =>
+  Math.round(slotRating(player, fifacmPositionLine(slotPosition), slotPosition));
+/** Tên vị trí từng ô trên sân của bạn (đúng thứ tự `gameState.lineup`) */
+export const mySlotPositions = (): string[] => myPitchLayout().map((slot) => slot.position);
+/** Thủ môn chỉ đứng ô GK và cầu thủ khác không đứng ô GK */
+export const canPlayInSlot = (player: Player, slotPosition: string): boolean =>
+  (player.pos === "GK") === (slotPosition === "GK");
+/** Đưa `playerId` vào ô `slotIndex` hợp lệ: người đó hợp ô, và nếu hoán đổi thì người đang ở ô cũng hợp chỗ của người kia */
+export function canSwapInto(playerId: string, slotIndex: number): boolean {
+  const slotNames = mySlotPositions();
+  const lineup = myLineup();
+  if (!canPlayInSlot(getPlayer(playerId), slotNames[slotIndex])) return false;
+  const occupantId = lineup[slotIndex];
+  const previousSlotIndex = lineup.indexOf(playerId);
+  if (!occupantId || previousSlotIndex < 0) return true;
+  return canPlayInSlot(getPlayer(occupantId), slotNames[previousSlotIndex]);
+}
 export const available = (player: Player | undefined): player is Player =>
   !!player && player.injuryDays <= 0 && !player.away;
 
-export function bestLineup(clubId: string, form: Formation): (string | null)[] {
+export function bestLineup(
+  clubId: string,
+  form: Formation,
+  slotNames?: string[],
+): (string | null)[] {
   const pool = clubPlayers(clubId).filter(available);
   const used = new Set<string>();
-  return slotPositions(form).map((pos) => {
+  return slotPositions(form).map((pos, slotIndex) => {
     let player: Player | null = null;
     let bestValue = -1;
     pool.forEach((candidate) => {
       if (used.has(candidate.id)) return;
       const score =
-        dynamicRating(candidate) * fitAt(candidate, pos) + (candidate.fitness - 80) / 20;
+        slotRating(candidate, pos, slotNames?.[slotIndex]) + (candidate.fitness - 80) / 20;
       if (score > bestValue) {
         bestValue = score;
         player = candidate;
@@ -54,7 +97,7 @@ export function myLineup(): (string | null)[] {
     getPlayer(id).club === gameState.myClubId &&
     available(getPlayer(id));
   if (lineup.length !== 11 || lineup.some((id) => !ok(id))) {
-    const auto = bestLineup(gameState.myClubId, formation);
+    const auto = bestLineup(gameState.myClubId, formation, mySlotPositions());
     const used = new Set(lineup.filter(ok));
     lineup = need.map((_, i) => (ok(lineup[i]) ? lineup[i] : null));
     lineup = lineup.map((id) => {
@@ -72,12 +115,13 @@ export function strength(
   _cid: string,
   lineup: (string | null)[],
   form: Formation,
+  slotNames?: string[],
 ): { att: number; def: number; power: number } {
   const lines = slotPositions(form);
   const effByLine: Record<Line, number[]> = { GK: [], DF: [], MF: [], FW: [] };
   lineup.forEach((id, i) => {
     const player = id ? getPlayer(id) : null;
-    effByLine[lines[i]].push(player ? dynamicRating(player) * fitAt(player, lines[i]) : 35);
+    effByLine[lines[i]].push(player ? slotRating(player, lines[i], slotNames?.[i]) : 35);
   });
   const average = (values: number[]) =>
     values.length ? values.reduce((sum, value) => sum + value, 0) / values.length : 35;
@@ -100,6 +144,7 @@ export function clubStrength(clubId: string) {
     clubId,
     clubId === gameState.myClubId ? myLineup() : bestLineup(clubId, formation),
     formation,
+    clubId === gameState.myClubId ? mySlotPositions() : undefined,
   );
 }
 

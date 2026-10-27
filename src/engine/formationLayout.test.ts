@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { FORMS } from "./constants";
-import { formationLayout, formationVariants, myPitchLayout, sourceLayout } from "./formationLayout";
+import { formationLayout, formationVariants, myPitchLayout } from "./formationLayout";
 import { slotPositions } from "./squad";
 import { gameState } from "./state";
 import type { Formation } from "./types";
@@ -50,24 +50,5 @@ describe("formationLayout", () => {
         );
       });
     }
-  });
-
-  it("startingXI của CLB nào cũng dựng được sân đúng vị trí gốc", () => {
-    const clubs = JSON.parse(readFileSync("data/fifacm/clubs.json", "utf8")) as {
-      label: string;
-      formation: Formation | null;
-      startingXI: { position: string }[];
-    }[];
-    const unmatched = clubs
-      .filter(
-        (club) =>
-          club.formation &&
-          !sourceLayout(
-            club.formation,
-            club.startingXI.map((slot) => slot.position),
-          ),
-      )
-      .map((club) => club.label);
-    expect(unmatched).toEqual([]);
   });
 });

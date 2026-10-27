@@ -58,6 +58,10 @@ function Subs({ liveMatch }: { liveMatch: LiveMatch }) {
   const lines = slotPositions(side.form);
   const left = (id: string) =>
     Math.max(0, Math.round(side.startFitness[id] - (side.fatigue[id] ?? 0)));
+  // Chỉ số người dự bị tính theo ô của cầu thủ sắp bị thay
+  const outgoingSlotName = liveMatch.outgoingId
+    ? side.slotNames?.[side.lineup.indexOf(liveMatch.outgoingId)]
+    : undefined;
   const substitutePlayer = (id: string) => {
     const error = makeSub(id);
     if (error) toast(error);
@@ -136,7 +140,9 @@ function Subs({ liveMatch }: { liveMatch: LiveMatch }) {
                 </Badge>{" "}
                 {player.name}
               </span>
-              <b className="mono">{Math.round(effectiveRating(side, id, player.pos))}</b>
+              <b className="mono">
+                {Math.round(effectiveRating(side, id, player.pos, outgoingSlotName))}
+              </b>
             </button>
           );
         })}
