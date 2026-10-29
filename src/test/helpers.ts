@@ -41,3 +41,17 @@ export function weakestRookieClub(): { leagueId: string; clubName: string } {
     .sort((clubA, clubB) => clubA.strength - clubB.strength)[0];
   return { leagueId: findLeagueByPackId(weakest.leagueId)!.id, clubName: weakest.name };
 }
+
+/** Bắt đầu sự nghiệp ở chế độ "CLB của tôi": CLB mới thế chỗ removedClubName */
+export function startTestCustomGame(
+  customName: string,
+  removedClubName = "Arsenal",
+  leagueId = PREMIER_LEAGUE_ID,
+): void {
+  const dataset = fifacmPack();
+  newGameReal(dataset.rows, leagueId, removedClubName, "FIFACM FC27 · 06/10/2026", {
+    rookie: false,
+    dataset,
+    customClub: { name: customName, logoDataUrl: null },
+  });
+}

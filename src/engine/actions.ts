@@ -144,3 +144,14 @@ export function takeNewJob(clubId: string): string {
   setBoard();
   return `Bạn đã nhận ghế HLV trưởng ${getClub(clubId).name}`;
 }
+
+const STADIUM_NAME_MAX = 40;
+/** Đổi tên sân của CLB tự tạo; trả về thông báo lỗi nếu không hợp lệ */
+export function renameStadium(stadiumName: string): string | null {
+  const trimmedName = stadiumName.trim();
+  if (myClub().stadiumName === undefined) return "CLB này không đổi được tên sân.";
+  if (!trimmedName) return "Tên sân không được để trống.";
+  if (trimmedName.length > STADIUM_NAME_MAX) return `Tên sân tối đa ${STADIUM_NAME_MAX} ký tự.`;
+  myClub().stadiumName = trimmedName;
+  return null;
+}

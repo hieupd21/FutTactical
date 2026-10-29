@@ -1,5 +1,12 @@
 import { useState } from "react";
-import { BUDGET_STEP, hireScout, reallocate, scoutCost, WAGE_STEP } from "@/engine/actions";
+import {
+  BUDGET_STEP,
+  hireScout,
+  reallocate,
+  renameStadium,
+  scoutCost,
+  WAGE_STEP,
+} from "@/engine/actions";
 import { myWages, objectiveStatus } from "@/engine/board";
 import { myReputation, repLabel } from "@/engine/career";
 import { formatMoney, formatWage } from "@/engine/format";
@@ -10,6 +17,7 @@ import { toast } from "@/stores/uiStore";
 import { formatShortDate, stars } from "@/utils/display";
 import { Button } from "@/components/shadcn/button";
 import { Card } from "@/components/shadcn/card";
+import { Input } from "@/components/shadcn/input";
 
 function Board() {
   const confC =
@@ -186,12 +194,42 @@ function Staff() {
   );
 }
 
+/** Sân nhà của CLB tự tạo: mặc định là sân của CLB bị loại, đổi được */
+function Stadium() {
+  const currentName = myClub().stadiumName;
+  const [draftName, setDraftName] = useState<string | null>(null);
+  if (currentName === undefined) return null;
+  const save = () => {
+    const error = commit(() => renameStadium(draftName ?? currentName));
+    if (error) toast(error);
+    else setDraftName(null);
+  };
+  return (
+    <Card className="panel min-w-0 gap-0 rounded-2xl border-white/20 bg-card/40 p-4 shadow-lg backdrop-blur-xl">
+      <h2>Sân nhà</h2>
+      <div className="flex gap-2">
+        <Input
+          value={draftName ?? currentName}
+          onChange={(changeEvent) => setDraftName(changeEvent.target.value)}
+          aria-label="Tên sân nhà"
+        />
+        <Button variant="ghost" disabled={draftName === null} onClick={save}>
+          Lưu
+        </Button>
+      </div>
+    </Card>
+  );
+}
+
 export function ClubPage() {
   useGameVersion();
   return (
     <div className="grid2">
       <Board />
-      <Staff />
+      <div className="flex min-w-0 flex-col gap-3.5">
+        <Stadium />
+        <Staff />
+      </div>
     </div>
   );
 }
