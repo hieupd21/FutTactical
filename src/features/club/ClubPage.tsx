@@ -10,7 +10,6 @@ import { toast } from "@/stores/uiStore";
 import { formatShortDate, stars } from "@/utils/display";
 import { Button } from "@/components/shadcn/button";
 import { Card } from "@/components/shadcn/card";
-import { InboxCard } from "./InboxCard";
 
 function Board() {
   const confC =
@@ -192,10 +191,7 @@ export function ClubPage() {
   return (
     <div className="grid2">
       <Board />
-      <div className="flex flex-col gap-2.5">
-        <InboxCard />
-        <Staff />
-      </div>
+      <Staff />
     </div>
   );
 }

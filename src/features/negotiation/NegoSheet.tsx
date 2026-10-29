@@ -124,7 +124,7 @@ export function NegoSheet({ id }: { id: string }) {
           className="w-full"
           onClick={() => {
             closeSheet();
-            setTab("home");
+            setTab("central");
           }}
         >
           Về Trang chủ

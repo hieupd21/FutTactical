@@ -80,6 +80,7 @@ interface FifacmClub {
 interface FifacmLeague {
   id: number;
   label: string;
+  imageUrl?: string | null;
   teamIds: number[];
 }
 
@@ -220,6 +221,11 @@ function buildReferences(
     nationalities,
     leagues: { countries },
     clubVisuals: {
+      leagueImageUrlById: Object.fromEntries(
+        dataset.leagues.flatMap((league) =>
+          league.imageUrl ? [[`fl${league.id}`, league.imageUrl]] : [],
+        ),
+      ),
       imageUrlByName: Object.fromEntries(
         dataset.clubs.flatMap((club) => (club.imageUrl ? [[club.label, club.imageUrl]] : [])),
       ),

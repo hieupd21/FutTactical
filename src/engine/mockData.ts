@@ -45,6 +45,8 @@ export interface MockData {
     countries: Record<string, CountryInfo>;
   };
   clubVisuals: {
+    /** ảnh logo giải theo ID game của giải (fl<id>) */
+    leagueImageUrlById?: Record<string, string>;
     imageUrlByName: Record<string, string>;
     colors: Record<string, [string, string]>;
   };

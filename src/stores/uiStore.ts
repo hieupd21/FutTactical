@@ -5,7 +5,8 @@ import type { LiveSim, MatchSim } from "@/engine/types";
 
 type SheetState =
   { type: "player"; id: string } | { type: "nego"; id: string } | { type: "match" } | null;
-export type TabKey = "home" | "squad" | "market" | "calendar" | "league" | "club";
+export type TabKey = "central" | "notifications" | "squad" | "market" | "club";
+export type ClubView = "hub" | "standings" | "calendar" | "info";
 export type MarketSub = "search" | "short" | "nego" | "mine" | "news";
 export interface Filters {
   pos: string;
@@ -28,6 +29,7 @@ type FormVal = number | string;
 interface UiState {
   currentTab: TabKey;
   tabStack: TabKey[];
+  clubView: ClubView;
   sheet: SheetState;
   ptab: "info" | "scout" | null;
   error: string | null;
@@ -41,6 +43,7 @@ interface UiState {
   openNego: (id: string) => void;
   closeSheet: () => void;
   setTab: (currentTab: TabKey) => void;
+  setClubView: (clubView: ClubView) => void;
   goBack: () => boolean;
   setPtab: (currentTab: "info" | "scout") => void;
   setErr: (message: string | null) => void;
@@ -55,8 +58,9 @@ interface UiState {
 const TAB_STACK_MAX = 10;
 
 export const useUi = create<UiState>((set, get) => ({
-  currentTab: "home",
+  currentTab: "central",
   tabStack: [],
+  clubView: "hub",
   sheet: null,
   ptab: null,
   error: null,
@@ -73,14 +77,20 @@ export const useUi = create<UiState>((set, get) => ({
     set((ui) =>
       currentTab === ui.currentTab
         ? ui
-        : { currentTab, tabStack: [...ui.tabStack, ui.currentTab].slice(-TAB_STACK_MAX) },
+        : {
+            currentTab,
+            clubView: "hub",
+            tabStack: [...ui.tabStack, ui.currentTab].slice(-TAB_STACK_MAX),
+          },
     ),
+  setClubView: (clubView) => set({ clubView }),
   // Nút Back: đóng lớp trên cùng trước, rồi lùi tab. Trả false khi không còn gì để lùi (thoát app).
   goBack: () => {
     const ui = get();
     if (ui.sheet?.type === "match") return true; // đang xem trận: chặn Back
     if (ui.sheet) set({ sheet: null, ptab: null, error: null });
     else if (ui.swapIn) set({ swapIn: null });
+    else if (ui.currentTab === "club" && ui.clubView !== "hub") set({ clubView: "hub" });
     else if (ui.tabStack.length)
       set({ currentTab: ui.tabStack[ui.tabStack.length - 1], tabStack: ui.tabStack.slice(0, -1) });
     else return false;

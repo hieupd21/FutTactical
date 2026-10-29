@@ -1,7 +1,8 @@
-import { memo, useMemo, useState } from "react";
+import { memo, useMemo } from "react";
 import { SEASON_LEN, SUMMER_WINDOW, WINTER_WINDOW } from "@/engine/constants";
 import { dateOf, getClub, getLeague, myLeagueId, gameState, windowNow } from "@/engine/state";
-import { type CalendarEvent, eventsOnDay } from "@/lib/calendarEvents";
+import { type CalendarEvent, eventsOnDay, myMatchOnDay } from "@/lib/calendarEvents";
+import { MatchResultBadge } from "@/components/MatchResultBadge";
 import { useGameVersion } from "@/stores/gameStore";
 import { ClubBadge } from "@/components/ClubBadge";
 import { classNames, formatDate } from "@/utils/display";
@@ -51,14 +52,10 @@ const CalendarCell = memo(function CalendarCell({
   day,
   events,
   isInMonth,
-  isSelected,
-  onSelect,
 }: {
   day: number;
   events: CalendarEvent[];
   isInMonth: boolean;
-  isSelected: boolean;
-  onSelect: (day: number) => void;
 }) {
   if (!isInMonth)
     return (
@@ -69,42 +66,38 @@ const CalendarCell = memo(function CalendarCell({
         {dateOf(day).getDate()}
       </div>
     );
-  const match = events.find((calendarEvent) => calendarEvent.kind === "match");
+  const match = myMatchOnDay(day);
   const mark = events.find((calendarEvent) => calendarEvent.kind === "mark");
   const isToday = day === gameState.day;
   const isPast = day < gameState.day;
   return (
-    <button
-      type="button"
-      onClick={() => onSelect(day)}
-      aria-pressed={isSelected}
+    <div
       aria-label={`${formatDate(day)}${events.length ? ", có sự kiện" : ""}`}
       className={classNames(
         "relative flex aspect-4/5 min-h-0 flex-col md:aspect-auto shadow-sm items-start justify-between rounded-lg border p-1 text-left",
-        match?.kind === "match" &&
-          match.home &&
-          "border-(--accent) bg-(--accent) text-primary-foreground",
-        match?.kind === "match" && !match.home && "border-(--accent) bg-(--accent)/20",
+        match && "border-(--accent) bg-(--accent)/20",
         !match && "border-white/20 bg-card/40 ",
-        isPast && "opacity-45",
+        isPast && "opacity-60",
         isToday && "ring-2 ring-foreground",
-        isSelected && !match && "bg-card/85",
-        isSelected &&
-          match?.kind === "match" &&
-          (match.home ? "brightness-125" : "bg-(--accent)/45"),
       )}
     >
       <span className="text-xl font-extrabold leading-none tabular-nums">
         {day === gameState.day ? "•" : ""}
         {dateOf(day).getDate()}
       </span>
-      {match?.kind === "match" && (
-        <span className="flex w-full flex-col items-center gap-0.5">
-          <ClubBadge name={match.opponent} size={28} />
-          <span className="text-[9px] font-bold uppercase leading-none">
-            {match.home ? "Nhà" : "Khách"}
+      {match && (
+        <>
+          <span
+            title={match.isHome ? "Sân nhà" : "Sân khách"}
+            className="absolute top-1 right-1 grid size-5 place-items-center rounded-full border border-foreground/60 text-[10px] leading-none font-bold"
+          >
+            {match.isHome ? "H" : "A"}
           </span>
-        </span>
+          <span className="flex w-full items-end justify-between gap-1">
+            {match.result ? <MatchResultBadge result={match.result} /> : <span />}
+            <ClubBadge name={match.opponentName} size={52} />
+          </span>
+        </>
       )}
       {!match && mark?.kind === "mark" && (
         <mark.icon
@@ -114,7 +107,7 @@ const CalendarCell = memo(function CalendarCell({
           className="text-muted-foreground"
         />
       )}
-    </button>
+    </div>
   );
 });
 
@@ -178,7 +171,7 @@ function DayDetail({ day }: { day: number }) {
   );
 }
 
-/** Lịch tháng dạng lưới (như Career Mode): ô trận đổ màu, bấm ô để xem chi tiết ngày */
+/** Lịch tháng dạng lưới (như Career Mode): ô trận đổ màu, cột trái là chi tiết hôm nay */
 export function CalendarPage() {
   const version = useGameVersion();
   const months = useMemo(buildMonths, [version]);
@@ -191,7 +184,6 @@ export function CalendarPage() {
           calendarMonth.gridStartDay + calendarMonth.leadingBlanks + calendarMonth.daysInMonth,
     ),
   );
-  const [selectedDay, setSelectedDay] = useState(gameState.day);
   const month = months[monthIndex];
   const eventsByDay = useMemo(
     () => Array.from({ length: 42 }, (_, cellIndex) => eventsOnDay(month.gridStartDay + cellIndex)),
@@ -208,7 +200,7 @@ export function CalendarPage() {
       className="flex flex-col gap-3 md:min-h-0 md:flex-1"
     >
       <h3 id="calendar-heading">Lịch thi đấu · {month.label}</h3>
-      <div className="flex flex-col gap-3 md:grid md:min-h-0 md:flex-1 md:grid-cols-[18rem_minmax(0,1fr)] md:items-start md:gap-5">
+      <div className="flex flex-col gap-3 md:grid md:min-h-0 md:flex-1 md:grid-cols-[18rem_minmax(0,1fr)] md:items-stretch md:gap-5">
         <div className="md:order-2 md:h-full md:min-h-0">
           <div
             className="grid grid-cols-7 gap-1 md:h-full md:grid-rows-(--calendar-rows)"
@@ -234,16 +226,14 @@ export function CalendarPage() {
                   key={cellIndex}
                   day={day}
                   isInMonth={isInMonth}
-                  isSelected={day === selectedDay}
                   events={eventsByDay[cellIndex]}
-                  onSelect={setSelectedDay}
                 />
               );
             })}
           </div>
         </div>
-        <div className="flex flex-col gap-3 md:order-1">
-          <DayDetail day={selectedDay} />
+        <div className="flex flex-col gap-3 md:order-1 md:self-start">
+          <DayDetail day={gameState.day} />
           {last && (
             <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground">
               <span className="font-semibold">Vừa đá</span>

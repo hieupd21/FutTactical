@@ -1,33 +1,29 @@
-import { type ReactNode } from "react";
+import { HandCoins, Mail, type LucideIcon } from "lucide-react";
+import { Fragment, useCallback, useState } from "react";
 import { negotiationNeedsAction } from "@/engine/actions";
-import { myWages } from "@/engine/board";
-import {
-  DEADLINE_HOURS,
-  REVIEW_DAY,
-  SEASON_LEN,
-  SUMMER_WINDOW,
-  WINTER_WINDOW,
-} from "@/engine/constants";
-import { formatMoney } from "@/engine/format";
+import { REVIEW_DAY, SEASON_LEN } from "@/engine/constants";
 import { advance, type AdvanceMode } from "@/engine/season";
-import { clubStrength } from "@/engine/squad";
+import { table } from "@/engine/squad";
+import { agentLetters } from "@/engine/transfers";
 import {
   dateOf,
   gameState,
   getClub,
   isDeadline,
-  myClub,
+  leagueName,
   myLeagueId,
   roundOn,
   windowNow,
 } from "@/engine/state";
 import { ClubBadge } from "@/components/ClubBadge";
+import { LeagueBadge } from "@/components/LeagueBadge";
 import { Button } from "@/components/shadcn/button";
 import { nextEventDay } from "@/lib/calendarEvents";
 import { commit } from "@/stores/gameStore";
 import { startMatch } from "@/stores/matchFlow";
 import { toast, useUi } from "@/stores/uiStore";
-import { classNames, formatLongDate } from "@/utils/display";
+import { formatLongDate, formatShortDate } from "@/utils/display";
+import { AdvanceCalendar } from "./AdvanceCalendar";
 
 function nextRound() {
   const leagueId = myLeagueId();
@@ -51,37 +47,16 @@ const daysUntilLabel = (day: number): string =>
       ? "ngày mai"
       : `sau ${day - gameState.day} ngày`;
 
-interface TransferWindowSummary {
-  label: string;
-  /** 0–1: đã đi được bao nhiêu của kỳ đang mở; null khi kỳ đóng */
-  progress: number | null;
-}
-
-function summarizeTransferWindow(): TransferWindowSummary {
-  const openWindow = windowNow();
-  if (openWindow) {
-    const [openingDay, closingDay] = openWindow === "summer" ? SUMMER_WINDOW : WINTER_WINDOW;
-    const seasonName = openWindow === "summer" ? "hè" : "đông";
-    return {
-      label: isDeadline()
-        ? `Deadline Day · giờ ${gameState.hour - 9}/${DEADLINE_HOURS}`
-        : `Kỳ ${seasonName} · còn ${closingDay - gameState.day} ngày`,
-      progress: (gameState.day - openingDay) / (closingDay - openingDay),
-    };
-  }
-  return {
-    label:
-      gameState.day < WINTER_WINDOW[0]
-        ? `Đóng · kỳ đông mở sau ${WINTER_WINDOW[0] - gameState.day} ngày`
-        : "Đã đóng",
-    progress: null,
-  };
-}
+/** Chỉ báo sự kiện trong vòng một tuần tới */
+const UPCOMING_WINDOW_DAYS = 7;
 
 /** Sự kiện sắp tới: trận (huy hiệu hai đội) hoặc mốc mùa giải (icon) */
 function NextEvent() {
   const next = nextEventDay();
   const upcomingMatch = nextRound();
+  const leagueRanks = new Map(
+    table(myLeagueId()).map((tableRow, rowIndex) => [tableRow.id, `Hạng ${rowIndex + 1}`] as const),
+  );
   if (!next)
     return (
       <p className="m-0 text-base">
@@ -90,6 +65,10 @@ function NextEvent() {
           : "Không còn sự kiện nào trong mùa."}
       </p>
     );
+  if (next.day - gameState.day > UPCOMING_WINDOW_DAYS)
+    return (
+      <p className="m-0 text-sm text-muted-foreground">Chưa có sự kiện nào trong 7 ngày tới</p>
+    );
   return (
     <div className="flex flex-col gap-3">
       <span className="text-sm text-muted-foreground">
@@ -97,19 +76,33 @@ function NextEvent() {
       </span>
       {next.events.map((calendarEvent, eventIndex) =>
         calendarEvent.kind === "match" && upcomingMatch ? (
-          <div key={eventIndex} className="flex items-center gap-3.5">
-            <div className="flex shrink-0 items-center -space-x-2">
-              <ClubBadge name={getClub(upcomingMatch.fixture[0]).name} size={44} />
-              <ClubBadge name={getClub(upcomingMatch.fixture[1]).name} size={44} />
-            </div>
-            <div className="min-w-0">
-              <b className="block truncate text-lg leading-tight">{calendarEvent.opponent}</b>
+          <div key={eventIndex} className="flex flex-col gap-4">
+            <div className="flex flex-wrap items-center gap-x-3">
+              <LeagueBadge leagueId={myLeagueId()} size={36} />
+              <b className="text-lg">{leagueName(myLeagueId())}</b>
               <span className="text-sm text-muted-foreground">
-                Vòng {upcomingMatch.round + 1}/{gameState.fixtures[myLeagueId()].length} ·{" "}
-                {calendarEvent.home ? "Sân nhà" : "Sân khách"} · sức mạnh{" "}
-                {clubStrength(upcomingMatch.fixture[0]).power} vs{" "}
-                {clubStrength(upcomingMatch.fixture[1]).power}
+                {formatShortDate(calendarEvent.day)}
               </span>
+            </div>
+            <div className="grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-4">
+              {upcomingMatch.fixture.map((clubId, sideIndex) => (
+                <Fragment key={clubId}>
+                  {sideIndex === 1 && (
+                    <b className="font-(family-name:--f-display) text-2xl font-extrabold text-muted-foreground">
+                      VS
+                    </b>
+                  )}
+                  <div className="flex min-w-0 flex-col items-center gap-2 text-center">
+                    <span className="text-sm font-medium text-muted-foreground">
+                      {leagueRanks.get(clubId)}
+                    </span>
+                    <ClubBadge name={getClub(clubId).name} size={104} />
+                    <span className="max-w-full font-(family-name:--f-display) text-base leading-tight font-extrabold uppercase text-balance md:text-lg">
+                      {getClub(clubId).name}
+                    </span>
+                  </div>
+                </Fragment>
+              ))}
             </div>
           </div>
         ) : calendarEvent.kind === "mark" ? (
@@ -126,108 +119,102 @@ function NextEvent() {
   );
 }
 
-function InfoRow({
-  label,
-  children,
-  onClick,
+function ActivityRow({
+  icon: Icon,
+  title,
+  onOpen,
 }: {
-  label: string;
-  children: ReactNode;
-  onClick?: () => void;
+  icon: LucideIcon;
+  title: string;
+  onOpen: () => void;
 }) {
-  const rowClassName = "flex items-baseline justify-between gap-4 py-2.5 text-left";
-  const content = (
-    <>
-      <dt className="text-sm text-muted-foreground">{label}</dt>
-      <dd className="m-0 text-right font-semibold tabular-nums">{children}</dd>
-    </>
-  );
-  return onClick ? (
-    <button
-      type="button"
-      onClick={onClick}
-      className={classNames(
-        rowClassName,
-        "w-full cursor-pointer border-0 bg-transparent text-inherit hover:bg-card/30",
-      )}
-    >
-      {content}
-    </button>
-  ) : (
-    <div className={rowClassName}>{content}</div>
+  return (
+    <li>
+      <button
+        type="button"
+        onClick={onOpen}
+        className="flex w-full cursor-pointer items-center gap-4 border-0 bg-transparent px-1 py-3 text-left text-inherit transition-colors hover:bg-card/40"
+      >
+        <Icon className="size-7 shrink-0" strokeWidth={1.75} aria-hidden />
+        <b className="text-base">{title}</b>
+      </button>
+    </li>
   );
 }
 
-/** Thông tin chuyển nhượng nhanh: kỳ chuyển nhượng, ngân sách, quỹ lương, đàm phán */
-function QuickTransferInfo() {
-  const club = myClub();
-  const transferWindow = summarizeTransferWindow();
-  const totalWages = myWages();
-  const runningNegotiations = gameState.negos.length;
-  const pendingNegotiations = gameState.negos.filter(negotiationNeedsAction).length;
+/** Việc cần xử lý: đề nghị mua/bán đang chờ bạn và lời thả thính của cầu thủ CLB khác */
+function ActivityList() {
+  const pendingOffers = gameState.negos.filter(
+    (negotiation) =>
+      negotiationNeedsAction(negotiation) && (negotiation.isBuyOffer || negotiation.isSellOffer),
+  );
+  const flirtingPlayers = agentLetters();
   const openNegotiations = () => {
     const ui = useUi.getState();
     ui.setTab("market");
     ui.setMarketSub("nego");
   };
+  if (!pendingOffers.length && !flirtingPlayers.length)
+    return (
+      <p className="m-0 text-sm text-muted-foreground">Chưa có đề nghị hay thư thăm dò nào.</p>
+    );
   return (
-    <dl className="m-0 flex flex-col divide-y divide-white/15">
-      <div className="flex flex-col gap-2 pb-2.5">
-        <InfoRow label="Kỳ chuyển nhượng">{transferWindow.label}</InfoRow>
-        {transferWindow.progress !== null && (
-          <div className="h-1 overflow-hidden rounded-full bg-foreground/15" aria-hidden="true">
-            <div
-              className="h-full rounded-full bg-(--accent)"
-              style={{ width: `${Math.round(transferWindow.progress * 100)}%` }}
-            />
-          </div>
-        )}
-      </div>
-      <InfoRow label="Ngân sách">{formatMoney(club.budget)}</InfoRow>
-      <InfoRow label="Quỹ lương">
-        <span className={totalWages > gameState.wageCap ? "text-destructive" : undefined}>
-          {Math.round(totalWages)} / {Math.round(gameState.wageCap)} k€
-        </span>
-      </InfoRow>
-      <InfoRow label="Đàm phán" onClick={openNegotiations}>
-        {runningNegotiations} đang chạy
-        {pendingNegotiations > 0 && (
-          <span className="text-(--accent)"> · {pendingNegotiations} cần xử lý</span>
-        )}
-      </InfoRow>
-    </dl>
+    <ul className="m-0 flex list-none flex-col divide-y divide-white/15 p-0">
+      {pendingOffers.length > 0 && (
+        <ActivityRow
+          icon={HandCoins}
+          title={`${pendingOffers.length} đề nghị mua/bán`}
+          onOpen={() =>
+            pendingOffers.length === 1
+              ? useUi.getState().openNego(pendingOffers[0].id)
+              : openNegotiations()
+          }
+        />
+      )}
+      {flirtingPlayers.length > 0 && (
+        <ActivityRow
+          icon={Mail}
+          title={`${flirtingPlayers.length} cầu thủ thả thính`}
+          onOpen={openNegotiations}
+        />
+      )}
+    </ul>
   );
 }
 
 function AdvanceButtons() {
   const isDeadlineNow = isDeadline() && !!windowNow();
+  const [calendarTrip, setCalendarTrip] = useState<{ fromDate: Date; toDate: Date } | null>(null);
   const advanceTime = (mode: AdvanceMode) => {
+    const fromDate = dateOf(gameState.day);
+    const fromYear = gameState.year;
+    const isDayAdvance = mode === "next" || mode === "day";
     commit(() => advance(mode));
     if (gameState.matchToday) toast("Hôm nay có trận đấu!");
+    const toDate = dateOf(gameState.day);
+    if (isDayAdvance && !gameState.sacked && (gameState.year !== fromYear || toDate > fromDate))
+      setCalendarTrip({ fromDate, toDate });
   };
-  if (gameState.matchToday)
-    return (
-      <div className="flex flex-wrap gap-2.5">
-        <Button variant="hot" onClick={() => startMatch(true)}>
-          Vào trận
-        </Button>
-        <Button variant="ghost" onClick={() => startMatch(false)}>
-          Giả lập nhanh
-        </Button>
-      </div>
-    );
-  if (isDeadlineNow)
-    return (
-      <div className="flex flex-wrap gap-2.5">
-        <Button variant="hot" onClick={() => advanceTime("h1")}>
-          Tua 1 giờ
-        </Button>
-        <Button variant="ghost" onClick={() => advanceTime("h2")}>
-          Tua 2 giờ
-        </Button>
-      </div>
-    );
-  return (
+  const closeCalendar = useCallback(() => setCalendarTrip(null), []);
+  const buttons = gameState.matchToday ? (
+    <div className="flex flex-wrap gap-2.5">
+      <Button variant="hot" onClick={() => startMatch(true)}>
+        Vào trận
+      </Button>
+      <Button variant="ghost" onClick={() => startMatch(false)}>
+        Giả lập nhanh
+      </Button>
+    </div>
+  ) : isDeadlineNow ? (
+    <div className="flex flex-wrap gap-2.5">
+      <Button variant="hot" onClick={() => advanceTime("h1")}>
+        Tua 1 giờ
+      </Button>
+      <Button variant="ghost" onClick={() => advanceTime("h2")}>
+        Tua 2 giờ
+      </Button>
+    </div>
+  ) : (
     <div className="flex flex-wrap gap-2.5">
       <Button variant="hot" onClick={() => advanceTime("next")}>
         Tiếp tục
@@ -237,9 +224,21 @@ function AdvanceButtons() {
       </Button>
     </div>
   );
+  return (
+    <>
+      {buttons}
+      {calendarTrip && (
+        <AdvanceCalendar
+          fromDate={calendarTrip.fromDate}
+          toDate={calendarTrip.toDate}
+          onDone={closeCalendar}
+        />
+      )}
+    </>
+  );
 }
 
-/** Khối trái: ngày tháng năm, sự kiện kế tiếp, thông tin chuyển nhượng nhanh, nút cho thời gian trôi */
+/** Khối trái: ngày tháng năm, trận/mốc trong 7 ngày tới, nút cho thời gian trôi, đề nghị và thư thả thính */
 export function TodayPanel() {
   return (
     <section className="flex flex-col gap-6 py-2">
@@ -250,8 +249,8 @@ export function TodayPanel() {
         </span>
       </h2>
       <NextEvent />
-      <QuickTransferInfo />
       <AdvanceButtons />
+      <ActivityList />
     </section>
   );
 }

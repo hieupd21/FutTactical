@@ -74,3 +74,39 @@ export function nextEventDay(): { day: number; events: CalendarEvent[] } | null 
   }
   return null;
 }
+
+export interface MyMatchOnDay {
+  opponentName: string;
+  isHome: boolean;
+  /** có khi trận đã diễn ra */
+  result: { ownGoals: number; opponentGoals: number; outcome: "W" | "D" | "L" } | null;
+}
+
+/** Trận của CLB bạn vào ngày đó trong mùa hiện tại, kể cả trận đã đá (kèm tỷ số) */
+export function myMatchOnDay(day: number): MyMatchOnDay | null {
+  if (day < 0 || day >= SEASON_LEN) return null;
+  const leagueId = myLeagueId();
+  const round = roundOn(day, leagueId);
+  if (round < 0) return null;
+  const fixture = gameState.fixtures[leagueId][round].find((fixtureClubIds) =>
+    fixtureClubIds.includes(gameState.myClubId),
+  );
+  if (!fixture) return null;
+  const isHome = fixture[0] === gameState.myClubId;
+  const matchResult = gameState.results[leagueId]?.[round]?.find(
+    (roundResult) => roundResult.homeId === fixture[0] && roundResult.awayId === fixture[1],
+  );
+  const ownGoals = matchResult ? (isHome ? matchResult.homeGoals : matchResult.awayGoals) : 0;
+  const opponentGoals = matchResult ? (isHome ? matchResult.awayGoals : matchResult.homeGoals) : 0;
+  return {
+    opponentName: getClub(isHome ? fixture[1] : fixture[0]).name,
+    isHome,
+    result: matchResult
+      ? {
+          ownGoals,
+          opponentGoals,
+          outcome: ownGoals > opponentGoals ? "W" : ownGoals < opponentGoals ? "L" : "D",
+        }
+      : null,
+  };
+}

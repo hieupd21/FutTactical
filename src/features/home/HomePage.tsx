@@ -4,7 +4,7 @@ import { Button } from "@/components/shadcn/button";
 import { Card } from "@/components/shadcn/card";
 import { JobOffersCard, OfferList } from "./JobOffers";
 import { TodayPanel } from "./TodayPanel";
-import { WeeklyNews } from "./WeeklyNews";
+import { NewsCarousel } from "./NewsCarousel";
 
 export function HomePage() {
   useGameVersion();
@@ -32,10 +32,10 @@ export function HomePage() {
     );
   }
   return (
-    <div className="flex flex-col gap-6">
-      <div className="grid gap-5 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:items-start lg:gap-8">
+    <div className="mx-auto flex w-full max-w-6xl flex-1 flex-col justify-center gap-6">
+      <div className="grid gap-5 lg:grid-cols-[minmax(0,60fr)_minmax(0,40fr)] lg:items-center lg:gap-8">
         <TodayPanel />
-        <WeeklyNews />
+        <NewsCarousel />
       </div>
       <JobOffersCard />
     </div>

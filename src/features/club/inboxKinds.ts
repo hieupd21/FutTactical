@@ -98,7 +98,7 @@ export const INBOX_KINDS: Record<InboxKind, KindDef> = {
     actionLabel: "Xem lời mời",
     icon: Briefcase,
     perform: (_m, ui) => {
-      ui.setTab("home");
+      ui.setTab("central");
       requestAnimationFrame(() =>
         document
           .getElementById("job-offers")
@@ -110,7 +110,10 @@ export const INBOX_KINDS: Record<InboxKind, KindDef> = {
     label: "Tổng kết mùa",
     actionLabel: "Xem bảng xếp hạng",
     icon: Trophy,
-    perform: (_m, ui) => ui.setTab("league"),
+    perform: (_m, ui) => {
+      ui.setTab("club");
+      ui.setClubView("standings");
+    },
   },
   youth: {
     label: "Học viện",
