@@ -1,32 +1,25 @@
 import { AnimatePresence, domAnimation, LazyMotion, m, useReducedMotion } from "framer-motion";
 import { type ReactNode, Suspense } from "react";
 import { HomePage } from "@/features/home/HomePage";
+import { NotificationsPage } from "@/features/club/NotificationsPage";
 import { SquadPage } from "@/features/squad/SquadPage";
 import { Preloader } from "@/components/Preloader";
 import { type TabKey, useUi } from "@/stores/uiStore";
-import { CalendarPage, ClubPage, LeaguePage, MarketPage } from "./lazyPages";
+import { ClubHub } from "./ClubHub";
+import { MarketPage } from "./lazyPages";
 
 const PAGES: Record<TabKey, ReactNode> = {
-  home: <HomePage />,
+  central: <HomePage />,
+  notifications: <NotificationsPage />,
   squad: <SquadPage />,
   market: (
     <Suspense fallback={<Preloader />}>
       <MarketPage />
     </Suspense>
   ),
-  calendar: (
-    <Suspense fallback={<Preloader />}>
-      <CalendarPage />
-    </Suspense>
-  ),
-  league: (
-    <Suspense fallback={<Preloader />}>
-      <LeaguePage />
-    </Suspense>
-  ),
   club: (
     <Suspense fallback={<Preloader />}>
-      <ClubPage />
+      <ClubHub />
     </Suspense>
   ),
 };

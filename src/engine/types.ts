@@ -219,6 +219,7 @@ export interface MatchResult {
   homeGoals: number;
   awayGoals: number;
   scorers: string[];
+  assisters?: string[]; // bản lưu cũ chưa có
 }
 
 export interface TableRow {

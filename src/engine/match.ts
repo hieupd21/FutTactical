@@ -38,6 +38,30 @@ function pickScorer(lineup: (string | null)[], form: Formation): string {
   return candidates[0] ? candidates[0][0] : "";
 }
 
+/** Người kiến tạo cho bàn thắng (65% có kiến tạo), không phải thủ môn hay chính người ghi bàn */
+function pickAssister(
+  lineup: (string | null)[],
+  form: Formation,
+  scorerId: string,
+): string | undefined {
+  if (Math.random() >= 0.65) return undefined;
+  const lines = slotPositions(form);
+  const weightByLine: Record<Line, number> = { GK: 0, DF: 1, MF: 3, FW: 3 };
+  const candidates = lineup
+    .map((id, i) => [id, weightByLine[lines[i]]] as const)
+    .filter(
+      (candidate): candidate is readonly [string, number] =>
+        !!candidate[0] && candidate[0] !== scorerId && candidate[1] > 0,
+    );
+  const totalWeight = candidates.reduce((total, candidate) => total + candidate[1], 0);
+  let remaining = Math.random() * totalWeight;
+  for (const [id, weight] of candidates) {
+    remaining -= weight;
+    if (remaining <= 0) return id;
+  }
+  return candidates[0]?.[0];
+}
+
 /** Mô phỏng nhanh một trận (các trận của đội khác): chỉ ra tỷ số + người ghi bàn */
 export function simMatch(homeId: string, awayId: string): MatchSim {
   const formation = homeId === gameState.myClubId ? gameState.form : getClub(homeId).form,
@@ -51,10 +75,26 @@ export function simMatch(homeId: string, awayId: string): MatchSim {
   const homeGoals = poisson(expectedGoalsRate(homeStrength.att + 1.5, awayStrength.def)),
     awayGoals = poisson(expectedGoalsRate(awayStrength.att, homeStrength.def + 1.5));
   const events: MatchEvent[] = [];
-  for (let i = 0; i < homeGoals; i++)
-    events.push({ minute: randomInt(1, 90), side: 0, goal: pickScorer(homeLineup, formation) });
-  for (let i = 0; i < awayGoals; i++)
-    events.push({ minute: randomInt(1, 90), side: 1, goal: pickScorer(awayLineup, awayFormation) });
+  for (let i = 0; i < homeGoals; i++) {
+    const scorerId = pickScorer(homeLineup, formation);
+    const assistId = pickAssister(homeLineup, formation, scorerId);
+    events.push({
+      minute: randomInt(1, 90),
+      side: 0,
+      goal: scorerId,
+      ...(assistId ? { assist: assistId } : {}),
+    });
+  }
+  for (let i = 0; i < awayGoals; i++) {
+    const scorerId = pickScorer(awayLineup, awayFormation);
+    const assistId = pickAssister(awayLineup, awayFormation, scorerId);
+    events.push({
+      minute: randomInt(1, 90),
+      side: 1,
+      goal: scorerId,
+      ...(assistId ? { assist: assistId } : {}),
+    });
+  }
   // chấn thương
   (
     [
@@ -150,6 +190,7 @@ const toResult = (matchSim: MatchSim): MatchResult => ({
   homeGoals: matchSim.homeGoals,
   awayGoals: matchSim.awayGoals,
   scorers: matchSim.events.filter((event) => event.goal).map((event) => event.goal as string),
+  assisters: matchSim.events.filter((event) => event.assist).map((event) => event.assist as string),
 });
 
 /** Đá các trận khác trong ngày ở mọi giải mô phỏng */

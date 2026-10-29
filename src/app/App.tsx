@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { TABS, TopNav } from "@/components/AppChrome";
+import { tabLabel, TopNav } from "@/components/AppChrome";
 import { Toaster } from "@/components/shadcn/sonner";
 import { StartScreen } from "@/features/start/StartScreen";
 import { useGame } from "@/stores/gameStore";
@@ -31,9 +31,7 @@ export function App() {
           {status === "none" && <StartScreen />}
           {status === "ready" && (
             <>
-              <h1 className="sr-only">
-                {TABS.find((tabItem) => tabItem.tab === currentTab)?.label ?? "Giải đấu"}
-              </h1>
+              <h1 className="sr-only">{tabLabel(currentTab)}</h1>
               <AnimatedTabs />
             </>
           )}

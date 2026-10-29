@@ -3,7 +3,7 @@ import { useUi } from "./uiStore";
 
 const reset = () =>
   useUi.setState({
-    currentTab: "home",
+    currentTab: "central",
     tabStack: [],
     sheet: null,
     ptab: null,
@@ -42,13 +42,21 @@ describe("uiStore.goBack", () => {
     expect(useUi.getState().goBack()).toBe(true);
     expect(useUi.getState().currentTab).toBe("squad");
     expect(useUi.getState().goBack()).toBe(true);
-    expect(useUi.getState().currentTab).toBe("home");
+    expect(useUi.getState().currentTab).toBe("central");
     expect(useUi.getState().goBack()).toBe(false);
   });
 
   it("không đẩy ngăn xếp khi bấm lại đúng tab đang mở", () => {
-    useUi.getState().setTab("home");
+    useUi.getState().setTab("central");
     expect(useUi.getState().tabStack).toEqual([]);
+  });
+
+  it("từ màn con của Câu lạc bộ lùi về ba khối trước khi lùi tab", () => {
+    useUi.getState().setTab("club");
+    useUi.getState().setClubView("standings");
+    expect(useUi.getState().goBack()).toBe(true);
+    expect(useUi.getState().clubView).toBe("hub");
+    expect(useUi.getState().currentTab).toBe("club");
   });
 
   it("chặn Back khi đang xem trận", () => {

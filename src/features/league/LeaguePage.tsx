@@ -1,18 +1,11 @@
 import { table } from "@/engine/squad";
-import {
-  getClub,
-  leagueName,
-  myLeagueId,
-  getPlayer,
-  roundDay,
-  gameState,
-  simLeagues,
-} from "@/engine/state";
+import type { MatchResult } from "@/engine/types";
+import { getClub, leagueName, myLeagueId, getPlayer, gameState, simLeagues } from "@/engine/state";
 import { ClubBadge } from "@/components/ClubBadge";
 import { SegmentedControl } from "@/components/ui";
 import { useGameVersion } from "@/stores/gameStore";
 import { useUi } from "@/stores/uiStore";
-import { classNames, formatShortDate } from "@/utils/display";
+import { classNames } from "@/utils/display";
 import { Card } from "@/components/shadcn/card";
 import {
   Table,
@@ -25,40 +18,71 @@ import {
 
 const FORM_VI = { W: "T", D: "H", L: "B" } as const;
 
+function topPlayersBy(
+  leagueId: string,
+  pickPlayerIds: (matchResult: MatchResult) => string[],
+): [string, number][] {
+  const countByPlayerId: Record<string, number> = {};
+  (gameState.results[leagueId] || []).forEach((matchResults) =>
+    matchResults?.forEach((matchResult) =>
+      pickPlayerIds(matchResult).forEach(
+        (playerId) => (countByPlayerId[playerId] = (countByPlayerId[playerId] || 0) + 1),
+      ),
+    ),
+  );
+  return Object.entries(countByPlayerId)
+    .filter(([playerId]) => getPlayer(playerId))
+    .sort((entryA, entryB) => entryB[1] - entryA[1])
+    .slice(0, 10);
+}
+
+function TopPlayersCard({
+  title,
+  entries,
+  emptyText,
+}: {
+  title: string;
+  entries: [string, number][];
+  emptyText: string;
+}) {
+  return (
+    <Card className="panel min-w-0 gap-0 rounded-2xl border-white/20 bg-card/40 p-4 shadow-lg backdrop-blur-xl">
+      <h2>{title}</h2>
+      {entries.length ? (
+        <div className="tw">
+          <Table>
+            <TableBody>
+              {entries.map(([playerId, count]) => (
+                <TableRow key={playerId}>
+                  <TableCell>{getPlayer(playerId).name}</TableCell>
+                  <TableCell className="muted">
+                    {getPlayer(playerId).club != null
+                      ? getClub(getPlayer(playerId).club!).name
+                      : ""}
+                  </TableCell>
+                  <TableCell className="n">
+                    <b>{count}</b>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
+      ) : (
+        <p className="hint">{emptyText}</p>
+      )}
+    </Card>
+  );
+}
+
 export function LeaguePage() {
   useGameVersion();
   const { lgView, setLgView } = useUi();
   const ownLeagueId = myLeagueId();
   const leagueId = lgView && gameState.fixtures[lgView] ? lgView : ownLeagueId;
   const tableRows = table(leagueId);
-  const myFx =
-    leagueId === ownLeagueId
-      ? gameState.fixtures[ownLeagueId].map((roundFixtures, i) => {
-          const myFixture = roundFixtures.find((fixtureClubIds) =>
-            fixtureClubIds.includes(gameState.myClubId),
-          )!;
-          const result = gameState.results[ownLeagueId][i]?.find(
-            (matchResult) =>
-              matchResult.homeId === myFixture[0] && matchResult.awayId === myFixture[1],
-          );
-          return {
-            roundIndex: i,
-            fixture: myFixture,
-            result,
-            day: roundDay(i, gameState.fixtures[ownLeagueId].length),
-          };
-        })
-      : [];
-  const scorers: Record<string, number> = {};
-  (gameState.results[leagueId] || []).forEach((matchResults) =>
-    matchResults?.forEach((matchResult) =>
-      matchResult.scorers.forEach((id) => (scorers[id] = (scorers[id] || 0) + 1)),
-    ),
-  );
-  const topScorers = Object.entries(scorers)
-    .filter(([id]) => getPlayer(id))
-    .sort((scorerA, scorerB) => scorerB[1] - scorerA[1])
-    .slice(0, 10);
+  const topScorers = topPlayersBy(leagueId, (matchResult) => matchResult.scorers);
+  const topAssisters = topPlayersBy(leagueId, (matchResult) => matchResult.assisters ?? []);
 
   return (
     <>
@@ -124,60 +148,18 @@ export function LeaguePage() {
             </Table>
           </div>
         </Card>
-        <Card className="panel min-w-0 gap-0 rounded-2xl border-white/20 bg-card/40 p-4 shadow-lg backdrop-blur-xl">
-          {leagueId === ownLeagueId && (
-            <>
-              <h2>Lịch đấu của bạn</h2>
-              <div className="tw">
-                <Table>
-                  <TableBody>
-                    {myFx.map((fixtureRow) => (
-                      <TableRow
-                        key={fixtureRow.roundIndex}
-                        className={fixtureRow.result ? "" : "muted"}
-                      >
-                        <TableCell className="n">{fixtureRow.roundIndex + 1}</TableCell>
-                        <TableCell>{formatShortDate(fixtureRow.day)}</TableCell>
-                        <TableCell>
-                          {fixtureRow.fixture[0] === gameState.myClubId
-                            ? "vs " + getClub(fixtureRow.fixture[1]).name
-                            : "@ " + getClub(fixtureRow.fixture[0]).name}
-                        </TableCell>
-                        <TableCell className="n">
-                          {fixtureRow.result
-                            ? `${fixtureRow.result.homeGoals}–${fixtureRow.result.awayGoals}`
-                            : ""}
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </div>
-            </>
-          )}
-          <h2>Vua phá lưới</h2>
-          {topScorers.length ? (
-            <div className="tw">
-              <Table>
-                <TableBody>
-                  {topScorers.map(([id, goals]) => (
-                    <TableRow key={id}>
-                      <TableCell>{getPlayer(id).name}</TableCell>
-                      <TableCell className="muted">
-                        {getPlayer(id).club != null ? getClub(getPlayer(id).club!).name : ""}
-                      </TableCell>
-                      <TableCell className="n">
-                        <b>{goals}</b>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
-          ) : (
-            <p className="hint">Chưa có bàn thắng.</p>
-          )}
-        </Card>
+        <div className="flex min-w-0 flex-col gap-4">
+          <TopPlayersCard
+            title="Vua phá lưới"
+            entries={topScorers}
+            emptyText="Chưa có bàn thắng."
+          />
+          <TopPlayersCard
+            title="Vua kiến tạo"
+            entries={topAssisters}
+            emptyText="Chưa có kiến tạo."
+          />
+        </div>
       </div>
     </>
   );
