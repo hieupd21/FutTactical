@@ -116,6 +116,12 @@ export interface Club {
   playerIds: string[];
   budget: number; // nghìn €
   rival: string | null;
+  /** logo do người chơi tải lên (CLB tự tạo), dạng data URL */
+  customLogoDataUrl?: string;
+  /** màu chủ đạo thừa hưởng từ CLB bị loại (CLB tự tạo): [nền, chữ] */
+  customColors?: [string, string];
+  /** tên sân của CLB tự tạo, người chơi đổi được */
+  stadiumName?: string;
 }
 
 export interface League {

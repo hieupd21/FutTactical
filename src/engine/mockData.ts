@@ -58,6 +58,16 @@ export function setMockData(data: MockData | null): void {
   loaded = data;
 }
 
+/** Gắn logo tự tải lên của CLB tự tạo vào kho ảnh CLB để ClubBadge dùng như ảnh nguồn */
+export function registerCustomClubLogo(clubName: string, logoDataUrl: string): void {
+  if (loaded) loaded.clubVisuals.imageUrlByName[clubName] = logoDataUrl;
+}
+
+/** Gắn màu chủ đạo thừa hưởng cho CLB tự tạo */
+export function registerCustomClubColors(clubName: string, colors: [string, string]): void {
+  if (loaded) loaded.clubVisuals.colors[clubName] = colors;
+}
+
 export function mockData(): MockData {
   if (!loaded) throw new Error("Dữ liệu mock chưa được nạp (gọi loadPack trước).");
   return loaded;

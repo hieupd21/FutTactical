@@ -1,5 +1,12 @@
 // Khởi tạo thế giới: dữ liệu FIFACM hoặc gói dòng cũ dùng cho tương thích.
-import { allLeagueInfos, findLeagueByPackId, mockData, setMockData } from "./mockData";
+import {
+  allLeagueInfos,
+  findLeagueByPackId,
+  mockData,
+  registerCustomClubColors,
+  registerCustomClubLogo,
+  setMockData,
+} from "./mockData";
 import { fifacmPositionLine, type FifacmPack } from "./fifacm";
 import { findClosestVariantCode, formationLayout } from "./formationLayout";
 import { setBoard } from "./board";
@@ -8,7 +15,17 @@ import { formatMoney, formatWage } from "./format";
 import { makePlayer, valueOf, wageBase } from "./players";
 import { clubRequirement, NEWBIE_REPUTATION } from "./career";
 import { bestLineup, clubPlayers } from "./squad";
-import { getClub, inbox, myClub, news, gameState, setLeagues, setState, simLeagues } from "./state";
+import {
+  getClub,
+  inbox,
+  leagueName,
+  myClub,
+  news,
+  gameState,
+  setLeagues,
+  setState,
+  simLeagues,
+} from "./state";
 import type { Club, DataRow, GameState, League, Line, Philosophy, Player, Role } from "./types";
 import { clamp, pickRandom, roundToTen, randomInt, randomBetween } from "./util";
 
@@ -167,6 +184,16 @@ export interface RealStart {
   /** true = HLV mới vô danh, chỉ nhận được các đội hạng dưới; false = tự chọn CLB bất kỳ */
   rookie?: boolean;
   dataset?: FifacmPack;
+  /** Chế độ "CLB của tôi": CLB mới thay chỗ CLB bị loại (clubName), thừa hưởng toàn bộ đội hình */
+  customClub?: { name: string; logoDataUrl: string | null };
+}
+
+/** Đăng ký lại logo tự tải lên của mọi CLB trong bản lưu (gọi sau khi nạp save) */
+export function registerSavedCustomLogos(): void {
+  Object.values(gameState.clubs).forEach((club) => {
+    if (club.customLogoDataUrl) registerCustomClubLogo(club.name, club.customLogoDataUrl);
+    if (club.customColors) registerCustomClubColors(club.name, club.customColors);
+  });
 }
 
 export function newGameReal(
@@ -396,6 +423,28 @@ export function newGameReal(
       lineup[slotIndex] = `f${slot.playerId}`;
     });
     gameState.lineup = lineup;
+  }
+  const customClub = opts.customClub;
+  if (customClub) {
+    const removedClubName = myClub().name;
+    // CLB mới đứng đúng chỗ CLB bị loại: giữ ID để mọi tham chiếu (cầu thủ, kình địch, lịch) còn nguyên
+    const club = myClub();
+    const inheritedColors = mockData().clubVisuals.colors[removedClubName];
+    club.name = customClub.name;
+    club.stadiumName = `Sân vận động ${removedClubName}`;
+    delete club.sourceId;
+    if (inheritedColors) {
+      club.customColors = inheritedColors;
+      registerCustomClubColors(club.name, inheritedColors);
+    }
+    if (customClub.logoDataUrl) {
+      club.customLogoDataUrl = customClub.logoDataUrl;
+      registerCustomClubLogo(club.name, customClub.logoDataUrl);
+    }
+    news(
+      `${removedClubName} rút khỏi ${leagueName(club.leagueId)}; ${club.name} được thành lập và thế chỗ.`,
+      "club",
+    );
   }
   news(`Bạn chính thức nhận ghế HLV trưởng ${myClub().name}.`, "club");
   inbox({

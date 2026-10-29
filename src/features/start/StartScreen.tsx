@@ -1,7 +1,7 @@
 // Màn hình bắt đầu sự nghiệp: chọn hạng đấu → đội bóng (kiểu FC26), xem huy hiệu + sức mạnh rồi xác nhận.
 import { allLeagueInfos, findLeagueByPackId, mockData } from "@/engine/mockData";
 import { useEffect, useMemo, useState } from "react";
-import { ChevronDown, ChevronLeft, ChevronRight, Lock } from "lucide-react";
+import { ChevronDown, ChevronLeft, ChevronRight, ImagePlus, Lock } from "lucide-react";
 import { NEWBIE_REPUTATION, strengthRequirement } from "@/engine/career";
 
 import type { Line } from "@/engine/types";
@@ -13,11 +13,15 @@ import { Sheet } from "@/components/Sheet";
 import { SegmentedControl } from "@/components/ui";
 import { Button } from "@/components/shadcn/button";
 import { Card } from "@/components/shadcn/card";
+import { Input } from "@/components/shadcn/input";
+import { readLogoFile } from "@/lib/logoImage";
 import { cn } from "@/lib/utils";
 import { loadPack, PACKS } from "@/lib/data";
 import { useGame } from "@/stores/gameStore";
 
-type Mode = "rookie" | "free";
+type Mode = "rookie" | "free" | "custom";
+const CUSTOM_NAME_MIN = 2;
+const CUSTOM_NAME_MAX = 30;
 type PickerKind = "country" | "league" | "club";
 
 interface ClubChoice {
@@ -27,6 +31,8 @@ interface ClubChoice {
   isLocked: boolean;
   requiredReputation: number;
   tierLabel: string;
+  squadSize: number;
+  topPlayers: { name: string; ovr: number; position: string }[];
 }
 
 const LINE_LABELS: [Line, string, string][] = [
@@ -130,6 +136,9 @@ export function StartScreen() {
   const [pickedClubName, setPickedClubName] = useState("");
   const [openedPicker, setOpenedPicker] = useState<PickerKind | null>(null);
   const [mode, setMode] = useState<Mode>("rookie");
+  const [customName, setCustomName] = useState("");
+  const [customLogoDataUrl, setCustomLogoDataUrl] = useState<string | null>(null);
+  const [logoError, setLogoError] = useState<string | null>(null);
   const { startReal } = useGame();
 
   useEffect(() => {
@@ -140,6 +149,7 @@ export function StartScreen() {
 
   // HLV mới chỉ nhận được các đội có yêu cầu uy tín trong tầm; chế độ tự chọn mở hết
   const isRookie = mode === "rookie";
+  const isCustom = mode === "custom";
   const playableLeagues = allLeagueInfos().filter((league) => league.isSimulated !== false);
   const countryCodes = [...new Set(playableLeagues.map((league) => league.nationality))];
   const selectedCountryCode = countryCodes.includes(pickedCountryCode)
@@ -167,6 +177,15 @@ export function StartScreen() {
         isLocked: isRookie && requiredReputation > NEWBIE_REPUTATION,
         requiredReputation,
         tierLabel: getTierLabel(rankIndex, leagueClubs.length),
+        squadSize: packClub.rows.length,
+        topPlayers: [...packClub.rows]
+          .sort((rowA, rowB) => rowB[5] - rowA[5])
+          .slice(0, 3)
+          .map((dataRow) => ({
+            name: dataRow[2],
+            ovr: dataRow[5],
+            position: String(dataRow[4]).split(",")[0].trim(),
+          })),
       };
     });
   }, [rows, dataset, selectedLeague.id, isRookie]);
@@ -193,12 +212,37 @@ export function StartScreen() {
     setPickedClubName(clubs[(currentIndex + direction + clubs.length) % clubs.length].name);
   };
 
-  const canConfirm = Boolean(rows && selectedClub && !selectedClub.isLocked);
+  const trimmedCustomName = customName.trim();
+  const customNameError = !isCustom
+    ? null
+    : trimmedCustomName.length < CUSTOM_NAME_MIN
+      ? `Tên CLB cần ít nhất ${CUSTOM_NAME_MIN} ký tự.`
+      : trimmedCustomName.length > CUSTOM_NAME_MAX
+        ? `Tên CLB tối đa ${CUSTOM_NAME_MAX} ký tự.`
+        : dataset?.clubByName.has(trimmedCustomName)
+          ? "Tên này trùng với một CLB có sẵn."
+          : null;
+  const pickLogoFile = async (file: File | undefined) => {
+    if (!file) return;
+    try {
+      setCustomLogoDataUrl(await readLogoFile(file));
+      setLogoError(null);
+    } catch (readError) {
+      setLogoError(readError instanceof Error ? readError.message : "Không đọc được ảnh.");
+    }
+  };
+
+  const canConfirm = Boolean(
+    rows && selectedClub && !selectedClub.isLocked && (!isCustom || !customNameError),
+  );
   const confirm = () => {
     if (!rows || !dataset || !selectedClub || !canConfirm) return;
     startReal(rows, selectedLeague.id, selectedClub.name, PACKS.fifacm.sourceNote, {
       rookie: isRookie,
       dataset,
+      ...(isCustom
+        ? { customClub: { name: trimmedCustomName, logoDataUrl: customLogoDataUrl } }
+        : {}),
     });
   };
 
@@ -215,17 +259,71 @@ export function StartScreen() {
           items={[
             ["rookie", "HLV mới"],
             ["free", "Tự chọn CLB"],
+            ["custom", "CLB của tôi"],
           ]}
         />
         <p className="hint">
           {isRookie
             ? "Bạn còn vô danh nên chỉ được các đội hạng dưới giao ghế. Đạt thành tích để tăng uy tín, CLB lớn hơn sẽ gửi lời mời cuối mùa."
-            : "Chọn thẳng bất kỳ CLB nào, kể cả đội mạnh nhất. Uy tín khởi đầu tương xứng với CLB đã chọn."}
+            : isCustom
+              ? "Tự lập CLB của riêng bạn: đặt tên, tải logo, chọn giải. CLB mới thế chỗ một đội bị loại khỏi giải và thừa hưởng toàn bộ đội hình của đội đó (OVR, cầu thủ, hợp đồng)."
+              : "Chọn thẳng bất kỳ CLB nào, kể cả đội mạnh nhất. Uy tín khởi đầu tương xứng với CLB đã chọn."}
         </p>
         <p className="hint">{PACKS.fifacm.note}</p>
       </div>
 
       {error && <p className="err mt-3">{error}</p>}
+
+      {isCustom && (
+        <div className="mt-4 flex items-start gap-3">
+          <label
+            className="grid size-20 shrink-0 cursor-pointer place-items-center overflow-hidden rounded-xl border border-dashed border-border bg-card text-muted-foreground transition-colors hover:border-(--accent)"
+            title="Tải logo từ máy tính"
+          >
+            {customLogoDataUrl ? (
+              <img
+                src={customLogoDataUrl}
+                alt="Logo CLB"
+                className="size-full object-contain p-1"
+              />
+            ) : (
+              <span className="flex flex-col items-center gap-1 text-[11px] font-semibold">
+                <ImagePlus size={22} aria-hidden="true" />
+                Logo
+              </span>
+            )}
+            <input
+              type="file"
+              accept="image/*"
+              className="sr-only"
+              onChange={(changeEvent) => {
+                void pickLogoFile(changeEvent.target.files?.[0]);
+                changeEvent.target.value = "";
+              }}
+            />
+          </label>
+          <div className="flex min-w-0 flex-1 flex-col gap-1.5">
+            <Input
+              value={customName}
+              onChange={(changeEvent) => setCustomName(changeEvent.target.value)}
+              placeholder="Tên câu lạc bộ"
+              maxLength={CUSTOM_NAME_MAX + 10}
+              aria-invalid={Boolean(customName) && Boolean(customNameError)}
+            />
+            {customName && customNameError && <p className="err m-0">{customNameError}</p>}
+            {logoError && <p className="err m-0">{logoError}</p>}
+            {customLogoDataUrl && (
+              <button
+                type="button"
+                onClick={() => setCustomLogoDataUrl(null)}
+                className="w-fit cursor-pointer border-0 bg-transparent p-0 text-xs font-semibold text-muted-foreground hover:text-foreground"
+              >
+                Bỏ logo
+              </button>
+            )}
+          </div>
+        </div>
+      )}
 
       <div className="mt-4 flex flex-col gap-2.5">
         <PickerRow
@@ -245,7 +343,7 @@ export function StartScreen() {
           isDisabled={leagues.length < 2}
         />
         <PickerRow
-          label="Đội bóng"
+          label={isCustom ? "Đội bị loại bỏ" : "Đội bóng"}
           value={selectedClub?.name ?? (isLoading ? "Đang tải dữ liệu…" : "Chưa có đội")}
           onPrevious={() => stepClub(-1)}
           onNext={() => stepClub(1)}
@@ -267,18 +365,35 @@ export function StartScreen() {
                 selectedClub.isLocked && "opacity-60 grayscale",
               )}
             >
-              <ClubBadge name={selectedClub.name} size={128} />
+              {isCustom && customLogoDataUrl ? (
+                <img
+                  src={customLogoDataUrl}
+                  alt=""
+                  width={128}
+                  height={128}
+                  style={{ objectFit: "contain" }}
+                />
+              ) : (
+                <ClubBadge
+                  name={isCustom ? trimmedCustomName || "CLB" : selectedClub.name}
+                  size={128}
+                />
+              )}
             </div>
             <div className="flex flex-col items-center gap-1 text-center">
-              <h3 className="text-balance text-[20px] uppercase">{selectedClub.name}</h3>
+              <h3 className="text-balance text-[20px] uppercase">
+                {isCustom ? trimmedCustomName || "CLB của bạn" : selectedClub.name}
+              </h3>
               <p className="hint">
-                {selectedLeague.name} · {selectedClub.tierLabel}
+                {isCustom
+                  ? `${selectedLeague.name} · thế chỗ ${selectedClub.name}, thừa hưởng đội hình`
+                  : `${selectedLeague.name} · ${selectedClub.tierLabel}`}
               </p>
             </div>
             <dl className="grid w-full max-w-105 grid-cols-5 gap-1.5 text-center">
               <div className="flex flex-col gap-1 rounded-lg bg-card px-1 py-2">
                 <dt className="text-[10px] font-medium text-muted-foreground uppercase">
-                  Sức mạnh
+                  {isCustom ? "OVR đội" : "Sức mạnh"}
                 </dt>
                 <dd className="text-[20px] font-extrabold text-foreground tabular-nums">
                   {selectedClub.strength}
@@ -298,6 +413,26 @@ export function StartScreen() {
                 </div>
               ))}
             </dl>
+            {isCustom && (
+              <div className="w-full max-w-105 rounded-lg bg-card px-3 py-2.5 text-left">
+                <p className="hint m-0 mb-1.5">
+                  Thừa hưởng {selectedClub.squadSize} cầu thủ, ngôi sao gồm:
+                </p>
+                <ul className="m-0 flex list-none flex-col gap-1 p-0">
+                  {selectedClub.topPlayers.map((topPlayer) => (
+                    <li key={topPlayer.name} className="flex items-center gap-2 text-sm">
+                      <span className="w-9 text-[11px] font-semibold text-muted-foreground">
+                        {topPlayer.position}
+                      </span>
+                      <span className="min-w-0 flex-1 truncate font-semibold">
+                        {topPlayer.name}
+                      </span>
+                      <b className="tabular-nums">{topPlayer.ovr}</b>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
             {selectedClub.isLocked && (
               <p className="flex items-center gap-1.5 text-center text-[13px] font-semibold text-destructive">
                 <Lock size={14} aria-hidden="true" />

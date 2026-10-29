@@ -33,6 +33,7 @@ import {
 import { aiBidsTick, aiTransfersTick, movePlayer, processNegos, scoutRange } from "./transfers";
 import type { Line } from "./types";
 import { clamp, pickRandom, roundToTen, randomInt, randomBetween } from "./util";
+import { applyPromotionRelegation } from "./promotion";
 import { makeFixtures } from "./world";
 
 function monthTick(): void {
@@ -407,6 +408,7 @@ function newSeason(): void {
       myClub().prestige = Math.max(1, myClub().prestige - 1);
   }
   Object.values(gameState.players).forEach((player) => (player.marketValue = valueOf(player)));
+  applyPromotionRelegation();
   simLeagues().forEach((league) => {
     gameState.fixtures[league.id] = makeFixtures(
       Object.values(gameState.clubs)

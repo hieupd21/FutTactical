@@ -1,6 +1,6 @@
 # Sân Cỏ Career — ghi chú cho Claude Code
 
-Game quản lý bóng đá kiểu Career Mode của EA FC: trận đấu chạy từng phút (người chơi chỉ tạm dừng, thay người, đổi chiến thuật; không điều khiển cầu thủ), chuyển nhượng và đàm phán giống FC. Mobile-first, chạy trên web. Dùng riêng nên được phép dùng tên cầu thủ/CLB thật. KHÔNG tự thêm logo hoặc ảnh ngoài dữ liệu: tên và ảnh chỉ lấy từ `data/fifacm/` (không có chức năng đổi tên hay tải ảnh); huy hiệu SVG tự vẽ chỉ là dự phòng khi ảnh nguồn lỗi.
+Game quản lý bóng đá kiểu Career Mode của EA FC: trận đấu chạy từng phút (người chơi chỉ tạm dừng, thay người, đổi chiến thuật; không điều khiển cầu thủ), chuyển nhượng và đàm phán giống FC. Mobile-first, chạy trên web. Dùng riêng nên được phép dùng tên cầu thủ/CLB thật. KHÔNG tự thêm logo hoặc ảnh ngoài dữ liệu: tên và ảnh chỉ lấy từ `data/fifacm/` (không có chức năng đổi tên hay tải ảnh, trừ CLB tự tạo ở chế độ "CLB của tôi": tên và logo do người chơi nhập/tải lên, lưu trong save); huy hiệu SVG tự vẽ chỉ là dự phòng khi ảnh nguồn lỗi.
 
 Luôn trả lời người dùng bằng tiếng Việt. Toàn bộ chữ trong giao diện là tiếng Việt.
 
@@ -37,6 +37,8 @@ Luôn trả lời người dùng bằng tiếng Việt. Toàn bộ chữ trong g
 - Lịch: ngày `day` tính từ 1/7; vòng 1 ngày 45, mỗi vòng cách 7 ngày; kỳ CN hè [0,61], đông [184,214]; Deadline Day 20 giờ tua theo giờ; tổng kết ngày 335; mùa dài 365.
 - Giá trị: `3000*exp((ovr-70)/6)` × hệ số tuổi/tiềm năng/hợp đồng/phong độ/giải × `valueAnchor` (neo theo giá thật). Lương cơ bản `max(3, 3+marketValue/600)` k€/tuần.
 - Đàm phán: thăm dò → CLB (thanh căng thẳng, trả góp, thưởng 20 trận, % bán lại, cho mượn lại, trao đổi, thời điểm, điều khoản giải phóng) → hợp đồng (lương, năm, lót tay, vai trò, điều khoản) → chốt (18% CLB khác nhảy vào, ép giá 50/35/15). Còn có mượn, tự do, ký trước từ 1/1, gia hạn, Giám đốc thể thao, AI hỏi mua, AI↔AI.
+- Chế độ "CLB của tôi": CLB mới thế chỗ một đội bị loại (giữ ID đội cũ), thừa hưởng nguyên đội hình, không hiệu chỉnh OVR; `Club.customLogoDataUrl` lưu logo (đăng ký lại bằng `registerSavedCustomLogos` sau khi nạp save).
+- Lên/xuống hạng (`engine/promotion.ts`, `PROMOTION_SLOTS` = 3): cuối mùa, với quốc gia có nhiều hạng được mô phỏng, 3 đội cuối bảng hạng trên đổi chỗ với 3 đội đầu bảng hạng dưới (áp dụng cho mọi chế độ).
 - Đội tối thiểu 18 người khi bán; học viện bù đủ 20 đầu mùa.
 - Sau mỗi lượt đàm phán/phản giá, đối phương trả lời sau tối thiểu 24 giờ game (`responseWait`); Deadline Day là 1 giờ.
 - Trận của bạn: `engine/liveMatch.ts` mô phỏng từng tick (phút + bù giờ), tối đa 5 lượt thay người, tâm lý đội + pressing ảnh hưởng xG và thể lực; đường nhanh `simMatch` dùng cho trận AI và phải giữ số bàn trung bình tương đương.

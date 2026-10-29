@@ -3,7 +3,7 @@
 import { create } from "zustand";
 import { gameState, setState } from "@/engine/state";
 import type { DataRow } from "@/engine/types";
-import { newGameReal, type RealStart } from "@/engine/world";
+import { newGameReal, registerSavedCustomLogos, type RealStart } from "@/engine/world";
 import { loadPack } from "@/lib/data";
 import { clearGame, loadGame, saveGame } from "@/lib/persist";
 
@@ -39,6 +39,7 @@ export const useGame = create<GameStore>((set, get) => ({
     const state = await loadGame();
     if (state && !state.leagueNames) state.leagueNames = {};
     setState(state);
+    if (state) registerSavedCustomLogos();
     set({ status: state ? "ready" : "none", version: get().version + 1 });
   },
   commit: (action) => {
